@@ -1,0 +1,31 @@
+pragma solidity ^0.5.8;
+
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+
+contract MultiTransfer is ERC721 {
+
+   function transferBlock(address from, address to, uint256 start, uint256 end) public {
+       for (uint i = start; i < end; i++) {
+           transferFrom(from, to, i);
+       }
+   }
+
+   function transferAllFrom(address from, address to, uint256[] memory tokenIDs) public {
+       for (uint i = 0; i < tokenIDs.length; i++) {
+           transferFrom(from, to, tokenIDs[i]);
+       }
+   }
+
+   function safeTransferBlock(address from, address to, uint256 start, uint256 end) public {
+       for (uint i = start; i < end; i++) {
+           safeTransferFrom(from, to, i);
+       }
+   }
+
+   function safeTransferAllFrom(address from, address to, uint256[] memory tokenIDs) public {
+       for (uint i = 0; i < tokenIDs.length; i++) {
+           safeTransferFrom(from, to, tokenIDs[i]);
+       }
+   }
+
+}

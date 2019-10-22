@@ -1,0 +1,16 @@
+{
+  "name": "gods-unchained-contracts",
+  "version": "1.0.0",
+  "description": "Solidity smart contracts for Gods Unchained.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@openzeppelin/contracts": "^2.3.0",
+    "etherlime-lib": "^1.1.5",
+    "openzeppelin-solidity": "^2.3.0"
+  }
+}

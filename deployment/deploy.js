@@ -6,13 +6,14 @@ const DeployManager = require('../util/deploy-manager.js');
 const deploy = async (network, secret, etherscanApiKey) => {
 
 	let privateKey = '';
-	let etherscanApiKey = ''
+	
+	let eApiKey = '';
 
 	const manager = new DeployManager(network, privateKey);
 
 	deployer = manager.getDeployer();
 
-	deployer.setVerifierApiKey(etherscanApiKey);
+	deployer.setVerifierApiKey(eApiKey);
 
 	BLOCK_SIZE = 1251;
 

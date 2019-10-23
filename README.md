@@ -3,7 +3,6 @@
 
 Currently pre-release. Two important contracts are currently deployed on ropsten: 
 
-Cards (0x3367F6bCCC25B6262eB1D0D7bf11fC6668559169): Core contract
+Cards (0x6E3B68C5D51f574bb59642a2B24D89369Ee686f2): Core contract
 
-OpenMinter (0x0D075049488A285bAac262666AB5bDE67FAd6260): Minter contract (can create any cards for testing)
-
+OpenMinter (0xd9BbC7E725cACE811d916d0e1E7202a35b1cd900): Minter contract (can create any cards for testing)

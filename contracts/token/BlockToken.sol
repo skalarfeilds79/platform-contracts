@@ -35,6 +35,8 @@ contract BlockToken is ERC721Metadata {
         blockSize = _blockSize;
         blocks.length = MAX_LENGTH;
         ownerIDs.length = MAX_LENGTH;
+        userIDToAddress[0] = address(0);
+        addressToUserID[address(0)] = 0;
         approvedIDs.length = MAX_LENGTH;
     }
 
@@ -126,6 +128,18 @@ contract BlockToken is ERC721Metadata {
         _ownedTokensCount[to]++;
         ownerIDs[tokenId] = getUserID(to);
         emit Transfer(from, to, tokenId);
+    }
+
+    function burn(uint256 tokenId) public {
+        require(_isApprovedOrOwner(msg.sender, tokenId), "caller is not owner nor approved");
+        if (approvedIDs[tokenId] != 0) {
+            approvedIDs[tokenId] = 0;
+        }
+        address owner = ownerOf(tokenId);
+        _ownedTokensCount[owner]--;
+        ownerIDs[tokenId] = 0;
+        tokenCount--;
+        emit Transfer(owner, address(0), tokenId);
     }
 
     function approve(address to, uint256 tokenId) public {

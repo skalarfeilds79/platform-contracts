@@ -10,7 +10,7 @@ import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "./util/StorageWrite.sol";
 
-contract Cards is Ownable, MultiTransfer, BlockToken, ImmutableToken {
+contract Cards is ICards, Ownable, MultiTransfer, BlockToken, ImmutableToken {
 
     uint16[] public cardProtos;
     uint8[] public cardQualities;
@@ -34,6 +34,10 @@ contract Cards is Ownable, MultiTransfer, BlockToken, ImmutableToken {
         protoToSeason.length = MAX_LENGTH;
     }
 
+    function getDetails(uint tokenId) public view returns (uint16 proto, uint8 quality) {
+        return (cardProtos[tokenId], cardQualities[tokenId]);
+    }
+
     function mintCards(address to, uint16[] memory _protos, uint8[] memory _qualities) public {
         require(_protos.length > 0, "");
         require(_protos.length == _qualities.length, "");
@@ -55,6 +59,11 @@ contract Cards is Ownable, MultiTransfer, BlockToken, ImmutableToken {
     function transferFrom(address from, address to, uint256 tokenId) public {
         require(seasonTradable[protoToSeason[cardProtos[tokenId]]], "not yet tradable");
         super.transferFrom(from, to, tokenId);
+    }
+
+    function burn(uint _tokenId) public {
+        require(seasonTradable[protoToSeason[cardProtos[_tokenId]]], "not yet tradable");
+        super.burn(_tokenId);
     }
 
     function startSeason(uint16 low, uint16 high) public returns (uint) {

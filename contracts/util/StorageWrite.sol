@@ -52,18 +52,6 @@ library StorageWrite {
         }
         x *= 16;
         // evil bit shifting magic
-        for (uint j = 0; j < _size; j += 8) {
-            _slots[p] = ((_value >> j) & 0xFF) << (x + j);
-        }
-    }
-    function _writeItemX(uint[] memory _slots, uint _slotOffset, uint _size, uint _index, uint _value) internal {
-        uint p = _index / 16;
-        uint x = _index - (16 * p);
-        if (_index < 16) {
-            x += _slotOffset;
-        }
-        x *= 16;
-        // evil bit shifting magic
         for (uint q = 0; q < _size; q += 8) {
             // uint q = (j * 8);
             _slots[p] |= ((_value >> q) & 0xFF) << (x + q);
@@ -77,39 +65,14 @@ library StorageWrite {
         }
     }
 
-    function uint32s(uint _slot, uint _offset, uint32[] memory _items) internal {
-        uint[] memory slots = _loadCurrentSlots(_slot, _offset, 8, _items.length);
-        uint initialOffset = _offset % 8;
-        for (uint i = 0; i < _items.length; i++) {
-            _writeItemX(slots, initialOffset, 32, i, _items[i]);
-        }
-        _saveSlots(_slot, _offset, 32, slots);
-    }
-
-    function uint24s(uint _slot, uint _offset, uint24[] memory _items) internal {
-
-        uint[] memory slots = _loadCurrentSlots(_slot, _offset, 8, _items.length);
-        uint initialOffset = _offset % 24;
-        for (uint i = 0; i < _items.length; i++) {
-            _writeItemX(slots, initialOffset, 24, i, _items[i]);
-        }
-        _saveSlots(_slot, _offset, 24, slots);
-    }
-
-    function repeatUint16(uint _slot, uint _offset, uint _length, uint16 _value) internal {
-        uint16[] memory values = new uint16[](_length);
-        for (uint i = 0; i < _length; i++) {
-            values[i] = _value;
-        }
-        uint16s(_slot, _offset, values);
-    }
+    // totally possible to generalize these further
 
     function uint16s(uint _slot, uint _offset, uint16[] memory _items) internal {
 
         uint[] memory slots = _loadCurrentSlots(_slot, _offset, 8, _items.length);
         uint initialOffset = _offset % 16;
         for (uint i = 0; i < _items.length; i++) {
-            _writeItemX(slots, initialOffset, 16, i, _items[i]);
+            _writeItem(slots, initialOffset, 16, i, _items[i]);
         }
         _saveSlots(_slot, _offset, 16, slots);
     }

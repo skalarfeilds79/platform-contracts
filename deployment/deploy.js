@@ -22,7 +22,7 @@ const deploy = async (network, secret, etherscanApiKey) => {
 	let minter = await deployer.deployAndVerify(OpenMinter, {}, cards.contractAddress);
 
 	await cards.startSeason(0, 377);
-	await cards.addPack(minter.contractAddress, 0);
+	await cards.addFactory(minter.contractAddress, 0);
 
 };
 

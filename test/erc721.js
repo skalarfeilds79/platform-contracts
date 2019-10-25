@@ -29,7 +29,7 @@ describe('Example', () => {
         cards = await deployer.deploy(Cards, {}, BLOCK_SIZE, "Gods Unchained Cards", "CARD");
 
         await cards.startSeason(0, 2);
-        await cards.addPack(user, 0);
+        await cards.addFactory(user, 0);
         await cards.unlockTrading(0);
 
     });

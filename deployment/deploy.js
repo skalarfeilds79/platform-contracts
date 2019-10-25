@@ -21,6 +21,7 @@ const deploy = async (network, secret, etherscanApiKey) => {
 
 	await cards.startSeason(0, 377);
 	await cards.addFactory(minter.contractAddress, 0);
+	await cards.unlockTrading(0);
 
 };
 

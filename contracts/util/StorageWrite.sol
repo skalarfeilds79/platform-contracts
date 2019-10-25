@@ -13,7 +13,7 @@ library StorageWrite {
         assembly { result := sload(slot) }
     }
 
-    function _getArraySlot(uint _dest, uint _index) internal view returns (uint slot) {
+    function _getArraySlot(uint _dest, uint _index) internal pure returns (uint slot) {
         assembly {
             let free := mload(0x40)
             mstore(free, _dest)
@@ -44,7 +44,7 @@ library StorageWrite {
         return ((items - 1) / perPage) + 1;
     }
 
-    function _writeItem(uint[] memory _slots, uint _slotOffset, uint _size, uint _index, uint _value) internal {
+    function _writeUint16(uint[] memory _slots, uint _slotOffset, uint _size, uint _index, uint _value) internal pure {
         uint p = _index / 16;
         uint x = _index - (16 * p);
         if (_index < 16) {
@@ -72,7 +72,7 @@ library StorageWrite {
         uint[] memory slots = _loadCurrentSlots(_slot, _offset, 8, _items.length);
         uint initialOffset = _offset % 16;
         for (uint i = 0; i < _items.length; i++) {
-            _writeItem(slots, initialOffset, 16, i, _items[i]);
+            _writeUint16(slots, initialOffset, 16, i, _items[i]);
         }
         _saveSlots(_slot, _offset, 16, slots);
     }

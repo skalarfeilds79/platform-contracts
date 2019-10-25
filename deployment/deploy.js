@@ -1,19 +1,17 @@
 const Cards = require('../build/Cards');
 const OpenMinter = require('../build/OpenMinter');
 
+const secrets = require('../secrets.json');
+
 const DeployManager = require('../util/deploy-manager.js');
 
 const deploy = async (network, secret, etherscanApiKey) => {
 
-	let privateKey = '';
-	
-	let eApiKey = '';
-
-	const manager = new DeployManager(network, privateKey);
+	const manager = new DeployManager(network, secrets.privateKey);
 
 	deployer = manager.getDeployer();
 
-	deployer.setVerifierApiKey(eApiKey);
+	deployer.setVerifierApiKey(secrets.etherscanApiKey);
 
 	BLOCK_SIZE = 1251;
 

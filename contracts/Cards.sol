@@ -1,5 +1,5 @@
 pragma solidity 0.5.11;
-// pragma experimental ABIEncoderV2;
+pragma experimental ABIEncoderV2;
 
 // solium-disable security/no-inline-assembly
 
@@ -34,7 +34,7 @@ contract Cards is ICards, Ownable, MultiTransfer, BlockToken, ImmutableToken, In
         uint8 tribe;
     }
 
-    // event ProtoSet(uint16 indexed id, Proto proto);
+    event ProtoSet(uint16 indexed id, Proto proto);
     event SeasonStarted(uint indexed id, uint16 indexed low, uint16 indexed high);
     event QualityChanged(uint indexed tokenId, uint8 quality, address factory);
 
@@ -58,8 +58,8 @@ contract Cards is ICards, Ownable, MultiTransfer, BlockToken, ImmutableToken, In
     }
 
     function mintCards(address to, uint16[] memory _protos, uint8[] memory _qualities) public {
-        require(_protos.length > 0, "");
-        require(_protos.length == _qualities.length, "");
+        require(_protos.length > 0, "must be some protos");
+        require(_protos.length == _qualities.length, "must be the same number of protos/qualities");
         uint start = _sequentialMint(to, uint16(_protos.length));
         _validateAndSaveDetails(start, _protos, _qualities);
     }
@@ -91,8 +91,8 @@ contract Cards is ICards, Ownable, MultiTransfer, BlockToken, ImmutableToken, In
 
     function startSeason(uint16 low, uint16 high) public returns (uint) {
 
-        require(high > low, "");
-        require(seasons.length == 0 || low >= seasons[currentSeason()].high, "seasons cannot overlap");
+        require(high > low, "must be a valid range");
+        require(seasons.length == 0 || low >= seasons[seasons.length - 1].high, "seasons cannot overlap");
 
         uint id = seasons.push(Season({ high: high, low: low })) - 1;
 
@@ -101,16 +101,12 @@ contract Cards is ICards, Ownable, MultiTransfer, BlockToken, ImmutableToken, In
         return id;
     }
 
-    // function updateProtos(uint16[] memory _ids, Proto[] memory _protos) public onlyOwner {
-    //     require(_ids.length == _protos.length, "");
-    //     for (uint i = 0; i < _ids.length; i++) {
-    //         _protos[_ids[i]] = _protos[i];
-    //         emit ProtoSet(_ids[i], _protos[i]);
-    //     }
-    // }
-
-    function currentSeason() public view returns (uint) {
-        return seasons.length - 1;
+    function updateProtos(uint16[] memory _ids, Proto[] memory _protos) public onlyOwner {
+        require(_ids.length == _protos.length, "ids/protos must be the same length");
+        for (uint i = 0; i < _ids.length; i++) {
+            protos[_ids[i]] = _protos[i];
+            emit ProtoSet(_ids[i], _protos[i]);
+        }
     }
 
     function _validateAndSaveDetails(uint start, uint16[] memory _protos, uint8[] memory _qualities) internal {
@@ -123,8 +119,8 @@ contract Cards is ICards, Ownable, MultiTransfer, BlockToken, ImmutableToken, In
     }
 
     function blockMintCards(address to, uint16[] memory _protos, uint8[] memory _qualities) public {
-        require(_protos.length > 0, "");
-        require(_protos.length == _qualities.length, "");
+        require(_protos.length > 0, "must be some protos");
+        require(_protos.length == _qualities.length, "must be the same number of protos/qualities");
         uint start = _blockMint(to, uint16(_protos.length));
         _validateAndSaveDetails(start, _protos, _qualities);
     }

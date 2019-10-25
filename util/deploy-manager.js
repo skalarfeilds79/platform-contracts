@@ -1,16 +1,16 @@
 
 const etherlime = require('etherlime-lib');
 
+const secrets = require('../secrets.json');
+
 class DeployManager {
 
     constructor(network, key) {
         this.network = network;
 
         console.log('network', this.network);
-
-        const url = '';
         
-        this.deployer = new etherlime.JSONRPCPrivateKeyDeployer(key, url);
+        this.deployer = new etherlime.JSONRPCPrivateKeyDeployer(key, secrets.rpcUrl);
 
         this.provider = this.deployer.provider;
     }

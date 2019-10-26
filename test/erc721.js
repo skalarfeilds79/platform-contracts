@@ -58,7 +58,7 @@ describe('Example', () => {
 
     }
 
-    describe("Create wallets", () => {
+    describe("ERC721 compliance tests", () => {
 
         it('should be able to transfer token to EOA', async () => {
 

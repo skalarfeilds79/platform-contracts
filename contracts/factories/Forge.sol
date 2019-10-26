@@ -11,7 +11,6 @@ contract Forge {
         cards = _cards;
         maxQuality = _maxQuality;
     }
-    
 
     function forge(uint[] memory _ids) public {
         require(_ids.length == 5, "must forge 5 at a time");

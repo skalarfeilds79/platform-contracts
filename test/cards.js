@@ -38,7 +38,6 @@ describe('Example', () => {
         let end = start + expected.length;
         for (let i = start; i < end; i++) {
             let proto = await cards.cardProtos(i);
-            console.log('proto', i, proto);
             real.push(proto);
         }
 
@@ -51,12 +50,12 @@ describe('Example', () => {
 
         cards = await deployer.deploy(Cards, {}, BLOCK_SIZE, "Gods Unchained Cards", "CARD");
 
-        await cards.startSeason(0, 2);
+        await cards.startSeason(0, 377);
         await cards.addFactory(user, 0);
 
     });
 
-    describe("Create wallets", () => {
+    describe("Minting tests", () => {
 
         // it("should mint various sizes", async() => {
 
@@ -180,7 +179,7 @@ describe('Example', () => {
 
         it("should fail to mint an invalid proto", async() => {
             
-            assert.revert(cards.mintCards(user, [3, 3, 3], [1, 1, 1], { gasLimit: 9000000}));
+            assert.revert(cards.mintCards(user, [400, 400, 400], [1, 1, 1], { gasLimit: 9000000}));
 
         });
 
@@ -298,6 +297,89 @@ describe('Example', () => {
 
             await checkOwner(user, BLOCK_SIZE * 2, BLOCK_SIZE * 3 -1);
 
+
+        });
+
+        it("should save consecutive protos across slots", async() => {
+            
+            let protos = [183,285,377,323,305];
+            let qualities = [4,4,4,4,4];
+
+            let times = 20;
+
+            for (let i = 0; i < times; i++) {
+                await cards.mintCards(user, protos.map(p => p - i), qualities, { gasLimit: 9000000});
+            }
+
+            for (let i = 0; i < times; i++) {
+                await checkProtos(protos.map(p => p - i), i * protos.length);
+            }
+
+
+        });
+
+        it("should save qualities across slots", async() => {
+            
+
+            let protos = [183,285,377,323,305];
+            let qualities = [4,4,4,4,4];
+
+            let times = 20;
+
+            for (let i = 0; i < times; i++) {
+                await cards.mintCards(user, protos, qualities, { gasLimit: 9000000});
+            }
+
+            for (let i = 0; i < times; i++) {
+                await checkQualities(qualities, i * qualities.length);
+            }
+
+
+        });
+
+        it("should save protos across three slots", async() => {
+            
+            let initialProtos = new Array(15).fill(1).map((v, i) => i);
+            let initialQualities = new Array(15).fill(1).map((v, i) => i);
+
+            await cards.mintCards(user, initialProtos, initialQualities, { gasLimit: 9000000 });
+
+            let nextProtos = new Array(18).fill(1).map((v, i) => i);
+            let nextQualities = new Array(18).fill(1).map((v, i) => i);
+
+            await cards.mintCards(user, nextProtos, nextQualities, { gasLimit: 9000000 });
+
+            let finalProtos = new Array(16).fill(1).map((v, i) => i);
+            let finalQualities = new Array(16).fill(1).map((v, i) => i);
+
+            await cards.mintCards(user, finalProtos, finalQualities, { gasLimit: 9000000 });
+
+            await checkProtos(initialProtos, 0);
+            await checkProtos(nextProtos, initialProtos.length);
+            await checkProtos(finalProtos, initialProtos.length + nextProtos.length);
+
+        });
+
+        it("should save protos across three slots", async() => {
+            
+            let initialProtos = new Array(30).fill(1).map((v, i) => i);
+            let initialQualities = new Array(30).fill(1).map((v, i) => i);
+
+            await cards.mintCards(user, initialProtos, initialQualities, { gasLimit: 9000000 });
+
+            let nextProtos = new Array(36).fill(1).map((v, i) => i);
+            let nextQualities = new Array(36).fill(1).map((v, i) => i);
+
+            await cards.mintCards(user, nextProtos, nextQualities, { gasLimit: 9000000 });
+
+            let finalProtos = new Array(32).fill(1).map((v, i) => i);
+            let finalQualities = new Array(32).fill(1).map((v, i) => i);
+
+            await cards.mintCards(user, finalProtos, finalQualities, { gasLimit: 9000000 });
+
+            await checkQualities(initialQualities, 0);
+            await checkQualities(nextQualities, initialQualities.length);
+            await checkQualities(finalQualities, initialQualities.length + nextQualities.length);
 
         });
 

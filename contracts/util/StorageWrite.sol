@@ -27,52 +27,52 @@ library StorageWrite {
     }
 
     function _loadCurrentSlots(uint _slot, uint _offset, uint _perSlot, uint _length) internal view returns (uint[] memory slots) {
-        uint slotCount = _slotCount(_length, _perSlot);
+        uint slotCount = _slotCount(_offset, _perSlot, _length);
         slots = new uint[](slotCount);
         // top and tail the slots
-        if (_offset.mod(_perSlot) != 0) {
-            uint firstPos = _offset.div(_perSlot);
-            slots[0] = _getStorageArraySlot(_slot, firstPos);
-        }
+        uint firstPos = _pos(_offset, _perSlot); // _offset.div(_perSlot);
+        slots[0] = _getStorageArraySlot(_slot, firstPos);
         if (slotCount > 1) {
-            uint lastPos = (_offset.add(_length)).div(_perSlot);
+            uint lastPos = _pos(_offset.add(_length), _perSlot); // .div(_perSlot);
             slots[slotCount-1] = _getStorageArraySlot(_slot, lastPos);
         }
     }
 
-    function _slotCount(uint items, uint perPage) internal pure returns (uint){
-        return ((items - 1) / perPage) + 1;
+    function _pos(uint items, uint perPage) internal pure returns (uint) {
+        return items / perPage;
     }
 
-    function _writeUint16(uint[] memory _slots, uint _slotOffset, uint _size, uint _index, uint _value) internal pure {
-        uint p = _index / 16;
-        uint x = _index - (16 * p);
-        if (_index < 16) {
-            x += _slotOffset;
-        }
-        x *= 16;
-        // evil bit shifting magic
-        for (uint q = 0; q < _size; q += 8) {
-            // uint q = (j * 8);
-            _slots[p] |= ((_value >> q) & 0xFF) << (x + q);
-        }
+    function _slotCount(uint _offset, uint _perSlot, uint _length) internal pure returns (uint) {
+        uint start = _offset / _perSlot;
+        uint end = (_offset + _length) / _perSlot;
+        return (end - start) + 1;
     }
 
     function _saveSlots(uint _slot, uint _offset, uint _size, uint[] memory _slots) internal {
         uint offset = _offset.div((256/_size));
         for (uint i = 0; i < _slots.length; i++) {
-            _setArraySlot(_slot, offset+i, _slots[i]);
+            _setArraySlot(_slot, offset + i, _slots[i]);
+        }
+    }
+
+    function _writeUint16(uint[] memory _slots, uint _offset, uint _size, uint _index, uint _value) internal pure {
+
+        uint initialOffset = _offset % 16;
+        uint slotPosition = (initialOffset + _index) / 16;
+        uint withinSlot = ((_index + _offset) % 16) * 16;
+        // evil bit shifting magic
+        for (uint q = 0; q < _size; q += 8) {
+            // uint q = (j * 8);
+            _slots[slotPosition] |= ((_value >> q) & 0xFF) << (withinSlot + q);
         }
     }
 
     // totally possible to generalize these further
 
     function uint16s(uint _slot, uint _offset, uint16[] memory _items) internal {
-
-        uint[] memory slots = _loadCurrentSlots(_slot, _offset, 8, _items.length);
-        uint initialOffset = _offset % 16;
+        uint[] memory slots = _loadCurrentSlots(_slot, _offset, 16, _items.length);
         for (uint i = 0; i < _items.length; i++) {
-            _writeUint16(slots, initialOffset, 16, i, _items[i]);
+            _writeUint16(slots, _offset, 16, i, _items[i]);
         }
         _saveSlots(_slot, _offset, 16, slots);
     }
@@ -83,13 +83,12 @@ library StorageWrite {
         uint initialOffset = _offset % 32;
 
         for (uint i = 0; i < _items.length; i++) {
-            uint p = i / 32;
-            uint x = i - (p * 32);
-            if (i < 32) {
-                x += initialOffset;
-            }
+            // uint p = (initialOffset + i) / 32;
+            // uint x = i - (p * 32);
+            uint slotPosition = (initialOffset + i) / 32;
+            uint withinSlot = ((i + _offset) % 32);
             // evil bit shifting magic
-            slots[p] |= uint(_items[i]) << (8 * x);
+            slots[slotPosition] |= uint(_items[i]) << (8 * withinSlot);
         }
 
         _saveSlots(_slot, _offset, 8, slots);

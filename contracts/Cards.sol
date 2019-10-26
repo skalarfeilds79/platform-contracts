@@ -4,7 +4,7 @@ pragma experimental ABIEncoderV2;
 // solium-disable security/no-inline-assembly
 
 import "./token/MultiTransfer.sol";
-import "./token/BlockToken.sol";
+import "./token/BatchToken.sol";
 import "./token/ImmutableToken.sol";
 import "./token/InscribableToken.sol";
 import "./ICards.sol";
@@ -12,7 +12,7 @@ import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "./util/StorageWrite.sol";
 
-contract Cards is ICards, Ownable, MultiTransfer, BlockToken, ImmutableToken, InscribableToken {
+contract Cards is ICards, Ownable, MultiTransfer, BatchToken, ImmutableToken, InscribableToken {
 
     uint16[] public cardProtos;
     uint8[] public cardQualities;
@@ -46,7 +46,7 @@ contract Cards is ICards, Ownable, MultiTransfer, BlockToken, ImmutableToken, In
     mapping(uint16 => bool) public mythicCreated;
     uint16 public constant mythicThreshold = 65000;
 
-    constructor(uint _blockSize, string memory _name, string memory _symbol) public BlockToken(_blockSize, _name, _symbol) {
+    constructor(uint _batchSize, string memory _name, string memory _symbol) public BatchToken(_batchSize, _name, _symbol) {
         cardProtos.length = MAX_LENGTH;
         cardQualities.length = MAX_LENGTH;
         protos.length = MAX_LENGTH;
@@ -118,10 +118,10 @@ contract Cards is ICards, Ownable, MultiTransfer, BlockToken, ImmutableToken, In
         StorageWrite.uint8s(cq, start, _qualities);
     }
 
-    function blockMintCards(address to, uint16[] memory _protos, uint8[] memory _qualities) public {
+    function batchMintCards(address to, uint16[] memory _protos, uint8[] memory _qualities) public {
         require(_protos.length > 0, "must be some protos");
         require(_protos.length == _qualities.length, "must be the same number of protos/qualities");
-        uint start = _blockMint(to, uint16(_protos.length));
+        uint start = _batchMint(to, uint16(_protos.length));
         _validateAndSaveDetails(start, _protos, _qualities);
     }
 

@@ -17,7 +17,7 @@ describe('Example', () => {
 
     let user = accounts[0].signer.address;
 
-    let BLOCK_SIZE = 101;
+    let BATCH_SIZE = 101;
 
     function createKey(types, values) {
         return eu.solidityKeccak256(types, values);
@@ -27,7 +27,7 @@ describe('Example', () => {
 
         deployer = manager.getDeployer();
 
-        cards = await deployer.deploy(Cards, {}, BLOCK_SIZE, "Gods Unchained Cards", "CARD");
+        cards = await deployer.deploy(Cards, {}, BATCH_SIZE, "Gods Unchained Cards", "CARD");
 
         accessor = await deployer.deploy(Accessor, {}, cards.contractAddress);
 

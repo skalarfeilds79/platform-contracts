@@ -14,7 +14,7 @@ describe('Example', () => {
 
     let user = accounts[0].signer.address;
 
-    let BLOCK_SIZE = 101;
+    let BATCH_SIZE = 101;
 
     async function checkOwner(owner, start, len) {
         for (let i = start; i < len; i++) {
@@ -48,7 +48,7 @@ describe('Example', () => {
 
         deployer = manager.getDeployer();
 
-        cards = await deployer.deploy(Cards, {}, BLOCK_SIZE, "Gods Unchained Cards", "CARD");
+        cards = await deployer.deploy(Cards, {}, BATCH_SIZE, "Gods Unchained Cards", "CARD");
 
         await cards.startSeason(0, 377);
         await cards.addFactory(user, 0);
@@ -67,7 +67,7 @@ describe('Example', () => {
         //     for (let size of packSizes) {
         //         const len = size * 5;
 
-        //         let tx = await cards.blockMintCards(user, new Array(len).fill(1),  new Array(len).fill(1), { gasLimit: 9000000});
+        //         let tx = await cards.batchMintCards(user, new Array(len).fill(1),  new Array(len).fill(1), { gasLimit: 9000000});
 
         //         let txReceipt = await cards.verboseWaitForTransaction(tx);  
                 
@@ -79,11 +79,11 @@ describe('Example', () => {
         //     }
         // });
 
-        it("should be able to block mint exactly the limit", async() => {
+        it("should be able to batch mint exactly the limit", async() => {
 
             const len = 10;
 
-            let tx = await cards.blockMintCards(user, new Array(len).fill(1),  new Array(len).fill(1), { gasLimit: 9000000});
+            let tx = await cards.batchMintCards(user, new Array(len).fill(1),  new Array(len).fill(1), { gasLimit: 9000000});
 
             let txReceipt = await cards.verboseWaitForTransaction(tx);    
             
@@ -91,19 +91,19 @@ describe('Example', () => {
 
         });
 
-        it("should be able to block mint less than the limit", async() => {
+        it("should be able to batch mint less than the limit", async() => {
 
-            const len = BLOCK_SIZE - 10;
+            const len = BATCH_SIZE - 10;
 
-            await cards.blockMintCards(user, new Array(len).fill(1), new Array(len).fill(1), { gasLimit: 9000000});
+            await cards.batchMintCards(user, new Array(len).fill(1), new Array(len).fill(1), { gasLimit: 9000000});
 
         });
 
-        it("should not be able to block mint more than the limit", async() => {
+        it("should not be able to batch mint more than the limit", async() => {
             
-            const len = BLOCK_SIZE + 1;
+            const len = BATCH_SIZE + 1;
 
-            assert.revert(cards.blockMintCards(user, new Array(len).fill(1), new Array(len).fill(1), { gasLimit: 9000000}));
+            assert.revert(cards.batchMintCards(user, new Array(len).fill(1), new Array(len).fill(1), { gasLimit: 9000000}));
 
         });
 
@@ -132,7 +132,7 @@ describe('Example', () => {
 
             qualities[len-1] = 2;
 
-            await cards.blockMintCards(user, protos, qualities, { gasLimit: 9000000})
+            await cards.batchMintCards(user, protos, qualities, { gasLimit: 9000000})
 
             await checkProtos(protos, 0);
             await checkQualities(qualities, 0);
@@ -151,7 +151,7 @@ describe('Example', () => {
 
             qualities[len-1] = 2;
 
-            await cards.blockMintCards(user, protos, qualities, { gasLimit: 9000000})
+            await cards.batchMintCards(user, protos, qualities, { gasLimit: 9000000})
 
             await checkProtos(protos, 0);
             await checkQualities(qualities, 0);
@@ -170,7 +170,7 @@ describe('Example', () => {
 
             qualities[len-1] = 2;
 
-            await cards.blockMintCards(user, protos, qualities, { gasLimit: 9000000});
+            await cards.batchMintCards(user, protos, qualities, { gasLimit: 9000000});
 
             await checkProtos(protos, 0);
             await checkQualities(qualities, 0);
@@ -191,7 +191,7 @@ describe('Example', () => {
 
         });
 
-        it("should set consecutive blocks with no remainders", async() => {
+        it("should set consecutive batches with no remainders", async() => {
             
             const len = 16;
 
@@ -213,7 +213,7 @@ describe('Example', () => {
 
         });
 
-        it("should set consecutive blocks with remainders", async() => {
+        it("should set consecutive batches with remainders", async() => {
             
             const len = 6;
 
@@ -249,9 +249,9 @@ describe('Example', () => {
 
             await checkOwner(user, 0, len);
             
-            await cards.blockMintCards(user, protos, qualities, { gasLimit: 9000000});
+            await cards.batchMintCards(user, protos, qualities, { gasLimit: 9000000});
 
-            await checkOwner(user, BLOCK_SIZE, BLOCK_SIZE + len);
+            await checkOwner(user, BATCH_SIZE, BATCH_SIZE + len);
 
             await cards.mintCards(user, protos, qualities, { gasLimit: 9000000});
 
@@ -261,7 +261,7 @@ describe('Example', () => {
 
         it("should cover edge cases", async() => {
             
-            const len = BLOCK_SIZE + 1;
+            const len = BATCH_SIZE + 1;
 
             let protos = new Array(len).fill(1);
             let qualities = new Array(len).fill(1);
@@ -270,18 +270,18 @@ describe('Example', () => {
 
             await checkOwner(user, 0, len);
 
-            protos = new Array(BLOCK_SIZE-1).fill(1);
-            qualities = new Array(BLOCK_SIZE-1).fill(1);
+            protos = new Array(BATCH_SIZE-1).fill(1);
+            qualities = new Array(BATCH_SIZE-1).fill(1);
 
-            await cards.blockMintCards(user, protos, qualities, { gasLimit: 9000000});
+            await cards.batchMintCards(user, protos, qualities, { gasLimit: 9000000});
 
-            await checkOwner(user, BLOCK_SIZE * 2, BLOCK_SIZE * 3 -1);
+            await checkOwner(user, BATCH_SIZE * 2, BATCH_SIZE * 3 -1);
 
         });
 
         it("should cover large mints of cards", async() => {
             
-            const len = BLOCK_SIZE * 2;
+            const len = BATCH_SIZE * 2;
 
             let protos = new Array(len).fill(1);
             let qualities = new Array(len).fill(1);
@@ -290,12 +290,12 @@ describe('Example', () => {
 
             await checkOwner(user, 0, len);
 
-            protos = new Array(BLOCK_SIZE-1).fill(1);
-            qualities = new Array(BLOCK_SIZE-1).fill(1);
+            protos = new Array(BATCH_SIZE-1).fill(1);
+            qualities = new Array(BATCH_SIZE-1).fill(1);
 
-            await cards.blockMintCards(user, protos, qualities, { gasLimit: 9000000});
+            await cards.batchMintCards(user, protos, qualities, { gasLimit: 9000000});
 
-            await checkOwner(user, BLOCK_SIZE * 2, BLOCK_SIZE * 3 -1);
+            await checkOwner(user, BATCH_SIZE * 2, BATCH_SIZE * 3 -1);
 
 
         });

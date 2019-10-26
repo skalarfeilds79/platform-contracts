@@ -13,9 +13,9 @@ const deploy = async (network, secret, etherscanApiKey) => {
 
 	deployer.setVerifierApiKey(secrets.etherscanApiKey);
 
-	BLOCK_SIZE = 1251;
+	BATCH_SIZE = 1251;
 
-	let cards = await deployer.deployAndVerify(Cards, {}, BLOCK_SIZE, "Gods Unchained Cards", "CARD");
+	let cards = await deployer.deployAndVerify(Cards, {}, BATCH_SIZE, "Gods Unchained Cards", "CARD");
 
 	let minter = await deployer.deployAndVerify(OpenMinter, {}, cards.contractAddress);
 

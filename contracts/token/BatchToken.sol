@@ -3,11 +3,11 @@ pragma solidity ^0.5.8;
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721Metadata.sol";
 
-contract BlockToken is ERC721Metadata {
+contract BatchToken is ERC721Metadata {
 
     using SafeMath for uint256;
 
-    struct Block {
+    struct Batch {
         uint48 userID;
         uint16 size;
     }
@@ -15,14 +15,14 @@ contract BlockToken is ERC721Metadata {
     mapping(uint48 => address) public userIDToAddress;
     mapping(address => uint48) public addressToUserID;
 
-    uint public blockSize;
-    uint public nextBlock;
+    uint public batchSize;
+    uint public nextBatch;
     uint public tokenCount;
 
     uint48[] internal ownerIDs;
     uint48[] internal approvedIDs;
 
-    Block[] public blocks;
+    Batch[] public batches;
 
     uint48 userCount = 1;
     uint public firstFree = 0;
@@ -31,9 +31,9 @@ contract BlockToken is ERC721Metadata {
 
     uint256 internal constant MAX_LENGTH = uint(2**256 - 1);
 
-    constructor(uint _blockSize, string memory name, string memory symbol) public ERC721Metadata(name, symbol) {
-        blockSize = _blockSize;
-        blocks.length = MAX_LENGTH;
+    constructor(uint _batchSize, string memory name, string memory symbol) public ERC721Metadata(name, symbol) {
+        batchSize = _batchSize;
+        batches.length = MAX_LENGTH;
         ownerIDs.length = MAX_LENGTH;
         userIDToAddress[0] = address(0);
         addressToUserID[address(0)] = 0;
@@ -65,23 +65,23 @@ contract BlockToken is ERC721Metadata {
         return uID;
     }
 
-    function getNextBlock() internal returns (uint) {
-        if (firstFree > nextBlock) {
-            nextBlock = _pageCount(firstFree, blockSize).mul(blockSize);
+    function getNextBatch() internal returns (uint) {
+        if (firstFree > nextBatch) {
+            nextBatch = _pageCount(firstFree, batchSize).mul(batchSize);
         }
-        return nextBlock;
+        return nextBatch;
     }
 
     function _pageCount(uint items, uint perPage) internal pure returns (uint){
         return ((items - 1) / perPage) + 1;
     }
 
-    function _blockMint(address to, uint16 size) internal returns (uint) {
+    function _batchMint(address to, uint16 size) internal returns (uint) {
         require(to != address(0), "must not be null");
-        require(size > 0 && size <= blockSize, "size must be within limits");
-        uint start = getNextBlock();
+        require(size > 0 && size <= batchSize, "size must be within limits");
+        uint start = getNextBatch();
         uint48 uID = getUserID(to);
-        blocks[start] = Block({
+        batches[start] = Batch({
             userID: uID,
             size: size
         });
@@ -89,18 +89,18 @@ contract BlockToken is ERC721Metadata {
         for (uint i = start; i < end; i++) {
             emit Transfer(address(0), to, i);
         }
-        nextBlock += blockSize;
+        nextBatch += batchSize;
         _ownedTokensCount[to] += size;
         tokenCount += size;
         return start;
     }
 
-    function getBlockStart(uint tokenId) public view returns (uint) {
-        return tokenId.div(blockSize).mul(blockSize);
+    function getBatchStart(uint tokenId) public view returns (uint) {
+        return tokenId.div(batchSize).mul(batchSize);
     }
 
-    function getBlock(uint index) public view returns (uint48 userID, uint16 size) {
-        return (blocks[index].userID, blocks[index].size);
+    function getBatch(uint index) public view returns (uint48 userID, uint16 size) {
+        return (batches[index].userID, batches[index].size);
     }
 
     // Overridden ERC721 functions
@@ -109,8 +109,8 @@ contract BlockToken is ERC721Metadata {
     function ownerOf(uint256 tokenId) public view returns (address) {
         uint48 uID = ownerIDs[tokenId];
         if (uID == 0) {
-            uint start = getBlockStart(tokenId);
-            Block memory b = blocks[start];
+            uint start = getBatchStart(tokenId);
+            Batch memory b = batches[start];
             require(start + b.size > tokenId, "token does not exist");
             uID = b.userID;
         }

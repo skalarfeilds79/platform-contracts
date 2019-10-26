@@ -20,13 +20,13 @@ describe('Example', () => {
     let user = accounts[0].signer.address;
     let recipient = accounts[1].signer.address;
 
-    let BLOCK_SIZE = 1501;
+    let BATCH_SIZE = 1501;
 
     beforeEach(async () => {
 
         deployer = manager.getDeployer();
 
-        cards = await deployer.deploy(Cards, {}, BLOCK_SIZE, "Gods Unchained Cards", "CARD");
+        cards = await deployer.deploy(Cards, {}, BATCH_SIZE, "Gods Unchained Cards", "CARD");
 
         await cards.startSeason(0, 2);
         await cards.addFactory(user, 0);

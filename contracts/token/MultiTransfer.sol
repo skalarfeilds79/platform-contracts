@@ -4,7 +4,7 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 contract MultiTransfer is ERC721 {
 
-   function transferBlock(address from, address to, uint256 start, uint256 end) public {
+   function transferBatch(address from, address to, uint256 start, uint256 end) public {
        for (uint i = start; i < end; i++) {
            transferFrom(from, to, i);
        }
@@ -16,7 +16,7 @@ contract MultiTransfer is ERC721 {
        }
    }
 
-   function safeTransferBlock(address from, address to, uint256 start, uint256 end) public {
+   function safeTransferBatch(address from, address to, uint256 start, uint256 end) public {
        for (uint i = start; i < end; i++) {
            safeTransferFrom(from, to, i);
        }

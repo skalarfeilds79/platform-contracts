@@ -50,7 +50,7 @@ contract ActivatedMigration {
     //     if (size <= threshold) {
     //         migrated = newToken.mintCards(owner, size);
     //     } else {
-    //         migrated = newToken.blockMintCards(owner, size);
+    //         migrated = newToken.batchMintCards(owner, size);
     //     }
     //     emit Migrated(start, current);
     // }

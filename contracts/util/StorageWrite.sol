@@ -66,6 +66,14 @@ library StorageWrite {
         }
     }
 
+    function repeatUint16(uint _slot, uint _offset, uint _length, uint16 _item) internal {
+        uint[] memory slots = _loadSlots(_slot, _offset, 16, _length);
+        for (uint i = 0; i < _length; i++) {
+            _write(slots, _offset, 16, i, _item);
+        }
+        _saveSlots(_slot, _offset, 16, slots);
+    }
+
     function uint16s(uint _slot, uint _offset, uint16[] memory _items) internal {
         uint[] memory slots = _loadSlots(_slot, _offset, 16, _items.length);
         for (uint i = 0; i < _items.length; i++) {

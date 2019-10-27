@@ -9,15 +9,15 @@ contract DirectMigration {
     uint threshold;
     OldToken old;
     ICards cards;
-    uint blockSize;
+    uint limit;
 
     event Migrated(uint oldStart, uint oldEnd, uint newStart);
 
-    constructor(OldToken _old, ICards _cards, uint _threshold) public {
+    constructor(OldToken _old, ICards _cards, uint _threshold, uint _limit) public {
         old = _old;
         cards = _cards;
         threshold = _threshold;
-        blockSize = _cards.batchSize();
+        limit = _limit;
     }
 
     uint public migrated;
@@ -30,7 +30,9 @@ contract DirectMigration {
 
         uint last = old.totalSupply();
 
-        while (owner == first && current + 1 < blockSize) {
+        uint cap = start + limit;
+
+        while (owner == first && current < cap) {
             current++;
             if (current >= last) {
                 break;
@@ -38,7 +40,9 @@ contract DirectMigration {
             owner = old.ownerOf(current);
         }
 
-        uint size = current - migrated;
+        uint size = current - start;
+
+        require(size > 0, "size is zero");
 
         uint16[] memory protos = new uint16[](size);
         uint8[] memory qualities = new uint8[](size);

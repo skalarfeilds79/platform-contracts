@@ -23,9 +23,9 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
     }
 
     struct Proto {
+        bool locked;
         bool exists;
         uint8 god;
-        uint8 season;
         uint8 cardType;
         uint8 rarity;
         uint8 mana;
@@ -35,9 +35,10 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
     }
 
     event ProtoSet(uint16 indexed id, Proto proto);
-    event SeasonStarted(uint indexed id, uint16 indexed low, uint16 indexed high);
+    event SeasonStarted(uint16 indexed id, uint16 indexed low, uint16 indexed high);
     event QualityChanged(uint indexed tokenId, uint8 quality, address factory);
 
+    uint16[] public protoToSeason;
     address public propertyManager;
     Proto[] public protos;
     Season[] public seasons;
@@ -49,6 +50,7 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
     constructor(uint _batchSize, string memory _name, string memory _symbol) public BatchToken(_batchSize, _name, _symbol) {
         cardProtos.length = MAX_LENGTH;
         cardQualities.length = MAX_LENGTH;
+        protoToSeason.length = MAX_LENGTH;
         protos.length = MAX_LENGTH;
         propertyManager = msg.sender;
     }
@@ -86,15 +88,18 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
     }
 
     function isTradable(uint _tokenId) public view returns (bool) {
-        return seasonTradable[protos[cardProtos[_tokenId]].season];
+        return seasonTradable[protoToSeason[cardProtos[_tokenId]]];
     }
 
     function startSeason(uint16 low, uint16 high) public returns (uint) {
 
         require(high > low, "must be a valid range");
-        require(seasons.length == 0 || low >= seasons[seasons.length - 1].high, "seasons cannot overlap");
+        require(seasons.length == 0 || low > seasons[seasons.length - 1].high, "seasons cannot overlap");
 
-        uint id = seasons.push(Season({ high: high, low: low })) - 1;
+        uint16 id = uint16(seasons.push(Season({ high: high, low: low })) - 1);
+
+        uint cp; assembly { cp := protoToSeason_slot }
+        StorageWrite.repeatUint16(cp, low, (high - low) + 1, id);
 
         emit SeasonStarted(id, low, high);
 
@@ -104,8 +109,13 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
     function updateProtos(uint16[] memory _ids, Proto[] memory _protos) public onlyOwner {
         require(_ids.length == _protos.length, "ids/protos must be the same length");
         for (uint i = 0; i < _ids.length; i++) {
-            protos[_ids[i]] = _protos[i];
-            emit ProtoSet(_ids[i], _protos[i]);
+            uint16 id = _ids[i];
+            Proto memory proto = protos[id];
+            require(!proto.locked, "proto is locked");
+            Proto memory newProto = _protos[i];
+            newProto.exists = true;
+            protos[id] = newProto;
+            emit ProtoSet(id, newProto);
         }
     }
 
@@ -147,9 +157,9 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
                 }
             }
         }
-        uint season = protos[maxProto].season;
+        uint season = protoToSeason[maxProto];
         // cards must be from the same season
-        require(season == protos[minProto].season, "can only create cards from the same season");
+        require(season == protoToSeason[minProto], "can only create cards from the same season");
         require(factoryApproved[msg.sender][season], "must be approved factory for this season");
 
         Season memory s = seasons[season];
@@ -160,7 +170,7 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
 
     function setQuality(uint _tokenId, uint8 _quality) public {
         uint16 proto = cardProtos[_tokenId];
-        uint season = protos[proto].season;
+        uint season = protoToSeason[proto];
         require(factoryApproved[msg.sender][season], "factory can't change quality of this season");
         cardQualities[_quality] = _quality;
         emit QualityChanged(_tokenId, _quality, msg.sender);

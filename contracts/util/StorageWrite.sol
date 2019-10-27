@@ -26,7 +26,7 @@ library StorageWrite {
         assembly { sstore(slot, _value) }
     }
 
-    function _loadCurrentSlots(uint _slot, uint _offset, uint _perSlot, uint _length) internal view returns (uint[] memory slots) {
+    function _loadSlots(uint _slot, uint _offset, uint _perSlot, uint _length) internal view returns (uint[] memory slots) {
         uint slotCount = _slotCount(_offset, _perSlot, _length);
         slots = new uint[](slotCount);
         // top and tail the slots
@@ -55,42 +55,30 @@ library StorageWrite {
         }
     }
 
-    function _writeUint16(uint[] memory _slots, uint _offset, uint _size, uint _index, uint _value) internal pure {
-
-        uint initialOffset = _offset % 16;
-        uint slotPosition = (initialOffset + _index) / 16;
-        uint withinSlot = ((_index + _offset) % 16) * 16;
-        // evil bit shifting magic
+    function _write(uint[] memory _slots, uint _offset, uint _size, uint _index, uint _value) internal pure {
+        uint perSlot = 256 / _size;
+        uint initialOffset = _offset % perSlot;
+        uint slotPosition = (initialOffset + _index) / perSlot;
+        uint withinSlot = ((_index + _offset) % perSlot) * _size;
+        // evil bit shifting magic
         for (uint q = 0; q < _size; q += 8) {
-            // uint q = (j * 8);
             _slots[slotPosition] |= ((_value >> q) & 0xFF) << (withinSlot + q);
         }
     }
 
-    // totally possible to generalize these further
-
     function uint16s(uint _slot, uint _offset, uint16[] memory _items) internal {
-        uint[] memory slots = _loadCurrentSlots(_slot, _offset, 16, _items.length);
+        uint[] memory slots = _loadSlots(_slot, _offset, 16, _items.length);
         for (uint i = 0; i < _items.length; i++) {
-            _writeUint16(slots, _offset, 16, i, _items[i]);
+            _write(slots, _offset, 16, i, _items[i]);
         }
         _saveSlots(_slot, _offset, 16, slots);
     }
 
     function uint8s(uint _slot, uint _offset, uint8[] memory _items) internal {
-
-        uint[] memory slots = _loadCurrentSlots(_slot, _offset, 32, _items.length);
-        uint initialOffset = _offset % 32;
-
+        uint[] memory slots = _loadSlots(_slot, _offset, 32, _items.length);
         for (uint i = 0; i < _items.length; i++) {
-            // uint p = (initialOffset + i) / 32;
-            // uint x = i - (p * 32);
-            uint slotPosition = (initialOffset + i) / 32;
-            uint withinSlot = ((i + _offset) % 32);
-            // evil bit shifting magic
-            slots[slotPosition] |= uint(_items[i]) << (8 * withinSlot);
+            _write(slots, _offset, 8, i, _items[i]);
         }
-
         _saveSlots(_slot, _offset, 8, slots);
     }
 

@@ -12,7 +12,7 @@ import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "./util/StorageWrite.sol";
 
-contract Cards is ICards, Ownable, MultiTransfer, BatchToken, ImmutableToken, InscribableToken {
+contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, InscribableToken {
 
     uint16[] public cardProtos;
     uint8[] public cardQualities;
@@ -57,7 +57,7 @@ contract Cards is ICards, Ownable, MultiTransfer, BatchToken, ImmutableToken, In
         return (cardProtos[tokenId], cardQualities[tokenId]);
     }
 
-    function mintCards(address to, uint16[] memory _protos, uint8[] memory _qualities) public {
+    function mintCards(address to, uint16[] memory _protos, uint8[] memory _qualities) public returns (uint) {
         require(_protos.length > 0, "must be some protos");
         require(_protos.length == _qualities.length, "must be the same number of protos/qualities");
         uint start = _sequentialMint(to, uint16(_protos.length));
@@ -116,13 +116,15 @@ contract Cards is ICards, Ownable, MultiTransfer, BatchToken, ImmutableToken, In
         StorageWrite.uint16s(cp, start, _protos);
         uint cq; assembly { cq := cardQualities_slot }
         StorageWrite.uint8s(cq, start, _qualities);
+
     }
 
-    function batchMintCards(address to, uint16[] memory _protos, uint8[] memory _qualities) public {
+    function batchMintCards(address to, uint16[] memory _protos, uint8[] memory _qualities) public returns (uint) {
         require(_protos.length > 0, "must be some protos");
         require(_protos.length == _qualities.length, "must be the same number of protos/qualities");
         uint start = _batchMint(to, uint16(_protos.length));
         _validateAndSaveDetails(start, _protos, _qualities);
+        return start;
     }
 
     uint16 private constant MAX_UINT16 = 2**16 - 1;

@@ -1,6 +1,6 @@
 pragma solidity ^0.5.0;
 
-import "../Cards/ICards.sol";
+import "../../cards/ICards.sol";
 import "./Pack.sol";
 
 contract RarityProvider {

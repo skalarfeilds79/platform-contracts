@@ -33,8 +33,8 @@ describe('Example', () => {
 
         cards = await deployer.deploy(Cards, {}, BATCH_SIZE, "Gods Unchained Cards", "CARD");
 
-        await cards.startSeason(0, 377);
-        await cards.addFactory(user, 0);
+        await cards.startSeason("Test", 1, 377);
+        await cards.addFactory(user, 1);
 
     });
 
@@ -42,7 +42,7 @@ describe('Example', () => {
 
         it("should be able to update protos", async() => {
 
-            let ids = [0];
+            let ids = [1];
             let protos = [{
                 locked: false,
                 god: 0,
@@ -58,7 +58,7 @@ describe('Example', () => {
 
             await cards.updateProtos(ids, protos);
 
-            let proto = await cards.protos(0);
+            let proto = await cards.protos(1);
 
             assert(proto.attack, 5, "wrong attack");
 
@@ -66,7 +66,7 @@ describe('Example', () => {
 
         it("should not be able to update protos", async() => {
 
-            let ids = [0];
+            let ids = [1];
             let protos = [{
                 locked: true,
                 god: 0,
@@ -86,10 +86,10 @@ describe('Example', () => {
 
         it("should set the seasons correctly", async() => {
 
-            await cards.startSeason(378, 400);
+            await cards.startSeason("Test", 378, 400);
 
-            checkSeason(new Array(377).fill(0), 0);
-            checkSeason(new Array(400-378).fill(1), 378);
+            checkSeason(new Array(377).fill(1), 1);
+            checkSeason(new Array(400-378).fill(2), 378);
 
         });
 

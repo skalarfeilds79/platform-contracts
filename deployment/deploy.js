@@ -18,15 +18,20 @@ const deploy = async (network, secret, etherscanApiKey) => {
 
 	let cards = await deployer.deployAndVerify(Cards, {}, BATCH_SIZE, "Gods Unchained Cards", "CARD");
 
-	let direct = await deployer.deployAndVerify(DirectMigration, {}, cards.contractAddress);
+	let old = '0x6ebeaf8e8e946f0716e6533a6f2cefc83f60e8ab';
 
-	await cards.startSeason(0, 381);
-	await cards.addFactory(direct.contractAddress, 0);
-	
+	let direct = await deployer.deployAndVerify(DirectMigration, {}, old, cards.contractAddress, 30, 500);
+
+	await cards.startSeason("Genesis", 1, 377, {gasLimit: 1000000});
+	await cards.startSeason("Etherbots", 380, 396, {gasLimit: 1000000});
+	await cards.startSeason("Promo", 400, 500, {gasLimit: 1000000});
+	await cards.addFactory(direct.contractAddress, 1);
+	await cards.addFactory(direct.contractAddress, 2);
+	await cards.addFactory(direct.contractAddress, 3);
 
 	//let minter = await deployer.deployAndVerify(OpenMinter, {}, cards.contractAddress);
 
-	/*	await cards.startSeason(0, 377);
+	/*	await cards.startSeason(1, 377, "Genesis");
 		await cards.addFactory(minter.contractAddress, 0);
 		await cards.unlockTrading(0);
 	*/

@@ -50,8 +50,10 @@ describe('Example', () => {
 
         cards = await deployer.deploy(Cards, {}, BATCH_SIZE, "Gods Unchained Cards", "CARD");
 
-        await cards.startSeason(0, 377);
-        await cards.addFactory(user, 0);
+        await cards.startSeason("Genesis", 1, 377);
+	    await cards.startSeason("Etherbots", 380, 396);
+	    await cards.startSeason("Promo", 400, 500);
+        await cards.addFactory(user, 1);
 
     });
 
@@ -339,17 +341,17 @@ describe('Example', () => {
 
         it("should save protos across three slots", async() => {
             
-            let initialProtos = new Array(15).fill(1).map((v, i) => i);
+            let initialProtos = new Array(15).fill(1).map((v, i) => i +1);
             let initialQualities = new Array(15).fill(1).map((v, i) => i);
 
             await cards.mintCards(user, initialProtos, initialQualities, { gasLimit: 9000000 });
 
-            let nextProtos = new Array(18).fill(1).map((v, i) => i);
+            let nextProtos = new Array(18).fill(1).map((v, i) => i + 1);
             let nextQualities = new Array(18).fill(1).map((v, i) => i);
 
             await cards.mintCards(user, nextProtos, nextQualities, { gasLimit: 9000000 });
 
-            let finalProtos = new Array(16).fill(1).map((v, i) => i);
+            let finalProtos = new Array(16).fill(1).map((v, i) => i + 1);
             let finalQualities = new Array(16).fill(1).map((v, i) => i);
 
             await cards.mintCards(user, finalProtos, finalQualities, { gasLimit: 9000000 });
@@ -362,17 +364,17 @@ describe('Example', () => {
 
         it("should save protos across three slots", async() => {
             
-            let initialProtos = new Array(30).fill(1).map((v, i) => i);
+            let initialProtos = new Array(30).fill(1).map((v, i) => i + 1);
             let initialQualities = new Array(30).fill(1).map((v, i) => i);
 
             await cards.mintCards(user, initialProtos, initialQualities, { gasLimit: 9000000 });
 
-            let nextProtos = new Array(36).fill(1).map((v, i) => i);
+            let nextProtos = new Array(36).fill(1).map((v, i) => i + 1);
             let nextQualities = new Array(36).fill(1).map((v, i) => i);
 
             await cards.mintCards(user, nextProtos, nextQualities, { gasLimit: 9000000 });
 
-            let finalProtos = new Array(32).fill(1).map((v, i) => i);
+            let finalProtos = new Array(32).fill(1).map((v, i) => i + 1);
             let finalQualities = new Array(32).fill(1).map((v, i) => i);
 
             await cards.mintCards(user, finalProtos, finalQualities, { gasLimit: 9000000 });

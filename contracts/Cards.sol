@@ -35,7 +35,7 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
     }
 
     event ProtoSet(uint16 indexed id, Proto proto);
-    event SeasonStarted(uint16 indexed id, uint16 indexed low, uint16 indexed high);
+    event SeasonStarted(uint16 indexed id, string name, uint16 indexed low, uint16 indexed high);
     event QualityChanged(uint indexed tokenId, uint8 quality, address factory);
 
     uint16[] public protoToSeason;
@@ -59,6 +59,13 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         return (cardProtos[tokenId], cardQualities[tokenId]);
     }
 
+    function mintCard(address to, uint16 _proto, uint8 _quality) public returns (uint) {
+        uint start = _sequentialMint(to, 1);
+        _validateProto(_proto);
+        cardProtos[start] = _proto;
+        cardQualities[start] = _quality;
+    }
+
     function mintCards(address to, uint16[] memory _protos, uint8[] memory _qualities) public returns (uint) {
         require(_protos.length > 0, "must be some protos");
         require(_protos.length == _qualities.length, "must be the same number of protos/qualities");
@@ -67,6 +74,8 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
     }
 
     function addFactory(address _factory, uint _season) public onlyOwner {
+        require(seasons.length >= _season, "season must exist");
+        require(_season > 0, "season must not be 0");
         require(!factoryApproved[_factory][_season], "this factory is already approved");
         require(!seasonTradable[_season], "season must not be tradable");
         factoryApproved[_factory][_season] = true;
@@ -87,21 +96,29 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         super.burn(_tokenId);
     }
 
+    function burnAll(uint256[] memory tokenIDs) public {
+       for (uint i = 0; i < tokenIDs.length; i++) {
+           burn(tokenIDs[i]);
+       }
+   }
+
     function isTradable(uint _tokenId) public view returns (bool) {
         return seasonTradable[protoToSeason[cardProtos[_tokenId]]];
     }
 
-    function startSeason(uint16 low, uint16 high) public returns (uint) {
+    function startSeason(string memory name, uint16 low, uint16 high) public onlyOwner returns (uint) {
 
+        require(low > 0, "must not be zero proto");
         require(high > low, "must be a valid range");
         require(seasons.length == 0 || low > seasons[seasons.length - 1].high, "seasons cannot overlap");
 
-        uint16 id = uint16(seasons.push(Season({ high: high, low: low })) - 1);
+        // seasons start at 1
+        uint16 id = uint16(seasons.push(Season({ high: high, low: low })));
 
         uint cp; assembly { cp := protoToSeason_slot }
         StorageWrite.repeatUint16(cp, low, (high - low) + 1, id);
 
-        emit SeasonStarted(id, low, high);
+        emit SeasonStarted(id, name, low, high);
 
         return id;
     }
@@ -110,6 +127,7 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         require(_ids.length == _protos.length, "ids/protos must be the same length");
         for (uint i = 0; i < _ids.length; i++) {
             uint16 id = _ids[i];
+            require(id > 0, "proto must not be zero");
             Proto memory proto = protos[id];
             require(!proto.locked, "proto is locked");
             Proto memory newProto = _protos[i];
@@ -139,8 +157,18 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
 
     uint16 private constant MAX_UINT16 = 2**16 - 1;
 
+    function _validateProto(uint16 proto) internal {
+        if (proto >= mythicThreshold) {
+            require(!mythicCreated[proto], "mythic has already been created");
+            mythicCreated[proto] = true;
+        } else {
+            uint season = protoToSeason[proto];
+            require(season != 0, "must have season set");
+            require(factoryApproved[msg.sender][season], "must be approved factory for this season");
+        }
+    }
+
     function _validateProtos(uint16[] memory _protos) internal {
-        // mythics can only be created during the current season
         uint16 maxProto = 0;
         uint16 minProto = MAX_UINT16;
         for (uint i = 0; i < _protos.length; i++) {
@@ -157,15 +185,15 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
                 }
             }
         }
-        uint season = protoToSeason[maxProto];
-        // cards must be from the same season
-        require(season == protoToSeason[minProto], "can only create cards from the same season");
-        require(factoryApproved[msg.sender][season], "must be approved factory for this season");
 
-        Season memory s = seasons[season];
-
-        require(maxProto == 0 || maxProto <= s.high, "max failure: this factory cannot create this card");
-        require(minProto == MAX_UINT16 || minProto >= s.low, "min failure: this factory cannot create this card");
+        if (maxProto != 0) {
+            uint season = protoToSeason[maxProto];
+            // cards must be from the same season
+            require(season != 0, "must have season set");
+            require(season == protoToSeason[minProto], "can only create cards from the same season");
+            require(factoryApproved[msg.sender][season], "must be approved factory for this season");
+        }
+        
     }
 
     function setQuality(uint _tokenId, uint8 _quality) public {

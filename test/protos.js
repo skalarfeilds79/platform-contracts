@@ -25,8 +25,7 @@ describe('Example', () => {
         }
         assert(expected.every((p, i) => real[i] == p), "wrong seasons");
     }
-
-
+    
     beforeEach(async () => {
 
         deployer = manager.getDeployer();
@@ -43,20 +42,10 @@ describe('Example', () => {
         it("should be able to update protos", async() => {
 
             let ids = [1];
-            let protos = [{
-                locked: false,
-                god: 0,
-                cardType: 0,
-                rarity: 0,
-                mana: 0,
-                attack: 5,
-                health: 5,
-                tribe: 0
-            }];
 
-            await cards.updateProtos(ids, protos);
+            await cards.updateProtos(ids, [0], [0], [0], [0], [5], [5], [0]);
 
-            await cards.updateProtos(ids, protos);
+            await cards.updateProtos(ids, [0], [0], [0], [0], [5], [5], [0]);
 
             let proto = await cards.protos(1);
 
@@ -67,20 +56,11 @@ describe('Example', () => {
         it("should not be able to update protos", async() => {
 
             let ids = [1];
-            let protos = [{
-                locked: true,
-                god: 0,
-                cardType: 0,
-                rarity: 0,
-                mana: 0,
-                attack: 5,
-                health: 5,
-                tribe: 0
-            }];
+            await cards.updateProtos(ids, [0], [0], [0], [0], [5], [5], [0]);
 
-            await cards.updateProtos(ids, protos);
+            await cards.lockProtos(ids);
 
-            assert.revert(cards.updateProtos(ids, protos));
+            assert.revert(cards.updateProtos(ids, [0], [0], [0], [0], [5], [5], [0]));
 
         });
 

@@ -5,7 +5,9 @@ const Cards = require('../build/Cards');
 const TestManager = require("../util/test-manager");
 const ethers = require('ethers');
 
-describe('Example', () => {
+const { mint } = require('../util/checkers');
+
+describe('Card Creation Tests', () => {
 
     const manager = new TestManager(accounts);
     let deployer;
@@ -13,36 +15,9 @@ describe('Example', () => {
     ethers.errors.setLogLevel("error");
 
     let user = accounts[0].signer.address;
+    let u2 = accounts[1].signer.address;
 
     let BATCH_SIZE = 101;
-
-    async function checkOwner(owner, start, len) {
-        for (let i = start; i < len; i++) {
-            let test = await cards.ownerOf(i);
-            assert.equal(test, owner, "wrong owner");
-        }
-    }
-
-    async function checkQualities(expected, start) {
-        let real = [];
-        let end = start + expected.length;
-        for (let i = start; i < end; i++) {
-            let q = await cards.cardQualities(i);
-            real.push(q);
-        }
-        assert(expected.every((p, i) => real[i] == p), "wrong qualities");
-    }
-
-    async function checkProtos(expected, start) {
-        let real = [];
-        let end = start + expected.length;
-        for (let i = start; i < end; i++) {
-            let proto = await cards.cardProtos(i);
-            real.push(proto);
-        }
-
-        assert(expected.every((p, i) => real[i] == p), "wrong protos");
-    }
 
     beforeEach(async () => {
 
@@ -85,11 +60,7 @@ describe('Example', () => {
 
             const len = 10;
 
-            let tx = await cards.batchMintCards(user, new Array(len).fill(1),  new Array(len).fill(1), { gasLimit: 9000000});
-
-            let txReceipt = await cards.verboseWaitForTransaction(tx);    
-            
-            console.log(txReceipt.gasUsed.toNumber());
+            await mint(cards, user, new Array(len).fill(1), new Array(len).fill(1), 0);
 
         });
 
@@ -97,7 +68,7 @@ describe('Example', () => {
 
             const len = BATCH_SIZE - 10;
 
-            await cards.batchMintCards(user, new Array(len).fill(1), new Array(len).fill(1), { gasLimit: 9000000});
+            await mint(cards, user, new Array(len).fill(1), new Array(len).fill(1), 0);
 
         });
 
@@ -105,7 +76,7 @@ describe('Example', () => {
             
             const len = BATCH_SIZE + 1;
 
-            assert.revert(cards.batchMintCards(user, new Array(len).fill(1), new Array(len).fill(1), { gasLimit: 9000000}));
+            await mint(cards, user, new Array(len).fill(1), new Array(len).fill(1), 0, true);
 
         });
 
@@ -113,12 +84,7 @@ describe('Example', () => {
             
             const len = 100;
 
-            await cards.mintCards(user, new Array(len).fill(1), new Array(len).fill(1), { gasLimit: 9000000})
-
-            for (let i = 0; i < len; i++) {
-                let owner = await cards.ownerOf(i);
-                assert.equal(owner, user, "wrong owner");
-            }
+            await mint(cards, user, new Array(len).fill(1), new Array(len).fill(1), 0);
 
         });
 
@@ -134,10 +100,7 @@ describe('Example', () => {
 
             qualities[len-1] = 2;
 
-            await cards.batchMintCards(user, protos, qualities, { gasLimit: 9000000})
-
-            await checkProtos(protos, 0);
-            await checkQualities(qualities, 0);
+            await mint(cards, user, protos, qualities, 0);
 
         });
 
@@ -153,10 +116,7 @@ describe('Example', () => {
 
             qualities[len-1] = 2;
 
-            await cards.batchMintCards(user, protos, qualities, { gasLimit: 9000000})
-
-            await checkProtos(protos, 0);
-            await checkQualities(qualities, 0);
+            await mint(cards, user, protos, qualities, 0);
 
         });
 
@@ -172,216 +132,70 @@ describe('Example', () => {
 
             qualities[len-1] = 2;
 
-            await cards.batchMintCards(user, protos, qualities, { gasLimit: 9000000});
-
-            await checkProtos(protos, 0);
-            await checkQualities(qualities, 0);
+            await mint(cards, user, protos, qualities, 0);
 
         });
 
         it("should fail to mint an invalid proto", async() => {
-            
-            assert.revert(cards.mintCards(user, [400, 400, 400], [1, 1, 1], { gasLimit: 9000000}));
+
+            await mint(cards, user, [400, 400, 400], [1, 1, 1], 0, true);
 
         });
 
         it("should only be able to mint one mythic", async() => {
             
-            await cards.mintCards(user, [65000], [1], { gasLimit: 9000000});
+            await mint(cards, user, [65000], [1], 0);
 
-            assert.revert(cards.mintCards(user, [65000], [1], { gasLimit: 9000000}));
+            await mint(cards, user, [65000], [1], 0, true);
 
         });
 
-        it("should set consecutive batches with no remainders", async() => {
+        it("should set consecutive batches which have only one token", async() => {
+            
+            const len = 1;
+
+            let protos = new Array(len).fill(1);
+            let qualities = new Array(len).fill(1);
+
+            await mint(cards, user, protos, qualities, 0);
+
+            let nextProtos = new Array(len).fill(2);
+            let nextQualities = new Array(len).fill(2);
+
+           await mint(cards, user, nextProtos, nextQualities, BATCH_SIZE);
+
+        });
+
+
+        it("should set consecutive batches which are smaller than the limit", async() => {
             
             const len = 16;
 
             let protos = new Array(len).fill(1);
             let qualities = new Array(len).fill(1);
 
-            await cards.mintCards(user, protos, qualities, { gasLimit: 9000000});
-
-            await checkProtos(protos, 0);
-            await checkQualities(qualities, 0);
+            await mint(cards, user, protos, qualities, 0);
 
             let nextProtos = new Array(len).fill(2);
             let nextQualities = new Array(len).fill(2);
 
-            await cards.mintCards(user, nextProtos, nextQualities, { gasLimit: 9000000});
-
-            await checkProtos(nextProtos, len);
-            await checkQualities(nextQualities, len);
+           await mint(cards, user, nextProtos, nextQualities, BATCH_SIZE);
 
         });
 
-        it("should set consecutive batches with remainders", async() => {
+        it("should set consecutive batches which are equal to the limit", async() => {
             
-            const len = 6;
+            const len = BATCH_SIZE;
 
             let protos = new Array(len).fill(1);
             let qualities = new Array(len).fill(1);
 
-            await cards.mintCards(user, protos, qualities, { gasLimit: 9000000});
-
-            await checkProtos(protos, 0);
-            await checkQualities(qualities, 0);
+            await mint(cards, user, protos, qualities, 0);
 
             let nextProtos = new Array(len).fill(2);
             let nextQualities = new Array(len).fill(2);
 
-            await cards.mintCards(user, nextProtos, nextQualities, { gasLimit: 9000000})
-
-            await checkProtos(nextProtos, len);
-            await checkQualities(nextQualities, len);
-           
-            await checkProtos(protos, 0);
-            await checkQualities(qualities, 0);
-
-        });
-
-        it("should set correct card ids", async() => {
-            
-            const len = 6;
-
-            let protos = new Array(len).fill(1);
-            let qualities = new Array(len).fill(1);
-
-            await cards.mintCards(user, protos, qualities, { gasLimit: 9000000});
-
-            await checkOwner(user, 0, len);
-            
-            await cards.batchMintCards(user, protos, qualities, { gasLimit: 9000000});
-
-            await checkOwner(user, BATCH_SIZE, BATCH_SIZE + len);
-
-            await cards.mintCards(user, protos, qualities, { gasLimit: 9000000});
-
-            await checkOwner(user, len, len + len);
-
-        });
-
-        it("should cover edge cases", async() => {
-            
-            const len = BATCH_SIZE + 1;
-
-            let protos = new Array(len).fill(1);
-            let qualities = new Array(len).fill(1);
-
-            await cards.mintCards(user, protos, qualities, { gasLimit: 9000000});
-
-            await checkOwner(user, 0, len);
-
-            protos = new Array(BATCH_SIZE-1).fill(1);
-            qualities = new Array(BATCH_SIZE-1).fill(1);
-
-            await cards.batchMintCards(user, protos, qualities, { gasLimit: 9000000});
-
-            await checkOwner(user, BATCH_SIZE * 2, BATCH_SIZE * 3 -1);
-
-        });
-
-        it("should cover large mints of cards", async() => {
-            
-            const len = BATCH_SIZE * 2;
-
-            let protos = new Array(len).fill(1);
-            let qualities = new Array(len).fill(1);
-
-            await cards.mintCards(user, protos, qualities, { gasLimit: 9000000});
-
-            await checkOwner(user, 0, len);
-
-            protos = new Array(BATCH_SIZE-1).fill(1);
-            qualities = new Array(BATCH_SIZE-1).fill(1);
-
-            await cards.batchMintCards(user, protos, qualities, { gasLimit: 9000000});
-
-            await checkOwner(user, BATCH_SIZE * 2, BATCH_SIZE * 3 -1);
-
-
-        });
-
-        it("should save consecutive protos across slots", async() => {
-            
-            let protos = [183,285,377,323,305];
-            let qualities = [4,4,4,4,4];
-
-            let times = 20;
-
-            for (let i = 0; i < times; i++) {
-                await cards.mintCards(user, protos.map(p => p - i), qualities, { gasLimit: 9000000});
-            }
-
-            for (let i = 0; i < times; i++) {
-                await checkProtos(protos.map(p => p - i), i * protos.length);
-            }
-
-
-        });
-
-        it("should save qualities across slots", async() => {
-            
-
-            let protos = [183,285,377,323,305];
-            let qualities = [4,4,4,4,4];
-
-            let times = 20;
-
-            for (let i = 0; i < times; i++) {
-                await cards.mintCards(user, protos, qualities, { gasLimit: 9000000});
-            }
-
-            for (let i = 0; i < times; i++) {
-                await checkQualities(qualities, i * qualities.length);
-            }
-
-
-        });
-
-        it("should save protos across three slots", async() => {
-            
-            let initialProtos = new Array(15).fill(1).map((v, i) => i +1);
-            let initialQualities = new Array(15).fill(1).map((v, i) => i);
-
-            await cards.mintCards(user, initialProtos, initialQualities, { gasLimit: 9000000 });
-
-            let nextProtos = new Array(18).fill(1).map((v, i) => i + 1);
-            let nextQualities = new Array(18).fill(1).map((v, i) => i);
-
-            await cards.mintCards(user, nextProtos, nextQualities, { gasLimit: 9000000 });
-
-            let finalProtos = new Array(16).fill(1).map((v, i) => i + 1);
-            let finalQualities = new Array(16).fill(1).map((v, i) => i);
-
-            await cards.mintCards(user, finalProtos, finalQualities, { gasLimit: 9000000 });
-
-            await checkProtos(initialProtos, 0);
-            await checkProtos(nextProtos, initialProtos.length);
-            await checkProtos(finalProtos, initialProtos.length + nextProtos.length);
-
-        });
-
-        it("should save protos across three slots", async() => {
-            
-            let initialProtos = new Array(30).fill(1).map((v, i) => i + 1);
-            let initialQualities = new Array(30).fill(1).map((v, i) => i);
-
-            await cards.mintCards(user, initialProtos, initialQualities, { gasLimit: 9000000 });
-
-            let nextProtos = new Array(36).fill(1).map((v, i) => i + 1);
-            let nextQualities = new Array(36).fill(1).map((v, i) => i);
-
-            await cards.mintCards(user, nextProtos, nextQualities, { gasLimit: 9000000 });
-
-            let finalProtos = new Array(32).fill(1).map((v, i) => i + 1);
-            let finalQualities = new Array(32).fill(1).map((v, i) => i);
-
-            await cards.mintCards(user, finalProtos, finalQualities, { gasLimit: 9000000 });
-
-            await checkQualities(initialQualities, 0);
-            await checkQualities(nextQualities, initialQualities.length);
-            await checkQualities(finalQualities, initialQualities.length + nextQualities.length);
+           await mint(cards, user, nextProtos, nextQualities, BATCH_SIZE);
 
         });
 

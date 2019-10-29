@@ -1,4 +1,4 @@
-pragma solidity ^0.5.11;
+pragma solidity 0.5.11;
 
 import "./CardPackFour.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";

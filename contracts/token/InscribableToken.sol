@@ -6,7 +6,7 @@ contract InscribableToken is Ownable {
 
     mapping(bytes32 => bytes32) public properties;
 
-    event PS();
+    event ClassPropertySet(bytes32 indexed key, bytes32 value);
     event TokenPropertySet(uint indexed id, bytes32 indexed key, bytes32 value);
 
     function _setProperty(uint _id, bytes32 _key, bytes32 _value) internal {
@@ -19,7 +19,7 @@ contract InscribableToken is Ownable {
     }
 
     function _setClassProperty(bytes32 _key, bytes32 _value) internal {
-        // emit TokenPropertySet(0, _key, _value);
+        emit ClassPropertySet(_key, _value);
         properties[getClassKey(_key)] = _value;
     }
 

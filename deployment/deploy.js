@@ -20,14 +20,15 @@ const deploy = async (network, secret, etherscanApiKey) => {
 
 	let old = '0x6ebeaf8e8e946f0716e6533a6f2cefc83f60e8ab';
 
-	let direct = await deployer.deployAndVerify(DirectMigration, {}, old, cards.contractAddress, 30, 500);
+	let direct = await deployer.deployAndVerify(DirectMigration, {}, old, cards.contractAddress, 300);
 
 	await cards.startSeason("Genesis", 1, 377, {gasLimit: 1000000});
 	await cards.startSeason("Etherbots", 380, 396, {gasLimit: 1000000});
 	await cards.startSeason("Promo", 400, 500, {gasLimit: 1000000});
-	await cards.addFactory(direct.contractAddress, 1);
-	await cards.addFactory(direct.contractAddress, 2);
-	await cards.addFactory(direct.contractAddress, 3);
+
+	await cards.addFactory(direct.contractAddress, 1, {gasLimit: 1000000});
+	await cards.addFactory(direct.contractAddress, 2,{gasLimit: 1000000});
+	await cards.addFactory(direct.contractAddress, 3, {gasLimit: 1000000});
 
 	//let minter = await deployer.deployAndVerify(OpenMinter, {}, cards.contractAddress);
 

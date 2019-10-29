@@ -1,4 +1,4 @@
-pragma solidity ^0.5.11;
+pragma solidity 0.5.11;
 
 import "../ICards.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
@@ -7,7 +7,6 @@ import "./BaseMigration.sol";
 
 contract DirectMigration is BaseMigration {
 
-    uint threshold;
     OldToken old;
     ICards cards;
     uint limit;
@@ -15,17 +14,15 @@ contract DirectMigration is BaseMigration {
     event Migrated(address indexed user, uint oldStart, uint oldEnd, uint newStart);
     event NonGenesisMigrated(address indexed user, uint oldID, uint newID);
 
-    constructor(OldToken _old, ICards _cards, uint _threshold, uint _limit) public {
+    constructor(OldToken _old, ICards _cards, uint _limit) public {
         old = _old;
         cards = _cards;
-        threshold = _threshold;
         limit = _limit;
     }
 
     struct IM {
         uint16 proto;
         uint16 purity;
-
         uint16 p;
         uint8 q;
         uint id;
@@ -39,7 +36,7 @@ contract DirectMigration is BaseMigration {
         }
     }
 
-    function activatedMigration() public returns (uint current) {
+    function activatedMigration() public returns (uint length) {
         uint start = migrated;
         address first = old.ownerOf(start);
         current = start;
@@ -79,22 +76,19 @@ contract DirectMigration is BaseMigration {
             }
         }
 
-        // change lengths back to count
-        assembly{mstore(protos, count)}
-        assembly{mstore(qualities, count)}
+        if (count > 0) {
+            // change lengths back to count
+            assembly{mstore(protos, count)}
+            assembly{mstore(qualities, count)}
 
-        uint newStart;
-        if (count <= threshold) {
-            newStart = cards.mintCards(first, protos, qualities);
-        } else {
-            newStart = cards.batchMintCards(first, protos, qualities);
+            uint newStart = cards.mintCards(first, protos, qualities);
+
+            emit Migrated(first, start, current, newStart);
         }
 
         migrated = current;
 
-        emit Migrated(first, start, current, newStart);
-
-        return current;
+        return current - start;
     }
 
 }

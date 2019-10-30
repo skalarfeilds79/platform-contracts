@@ -14,9 +14,4 @@ contract OpenMinter {
         cards.mintCards(to, _protos, _qualities);
     }
 
-    function batchMintCards(address to, uint16[] memory _protos, uint8[] memory _qualities) public {
-        cards.batchMintCards(to, _protos, _qualities);
-    }
-
-
 }

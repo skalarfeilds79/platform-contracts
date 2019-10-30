@@ -39,7 +39,7 @@ contract DirectMigration is BaseMigration {
     function activatedMigration() public returns (uint length) {
         uint start = migrated;
         address first = old.ownerOf(start);
-        current = start;
+        uint current = start;
         address owner = first;
         uint last = old.totalSupply();
 

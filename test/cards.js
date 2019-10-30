@@ -34,28 +34,6 @@ describe('Card Creation Tests', () => {
 
     describe("Minting tests", () => {
 
-        // it("should mint various sizes", async() => {
-
-        //     const eth_price = 180;
-        //     const gwei = 1;
-        //     const packSizes = [1, 6, 18, 50, 100, 250];
-
-            
-        //     for (let size of packSizes) {
-        //         const len = size * 5;
-
-        //         let tx = await cards.batchMintCards(user, new Array(len).fill(1),  new Array(len).fill(1), { gasLimit: 9000000});
-
-        //         let txReceipt = await cards.verboseWaitForTransaction(tx);  
-                
-        //         let gas = txReceipt.gasUsed.toNumber();
-
-        //         let cost = (gas * gwei) * (eth_price / 10**9);
-                
-        //         console.log(size + ' Packs, Gas: ' + gas + ', Cost: ' + cost);
-        //     }
-        // });
-
         it("should be able to batch mint exactly the limit", async() => {
 
             const len = 10;

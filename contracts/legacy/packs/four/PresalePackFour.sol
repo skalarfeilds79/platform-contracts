@@ -44,7 +44,7 @@ contract PresalePackFour is CardPackFour, Ownable {
         return 5;
     }
 
-    uint16 public perClaim = 15;
+    uint16 public perClaim = 10;
 
     function setPacksPerClaim(uint16 _perClaim) public onlyOwner {
         perClaim = _perClaim;
@@ -120,13 +120,13 @@ contract PresalePackFour is CardPackFour, Ownable {
 
         Purchase storage p = purchases[id];
 
-        require(p.randomness == 0);
+        require(p.randomness == 0, "randomness already set");
 
         // must be within last 256 blocks, otherwise recommit
-        require(block.number - 256 < p.commit);
+        require(block.number - 256 < p.commit, "longer than 256");
 
         // can't callback on the original block
-        require(uint64(block.number) != p.commit);
+        require(uint64(block.number) != p.commit, "same block");
 
         bytes32 bhash = blockhash(p.commit);
         // will get the same on every block

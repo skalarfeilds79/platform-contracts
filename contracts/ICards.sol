@@ -19,14 +19,6 @@ contract ICards is IERC721 {
         uint8 quality
     ) public;
 
-    function batchMintCards(
-        address to,
-        uint16[] memory _protos,
-        uint8[] memory _qualities
-    )
-        public
-        returns (uint);
-
     function mintCards(
         address to,
         uint16[] memory _protos,

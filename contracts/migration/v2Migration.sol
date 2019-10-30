@@ -97,8 +97,8 @@ contract v2Migration is BaseMigration {
             qualities[i] = convertPurity(purities[i]);
         }
 
-        // Batch Mint cards (details passed as function args)
-        cards.batchMintCards(user, protos, qualities);
+        // Mint cards (details passed as function args)
+        cards.mintCards(user, protos, qualities);
 
         v2Migrated[address(pack)][id] += size;
 

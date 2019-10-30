@@ -25,7 +25,7 @@ contract v1Migration is BaseMigration {
 
     mapping (address => bool) public canMigrate;
 
-    mapping (address => mapping (uint => bool)) public v1Migrated;
+    mapping (address => mapping (uint => uint)) public v1Migrated;
 
     event Migrated(
         address indexed user,
@@ -47,11 +47,6 @@ contract v1Migration is BaseMigration {
             "V1: must be migrating from an approved pack"
         );
 
-        require(
-            !v1Migrated[address(pack)][id],
-            "V1: must not have been already migrated"
-        );
-
         (
             uint16 current,
             uint16 count,
@@ -66,27 +61,26 @@ contract v1Migration is BaseMigration {
         );
 
         // removed variable due to stack limit
-        uint remaining = ((count - current) * 5);
+        uint remaining = ((count - current) * 5) - v1Migrated[address(pack)][id];
 
         require(
             remaining > 0,
             "V1: no more cards to migrate"
         );
 
-        require(
-            remaining <= limit,
-            "V1: too many cards to migrate"
-        );
+        if (remaining > limit) {
+            remaining = limit;
+        }
 
         uint16[] memory protos = new uint16[](remaining);
         uint16[] memory purities = new uint16[](remaining);
         uint8[] memory qualities = new uint8[](remaining);
 
-        // TODO: Do these need to be converted as well?
+        // // TODO: Do these need to be converted as well?
         (protos, purities) = pack.predictPacks(id);
 
         // Run loop which starts at local counter start of v1Migrated
-        uint loopStart = (current * 5);
+        uint loopStart = (current * 5) + v1Migrated[address(pack)][id];
 
         // For each element, get the old card and make the
         // appropriate conversion + check not activated
@@ -99,7 +93,7 @@ contract v1Migration is BaseMigration {
         // Batch Mint cards (details passed as function args)
         uint startID = cards.mintCards(user, protos, qualities);
 
-        v1Migrated[address(pack)][id] = true;
+        v1Migrated[address(pack)][id] += remaining;
 
         uint loopEnd = loopStart + remaining;
 

@@ -5,7 +5,7 @@ import "./PresalePackFour.sol";
 contract RarePackFour is PresalePackFour {
     
     function basePrice() public returns (uint) {
-        return 12 finney;
+        return 1;
     }
 
     constructor(MigrationInterface _core, address payable vault) public PresalePackFour(_core, vault) {

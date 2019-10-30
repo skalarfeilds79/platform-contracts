@@ -3,6 +3,13 @@ pragma solidity 0.5.11;
 import "./CardPackFour.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";
 
+/**
+ * WARNING!
+ * This is an abstract contract and will fail to deploy.
+ * Deploy RarePackFour instead!
+ * basePrice() is not defined.
+ */
+
 contract PresalePackFour is CardPackFour, Ownable {
 
     address payable public vault;

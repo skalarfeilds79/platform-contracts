@@ -4,6 +4,15 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
 contract ICards is IERC721 {
 
+    struct Batch {
+        uint48 userID;
+        uint16 size;
+    }
+
+    function batches(uint index) public view returns (uint48 userID, uint16 size);
+
+    function userIDToAddress(uint48 id) public view returns (address);
+
     function getDetails(
         uint tokenId
     )

@@ -63,9 +63,9 @@ describe('Direct Migration', () => {
             console.log('100', gas);
 
             // 4 as they are meteorite
-            await checkQualities(new Array(len).fill(4), 0);
-            await checkProtos(new Array(len).fill(1), 0);
-            await checkOwner(new Array(len).fill(user), 0);
+            await checkQualities(cards, new Array(len).fill(4), 0);
+            await checkProtos(cards, new Array(len).fill(1), 0);
+            await checkOwner(cards, new Array(len).fill(user), 0);
 
             let supply = await cards.totalSupply();
             assert.equal(supply, len, "wrong total supply");
@@ -95,9 +95,9 @@ describe('Direct Migration', () => {
             await migration.activatedMigration({gasLimit:9000000});
 
             // 4 as they are meteorite
-            await checkQualities(new Array(len).fill(4), 0);
-            await checkProtos(new Array(len).fill(1), 0);
-            await checkOwner(new Array(len).fill(user), 0);
+            await checkQualities(cards, new Array(len).fill(4), 0);
+            await checkProtos(cards, new Array(len).fill(1), 0);
+            await checkOwner(cards, new Array(len).fill(user), 0);
 
             let supply = await cards.totalSupply();
             assert.equal(supply.toNumber(), len, "wrong total supply");
@@ -112,9 +112,9 @@ describe('Direct Migration', () => {
             await migration.activatedMigration({gasLimit:9000000});
 
             // 4 as they are meteorite
-            await checkQualities(new Array(len).fill(4), BATCH_SIZE);
-            await checkProtos(new Array(nextLen).fill(1), BATCH_SIZE);
-            await checkOwner(new Array(nextLen).fill(user), BATCH_SIZE);
+            await checkQualities(cards, new Array(len).fill(4), BATCH_SIZE);
+            await checkProtos(cards, new Array(nextLen).fill(1), BATCH_SIZE);
+            await checkOwner(cards, new Array(nextLen).fill(user), BATCH_SIZE);
 
             supply = await cards.totalSupply();
             assert.equal(supply, len + nextLen, "wrong total supply");

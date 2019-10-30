@@ -25,7 +25,7 @@ describe('Example', () => {
         }
         assert(expected.every((p, i) => real[i] == p), "wrong seasons");
     }
-    
+
     beforeEach(async () => {
 
         deployer = manager.getDeployer();
@@ -70,6 +70,12 @@ describe('Example', () => {
 
             checkSeason(new Array(377).fill(1), 1);
             checkSeason(new Array(400-378).fill(2), 378);
+
+        });
+
+        it("non-owner should not be able to start season", async() => {
+
+            assert.revert(cards.startSeason("Test", 378, 400));
 
         });
 

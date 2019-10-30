@@ -60,6 +60,7 @@ contract v1Migration is BaseMigration {
             "V1: must have had randomness set"
         );
 
+
         // removed variable due to stack limit
         uint remaining = ((count - current) * 5) - v1Migrated[address(pack)][id];
 

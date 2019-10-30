@@ -116,11 +116,6 @@ contract DirectMigration is BaseMigration {
             emit Migrated(first, start, current, newStart);
         }
 
-            uint newStart = cards.mintCards(first, protos, qualities);
-
-            emit Migrated(first, start, current, newStart);
-        }
-
         migrated = current;
 
         return current - start;

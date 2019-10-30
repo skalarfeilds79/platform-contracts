@@ -116,13 +116,14 @@ contract DirectMigration is BaseMigration {
             emit Migrated(first, start, current, newStart);
         }
 
+            uint newStart = cards.mintCards(first, protos, qualities);
+
+            emit Migrated(first, start, current, newStart);
+        }
+
         migrated = current;
 
         return current - start;
-    }
-
-    function convertPurity(uint16 purity) public pure returns (uint8) {
-        return uint8((purity / 1000) + 2);
     }
 
     function convertProto(uint16 proto)

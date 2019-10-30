@@ -4,7 +4,6 @@ pragma solidity 0.5.11;
 
 import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
-
 import "./token/MultiTransfer.sol";
 import "./token/BatchToken.sol";
 import "./token/ImmutableToken.sol";
@@ -334,6 +333,17 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
                 factoryApproved[msg.sender][season],
                 "Core: must be approved factory for this season"
             );
+        }
+    }
+
+    function _validateProto(uint16 proto) internal {
+        if (proto >= MYTHIC_THRESHOLD) {
+            require(!mythicCreated[proto], "mythic has already been created");
+            mythicCreated[proto] = true;
+        } else {
+            uint256 season = protoToSeason[proto];
+            require(season != 0, "must have season set");
+            require(factoryApproved[msg.sender][season], "must be approved factory for this season");
         }
     }
 

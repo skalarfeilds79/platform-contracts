@@ -25,16 +25,15 @@ describe('Example', () => {
         }
         assert(expected.every((p, i) => real[i] == p), "wrong seasons");
     }
-
-
+    
     beforeEach(async () => {
 
         deployer = manager.getDeployer();
 
         cards = await deployer.deploy(Cards, {}, BATCH_SIZE, "Gods Unchained Cards", "CARD");
 
-        await cards.startSeason(0, 377);
-        await cards.addFactory(user, 0);
+        await cards.startSeason("Test", 1, 377);
+        await cards.addFactory(user, 1);
 
     });
 
@@ -42,23 +41,13 @@ describe('Example', () => {
 
         it("should be able to update protos", async() => {
 
-            let ids = [0];
-            let protos = [{
-                locked: false,
-                god: 0,
-                cardType: 0,
-                rarity: 0,
-                mana: 0,
-                attack: 5,
-                health: 5,
-                tribe: 0
-            }];
+            let ids = [1];
 
-            await cards.updateProtos(ids, protos);
+            await cards.updateProtos(ids, [0], [0], [0], [0], [5], [5], [0]);
 
-            await cards.updateProtos(ids, protos);
+            await cards.updateProtos(ids, [0], [0], [0], [0], [5], [5], [0]);
 
-            let proto = await cards.protos(0);
+            let proto = await cards.protos(1);
 
             assert(proto.attack, 5, "wrong attack");
 
@@ -66,30 +55,21 @@ describe('Example', () => {
 
         it("should not be able to update protos", async() => {
 
-            let ids = [0];
-            let protos = [{
-                locked: true,
-                god: 0,
-                cardType: 0,
-                rarity: 0,
-                mana: 0,
-                attack: 5,
-                health: 5,
-                tribe: 0
-            }];
+            let ids = [1];
+            await cards.updateProtos(ids, [0], [0], [0], [0], [5], [5], [0]);
 
-            await cards.updateProtos(ids, protos);
+            await cards.lockProtos(ids);
 
-            assert.revert(cards.updateProtos(ids, protos));
+            assert.revert(cards.updateProtos(ids, [0], [0], [0], [0], [5], [5], [0]));
 
         });
 
         it("should set the seasons correctly", async() => {
 
-            await cards.startSeason(378, 400);
+            await cards.startSeason("Test", 378, 400);
 
-            checkSeason(new Array(377).fill(0), 0);
-            checkSeason(new Array(400-378).fill(1), 378);
+            checkSeason(new Array(377).fill(1), 1);
+            checkSeason(new Array(400-378).fill(2), 378);
 
         });
 

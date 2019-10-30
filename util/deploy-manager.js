@@ -10,7 +10,7 @@ class DeployManager {
 
         console.log('network', this.network);
         
-        this.deployer = new etherlime.JSONRPCPrivateKeyDeployer(key, secrets.rpcUrl);
+        this.deployer = new etherlime.JSONRPCPrivateKeyDeployer(key, secrets.networks.mainnet.rpcUrl);
 
         this.provider = this.deployer.provider;
     }

@@ -1,4 +1,4 @@
-pragma solidity ^0.5.8;
+pragma solidity 0.5.11;
 
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721Metadata.sol";
@@ -15,160 +15,221 @@ contract BatchToken is ERC721Metadata {
     mapping(uint48 => address) public userIDToAddress;
     mapping(address => uint48) public addressToUserID;
 
-    uint public batchSize;
-    uint public nextBatch;
-    uint public tokenCount;
+    uint256 public batchSize;
+    uint256 public nextBatch;
+    uint256 public tokenCount;
 
     uint48[] internal ownerIDs;
     uint48[] internal approvedIDs;
 
-    Batch[] public batches;
+    mapping(uint => Batch) public batches;
 
-    uint48 userCount = 1;
-    uint public firstFree = 0;
+    uint48 internal userCount = 1;
 
-    mapping (address => uint) internal _ownedTokensCount;
+    mapping(address => uint) internal _balances;
 
     uint256 internal constant MAX_LENGTH = uint(2**256 - 1);
 
-    constructor(uint _batchSize, string memory name, string memory symbol) public ERC721Metadata(name, symbol) {
+    constructor(
+        uint256 _batchSize,
+        string memory name,
+        string memory symbol
+    )
+        public
+        ERC721Metadata(name, symbol)
+    {
         batchSize = _batchSize;
-        batches.length = MAX_LENGTH;
         ownerIDs.length = MAX_LENGTH;
-        userIDToAddress[0] = address(0);
-        addressToUserID[address(0)] = 0;
         approvedIDs.length = MAX_LENGTH;
     }
 
-    function _sequentialMint(address to, uint16 size) internal returns (uint) {
-        uint id = firstFree;
-        uint end = id + size;
-        uint48 uID = getUserID(to);
-        for (uint i = id; i < end; i++) {
-            emit Transfer(address(0), to, i);
-            ownerIDs[i] = uID;
+    function _getUserID(address to)
+        internal
+        returns (uint48)
+    {
+        if (to == address(0)) {
+            return 0;
         }
-        firstFree += size;
-        _ownedTokensCount[to] += size;
-        tokenCount += size;
-        return id;
-    }
-
-    function getUserID(address to) internal returns (uint48) {
         uint48 uID = addressToUserID[to];
         if (uID == 0) {
-            require(userCount + 1 > userCount, "must not overflow");
+            require(
+                userCount + 1 > userCount,
+                "BT: must not overflow"
+            );
             uID = userCount++;
             userIDToAddress[uID] = to;
             addressToUserID[to] = uID;
+            require(uID != 0, "must not be 0");
         }
         return uID;
     }
 
-    function getNextBatch() internal returns (uint) {
-        if (firstFree > nextBatch) {
-            nextBatch = _pageCount(firstFree, batchSize).mul(batchSize);
-        }
-        return nextBatch;
-    }
+    function _batchMint(
+        address to,
+        uint16 size
+    )
+        internal
+        returns (uint)
+    {
+        require(
+            to != address(0),
+            "Core: must not be null"
+        );
 
-    function _pageCount(uint items, uint perPage) internal pure returns (uint){
-        return ((items - 1) / perPage) + 1;
-    }
+        require(
+            size > 0 && size <= batchSize,
+            "Core: size must be within limits"
+        );
 
-    function _batchMint(address to, uint16 size) internal returns (uint) {
-        require(to != address(0), "must not be null");
-        require(size > 0 && size <= batchSize, "size must be within limits");
-        uint start = getNextBatch();
-        uint48 uID = getUserID(to);
+        uint256 start = nextBatch;
+        uint48 uID = _getUserID(to);
         batches[start] = Batch({
             userID: uID,
             size: size
         });
-        uint end = start + size;
-        for (uint i = start; i < end; i++) {
+        uint256 end = start.add(size);
+        for (uint256 i = start; i < end; i++) {
             emit Transfer(address(0), to, i);
         }
-        nextBatch += batchSize;
-        _ownedTokensCount[to] += size;
-        tokenCount += size;
+        nextBatch = nextBatch.add(batchSize);
+        _balances[to] = _balances[to].add(size);
+        tokenCount = tokenCount.add(size);
         return start;
     }
 
-    function getBatchStart(uint tokenId) public view returns (uint) {
+    function getBatchStart(uint256 tokenId) public view returns (uint) {
         return tokenId.div(batchSize).mul(batchSize);
     }
 
-    function getBatch(uint index) public view returns (uint48 userID, uint16 size) {
+    function getBatch(uint256 index) public view returns (uint48 userID, uint16 size) {
         return (batches[index].userID, batches[index].size);
     }
 
     // Overridden ERC721 functions
     // @OZ: please stop making variables/functions private
 
-    function ownerOf(uint256 tokenId) public view returns (address) {
+    function ownerOf(uint256 tokenId)
+        public
+        view
+        returns (address)
+    {
         uint48 uID = ownerIDs[tokenId];
         if (uID == 0) {
-            uint start = getBatchStart(tokenId);
+            uint256 start = getBatchStart(tokenId);
             Batch memory b = batches[start];
-            require(start + b.size > tokenId, "token does not exist");
+
+            require(
+                start + b.size > tokenId,
+                "BT: token does not exist"
+            );
+
             uID = b.userID;
+            require(uID != 0, "bad batch owner");
         }
         return userIDToAddress[uID];
     }
 
-    function transferFrom(address from, address to, uint256 tokenId) public {
-        require(ownerOf(tokenId) == from, "ERC721: transfer of token that is not own");
-        require(to != address(0), "ERC721: transfer to the zero address");
-        require(_isApprovedOrOwner(msg.sender, tokenId), "ERC721: caller is not owner nor approved");
-        if (approvedIDs[tokenId] != 0) {
-            approvedIDs[tokenId] = 0;
-        }
-        _ownedTokensCount[from]--;
-        _ownedTokensCount[to]++;
-        ownerIDs[tokenId] = getUserID(to);
+     function transferFrom(
+        address from,
+        address to,
+        uint256 tokenId
+    )
+        public
+    {
+        require(
+            ownerOf(tokenId) == from,
+            "BT: transfer of token that is not own"
+        );
+
+        require(
+            to != address(0),
+            "BT: transfer to the zero address"
+        );
+
+        require(
+            _isApprovedOrOwner(msg.sender, tokenId),
+            "BT: caller is not owner nor approved"
+        );
+
+        _cancelApproval(tokenId);
+        _balances[from] = _balances[from].sub(1);
+        _balances[to] = _balances[to].add(1);
+        ownerIDs[tokenId] = _getUserID(to);
         emit Transfer(from, to, tokenId);
     }
 
     function burn(uint256 tokenId) public {
-        require(_isApprovedOrOwner(msg.sender, tokenId), "caller is not owner nor approved");
+        require(
+            _isApprovedOrOwner(msg.sender, tokenId),
+            "BT: caller is not owner nor approved"
+        );
+
+        _cancelApproval(tokenId);
+        address owner = ownerOf(tokenId);
+        _balances[owner] = _balances[owner].sub(1);
+        ownerIDs[tokenId] = 0;
+        tokenCount = tokenCount.sub(1);
+        emit Transfer(owner, address(0), tokenId);
+    }
+
+    function _cancelApproval(uint256 tokenId) internal {
         if (approvedIDs[tokenId] != 0) {
             approvedIDs[tokenId] = 0;
         }
-        address owner = ownerOf(tokenId);
-        _ownedTokensCount[owner]--;
-        ownerIDs[tokenId] = 0;
-        tokenCount--;
-        emit Transfer(owner, address(0), tokenId);
     }
 
     function approve(address to, uint256 tokenId) public {
         address owner = ownerOf(tokenId);
-        require(to != owner, "ERC721: approval to current owner");
 
-        require(msg.sender == owner || isApprovedForAll(owner, msg.sender),
-            "ERC721: approve caller is not owner nor approved for all"
+        require(
+            to != owner,
+            "BT: approval to current owner"
         );
 
-        approvedIDs[tokenId] = getUserID(to);
+        require(
+            msg.sender == owner || isApprovedForAll(owner, msg.sender),
+            "BT: approve caller is not owner nor approved for all"
+        );
+
+        approvedIDs[tokenId] = _getUserID(to);
         emit Approval(owner, to, tokenId);
     }
 
-    function _exists(uint256 tokenId) internal view returns (bool) {
+    function _exists(uint256 tokenId)
+        internal
+        view
+        returns (bool)
+    {
         return ownerOf(tokenId) != address(0);
     }
 
-    function getApproved(uint256 tokenId) public view returns (address) {
-        require(_exists(tokenId), "ERC721: approved query for nonexistent token");
+    function getApproved(uint256 tokenId)
+        public
+        view
+        returns (address)
+    {
+        require(
+            _exists(tokenId),
+            "BT: approved query for nonexistent token"
+        );
+
         return userIDToAddress[approvedIDs[tokenId]];
     }
 
-    function totalSupply() public view returns (uint) {
+    function totalSupply()
+        public
+        view
+        returns (uint)
+    {
         return tokenCount;
     }
 
-    function balanceOf(address _owner) public view returns (uint256) {
-        return _ownedTokensCount[_owner];
+    function balanceOf(address _owner)
+        public
+        view
+        returns (uint256)
+    {
+        return _balances[_owner];
     }
 
 }

@@ -1,12 +1,11 @@
-pragma solidity ^0.5.0;
+pragma solidity 0.5.11;
 
 import "./IProcessor.sol";
 import "./Pack.sol";
-
 import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "./RarityProvider.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
-import "../utils/SafeMath64.sol";
+import "../../utils/SafeMath64.sol";
 
 contract PackFive is Ownable, RarityProvider {
 

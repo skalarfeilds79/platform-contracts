@@ -28,9 +28,9 @@ describe('Example', () => {
 
         cards = await deployer.deploy(Cards, {}, BATCH_SIZE, "Gods Unchained Cards", "CARD");
 
-        await cards.startSeason(0, 2);
-        await cards.addFactory(user, 0);
-        await cards.unlockTrading(0);
+        await cards.startSeason("Test", 1, 2);
+        await cards.addFactory(user, 1);
+        await cards.unlockTrading(1);
 
     });
 

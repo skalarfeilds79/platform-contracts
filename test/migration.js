@@ -78,84 +78,6 @@ describe('Migrating Cards', () => {
 
         });
 
-        // it("should migrate 500 consecutive cards", async() => {
-
-        //     let len = 500;
-
-        //     for (let i = 0; i < len; i++) {
-        //         await old.createCard(user, 1, 1);
-        //     }
-            
-        //     // should do all 100 cards
-        //     let tx = await migration.activatedMigration({gasLimit: 9000000});
-        //     let txReceipt = await cards.verboseWaitForTransaction(tx);  
-        //     let gas = txReceipt.gasUsed.toNumber();
-        //     console.log('500', gas);
-
-        //     // 2 as they are meteorite
-        //     await checkQualities(new Array(len).fill(4), 0);
-        //     await checkProtos(new Array(len).fill(1), 0);
-        //     await checkOwner(new Array(len).fill(user), 0);
-
-        //     let supply = await cards.totalSupply();
-        //     assert.equal(supply, len, "wrong total supply");
-
-        //     let balance = await cards.balanceOf(user);
-        //     assert.equal(balance, len, "wrong balance");
-
-        //     // should not be able to do any more
-        //     assert.revert(migration.activatedMigration());
-
-        // });
-
-
-
-        // it("should migrate 1, then 5", async() => {
-
-        //     let len = 1;
-        //     let nextLen = 5;
-
-        //     for (let i = 0; i < len; i++) {
-        //         await old.createCard(user, 1, 1);
-        //     }
-
-        //     for (let i = 0; i < nextLen; i++) {
-        //         await old.createCard(u2, 1, 1);
-        //     }
-            
-        //     // should do the first 10 cards
-        //     await migration.activatedMigration({gasLimit:9000000});
-
-        //     // 4 as they are meteorite
-        //     await checkQualities(new Array(len).fill(4), 0);
-        //     await checkProtos(new Array(len).fill(1), 0);
-        //     await checkOwner(new Array(len).fill(user), 0);
-
-        //     let supply = await cards.totalSupply();
-        //     assert.equal(supply.toNumber(), len, "wrong total supply");
-
-        //     let xbalance = await cards.balanceOf(u2);
-        //     assert.equal(xbalance.toNumber(), 0, "wrong xbalance");
-
-        //     let balance = await cards.balanceOf(user);
-        //     assert.equal(balance.toNumber(), len, "wrong balance");
-
-        //     // should do the next 90 cards
-        //     await migration.activatedMigration({gasLimit:9000000});
-
-        //     // 4 as they are meteorite
-        //     await checkQualities(new Array(nextLen).fill(4), 0);
-        //     await checkProtos(new Array(nextLen).fill(1), 0);
-        //     await checkOwner(new Array(nextLen).fill(user), 0);
-
-        //     supply = await cards.totalSupply();
-        //     assert.equal(supply, len + nextLen, "wrong total supply");
-
-        //     // should not be able to do any more
-        //     assert.revert(migration.activatedMigration());
-
-        // });
-
         it("should migrate 10, then 90", async() => {
 
             let len = 10;
@@ -207,54 +129,6 @@ describe('Migrating Cards', () => {
             assert.revert(migration.activatedMigration());
 
         });
-
-        // it("should migrate over the gap", async() => {
-            
-        //     let limit = 10;
-
-        //     let c2 = await await deployer.deploy(DirectMigration, {}, 
-        //         old.contractAddress, cards.contractAddress, 1, limit
-        //     );
-
-        //     await cards.addFactory(c2.contractAddress, 1);
-
-        //     let len = 20;
-
-        //     for (let i = 0; i < len; i++) {
-        //         await old.createCard(user, 1, 1);
-        //     }
-   
-        //     // should do in two blocks
-        //     await c2.activatedMigration({gasLimit:9000000});
-        //     let m = await c2.migrated();
-        //     assert.equal(m.toNumber(), 10, "");
-
-        //     await c2.activatedMigration({gasLimit:9000000});
-        //     m = await c2.migrated();
-        //     assert.equal(m.toNumber(), 20, "");
-
-        //     // 4 as they are meteorite
-        //     await checkQualities(new Array(limit).fill(4), 0);
-        //     await checkProtos(new Array(limit).fill(1), 0);
-        //     await checkOwner(new Array(limit).fill(user), 0);
-
-        //     await checkQualities(new Array(limit).fill(4), BATCH_SIZE);
-        //     await checkProtos(new Array(limit).fill(1), BATCH_SIZE);
-        //     await checkOwner(new Array(limit).fill(user), BATCH_SIZE);
-
-        //     let supply = await cards.totalSupply();
-        //     assert.equal(supply.toNumber(), len, "wrong total supply");
-
-        //     let xbalance = await cards.balanceOf(u2);
-        //     assert.equal(xbalance.toNumber(), 0, "wrong xbalance");
-
-        //     let balance = await cards.balanceOf(user);
-        //     assert.equal(balance.toNumber(), len, "wrong balance");
-
-        //     // should not be able to do any more
-        //     assert.revert(c2.activatedMigration());
-
-        // });
 
         it("should migrate over seasons", async() => {
             
@@ -316,15 +190,9 @@ describe('Migrating Cards', () => {
             }
    
             await migration.activatedMigration({gasLimit:9000000});
-            // let m = await migration.migrated();
-            // assert.equal(m.toNumber(), protos.length, "");
-
-            // checkOwner(user, 0, protos.length);
-            // checkProtos(protos, 0);
 
         });
 
     });
-
    
 });

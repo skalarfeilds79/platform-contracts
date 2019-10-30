@@ -2,11 +2,19 @@ pragma solidity 0.5.11;
 
 contract BaseMigration {
 
-    function convertPurity(uint16 purity) public pure returns (uint8) {
+    function convertPurity(uint16 purity)
+        public
+        pure
+        returns (uint8)
+    {
         return uint8(4 - (purity / 1000));
     }
 
-    function convertProto(uint16 proto) public view returns (uint16) {
+    function convertProto(uint16 proto)
+        public
+        view
+        returns (uint16)
+    {
         if (proto >= 1 && proto <= 377) {
             return proto;
         }
@@ -43,12 +51,33 @@ contract BaseMigration {
         if (proto == 384) {
             return 65003;
         }
-        require(false, "unrecognised proto");
+        require(false, "BM: unrecognised proto");
     }
 
-    uint16[] internal ebs = [400, 413, 414, 421, 427, 428, 389, 415, 416, 422, 424, 425, 426, 382, 420, 417];
+    uint16[] internal ebs = [
+        400,
+        413,
+        414,
+        421,
+        427,
+        428,
+        389,
+        415,
+        416,
+        422,
+        424,
+        425,
+        426,
+        382,
+        420,
+        417
+    ];
 
-    function getEtherbotsIndex(uint16 proto) public view returns (bool, uint16) {
+    function getEtherbotsIndex(uint16 proto)
+        public
+        view
+        returns (bool, uint16)
+    {
         for (uint16 i = 0; i < ebs.length; i++) {
             if (ebs[i] == proto) {
                 return (true, i);

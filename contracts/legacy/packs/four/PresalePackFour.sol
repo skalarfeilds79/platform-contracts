@@ -86,7 +86,6 @@ contract PresalePackFour is CardPackFour, Ownable {
             price -= commission;
             emit Referral(referrer, commission, user);
         }
-        
         address(vault).transfer(price);
     }
 

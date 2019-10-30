@@ -10,7 +10,7 @@ const MultiMint = require('../build/MultiMint');
 
 const { checkOwner, checkProtos, checkQualities, mint } = require('../util/checkers');
 
-describe('Migrating Cards', () => {
+describe('Direct Migration', () => {
 
     const manager = new TestManager(accounts);
     let deployer;

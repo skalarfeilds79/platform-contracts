@@ -7,22 +7,23 @@ contract MigrationMigration {
     uint public batchIndex;
     ICards public oldCards;
     ICards public newCards;
+    uint public constant batchSize = 1251;
 
     constructor(ICards _oldCards, ICards _newCards) public {
         oldCards = _oldCards;
         newCards = _newCards;
+
     }
 
     event Migrated(uint batchIndex, uint startID);
 
     function migrate() public {
 
-        (uint48 userID, uint16 size) = oldCards.batches(batchIndex * 1251);
+        (uint48 userID, uint16 size) = oldCards.batches(batchIndex * batchSize);
         require(size > 0, "must be cards in this batch");
         uint16[] memory protos = new uint16[](size);
         uint8[] memory qualities = new uint8[](size);
-        uint startID = batchIndex * 1251;
-        
+        uint startID = batchIndex * batchSize;
         for (uint i = 0; i < size; i++) {
             (protos[i], qualities[i]) = oldCards.getDetails(startID + i);
         }

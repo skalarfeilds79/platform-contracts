@@ -64,34 +64,34 @@ describe('Direct Migration', () => {
             let gas = txReceipt.gasUsed.toNumber();
             console.log('100', gas);
 
-            checkProtos(newCards, protos, 0);
-            checkQualities(newCards, qualities, 0);
-            checkOwner(newCards, user, 0, protos.length);
-            checkBalance(newCards, user, 100);
-            checkSupply(newCards, 100);
+            await checkProtos(newCards, protos, 0);
+            await checkQualities(newCards, qualities, 0);
+            await checkOwner(newCards, user, 0, protos.length);
+            await checkBalance(newCards, user, 100);
+            await checkSupply(newCards, 100);
 
         });
 
-        it("should migrate 300 consecutive cards", async() => {
+        // it("should migrate 300 consecutive cards", async() => {
 
-            let len = 300;
-            let protos = new Array(len).fill(1);
-            let qualities = new Array(len).fill(1);
+        //     let len = 300;
+        //     let protos = new Array(len).fill(1);
+        //     let qualities = new Array(len).fill(1);
 
-            await mint(oldCards, user, protos, qualities, 0);
+        //     await mint(oldCards, user, protos, qualities, 0);
 
-            let tx = await migration.migrate({gasLimit:3000000});
-            let txReceipt = await migration.verboseWaitForTransaction(tx);  
-            let gas = txReceipt.gasUsed.toNumber();
-            console.log('300', gas);
+        //     let tx = await migration.migrate({gasLimit:3000000});
+        //     let txReceipt = await migration.verboseWaitForTransaction(tx);  
+        //     let gas = txReceipt.gasUsed.toNumber();
+        //     console.log('300', gas);
 
-            checkProtos(newCards, protos, 0);
-            checkQualities(newCards, qualities, 0);
-            checkOwner(newCards, user, 0, protos.length);
-            checkBalance(newCards, user, len);
-            checkSupply(newCards, len);
+        //     await checkProtos(newCards, protos, 0);
+        //     await checkQualities(newCards, qualities, 0);
+        //     await checkOwner(newCards, user, 0, protos.length);
+        //     await checkBalance(newCards, user, len);
+        //     await checkSupply(newCards, len);
 
-        });
+        // });
 
         it("should migrate >1 batch", async() => {
 
@@ -103,27 +103,28 @@ describe('Direct Migration', () => {
             
             await migration.migrate({gasLimit:3000000});
 
-            checkProtos(newCards, protos, 0);
-            checkQualities(newCards, qualities, 0);
-            checkOwner(newCards, user, 0, protos.length);
-            checkBalance(newCards, user, 100);
-            checkSupply(newCards, 100);
+            await checkProtos(newCards, protos, 0);
+            await checkQualities(newCards, qualities, 0);
+            await checkQualities(newCards, qualities, 0);
+            await checkOwner(newCards, user, 0, protos.length);
+            await checkBalance(newCards, user, 100);
+            await checkSupply(newCards, 100);
 
             await mint(oldCards, u2, protos, qualities, BATCH_SIZE);
             
             await migration.migrate({gasLimit:3000000});
 
-            checkProtos(newCards, protos, 0);
-            checkQualities(newCards, qualities, 0);
-            checkOwner(newCards, user, 0, protos.length);
+            await checkProtos(newCards, protos, 0);
+            await checkQualities(newCards, qualities, 0);
+            await checkOwner(newCards, user, 0, protos.length);
 
-            checkProtos(newCards, protos, BATCH_SIZE);
-            checkQualities(newCards, qualities, BATCH_SIZE);
-            checkOwner(newCards, u2, BATCH_SIZE, protos.length);
+            await checkProtos(newCards, protos, BATCH_SIZE);
+            await checkQualities(newCards, qualities, BATCH_SIZE);
+            await checkOwner(newCards, u2, BATCH_SIZE, protos.length);
 
-            checkBalance(newCards, u2, len);
-            checkBalance(newCards, user, len);
-            checkSupply(newCards, len*2);
+            await checkBalance(newCards, u2, len);
+            await checkBalance(newCards, user, len);
+            await await checkSupply(newCards, len*2);
 
         });
 
@@ -133,6 +134,21 @@ describe('Direct Migration', () => {
             let qualities = [1]; // new Array(len).fill(1);
 
             await oldCards.approveForMythic(user, 65003);
+
+            await mint(oldCards, user, protos, qualities, 0);
+            
+            assert.revert(migration.migrate({gasLimit:3000000}));
+
+        });
+
+        it("should not migrate invalid protos", async() => {
+
+            let protos = [2000]; // new Array(len).fill(1);
+            let qualities = [1]; // new Array(len).fill(1);
+
+            await oldCards.startSeason("Test", 1000, 2000);
+
+            await oldCards.addFactory(user, 4);
 
             await mint(oldCards, user, protos, qualities, 0);
             
@@ -150,11 +166,11 @@ describe('Direct Migration', () => {
             
             await migration.migrate({gasLimit:3000000});
 
-            checkProtos(newCards, protos, 0);
-            checkQualities(newCards, qualities, 0);
-            checkOwner(newCards, user, 0, protos.length);
-            checkBalance(newCards, user, 100);
-            checkSupply(newCards, 100);
+            await checkProtos(newCards, protos, 0);
+            await checkQualities(newCards, qualities, 0);
+            await checkOwner(newCards, user, 0, protos.length);
+            await checkBalance(newCards, user, 100);
+            await checkSupply(newCards, 100);
 
             protos = [65003];
             qualities = [1]; 
@@ -171,8 +187,6 @@ describe('Direct Migration', () => {
         it("should migrate batches of different sizes", async() => {
 
             let batches = [10, 50, 100, 74];
-
-            
 
             for (let i = 0; i < batches.length; i++) {
                 let size = batches[i];
@@ -195,11 +209,11 @@ describe('Direct Migration', () => {
                 cumulative += size;
 
                 await migration.migrate({gasLimit:3000000});
-                checkProtos(newCards, protos, offset);
-                checkQualities(newCards, qualities, offset);
-                checkOwner(newCards, user, offset, protos.length);
-                checkBalance(newCards, user, cumulative);
-                checkSupply(newCards, cumulative);
+                await checkProtos(newCards, protos, offset);
+                await checkQualities(newCards, qualities, offset);
+                await checkOwner(newCards, user, offset, protos.length);
+                await checkBalance(newCards, user, cumulative);
+                await checkSupply(newCards, cumulative);
                 
             }
 

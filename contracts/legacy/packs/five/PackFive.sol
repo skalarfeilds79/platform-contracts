@@ -13,22 +13,72 @@ contract PackFive is Ownable, RarityProvider {
     using SafeMath64 for uint64;
 
     // fired after user purchases count packs, producing purchase with id
-    event PacksPurchased(uint indexed paymentID, uint indexed id, Pack.Type indexed packType, address user, uint count, uint64 lockup);
+    event PacksPurchased(
+        uint indexed paymentID,
+        uint indexed id,
+        Pack.Type indexed packType,
+        address user,
+        uint count,
+        uint64 lockup
+    );
+
     // fired after the callback transaction is successful, replaces RandomnessReceived
-    event CallbackMade(uint indexed id, address indexed user, uint count, uint randomness);
+    event CallbackMade(
+        uint indexed id,
+        address indexed user,
+        uint count,
+        uint randomness
+    );
+
     // fired after a recommit for a purchase
-    event Recommit(uint indexed id, Pack.Type indexed packType, address indexed user, uint count, uint64 lockup);
+    event Recommit(
+        uint indexed id,
+        Pack.Type indexed packType,
+        address indexed user,
+        uint count,
+        uint64 lockup
+    );
+
     // fired after a card is activated, replaces PacksOpened
-    event CardActivated(uint indexed purchaseID, uint cardIndex, uint indexed cardID, uint16 proto, uint16 purity);
+    event CardActivated(
+        uint indexed purchaseID,
+        uint cardIndex,
+        uint indexed cardID,
+        uint16 proto,
+        uint16 purity
+    );
+
     // fired after a chest is opened
-    event ChestsOpened(uint indexed id, Pack.Type indexed packType, address indexed user, uint count, uint packCount);
+    event ChestsOpened(
+        uint indexed id,
+        Pack.Type indexed packType,
+        address indexed user,
+        uint count,
+        uint packCount
+    );
+
     // fired after a purchase is recorded (either buying packs directly or indirectly)
     // callback sentinels should watch this event
-    event PurchaseRecorded(uint indexed id, Pack.Type indexed packType, address indexed user, uint count, uint64 lockup);
+    event PurchaseRecorded(
+        uint indexed id,
+        Pack.Type indexed packType,
+        address indexed user,
+        uint count,
+        uint64 lockup
+    );
+
     // fired after a purchase is revoked
-    event PurchaseRevoked(uint indexed paymentID, address indexed revoker);
+    event PurchaseRevoked(
+        uint indexed paymentID,
+        address indexed revoker
+    );
+
     // fired when a new pack is added
-    event PackAdded(Pack.Type indexed packType, uint price, address chest);
+    event PackAdded(
+        Pack.Type indexed packType,
+        uint price,
+        address chest
+    );
 
     struct Purchase {
         uint count;
@@ -49,14 +99,19 @@ contract PackFive is Ownable, RarityProvider {
 
     Purchase[] public purchases;
     IProcessor public processor;
+
     mapping(uint => PackInstance) public packs;
     mapping(address => bool) public canLockup;
     mapping(address => bool) public canRevoke;
+
     uint public commitLag = 0;
+
     // TODO: check this fits under mainnet gas limit
     uint16 public activationLimit = 40;
+
     // override switch in case of contract upgrade etc
     bool public canActivate = false;
+
     // maximum lockup length in blocks
     uint64 public maxLockup = 600000;
 
@@ -136,25 +191,52 @@ contract PackFive is Ownable, RarityProvider {
 
     // == User Functions ==
 
-    function purchase(Pack.Type packType, uint16 count, address referrer) public payable returns (uint) {
+    function purchase(
+        Pack.Type packType,
+        uint16 count,
+        address referrer
+    )
+        public
+        payable
+        returns (uint)
+    {
         return purchaseFor(packType, msg.sender, count, referrer, 0);
     }
 
-    function purchaseFor(Pack.Type packType, address user, uint16 count, address referrer, uint64 lockup) public payable returns (uint) {
+    function purchaseFor(
+        Pack.Type packType,
+        address user,
+        uint16 count,
+        address referrer,
+        uint64 lockup
+    )
+        public
+        payable
+        returns (uint)
+    {
 
         PackInstance memory pack = getPack(packType);
 
         uint purchaseID = _recordPurchase(packType, user, count, lockup);
-    
+
         uint paymentID = processor.processPayment.value(msg.value)(msg.sender, pack.price, count, referrer);
-        
+
         emit PacksPurchased(paymentID, purchaseID, packType, user, count, lockup);
 
         return purchaseID;
     }
 
-    function activateMultiple(uint[] memory pIDs, uint[] memory cardIndices)
-        public returns (uint[] memory ids, uint16[] memory protos, uint16[] memory purities) {
+    function activateMultiple(
+        uint[] memory pIDs,
+        uint[] memory cardIndices
+    )
+        public
+        returns (
+            uint[] memory ids,
+            uint16[] memory protos,
+            uint16[] memory purities
+        )
+    {
         uint len = pIDs.length;
         require(len > 0, "can't activate no cards");
         require(len <= activationLimit, "can't activate more than the activation limit");
@@ -168,11 +250,21 @@ contract PackFive is Ownable, RarityProvider {
         return (ids, protos, purities);
     }
 
-    function activate(uint purchaseID, uint cardIndex) public returns (uint id, uint16 proto, uint16 purity) {
-        
+    function activate(
+        uint purchaseID,
+        uint cardIndex
+    )
+        public
+        returns (
+            uint id,
+            uint16 proto,
+            uint16 purity
+        )
+    {
+
         require(canActivatePurchase(purchaseID), "can't activate purchase");
         Purchase storage p = purchases[purchaseID];
-        
+
         require(p.randomness != 0, "must have been a callback");
         uint cardCount = uint(p.count).mul(5);
         require(cardIndex < cardCount, "not a valid card index");
@@ -191,14 +283,21 @@ contract PackFive is Ownable, RarityProvider {
     }
 
     // 'open' a number of chest tokens
-    function openChest(Pack.Type packType, address user, uint count) public returns (uint) {
-        
+    function openChest(
+        Pack.Type packType,
+        address user,
+        uint count
+    )
+        public
+        returns (uint)
+    {
+
         PackInstance memory pack = getPack(packType);
 
         require(msg.sender == pack.token, "can only open from the actual token packs");
 
         uint packCount = count.mul(pack.chestSize);
-        
+
         uint id = _recordPurchase(packType, user, packCount, 0);
 
         emit ChestsOpened(id, packType, user, count, packCount);
@@ -206,13 +305,21 @@ contract PackFive is Ownable, RarityProvider {
         return id;
     }
 
-    function _recordPurchase(Pack.Type packType, address user, uint count, uint64 lockup) internal returns (uint) {
+    function _recordPurchase(
+        Pack.Type packType,
+        address user,
+        uint count,
+        uint64 lockup
+    )
+        internal
+        returns (uint)
+    {
 
         if (lockup != 0) {
             require(lockup < maxLockup, "lockup must be lower than maximum");
             require(canLockup[msg.sender], "only some people can lockup cards");
         }
-        
+
         Purchase memory p = Purchase({
             user: user,
             count: count,
@@ -276,13 +383,25 @@ contract PackFive is Ownable, RarityProvider {
         return count.mul(5).sub(1).div(256).add(1);
     }
 
-    function getPurchaseState(uint purchaseID) public view returns (uint[] memory state) {
+    function getPurchaseState(
+        uint purchaseID
+    )
+        public
+        view
+        returns (uint[] memory state)
+    {
         require(purchases.length > purchaseID, "invalid purchase id");
         Purchase memory p = purchases[purchaseID];
         return p.state;
     }
-    
-    function getPackDetails(Pack.Type packType) public view returns (address token, uint price) {
+
+    function getPackDetails(
+        Pack.Type packType
+    )
+        public
+        view
+        returns (address token, uint price)
+    {
         PackInstance memory p = getPack(packType);
         return (p.token, p.price);
     }
@@ -303,7 +422,14 @@ contract PackFive is Ownable, RarityProvider {
         return p.chestSize;
     }
 
-    function isActivated(uint purchaseID, uint cardIndex) public view returns (bool) {
+    function isActivated(
+        uint purchaseID,
+        uint cardIndex
+    )
+        public
+        view
+        returns (bool)
+    {
         return getStateBit(purchaseID, cardIndex) != 0;
     }
 
@@ -316,7 +442,14 @@ contract PackFive is Ownable, RarityProvider {
         return bit;
     }
 
-    function predictPacks(uint id) external view returns (uint16[] memory protos, uint16[] memory purities) {
+    function predictPacks(uint id)
+        external
+        view
+        returns (
+            uint16[] memory protos,
+            uint16[] memory purities
+        )
+    {
 
         Purchase memory p = purchases[id];
 
@@ -335,7 +468,7 @@ contract PackFive is Ownable, RarityProvider {
 
         return (protos, purities);
     }
- 
+
     function inLockupPeriod(Purchase memory p) internal view returns (bool) {
         return p.commit.add(p.lockup) >= block.number;
     }

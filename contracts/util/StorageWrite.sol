@@ -26,7 +26,16 @@ library StorageWrite {
         assembly { sstore(slot, _value) }
     }
 
-    function _loadSlots(uint _slot, uint _offset, uint _perSlot, uint _length) internal view returns (uint[] memory slots) {
+    function _loadSlots(
+        uint _slot,
+        uint _offset,
+        uint _perSlot,
+        uint _length
+    )
+        internal
+        view
+        returns (uint[] memory slots)
+    {
         uint slotCount = _slotCount(_offset, _perSlot, _length);
         slots = new uint[](slotCount);
         // top and tail the slots

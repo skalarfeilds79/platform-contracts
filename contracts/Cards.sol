@@ -72,7 +72,7 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
 
     // Map ether a mythic exists or not
     mapping(uint16 => bool) public mythicCreated;
-    
+
     uint16 public constant MYTHIC_THRESHOLD = 65000;
 
     constructor(
@@ -105,7 +105,7 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         uint16 _proto,
         uint8 _quality
     )
-        external 
+        external
         returns (uint id)
     {
         id = _batchMint(to, 1);
@@ -203,10 +203,10 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
     }
 
     function burnAll(uint256[] memory tokenIDs) public {
-       for (uint256 i = 0; i < tokenIDs.length; i++) {
-           burn(tokenIDs[i]);
-       }
-   }
+        for (uint256 i = 0; i < tokenIDs.length; i++) {
+            burn(tokenIDs[i]);
+        }
+    }
 
     function isTradable(uint256 _tokenId) public view returns (bool) {
         return seasonTradable[protoToSeason[cardProtos[_tokenId]]];
@@ -239,7 +239,8 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         // seasons start at 1
         uint16 id = uint16(seasons.push(Season({ high: high, low: low })));
 
-        uint256 cp; assembly { cp := protoToSeason_slot }
+        uint256 cp;
+        assembly { cp := protoToSeason_slot }
         StorageWrite.repeatUint16(cp, low, (high - low) + 1, id);
 
         emit SeasonStarted(id, name, low, high);
@@ -295,7 +296,7 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         }
     }
 
-    
+
     function _validateAndSaveDetails(
         uint256 start,
         uint16[] memory _protos,
@@ -305,9 +306,12 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
     {
         _validateProtos(_protos);
 
-        uint256 cp; assembly { cp := cardProtos_slot }
+        uint256 cp;
+        assembly { cp := cardProtos_slot }
         StorageWrite.uint16s(cp, start, _protos);
-        uint256 cq; assembly { cq := cardQualities_slot }
+
+        uint256 cq;
+        assembly { cq := cardQualities_slot }
         StorageWrite.uint8s(cq, start, _qualities);
     }
 
@@ -346,7 +350,7 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
                     !mythicCreated[proto],
                     "Core: mythic has already been created"
                 );
-                
+
                 mythicCreated[proto] = true;
             } else {
                 if (proto > maxProto) {

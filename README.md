@@ -25,10 +25,11 @@ migration/v1Migration.sol
 migration/v2Migration.sol
 ```
 
-Users who have reported issues with confirmed bounties. 
+Users who have reported issues with confirmed bounties.
 
 - nightman
 - nate
+- gotyourback
 
 ## Quality
 

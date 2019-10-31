@@ -219,6 +219,7 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         public
         onlyOwner
     {
+        require(_season > 0 && _season <= seasons.length, "Core: must be a current season");
         require(!seasonTradable[_season], "Core: season must not be tradable");
         seasonTradable[_season] = true;
     }
@@ -455,7 +456,7 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
             "Core: factory can't change quality of this season"
         );
 
-        cardQualities[_quality] = _quality;
+        cardQualities[_tokenId] = _quality;
         emit QualityChanged(_tokenId, _quality, msg.sender);
     }
 

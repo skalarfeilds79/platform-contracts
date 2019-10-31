@@ -7,6 +7,7 @@ const InvalidReceiver = require('../build/InvalidReceiver');
 const TestManager = require("../util/test-manager");
 const ethers = require('ethers');
 
+const { checkBalance, checkSupply } = require('../util/checkers');
 
 describe('Example', () => {
 
@@ -210,6 +211,30 @@ describe('Example', () => {
             let actual = await cards.tokenURI(0);
 
             assert.equal(actual, expected.toLowerCase(), "wrong token URI");
+
+        });
+
+        it('operator should be able to burn token', async () => {
+
+            await cards.mintCards(user, [1], [1]);
+            const tokenId = 0;
+
+            await cards.setApprovalForAll(recipient, true);
+            await cards.from(accounts[1]).burn(tokenId);
+
+            await checkSupply(cards, 0);
+            await checkBalance(cards, user, 0);
+        });
+
+        it('should be able to burn own token', async () => {
+
+            await cards.mintCards(user, [1], [1]);
+            const tokenId = 0;
+
+            await cards.burn(tokenId);
+
+            await checkSupply(cards, 0);
+            await checkBalance(cards, user, 0);
 
         });
 

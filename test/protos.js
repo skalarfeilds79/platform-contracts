@@ -25,7 +25,7 @@ describe('Example', () => {
         }
         assert(expected.every((p, i) => real[i] == p), "wrong seasons");
     }
-    
+
     beforeEach(async () => {
 
         deployer = manager.getDeployer();

@@ -70,7 +70,13 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
     // Map whether a factory has been authorised or not
     mapping(address => mapping(uint256 => bool)) public factoryApproved;
 
-    // Map ether a mythic exists or not
+    // Whether a factory is approved to create a particular mythic
+    mapping(uint16 => mapping(address => bool)) public mythicApproved;
+
+    // Whether a mythic is tradable
+    mapping(uint16 => bool) public mythicTradable;
+
+    // Map whether a mythic exists or not
     mapping(uint16 => bool) public mythicCreated;
 
     uint16 public constant MYTHIC_THRESHOLD = 65000;
@@ -168,6 +174,45 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         factoryApproved[_factory][_season] = true;
     }
 
+    function approveForMythic(
+        address _factory,
+        uint16 _mythic
+    )
+        public
+        onlyOwner
+    {
+        require(
+            _mythic >= MYTHIC_THRESHOLD,
+            "not a mythic"
+        );
+
+        require(
+            !mythicApproved[_mythic][_factory],
+            "Core: this factory is already approved for this mythic"
+        );
+
+        mythicApproved[_mythic][_factory] = true;
+    }
+
+    function makeMythicTradable(
+        uint16 _mythic
+    )
+        public
+        onlyOwner
+    {
+        require(
+            _mythic >= MYTHIC_THRESHOLD,
+            "not a mythic"
+        );
+
+        require(
+            !mythicTradable[_mythic],
+            "must not be tradable already"
+        );
+
+        mythicTradable[_mythic] = true;
+    }
+
     function unlockTrading(
         uint256 _season
     )
@@ -209,7 +254,11 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
     }
 
     function isTradable(uint256 _tokenId) public view returns (bool) {
-        return seasonTradable[protoToSeason[cardProtos[_tokenId]]];
+        uint16 proto = cardProtos[_tokenId];
+        if (proto >= MYTHIC_THRESHOLD) {
+            return mythicTradable[proto];
+        }
+        return seasonTradable[protoToSeason[proto]];
     }
 
     function startSeason(
@@ -234,6 +283,11 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         require(
             seasons.length == 0 || low > seasons[seasons.length - 1].high,
             "Core: seasons cannot overlap"
+        );
+
+        require(
+            MYTHIC_THRESHOLD > high,
+            "Core: cannot go into mythic territory"
         );
 
         // seasons start at 1
@@ -296,7 +350,10 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         }
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
     function _validateAndSaveDetails(
         uint256 start,
         uint16[] memory _protos,
@@ -315,19 +372,11 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         StorageWrite.uint8s(cq, start, _qualities);
     }
 
-
     function _validateProto(uint16 proto) internal {
         if (proto >= MYTHIC_THRESHOLD) {
-
-            require(
-                !mythicCreated[proto],
-                "Core: mythic has already been created"
-            );
-
-            mythicCreated[proto] = true;
+            _checkCanCreateMythic(proto);
         } else {
             uint256 season = protoToSeason[proto];
-
             require(
                 season != 0,
                 "Core: must have season set"
@@ -346,12 +395,7 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         for (uint256 i = 0; i < _protos.length; i++) {
             uint16 proto = _protos[i];
             if (proto >= MYTHIC_THRESHOLD) {
-                require(
-                    !mythicCreated[proto],
-                    "Core: mythic has already been created"
-                );
-
-                mythicCreated[proto] = true;
+                _checkCanCreateMythic(proto);
             } else {
                 if (proto > maxProto) {
                     maxProto = proto;
@@ -381,6 +425,21 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         }
     }
 
+    function _checkCanCreateMythic(uint16 proto) internal {
+
+        require(
+            mythicApproved[proto][msg.sender],
+            "Core: not approved to create this mythic"
+        );
+
+        require(
+            !mythicCreated[proto],
+            "Core: mythic has already been created"
+        );
+
+        mythicCreated[proto] = true;
+    }
+
     function setQuality(
         uint256 _tokenId,
         uint8 _quality
@@ -388,6 +447,7 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         public
     {
         uint16 proto = cardProtos[_tokenId];
+        // wont' be able to change mythic season
         uint256 season = protoToSeason[proto];
 
         require(

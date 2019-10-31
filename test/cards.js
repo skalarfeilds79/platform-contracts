@@ -5,7 +5,7 @@ const Cards = require('../build/Cards');
 const TestManager = require("../util/test-manager");
 const ethers = require('ethers');
 
-const { mint } = require('../util/checkers');
+const { mint, checkQualities } = require('../util/checkers');
 
 describe('Card Creation Tests', () => {
 
@@ -53,7 +53,7 @@ describe('Card Creation Tests', () => {
         });
 
         it("should not be able to batch mint more than the limit", async() => {
-            
+
             const len = BATCH_SIZE + 1;
 
             await mint(cards, user, new Array(len).fill(1), new Array(len).fill(1), 0, true);
@@ -61,7 +61,7 @@ describe('Card Creation Tests', () => {
         });
 
         it("should set ownership details correctly for all cards", async() => {
-            
+
             const len = 100;
 
             await mint(cards, user, new Array(len).fill(1), new Array(len).fill(1), 0);
@@ -69,7 +69,7 @@ describe('Card Creation Tests', () => {
         });
 
         it("should set proto/quality correctly for all cards", async() => {
-            
+
             const len = 32;
 
             let protos = new Array(len).fill(1);
@@ -85,7 +85,7 @@ describe('Card Creation Tests', () => {
         });
 
         it("should set proto/quality correctly for all cards, with multiple slots remainders", async() => {
-            
+
             const len = 38;
 
             let protos = new Array(len).fill(1);
@@ -101,7 +101,7 @@ describe('Card Creation Tests', () => {
         });
 
         it("should set proto/quality correctly for all cards, with remainders", async() => {
-            
+
             const len = 6;
 
             let protos = new Array(len).fill(1);
@@ -123,7 +123,7 @@ describe('Card Creation Tests', () => {
         });
 
         it("should only be able to mint one mythic", async() => {
-            
+
             await mint(cards, user, [65000], [1], 0);
 
             await mint(cards, user, [65000], [1], 0, true);
@@ -149,7 +149,7 @@ describe('Card Creation Tests', () => {
         });
 
         it("mythics should be untradable by default", async() => {
-            
+
             await mint(cards, user, [65000], [1], 0);
 
             assert.revert(cards.burn(0));
@@ -157,7 +157,7 @@ describe('Card Creation Tests', () => {
         });
 
         it("owner should be able to make mythics tradable", async() => {
-            
+
             await mint(cards, user, [65000], [1], 0);
 
             await cards.makeMythicTradable(65000);
@@ -167,7 +167,7 @@ describe('Card Creation Tests', () => {
         });
 
         it("non-owner should not be able to make mythics tradable", async() => {
-            
+
             await mint(cards, user, [65000], [1], 0);
 
             assert.revert(cards.from(u2).makeMythicTradable(65000));
@@ -177,7 +177,7 @@ describe('Card Creation Tests', () => {
         });
 
         it("should set consecutive batches which have only one token", async() => {
-            
+
             const len = 1;
 
             let protos = new Array(len).fill(1);
@@ -194,7 +194,7 @@ describe('Card Creation Tests', () => {
 
 
         it("should set consecutive batches which are smaller than the limit", async() => {
-            
+
             const len = 16;
 
             let protos = new Array(len).fill(1);
@@ -210,7 +210,7 @@ describe('Card Creation Tests', () => {
         });
 
         it("should set consecutive batches which are equal to the limit", async() => {
-            
+
             const len = BATCH_SIZE;
 
             let protos = new Array(len).fill(1);
@@ -225,7 +225,24 @@ describe('Card Creation Tests', () => {
 
         });
 
+        it("should set quality correctly", async() => {
+
+            let len = 5;
+
+            let protos = new Array(len).fill(1);
+            let qualities = new Array(len).fill(1);
+
+            await mint(cards, user, protos, qualities, 0);
+
+            for (let i = 0; i < len; i++) {
+                await cards.setQuality(i, 3);
+            }
+
+            await checkQualities(cards, new Array(len).fill(3), 0);
+
+        });
+
     });
 
-   
+
 });

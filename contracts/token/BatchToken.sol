@@ -177,7 +177,7 @@ contract BatchToken is ERC721Metadata {
         }
     }
 
-    function approve(address _approved, uint256 _tokenId) external payable {
+    function approve(address _approved, uint256 _tokenId) public {
         address owner = ownerOf(_tokenId);
 
         require(
@@ -190,7 +190,7 @@ contract BatchToken is ERC721Metadata {
             "BT: approve caller is not owner nor approved for all"
         );
 
-        approvedIDs[_tokenId] = _getUserID(to);
+        approvedIDs[_tokenId] = _getUserID(_approved);
         emit Approval(owner, _approved, _tokenId);
     }
 

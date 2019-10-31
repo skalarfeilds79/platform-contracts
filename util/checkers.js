@@ -1,14 +1,24 @@
 
 var self = module.exports = {
 
-    checkOwner: async function(owner, start, len) {
+    checkBalance: async function(cards, user, expected) {
+        let balance = await cards.balanceOf(user);
+        assert.equal(balance.toNumber(), expected, "wrong balance");
+    },
+
+    checkSupply: async function(cards, expected) {
+        let supply = await cards.totalSupply();
+        assert.equal(supply.toNumber(), expected, "wrong total supply");
+    },
+
+    checkOwner: async function(cards, owner, start, len) {
         for (let i = start; i < start+len; i++) {
             let test = await cards.ownerOf(i);
             assert.equal(test, owner, "wrong owner");
         }
     },
 
-    checkQualities: async function(expected, start) {
+    checkQualities: async function(cards, expected, start) {
         let real = [];
         let end = start + expected.length;
         for (let i = start; i < end; i++) {
@@ -18,7 +28,7 @@ var self = module.exports = {
         assert(expected.every((p, i) => real[i] == p), "wrong qualities");
     },
 
-    checkProtos: async function(expected, start) {
+    checkProtos: async function(cards, expected, start) {
         let real = [];
         let end = start + expected.length;
         for (let i = start; i < end; i++) {
@@ -34,9 +44,9 @@ var self = module.exports = {
             assert.revert(cards.mintCards(user, protos, qualities, { gasLimit: 9000000}));
         } else {
             await cards.mintCards(user, protos, qualities, { gasLimit: 9000000});
-            await self.checkOwner(user, offset, protos.length);
-            await self.checkProtos(protos, offset);
-            await self.checkQualities(qualities, offset);
+            await self.checkOwner(cards, user, offset, protos.length);
+            await self.checkProtos(cards, protos, offset);
+            await self.checkQualities(cards, qualities, offset);
         }
     }
 

@@ -15,7 +15,7 @@ describe('Card Creation Tests', () => {
     ethers.errors.setLogLevel("error");
 
     let user = accounts[0].signer.address;
-    let u2 = accounts[1].signer.address;
+    let u2 = accounts[1].signer;
 
     let BATCH_SIZE = 101;
 
@@ -29,6 +29,8 @@ describe('Card Creation Tests', () => {
 	    await cards.startSeason("Etherbots", 380, 396);
 	    await cards.startSeason("Promo", 400, 500);
         await cards.addFactory(user, 1);
+        await cards.approveForMythic(user, 65000);
+        await cards.approveForMythic(user, 65001);
 
     });
 
@@ -125,6 +127,52 @@ describe('Card Creation Tests', () => {
             await mint(cards, user, [65000], [1], 0);
 
             await mint(cards, user, [65000], [1], 0, true);
+
+        });
+
+        it("owner should be able to approve factory for mythic", async() => {
+
+            await cards.approveForMythic(user, 65010);
+
+        });
+
+        it("non-approved user should not be able to approve factory for mythic", async() => {
+
+            assert.revert(cards.from(u2).approveForMythic(user, 65010));
+
+        });
+
+        it("non-approved user should not be able to mint mythic", async() => {
+
+            assert.revert(cards.from(u2).mintCards(user, [65000], [1], { gasLimit: 9000000}));
+
+        });
+
+        it("mythics should be untradable by default", async() => {
+            
+            await mint(cards, user, [65000], [1], 0);
+
+            assert.revert(cards.burn(0));
+
+        });
+
+        it("owner should be able to make mythics tradable", async() => {
+            
+            await mint(cards, user, [65000], [1], 0);
+
+            await cards.makeMythicTradable(65000);
+
+            await cards.burn(0);
+
+        });
+
+        it("non-owner should not be able to make mythics tradable", async() => {
+            
+            await mint(cards, user, [65000], [1], 0);
+
+            assert.revert(cards.from(u2).makeMythicTradable(65000));
+
+            assert.revert(cards.burn(0));
 
         });
 

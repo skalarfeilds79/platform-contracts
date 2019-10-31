@@ -76,9 +76,9 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
     // Whether a mythic is tradable
     mapping(uint16 => bool) public mythicTradable;
 
-    // Map ether a mythic exists or not
+    // Map whether a mythic exists or not
     mapping(uint16 => bool) public mythicCreated;
-    
+
     uint16 public constant MYTHIC_THRESHOLD = 65000;
 
     constructor(
@@ -344,7 +344,6 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         }
     }
 
-    
     function _validateAndSaveDetails(
         uint256 start,
         uint16[] memory _protos,
@@ -360,24 +359,11 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         StorageWrite.uint8s(cq, start, _qualities);
     }
 
-
     function _validateProto(uint16 proto) internal {
         if (proto >= MYTHIC_THRESHOLD) {
-
-            require(
-                mythicApproved[proto][msg.sender],
-                "Core: not approved to create this mythic"
-            );
-
-            require(
-                !mythicCreated[proto],
-                "Core: mythic has already been created"
-            );
-
-            mythicCreated[proto] = true;
+            _checkCanCreateMythic(proto);
         } else {
             uint256 season = protoToSeason[proto];
-
             require(
                 season != 0,
                 "Core: must have season set"
@@ -396,18 +382,7 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         for (uint256 i = 0; i < _protos.length; i++) {
             uint16 proto = _protos[i];
             if (proto >= MYTHIC_THRESHOLD) {
-
-                require(
-                    mythicApproved[proto][msg.sender],
-                    "Core: not approved to create this mythic"
-                );
-
-                require(
-                    !mythicCreated[proto],
-                    "Core: mythic has already been created"
-                );
-                
-                mythicCreated[proto] = true;
+                _checkCanCreateMythic(proto);
             } else {
                 if (proto > maxProto) {
                     maxProto = proto;
@@ -435,6 +410,21 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
                 "Core: must be approved factory for this season"
             );
         }
+    }
+
+    function _checkCanCreateMythic(uint16 proto) internal {
+
+        require(
+            mythicApproved[proto][msg.sender],
+            "Core: not approved to create this mythic"
+        );
+
+        require(
+            !mythicCreated[proto],
+            "Core: mythic has already been created"
+        );
+
+        mythicCreated[proto] = true;
     }
 
     function setQuality(

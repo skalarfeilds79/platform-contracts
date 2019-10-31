@@ -5,9 +5,16 @@ import "./CardBase.sol";
 contract CardProto is CardBase {
 
     event NewProtoCard(
-        uint16 id, uint8 season, uint8 god, 
-        Rarity rarity, uint8 mana, uint8 attack, 
-        uint8 health, uint8 cardType, uint8 tribe, bool packable
+        uint16 id,
+        uint8 season,
+        uint8 god,
+        Rarity rarity,
+        uint8 mana,
+        uint8 attack,
+        uint8 health,
+        uint8 cardType,
+        uint8 tribe,
+        bool packable
     );
 
     struct Limit {
@@ -58,8 +65,9 @@ contract CardProto is CardBase {
     }
 
     function nextSeason() public onlyGovernor {
-        //Seasons shouldn't go to 0 if there is more than the uint8 should hold, the governor should know this ¯\_(ツ)_/¯ -M
-        require(currentSeason <= 255); 
+        //Seasons shouldn't go to 0 if there is more than the uint8 should hold,
+        // the governor should know this ¯\_(ツ)_/¯ -M
+        require(currentSeason <= 255);
 
         currentSeason++;
         mythic.length = 0;
@@ -73,7 +81,7 @@ contract CardProto is CardBase {
         Common,
         Rare,
         Epic,
-        Legendary, 
+        Legendary,
         Mythic
     }
 
@@ -101,7 +109,7 @@ contract CardProto is CardBase {
     // rather than 1 byte per instance
 
     uint16 public protoCount;
-    
+
     mapping(uint16 => ProtoCard) protos;
 
     uint16[] public mythic;
@@ -111,8 +119,15 @@ contract CardProto is CardBase {
     uint16[] public common;
 
     function addProtos(
-        uint16[] memory externalIDs, uint8[] memory gods, Rarity[] memory rarities, uint8[] memory manas, uint8[] memory attacks, 
-        uint8[] memory healths, uint8[] memory cardTypes, uint8[] memory tribes, bool[] memory packable
+        uint16[] memory externalIDs,
+        uint8[] memory gods,
+        Rarity[] memory rarities,
+        uint8[] memory manas,
+        uint8[] memory attacks,
+        uint8[] memory healths,
+        uint8[] memory cardTypes,
+        uint8[] memory tribes,
+        bool[] memory packable
     ) public onlyGovernor returns(uint16) {
 
         for (uint i = 0; i < externalIDs.length; i++) {
@@ -131,12 +146,24 @@ contract CardProto is CardBase {
 
             _addProto(externalIDs[i], card, packable[i]);
         }
-        
+
     }
 
     function addProto(
-        uint16 externalID, uint8 god, Rarity rarity, uint8 mana, uint8 attack, uint8 health, uint8 cardType, uint8 tribe, bool packable
-    ) public onlyGovernor returns(uint16) {
+        uint16 externalID,
+        uint8 god,
+        Rarity rarity,
+        uint8 mana,
+        uint8 attack,
+        uint8 health,
+        uint8 cardType,
+        uint8 tribe,
+        bool packable
+    )
+        public
+        onlyGovernor
+        returns(uint16)
+    {
         ProtoCard memory card = ProtoCard({
             exists: true,
             god: god,
@@ -153,8 +180,18 @@ contract CardProto is CardBase {
     }
 
     function addWeapon(
-        uint16 externalID, uint8 god, Rarity rarity, uint8 mana, uint8 attack, uint8 durability, bool packable
-    ) public onlyGovernor returns(uint16) {
+        uint16 externalID,
+        uint8 god,
+        Rarity rarity,
+        uint8 mana,
+        uint8 attack,
+        uint8 durability,
+        bool packable
+    )
+        public
+        onlyGovernor
+        returns(uint16)
+    {
 
         ProtoCard memory card = ProtoCard({
             exists: true,
@@ -171,8 +208,17 @@ contract CardProto is CardBase {
         _addProto(externalID, card, packable);
     }
 
-    function addSpell(uint16 externalID, uint8 god, Rarity rarity, uint8 mana, bool packable) public onlyGovernor returns(uint16) {
-
+    function addSpell(
+        uint16 externalID,
+        uint8 god,
+        Rarity rarity,
+        uint8 mana,
+        bool packable
+    )
+        public
+        onlyGovernor
+        returns(uint16)
+    {
         ProtoCard memory card = ProtoCard({
             exists: true,
             god: god,
@@ -189,8 +235,19 @@ contract CardProto is CardBase {
     }
 
     function addMinion(
-        uint16 externalID, uint8 god, Rarity rarity, uint8 mana, uint8 attack, uint8 health, uint8 tribe, bool packable
-    ) public onlyGovernor returns(uint16) {
+        uint16 externalID,
+        uint8 god,
+        Rarity rarity,
+        uint8 mana,
+        uint8 attack,
+        uint8 health,
+        uint8 tribe,
+        bool packable
+    )
+        public
+        onlyGovernor
+        returns(uint16)
+    {
 
         ProtoCard memory card = ProtoCard({
             exists: true,
@@ -207,7 +264,13 @@ contract CardProto is CardBase {
         _addProto(externalID, card, packable);
     }
 
-    function _addProto(uint16 externalID, ProtoCard memory card, bool packable) internal {
+    function _addProto(
+        uint16 externalID,
+        ProtoCard memory card,
+        bool packable
+    )
+        internal
+    {
 
         require(!protos[externalID].exists);
 
@@ -218,8 +281,8 @@ contract CardProto is CardBase {
         protoCount++;
 
         emit NewProtoCard(
-            externalID, currentSeason, card.god, 
-            card.rarity, card.mana, card.attack, 
+            externalID, currentSeason, card.god,
+            card.rarity, card.mana, card.attack,
             card.health, card.cardType, card.tribe, packable
         );
 
@@ -242,7 +305,15 @@ contract CardProto is CardBase {
     }
 
     function getProto(uint16 id) public view returns(
-        bool exists, uint8 god, uint8 season, uint8 cardType, Rarity rarity, uint8 mana, uint8 attack, uint8 health, uint8 tribe
+        bool exists,
+        uint8 god,
+        uint8 season,
+        uint8 cardType,
+        Rarity rarity,
+        uint8 mana,
+        uint8 attack,
+        uint8 health,
+        uint8 tribe
     ) {
         ProtoCard memory proto = protos[id];
         return (
@@ -292,7 +363,13 @@ contract CardProto is CardBase {
     // each season gets a 'balancing beta'
     // totally immutable: season, rarity
     function replaceProto(
-        uint16 index, uint8 god, uint8 cardType, uint8 mana, uint8 attack, uint8 health, uint8 tribe
+        uint16 index,
+        uint8 god,
+        uint8 cardType,
+        uint8 mana,
+        uint8 attack,
+        uint8 health,
+        uint8 tribe
     ) public onlyGovernor {
         ProtoCard memory pc = protos[index];
         require(!seasonTradable[pc.season]);

@@ -129,7 +129,7 @@ contract BatchToken is ERC721Metadata {
         return userIDToAddress[uID];
     }
 
-     function transferFrom(
+    function transferFrom(
         address from,
         address to,
         uint256 tokenId

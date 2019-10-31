@@ -37,10 +37,23 @@ contract PresalePackFour is CardPackFour, Ownable {
         vault = _vault;
     }
 
-    function basePrice() public returns (uint);
-    function getCardDetails(uint16 packIndex, uint8 cardIndex, uint result) public view returns (uint16 proto, uint16 purity);
-    
-    function packSize() public view returns (uint8) {
+    function basePrice()
+        public
+        returns (uint);
+
+    function getCardDetails(
+        uint16 packIndex,
+        uint8 cardIndex,
+        uint result
+    )
+        public
+        view
+        returns (uint16 proto, uint16 purity);
+
+    function packSize()
+        public
+        pure returns (uint8)
+    {
         return 5;
     }
 
@@ -141,7 +154,7 @@ contract PresalePackFour is CardPackFour, Ownable {
     }
 
     function claim(uint id) public {
-        
+
         Purchase storage p = purchases[id];
 
         require(canClaim);

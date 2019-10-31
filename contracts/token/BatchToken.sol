@@ -59,7 +59,6 @@ contract BatchToken is ERC721Metadata {
             uID = userCount++;
             userIDToAddress[uID] = to;
             addressToUserID[to] = uID;
-            require(uID != 0, "must not be 0");
         }
         return uID;
     }
@@ -178,11 +177,11 @@ contract BatchToken is ERC721Metadata {
         }
     }
 
-    function approve(address to, uint256 tokenId) public {
-        address owner = ownerOf(tokenId);
+    function approve(address _approved, uint256 _tokenId) public {
+        address owner = ownerOf(_tokenId);
 
         require(
-            to != owner,
+            _approved != owner,
             "BT: approval to current owner"
         );
 
@@ -191,8 +190,8 @@ contract BatchToken is ERC721Metadata {
             "BT: approve caller is not owner nor approved for all"
         );
 
-        approvedIDs[tokenId] = _getUserID(to);
-        emit Approval(owner, to, tokenId);
+        approvedIDs[_tokenId] = _getUserID(_approved);
+        emit Approval(owner, _approved, _tokenId);
     }
 
     function _exists(uint256 tokenId)

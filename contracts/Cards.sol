@@ -285,6 +285,11 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
             "Core: seasons cannot overlap"
         );
 
+        require(
+            MYTHIC_THRESHOLD > high,
+            "Core: cannot go into mythic territory"
+        );
+
         // seasons start at 1
         uint16 id = uint16(seasons.push(Season({ high: high, low: low })));
 
@@ -434,6 +439,7 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         public
     {
         uint16 proto = cardProtos[_tokenId];
+        // wont' be able to change mythic season
         uint256 season = protoToSeason[proto];
 
         require(

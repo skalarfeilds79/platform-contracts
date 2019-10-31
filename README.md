@@ -1,12 +1,34 @@
 
 # Gods Unchained Smart Contracts
 
-Currently pre-release. Two important contracts are currently deployed on ropsten: 
+## Bug Bounty
 
-Cards (0xa347D597F157A9ce3B4f93e23790D366019A44Db): Core contract
+We will pay a bug bounty for bugs found in the following contracts, scaled based on severity. To report bugs, please DM ```@ender``` on Gods Unchained Discord or email ```alex@immutable.com```.
 
-OpenMinter (0x98e2f2d290672C95aaAa0710CB565F2210f9c215): Minter contract (can create any cards for testing)
+```
+Cards.sol
+util/StorageWrite.sol
+util/String.sol
+token/MultiTransfer.sol
+token/ImmutableToken.sol
+token/InscribableToken.sol
+token/BatchToken.sol
+migration/DirectMigration.sol
+migration/BaseMigration.sol
+migration/MigrationMigration.sol
+```
 
+The following contracts will be added once finalised:
+
+```
+migration/v1Migration.sol
+migration/v2Migration.sol
+```
+
+Users who have reported issues with confirmed bounties. 
+
+- nightman
+- nate
 
 ## Quality
 

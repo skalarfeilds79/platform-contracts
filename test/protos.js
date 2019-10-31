@@ -73,12 +73,6 @@ describe('Example', () => {
 
         });
 
-        it("non-owner should not be able to start season", async() => {
-
-            assert.revert(cards.startSeason("Test", 378, 400));
-
-        });
-
     });
 
    

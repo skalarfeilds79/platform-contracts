@@ -124,10 +124,88 @@ describe('Direct Migration', () => {
             checkBalance(newCards, u2, len);
             checkBalance(newCards, user, len);
             checkSupply(newCards, len*2);
-            
-    
 
         });
+
+        it("should not migrate invalid mythics", async() => {
+
+            let protos = [65003]; // new Array(len).fill(1);
+            let qualities = [1]; // new Array(len).fill(1);
+
+            await oldCards.approveForMythic(user, 65003);
+
+            await mint(oldCards, user, protos, qualities, 0);
+            
+            assert.revert(migration.migrate({gasLimit:3000000}));
+
+        });
+
+        it("should migrate >1 batch, but not mythics", async() => {
+
+            let len = 100;
+            let protos = new Array(len).fill(1);
+            let qualities = new Array(len).fill(1);
+
+            await mint(oldCards, user, protos, qualities, 0);
+            
+            await migration.migrate({gasLimit:3000000});
+
+            checkProtos(newCards, protos, 0);
+            checkQualities(newCards, qualities, 0);
+            checkOwner(newCards, user, 0, protos.length);
+            checkBalance(newCards, user, 100);
+            checkSupply(newCards, 100);
+
+            protos = [65003];
+            qualities = [1]; 
+
+            await oldCards.approveForMythic(user, 65003);
+
+            await mint(oldCards, user, protos, qualities, BATCH_SIZE);
+            
+            assert.revert(migration.migrate({gasLimit:3000000}));
+
+
+        });
+
+        it("should migrate batches of different sizes", async() => {
+
+            let batches = [10, 50, 100, 74];
+
+            
+
+            for (let i = 0; i < batches.length; i++) {
+                let size = batches[i];
+                let protos = new Array(size).fill(1);
+                let qualities = new Array(size).fill(1);
+                await mint(oldCards, user, protos, qualities, BATCH_SIZE * i);
+
+            }
+
+            let cumulative = 0;
+
+            for (let i = 0; i < batches.length; i++) {
+
+                let size = batches[i];
+
+                let protos = new Array(size).fill(1);
+                let qualities = new Array(size).fill(1);
+
+                let offset = BATCH_SIZE * i;
+                cumulative += size;
+
+                await migration.migrate({gasLimit:3000000});
+                checkProtos(newCards, protos, offset);
+                checkQualities(newCards, qualities, offset);
+                checkOwner(newCards, user, offset, protos.length);
+                checkBalance(newCards, user, cumulative);
+                checkSupply(newCards, cumulative);
+                
+            }
+
+        });
+
+        
 
     });
    

@@ -5,7 +5,7 @@ const Cards = require('../build/Cards');
 const TestManager = require("../util/test-manager");
 const ethers = require('ethers');
 
-const { mint } = require('../util/checkers');
+const { mint, checkQualities } = require('../util/checkers');
 
 describe('Card Creation Tests', () => {
 
@@ -222,6 +222,36 @@ describe('Card Creation Tests', () => {
             let nextQualities = new Array(len).fill(2);
 
            await mint(cards, user, nextProtos, nextQualities, BATCH_SIZE);
+
+        });
+
+        it("should set quality correctly", async() => {
+
+            let len = 5;
+
+            let protos = new Array(len).fill(1);
+            let qualities = new Array(len).fill(1);
+
+            await mint(cards, user, protos, qualities, 0);
+
+            for (let i = 0; i < len; i++) {
+                await cards.setQuality(i, 3);
+            }
+
+            await checkQualities(cards, new Array(len).fill(3), 0);
+
+        });
+
+        it("non-factory should not be able to set quality correctly", async() => {
+
+            let len = 5;
+
+            let protos = new Array(len).fill(1);
+            let qualities = new Array(len).fill(1);
+
+            await mint(cards, user, protos, qualities, 0);
+
+            assert.revert(cards.from(u2).setQuality(0, 3));
 
         });
 

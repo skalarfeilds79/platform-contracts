@@ -1,6 +1,7 @@
 const Cards = require('../build/Cards');
 const OpenMinter = require('../build/OpenMinter');
 const DirectMigration = require('../build/DirectMigration');
+const MigrationMigration = require('../build/MigrationMigration');
 
 const secrets = require('../secrets.json');
 
@@ -20,15 +21,23 @@ const deploy = async (network, secret, etherscanApiKey) => {
 
 	let old = '0x6ebeaf8e8e946f0716e6533a6f2cefc83f60e8ab';
 
-	let direct = await deployer.deployAndVerify(DirectMigration, {}, old, cards.contractAddress, 300);
+	let newOld = '0x564cb55c655f727b61d9baf258b547ca04e9e548';
+
+	// let direct = await deployer.deployAndVerify(DirectMigration, {}, old, cards.contractAddress, 300);
+
+	let migration = await deployer.deployAndVerify(MigrationMigration, {}, newOld, cards.contractAddress);
 
 	await cards.startSeason("Genesis", 1, 377, {gasLimit: 1000000});
 	await cards.startSeason("Etherbots", 380, 396, {gasLimit: 1000000});
 	await cards.startSeason("Promo", 400, 500, {gasLimit: 1000000});
 
-	await cards.addFactory(direct.contractAddress, 1, {gasLimit: 1000000});
-	await cards.addFactory(direct.contractAddress, 2,{gasLimit: 1000000});
-	await cards.addFactory(direct.contractAddress, 3, {gasLimit: 1000000});
+	await cards.addFactory(migration.contractAddress, 1, {gasLimit: 1000000});
+	await cards.addFactory(migration.contractAddress, 2,{gasLimit: 1000000});
+	await cards.addFactory(migration.contractAddress, 3, {gasLimit: 1000000});
+
+	await cards.approveForMythic(migration.contractAddress, 65000);
+	await cards.approveForMythic(migration.contractAddress, 65001);
+	await cards.approveForMythic(migration.contractAddress, 65002);
 
 	//let minter = await deployer.deployAndVerify(OpenMinter, {}, cards.contractAddress);
 

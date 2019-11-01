@@ -36,12 +36,20 @@ contract v1Migration is BaseMigration {
         uint startID
     );
 
+    struct StackDepthLimit {
+        uint16[] oldProtos;
+        uint16[] purities;
+        uint8[] qualities;
+        uint16[] protos;
+    }
+
     function migrate(
         IPackFour pack,
         uint id
     )
         public
     {
+
         require(
             canMigrate[address(pack)],
             "V1: must be migrating from an approved pack"
@@ -73,17 +81,18 @@ contract v1Migration is BaseMigration {
             "V1: no more cards to migrate"
         );
 
-        require(
-            remaining <= limit,
-            "V1: too many cards to migrate"
-        );
+        if (remaining > limit) {
+            return;
+        }
 
-        uint16[] memory protos = new uint16[](remaining);
-        uint16[] memory purities = new uint16[](remaining);
-        uint8[] memory qualities = new uint8[](remaining);
+        StackDepthLimit memory sdl;
+
+        sdl.protos = new uint16[](remaining);
+        sdl.qualities = new uint8[](remaining);
+
 
         // TODO: Do these need to be converted as well?
-        (protos, purities) = pack.predictPacks(id);
+        (sdl.oldProtos, sdl.purities) = pack.predictPacks(id);
 
         // Run loop which starts at local counter start of v1Migrated
         uint loopStart = (current * 5);
@@ -92,12 +101,12 @@ contract v1Migration is BaseMigration {
         // appropriate conversion + check not activated
         for (uint i = 0; i < remaining; i++) {
             uint x = loopStart+i;
-            protos[i] = convertProto(protos[x]);
-            qualities[i] = convertPurity(purities[x]);
+            sdl.protos[i] = convertProto(sdl.oldProtos[x]);
+            sdl.qualities[i] = convertPurity(sdl.purities[x]);
         }
 
         // Batch Mint cards (details passed as function args)
-        uint startID = cards.mintCards(user, protos, qualities);
+        uint startID = cards.mintCards(user, sdl.protos, sdl.qualities);
 
         v1Migrated[address(pack)][id] = true;
 

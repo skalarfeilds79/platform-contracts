@@ -369,6 +369,7 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         if (proto >= MYTHIC_THRESHOLD) {
             _checkCanCreateMythic(proto);
         } else {
+
             uint256 season = protoToSeason[proto];
             require(
                 season != 0,

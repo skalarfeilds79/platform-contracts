@@ -53,6 +53,13 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         address factory
     );
 
+    event CardsMinted(
+        uint256 indexed start,
+        address to,
+        uint16[] protos,
+        uint8[] qualities
+    );
+
     // Value of index proto = season
     uint16[] public protoToSeason;
 
@@ -118,6 +125,14 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         _validateProto(_proto);
         cardProtos[id] = _proto;
         cardQualities[id] = _quality;
+
+        uint16[] memory ps = new uint16[](1);
+        ps[0] = _proto;
+
+        uint8[] memory qs = new uint8[](1);
+        qs[0] = _quality;
+
+        emit CardsMinted(id, to, ps, qs);
         return id;
     }
 
@@ -141,6 +156,9 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
 
         uint256 start = _batchMint(to, uint16(_protos.length));
         _validateAndSaveDetails(start, _protos, _qualities);
+
+        emit CardsMinted(start, to, _protos, _qualities);
+
         return start;
     }
 

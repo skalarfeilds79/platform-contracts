@@ -16,12 +16,12 @@ token/BatchToken.sol
 migration/DirectMigration.sol
 migration/BaseMigration.sol
 migration/MigrationMigration.sol
+migration/v1Migration.sol
 ```
 
 The following contracts will be added once finalised:
 
 ```
-migration/v1Migration.sol
 migration/v2Migration.sol
 ```
 

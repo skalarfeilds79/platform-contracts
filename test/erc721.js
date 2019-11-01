@@ -46,7 +46,7 @@ describe('Example', () => {
         } else {
             await cards.from(sender).transferFrom(from, to, tokenId);
         }
-        
+
         const fromBalAfter = await cards.balanceOf(from);
         const toBalAfter = await cards.balanceOf(to);
         const supplyAfter = await cards.totalSupply();
@@ -71,23 +71,23 @@ describe('Example', () => {
         });
 
         it('should be able to transfer token to valid contract', async () => {
-            
+
             await cards.mintCards(user, [1], [1]);
             const tokenId = 0;
             const receiver = await deployer.deploy(ValidReceiver);
 
             await transfer(user, receiver.contractAddress, tokenId, true);
-    
+
         });
 
         it('should not be able to transfer token to invalid contract', async () => {
-            
+
             await cards.mintCards(user, [1], [1]);
             const tokenId = 0;
             const receiver = await deployer.deploy(InvalidReceiver);
 
             assert.revert(transfer(user, receiver.contractAddress, tokenId));
-    
+
         });
 
         it('should be able to approve someone for your token', async () => {
@@ -102,7 +102,7 @@ describe('Example', () => {
         });
 
         it('should not be able to approve for a token you do not own', async () => {
-            
+
             await cards.mintCards(user, [1], [1]);
             const tokenId = 0;
 
@@ -206,7 +206,7 @@ describe('Example', () => {
             await cards.mintCards(user, [1], [1]);
             const tokenId = 0;
 
-            let expected = "https://api.immutable.com/token/" + cards.contractAddress + '/0';
+            let expected = "https://api.immutable.com/asset/" + cards.contractAddress + '/0';
 
             let actual = await cards.tokenURI(0);
 
@@ -240,5 +240,5 @@ describe('Example', () => {
 
     });
 
-   
+
 });

@@ -1,4 +1,4 @@
-import { generatedWallets, Blockchain } from '@immutable/test-utils';
+import { generatedWallets } from '@immutable/test-utils';
 import { ethers, } from 'ethers';
 
 import {

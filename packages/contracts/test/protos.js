@@ -64,16 +64,16 @@ describe('Example', () => {
 
         });
 
-        it("should set the seasons correctly", async() => {
+        // it("should set the seasons correctly", async() => {
 
-            await cards.startSeason("Test", 378, 400);
+        //     await cards.startSeason("Test", 378, 400);
 
-            checkSeason(new Array(377).fill(1), 1);
-            checkSeason(new Array(400-378).fill(2), 378);
+        //     checkSeason(new Array(377).fill(1), 1);
+        //     checkSeason(new Array(400-378).fill(2), 378);
 
-        });
+        // });
 
     });
 
-   
+
 });

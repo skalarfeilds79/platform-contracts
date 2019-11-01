@@ -1,8 +1,8 @@
 pragma solidity 0.5.11;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
-contract MultiTransfer is ERC721 {
+contract MultiTransfer is IERC721 {
 
     function transferBatch(
         address from,

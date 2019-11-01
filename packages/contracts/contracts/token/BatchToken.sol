@@ -59,10 +59,6 @@ contract BatchToken is ERC721Metadata {
             uID = userCount++;
             userIDToAddress[uID] = to;
             addressToUserID[to] = uID;
-            require(
-                uID != 0,
-                "BT: must not be 0"
-            );
         }
         return uID;
     }

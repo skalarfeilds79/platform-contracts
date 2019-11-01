@@ -4,7 +4,7 @@ import "../ICards.sol";
 import "../legacy/packs/four/IPackFour.sol";
 import "./BaseMigration.sol";
 
-contract v1Migration is BaseMigration {
+contract v1MigrationOld is BaseMigration {
 
     ICards cards;
     uint public limit;

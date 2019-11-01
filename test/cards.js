@@ -242,6 +242,19 @@ describe('Card Creation Tests', () => {
 
         });
 
+        it("non-factory should not be able to set quality correctly", async() => {
+
+            let len = 5;
+
+            let protos = new Array(len).fill(1);
+            let qualities = new Array(len).fill(1);
+
+            await mint(cards, user, protos, qualities, 0);
+
+            assert.revert(cards.from(u2).setQuality(0, 3));
+
+        });
+
     });
 
 

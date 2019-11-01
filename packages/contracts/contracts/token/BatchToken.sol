@@ -59,7 +59,10 @@ contract BatchToken is ERC721Metadata {
             uID = userCount++;
             userIDToAddress[uID] = to;
             addressToUserID[to] = uID;
-            require(uID != 0, "must not be 0");
+            require(
+                uID != 0,
+                "BT: must not be 0"
+            );
         }
         return uID;
     }
@@ -73,12 +76,12 @@ contract BatchToken is ERC721Metadata {
     {
         require(
             to != address(0),
-            "Core: must not be null"
+            "BT: must not be null"
         );
 
         require(
             size > 0 && size <= batchSize,
-            "Core: size must be within limits"
+            "BT: size must be within limits"
         );
 
         uint256 start = nextBatch;
@@ -124,7 +127,10 @@ contract BatchToken is ERC721Metadata {
             );
 
             uID = b.userID;
-            require(uID != 0, "bad batch owner");
+            require(
+                uID != 0,
+                "BT: bad batch owner"
+            );
         }
         return userIDToAddress[uID];
     }

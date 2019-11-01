@@ -12,9 +12,7 @@ import "./token/InscribableToken.sol";
 import "./ICards.sol";
 import "./util/StorageWrite.sol";
 
-contract Cards is Ownable, BatchToken, MultiTransfer, ImmutableToken, InscribableToken {
-
-    uint256 internal constant MAX_LENGTH = uint(2**256 - 1);
+contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, InscribableToken {
 
     uint16 private constant MAX_UINT16 = 2**16 - 1;
 
@@ -53,6 +51,13 @@ contract Cards is Ownable, BatchToken, MultiTransfer, ImmutableToken, Inscribabl
         uint256 indexed tokenId,
         uint8 quality,
         address factory
+    );
+
+    event CardsMinted(
+        uint256 indexed start,
+        address to,
+        uint16[] protos,
+        uint8[] qualities
     );
 
     // Value of index proto = season
@@ -120,6 +125,14 @@ contract Cards is Ownable, BatchToken, MultiTransfer, ImmutableToken, Inscribabl
         _validateProto(_proto);
         cardProtos[id] = _proto;
         cardQualities[id] = _quality;
+
+        uint16[] memory ps = new uint16[](1);
+        ps[0] = _proto;
+
+        uint8[] memory qs = new uint8[](1);
+        qs[0] = _quality;
+
+        emit CardsMinted(id, to, ps, qs);
         return id;
     }
 
@@ -143,6 +156,9 @@ contract Cards is Ownable, BatchToken, MultiTransfer, ImmutableToken, Inscribabl
 
         uint256 start = _batchMint(to, uint16(_protos.length));
         _validateAndSaveDetails(start, _protos, _qualities);
+
+        emit CardsMinted(start, to, _protos, _qualities);
+
         return start;
     }
 
@@ -204,12 +220,12 @@ contract Cards is Ownable, BatchToken, MultiTransfer, ImmutableToken, Inscribabl
     {
         require(
             _mythic >= MYTHIC_THRESHOLD,
-            "not a mythic"
+            "Core: not a mythic"
         );
 
         require(
             !mythicTradable[_mythic],
-            "must not be tradable already"
+            "Core: must not be tradable already"
         );
 
         mythicTradable[_mythic] = true;
@@ -221,7 +237,16 @@ contract Cards is Ownable, BatchToken, MultiTransfer, ImmutableToken, Inscribabl
         public
         onlyOwner
     {
-        require(!seasonTradable[_season], "Core: season must not be tradable");
+        require(
+            _season > 0 && _season <= seasons.length,
+            "Core: must be a current season"
+        );
+
+        require(
+            !seasonTradable[_season],
+            "Core: season must not be tradable"
+        );
+
         seasonTradable[_season] = true;
     }
 
@@ -323,7 +348,11 @@ contract Cards is Ownable, BatchToken, MultiTransfer, ImmutableToken, Inscribabl
             );
 
             Proto memory proto = protos[id];
-            require(!proto.locked, "proto is locked");
+            require(
+                !proto.locked,
+                "Core: proto is locked"
+            );
+
             protos[id] = Proto({
                 locked: false,
                 exists: true,
@@ -340,13 +369,30 @@ contract Cards is Ownable, BatchToken, MultiTransfer, ImmutableToken, Inscribabl
     }
 
     function lockProtos(uint16[] memory _ids) public onlyOwner {
-        require(_ids.length > 0, "must lock some");
+        require(
+            _ids.length > 0,
+            "must lock some"
+        );
+
         for (uint256 i = 0; i < _ids.length; i++) {
             uint16 id = _ids[i];
-            require(id > 0, "proto must not be zero");
+            require(
+                id > 0,
+                "proto must not be zero"
+            );
+
             Proto storage proto = protos[id];
-            require(!proto.locked, "proto is locked");
-            require(proto.exists, "proto must exist");
+
+            require(
+                !proto.locked,
+                "proto is locked"
+            );
+
+            require(
+                proto.exists,
+                "proto must exist"
+            );
+
             proto.locked = true;
             emit ProtoUpdated(id);
         }
@@ -364,7 +410,6 @@ contract Cards is Ownable, BatchToken, MultiTransfer, ImmutableToken, Inscribabl
         uint256 cp;
         assembly { cp := cardProtos_slot }
         StorageWrite.uint16s(cp, start, _protos);
-
         uint256 cq;
         assembly { cq := cardQualities_slot }
         StorageWrite.uint8s(cq, start, _qualities);
@@ -374,7 +419,9 @@ contract Cards is Ownable, BatchToken, MultiTransfer, ImmutableToken, Inscribabl
         if (proto >= MYTHIC_THRESHOLD) {
             _checkCanCreateMythic(proto);
         } else {
+
             uint256 season = protoToSeason[proto];
+
             require(
                 season != 0,
                 "Core: must have season set"
@@ -411,6 +458,7 @@ contract Cards is Ownable, BatchToken, MultiTransfer, ImmutableToken, Inscribabl
                 season != 0,
                 "Core: must have season set"
             );
+
             require(
                 season == protoToSeason[minProto],
                 "Core: can only create cards from the same season"
@@ -453,7 +501,7 @@ contract Cards is Ownable, BatchToken, MultiTransfer, ImmutableToken, Inscribabl
             "Core: factory can't change quality of this season"
         );
 
-        cardQualities[_quality] = _quality;
+        cardQualities[_tokenId] = _quality;
         emit QualityChanged(_tokenId, _quality, msg.sender);
     }
 
@@ -475,6 +523,7 @@ contract Cards is Ownable, BatchToken, MultiTransfer, ImmutableToken, Inscribabl
             msg.sender == propertyManager,
             "Core: must be property manager"
         );
+
         _setClassProperty(_key, _value);
     }
 

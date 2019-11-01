@@ -1,0 +1,14 @@
+{
+    "lerna": "1.0.0",
+    "packages": [
+      "packages/*"
+    ],
+    "version": "independent",
+    "npmClient": "yarn",
+    "useWorkspaces": false,
+    "command": {
+      "run": {
+        "npmClient": "yarn"
+      }
+    }
+  }

@@ -1,1 +1,1 @@
-export * from './src';
+export * from '@immutable/test-utils/src';

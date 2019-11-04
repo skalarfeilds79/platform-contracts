@@ -1,8 +1,8 @@
 Arguments: 
-  /Users/kerman/.nvm/versions/node/v11.15.0/bin/node /usr/local/Cellar/yarn/1.19.1/libexec/bin/yarn.js install --mutex network:42424 --non-interactive
+  /Users/kerman/.nvm/versions/node/v11.15.0/bin/node /usr/local/Cellar/yarn/1.19.1/libexec/bin/yarn.js add etherlime packages/contracts --dev
 
 PATH: 
-  /Users/kerman/immutable/gods-unchained-contracts/packages/contracts/node_modules/.bin:/Users/kerman/immutable/gods-unchained-contracts/packages/node_modules/.bin:/Users/kerman/immutable/gods-unchained-contracts/node_modules/.bin:/Users/kerman/immutable/node_modules/.bin:/Users/kerman/node_modules/.bin:/Users/node_modules/.bin:/node_modules/.bin:/Users/kerman/.nvm/versions/node/v11.15.0/bin:/Users/kerman/.nvm/versions/node/v11.15.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+  /Users/kerman/.nvm/versions/node/v11.15.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 
 Yarn version: 
   1.19.1
@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@immutable%2futils: Not found
+  Error: https://registry.yarnpkg.com/@immutable%2ftest-utils: Not found
       at Request.params.callback [as _callback] (/usr/local/Cellar/yarn/1.19.1/libexec/lib/cli.js:66926:18)
       at Request.self.callback (/usr/local/Cellar/yarn/1.19.1/libexec/lib/cli.js:140564:22)
       at Request.emit (events.js:193:13)
@@ -28,34 +28,50 @@ Trace:
 
 npm manifest: 
   {
-  	"name": "@immutable/contracts",
-  	"version": "1.0.0",
-  	"description": "Solidity smart contracts for Gods Unchained.",
-  	"main": "index.js",
-  	"author": "",
-  	"license": "MIT",
-  	"dependencies": {
-  		"@immutable/utils": "^1.0.0",
-  		"@openzeppelin/contracts": "^2.3.0",
-  		"ethers": "^4.0.39",
-  		"openzeppelin-solidity": "^2.3.0",
-  		"typescript": "^3.6.4"
-  	},
-  	"devDependencies": {
-  		"@0xproject/types": "^1.1.4",
-  		"@types/jest": "^24.0.21",
-  		"@types/node": "^12.12.3",
-  		"etherlime-lib": "^1.1.5",
-  		"ganache-cli": "^6.7.0",
-  		"jest": "^24.9.0",
-  		"replace-in-file": "^4.2.0",
-  		"solhint": "^2.3.0",
-  		"truffle": "^5.0.42",
-  		"ts-generator": "^0.0.8",
-  		"ts-jest": "^24.1.0",
-  		"ts-node": "^8.4.1",
-  		"typechain": "^0.3.19"
-  	}
+    "name": "@immutable/contracts",
+    "version": "1.0.0",
+    "description": "Solidity smart contracts for Gods Unchained.",
+    "main": "index.js",
+    "scripts": {
+      "clean": "rm -rf build; rm -rf transpiled; rm -rf types/generated",
+      "chain": "ganache-cli --networkId 50 --accounts 20 -l 19000000 -e 10000000000 -m 'concert load couple harbor equip island argue ramp clarify fence smart topic'",
+      "chain-legacy": "yarn etherlime ganache --gasLimit=15000000",
+      "lint:sol": "yarn solhint \"contracts/**/*.sol\" --config solhint.json",
+      "lint:ts": "tslint -t verbose '__tests__/**/*.ts'",
+      "lint": "yarn lint:ts && yarn lint:sol",
+      "generate-typings": "node scripts/generate-typings.js",
+      "compile": "yarn lint:sol && yarn truffle compile --all",
+      "prepare-test": "yarn clean && yarn compile && yarn generate-typings",
+      "test-legacy": "yarn etherlime test --solcVersion=0.5.11 --output=none --timeout=10000 --runs=200",
+      "test": "yarn prepare-test && yarn reset-test-evm && yarn jest __tests__/core --runInBand",
+      "test:watch": "yarn reset-test-evm && yarn jest __tests__/core --runInBand --watch",
+      "reset-test-evm": "node scripts/reset-test-evm.js"
+    },
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+      "@immutable/test-utils": "^1.0.0",
+      "@immutable/types": "^1.0.0",
+      "@openzeppelin/contracts": "^2.3.0",
+      "ethers": "^4.0.39",
+      "openzeppelin-solidity": "^2.3.0",
+      "typescript": "^3.6.4"
+    },
+    "devDependencies": {
+      "@0xproject/types": "^1.1.4",
+      "@types/jest": "^24.0.21",
+      "@types/node": "^12.12.3",
+      "etherlime-lib": "^1.1.5",
+      "ganache-cli": "^6.7.0",
+      "jest": "^24.9.0",
+      "replace-in-file": "^4.2.0",
+      "solhint": "^2.3.0",
+      "truffle": "^5.0.42",
+      "ts-generator": "^0.0.8",
+      "ts-jest": "^24.1.0",
+      "ts-node": "^8.4.1",
+      "typechain": "^0.3.19"
+    }
   }
 
 yarn manifest: 

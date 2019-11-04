@@ -39,7 +39,7 @@ describe('Example', () => {
     describe("Property Management", () => {
 
         it("should set card property", async() => {
-            
+
             const len = 1;
 
             await cards.mintCards(user, new Array(len).fill(1), new Array(len).fill(1), { gasLimit: 9000000});
@@ -81,7 +81,7 @@ describe('Example', () => {
         it("should be able to access class property via a contract with a generated key", async() => {
 
             let key = eu.solidityKeccak256(
-                ['string', 'uint256', 'string'], 
+                ['string', 'uint256', 'string'],
                 ["proto", 0, "tag"]
             );
 
@@ -107,5 +107,5 @@ describe('Example', () => {
 
     });
 
-   
+
 });

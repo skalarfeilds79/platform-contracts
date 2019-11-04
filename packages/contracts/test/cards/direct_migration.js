@@ -30,7 +30,7 @@ describe('Direct Migration', () => {
 
         old = await deployer.deploy(CardIntegrationTwo);
 
-        migration = await deployer.deploy(DirectMigration, {}, 
+        migration = await deployer.deploy(DirectMigration, {},
             old.contractAddress, cards.contractAddress, 500
         );
 
@@ -55,10 +55,10 @@ describe('Direct Migration', () => {
             for (let i = 0; i < len; i++) {
                 await old.createCard(user, 1, 1);
             }
-            
+
             // should do all 100 cards
             let tx = await migration.activatedMigration();
-            let txReceipt = await cards.verboseWaitForTransaction(tx);  
+            let txReceipt = await cards.verboseWaitForTransaction(tx);
             let gas = txReceipt.gasUsed.toNumber();
             console.log('100', gas);
 
@@ -90,7 +90,7 @@ describe('Direct Migration', () => {
             for (let i = 0; i < nextLen; i++) {
                 await old.createCard(u2, 1, 1);
             }
-            
+
             // should do the first 10 cards
             await migration.activatedMigration({gasLimit:9000000});
 
@@ -131,7 +131,7 @@ describe('Direct Migration', () => {
         });
 
         it("should migrate over seasons", async() => {
-            
+
             let protos = [380,2,3,4,5,6];
 
             for (let i = 0; i < protos.length; i++) {
@@ -139,7 +139,7 @@ describe('Direct Migration', () => {
             }
 
             await old.createCard(u2, 7, 1);
-   
+
             // should do in two blocks
             await migration.activatedMigration({gasLimit:9000000});
             let m = await migration.migrated();
@@ -148,14 +148,14 @@ describe('Direct Migration', () => {
         });
 
         it("should migrate from 851 in old", async() => {
-            
+
             let protos = [140, 376, 376, 297, 360, 363, 222, 245, 220, 122];
             let purities = [310, 539, 79, 551, 766, 1470, 981, 105, 795, 24];
 
             for (let i = 0; i < protos.length; i++) {
                 await old.createCard(user, protos[i], purities[i]);
             }
-   
+
             // should do in two blocks
             await migration.activatedMigration({gasLimit:9000000});
             let m = await migration.migrated();
@@ -165,14 +165,14 @@ describe('Direct Migration', () => {
         });
 
         it("should migrate 1 genesis", async() => {
-            
+
             let protos = [334];
             let purities = [0];
 
             for (let i = 0; i < protos.length; i++) {
                 await old.createCard(user, protos[i], purities[i]);
             }
-   
+
             // should do in two blocks
             await migration.activatedMigration({gasLimit:9000000});
             let m = await migration.migrated();
@@ -181,18 +181,18 @@ describe('Direct Migration', () => {
         });
 
         it("should migrate 1 non-genesis", async() => {
-            
+
             let protos = [380];
             let purities = [0];
 
             for (let i = 0; i < protos.length; i++) {
                 await old.createCard(user, protos[i], purities[i]);
             }
-   
+
             await migration.activatedMigration({gasLimit:9000000});
 
         });
 
     });
-   
+
 });

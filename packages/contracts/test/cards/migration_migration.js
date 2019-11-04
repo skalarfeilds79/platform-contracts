@@ -60,7 +60,7 @@ describe('Direct Migration', () => {
             await mint(oldCards, user, protos, qualities, 0);
 
             let tx = await migration.migrate({gasLimit:3000000});
-            let txReceipt = await migration.verboseWaitForTransaction(tx);  
+            let txReceipt = await migration.verboseWaitForTransaction(tx);
             let gas = txReceipt.gasUsed.toNumber();
             console.log('100', gas);
 
@@ -81,7 +81,7 @@ describe('Direct Migration', () => {
         //     await mint(oldCards, user, protos, qualities, 0);
 
         //     let tx = await migration.migrate({gasLimit:3000000});
-        //     let txReceipt = await migration.verboseWaitForTransaction(tx);  
+        //     let txReceipt = await migration.verboseWaitForTransaction(tx);
         //     let gas = txReceipt.gasUsed.toNumber();
         //     console.log('300', gas);
 
@@ -100,7 +100,7 @@ describe('Direct Migration', () => {
             let qualities = new Array(len).fill(1);
 
             await mint(oldCards, user, protos, qualities, 0);
-            
+
             await migration.migrate({gasLimit:3000000});
 
             await checkProtos(newCards, protos, 0);
@@ -111,7 +111,7 @@ describe('Direct Migration', () => {
             await checkSupply(newCards, 100);
 
             await mint(oldCards, u2, protos, qualities, BATCH_SIZE);
-            
+
             await migration.migrate({gasLimit:3000000});
 
             await checkProtos(newCards, protos, 0);
@@ -136,7 +136,7 @@ describe('Direct Migration', () => {
             await oldCards.approveForMythic(user, 65003);
 
             await mint(oldCards, user, protos, qualities, 0);
-            
+
             assert.revert(migration.migrate({gasLimit:3000000}));
 
         });
@@ -151,7 +151,7 @@ describe('Direct Migration', () => {
             await oldCards.addFactory(user, 4);
 
             await mint(oldCards, user, protos, qualities, 0);
-            
+
             assert.revert(migration.migrate({gasLimit:3000000}));
 
         });
@@ -163,7 +163,7 @@ describe('Direct Migration', () => {
             let qualities = new Array(len).fill(1);
 
             await mint(oldCards, user, protos, qualities, 0);
-            
+
             await migration.migrate({gasLimit:3000000});
 
             await checkProtos(newCards, protos, 0);
@@ -173,12 +173,12 @@ describe('Direct Migration', () => {
             await checkSupply(newCards, 100);
 
             protos = [65003];
-            qualities = [1]; 
+            qualities = [1];
 
             await oldCards.approveForMythic(user, 65003);
 
             await mint(oldCards, user, protos, qualities, BATCH_SIZE);
-            
+
             assert.revert(migration.migrate({gasLimit:3000000}));
 
 
@@ -214,13 +214,13 @@ describe('Direct Migration', () => {
                 await checkOwner(newCards, user, offset, protos.length);
                 await checkBalance(newCards, user, cumulative);
                 await checkSupply(newCards, cumulative);
-                
+
             }
 
         });
 
-        
+
 
     });
-   
+
 });

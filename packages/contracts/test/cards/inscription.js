@@ -1,9 +1,9 @@
 
 
 
-const Cards = require('../build/Cards');
-const Accessor = require('../build/PropertyAccessor');
-const TestManager = require("../util/test-manager");
+const Cards = require('../../build/Cards');
+const Accessor = require('../../build/PropertyAccessor');
+const TestManager = require("../../util/test-manager");
 const ethers = require('ethers');
 
 const eu = ethers.utils;

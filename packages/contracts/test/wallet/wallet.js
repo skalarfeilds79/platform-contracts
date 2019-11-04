@@ -1,18 +1,18 @@
 
 
 
-const Factory = require('../build/Factory');
-const LimitedModules = require('../build/LimitedModules');
-const SimpleDelegates = require('../build/SimpleDelegate');
-const Wallet = require("../build/Wallet");
-const Registry = require("../build/Registry");
-const Proxy = require("../build/Proxy");
-const TransferModule = require("../build/TransferModule");
-const MultiLimiter = require('../build/MultiLimiter');
+const Factory = require('../../build/Factory');
+const LimitedModules = require('../../build/LimitedModules');
+const SimpleDelegates = require('../../build/SimpleDelegate');
+const Wallet = require("../../build/Wallet");
+const Registry = require("../../build/Registry");
+const Proxy = require("../../build/Proxy");
+const TransferModule = require("../../build/TransferModule");
+const MultiLimiter = require('../../build/MultiLimiter');
 
-const { encodeParam } = require('../util/shared.js');
+const { encodeParam } = require('../../util/shared.js');
 
-const TestManager = require("../util/test-manager");
+const TestManager = require("../../util/test-manager");
 
 describe('Wallet functions', () => {
 
@@ -56,14 +56,14 @@ describe('Wallet functions', () => {
         before(async () => {
 
             let tx = await factory.createProxyWallet(
-                accounts[0].signer.address, 
-                [transfer.contractAddress], 
-                [], 
+                accounts[0].signer.address,
+                [transfer.contractAddress],
+                [],
                 {  gasLimit: 2000000 }
             );
-            
-            let txReceipt = await factory.verboseWaitForTransaction(tx);    
-            
+
+            let txReceipt = await factory.verboseWaitForTransaction(tx);
+
             console.log(txReceipt.gasUsed.toNumber());
 
             walletAddr = txReceipt.events.filter(event => event.event == 'WalletCreated')[0].args.wallet;
@@ -86,5 +86,5 @@ describe('Wallet functions', () => {
 
     });
 
-   
+
 });

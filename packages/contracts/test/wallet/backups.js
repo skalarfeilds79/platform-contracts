@@ -1,17 +1,17 @@
-const BackupModule = require("../build/BackupModule");
-const Wallet = require("../build/Wallet");
-const Registry = require("../build/Registry");
-const LimitedModules = require('../build/LimitedModules');
-const SimpleDelegates = require('../build/SimpleDelegate');
-const Factory = require('../build/Factory');
-const Proxy = require('../build/Proxy');
-const MultiLimiter = require('../build/MultiLimiter');
-const EmptyContract = require("../build/EmptyContract");
-const TestManager = require("../util/test-manager");
+const BackupModule = require("../../build/BackupModule");
+const Wallet = require("../../build/Wallet");
+const Registry = require("../../build/Registry");
+const LimitedModules = require('../../build/LimitedModules');
+const SimpleDelegates = require('../../build/SimpleDelegate');
+const Factory = require('../../build/Factory');
+const Proxy = require('../../build/Proxy');
+const MultiLimiter = require('../../build/MultiLimiter');
+const EmptyContract = require("../../build/EmptyContract");
+const TestManager = require("../../util/test-manager");
 
-const { encodeParam } = require('../util/shared.js');
+const { encodeParam } = require('../../util/shared.js');
 
-const { createWallet } = require('../util/common.js');
+const { createWallet } = require('../../util/common.js');
 
 describe("BackupModule", function () {
 
@@ -34,7 +34,7 @@ describe("BackupModule", function () {
     beforeEach(async () => {
 
         deployer = manager.getDeployer();
-        
+
         registry = await deployer.deploy(Registry, {}, DELAY);
 
         backups = await deployer.deploy(BackupModule, {}, SECURITY_PERIOD, SECURITY_WINDOW);
@@ -42,7 +42,7 @@ describe("BackupModule", function () {
         await registry.register(backups.contractAddress, ethers.utils.formatBytes32String("Backups"));
 
         await manager.increaseTime(DELAY * 2);
-        
+
         wallet = await deployer.deploy(Wallet);
         modules = await deployer.deploy(LimitedModules, {}, registry.contractAddress);
         delegates = await deployer.deploy(SimpleDelegates);
@@ -55,14 +55,14 @@ describe("BackupModule", function () {
         factory = await deployer.deploy(Factory, {}, modules.contractAddress, delegates.contractAddress, limiter.contractAddress, bytecode);
 
         user = await createWallet(factory, owner.address, [backups.contractAddress], []);
-    
+
     });
 
     describe("Adding Backups", () => {
         describe("EOA Backups", () => {
 
             it("owner should be accessible", async () => {
-        
+
                let backupOwner = await backups.getWalletOwner(user);
 
                assert(owner.address == backupOwner, "wrong backup owner");
@@ -96,7 +96,7 @@ describe("BackupModule", function () {
             });
 
             it("should not let the owner confirm EOA backups after addition expired", async () => {
-                
+
                 // adding the first backup should be instantaneous
                 await backups.from(owner).addBackup(user, b1.address);
                 let count = await backups.count(user);
@@ -117,7 +117,7 @@ describe("BackupModule", function () {
             });
 
             it("should be able to re-add EOA backups after missing confirmation window", async () => {
-                
+
                 // adding the first backup should be instantaneous
                 await backups.from(owner).addBackup(user, b1.address);
                 let count = await backups.count(user);
@@ -161,7 +161,7 @@ describe("BackupModule", function () {
 
         });
 
-    
+
         describe("Contract backups", () => {
 
             let backupWallet1, backupWallet2, emptyContract;
@@ -174,7 +174,7 @@ describe("BackupModule", function () {
             });
 
             it("should let the owner add Smart Contract Guardians", async () => {
-                
+
                 await backups.from(owner).addBackup(user, backupWallet1);
                 let count = (await backups.count(user)).toNumber();
                 let active = await backups.isBackup(user, b1.address);
@@ -251,7 +251,7 @@ describe("BackupModule", function () {
             assert.isTrue(active, 'the revoked backup should still be active during the security period');
             assert.equal(count, 2, 'the revoked backup should go through a security period');
 
-            await manager.increaseTime(SECURITY_WINDOW * 2); 
+            await manager.increaseTime(SECURITY_WINDOW * 2);
             await assert.revert(backups.confirmBackupRemoval(user, b1.address), "confirming the removal should throw");
 
             // count = (await backups.count(user)).toNumber();
@@ -268,7 +268,7 @@ describe("BackupModule", function () {
             assert.isTrue(active, 'the revoked backup should still be active during the security period');
             assert.equal(count, 2, 'the revoked backup should go through a security period');
 
-            await manager.increaseTime(SECURITY_WINDOW * 2); 
+            await manager.increaseTime(SECURITY_WINDOW * 2);
             await assert.revert(backups.confirmBackupRemoval(user, b1.address), "confirming the removal should throw");
 
             count = (await backups.count(user)).toNumber();
@@ -356,5 +356,5 @@ describe("BackupModule", function () {
             await assert.revert(backups.from(owner).addBackup(user, noOwnerBackup.contractAddress, {gasLimit: 2000000}));
         });
     });
-    
+
 });

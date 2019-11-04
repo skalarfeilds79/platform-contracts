@@ -1,14 +1,14 @@
 
 
 
-const Cards = require('../build/Cards');
-const DirectMigration = require('../build/DirectMigration');
-const CardIntegrationTwo = require('../build/CardIntegrationTwo');
-const TestManager = require("../util/test-manager");
+const Cards = require('../../build/Cards');
+const DirectMigration = require('../../build/DirectMigration');
+const CardIntegrationTwo = require('../../build/CardIntegrationTwo');
+const TestManager = require("../../util/test-manager");
 const ethers = require('ethers');
-const MultiMint = require('../build/MultiMint');
+const MultiMint = require('../../build/MultiMint');
 
-const { checkOwner, checkProtos, checkQualities, mint } = require('../util/checkers');
+const { checkOwner, checkProtos, checkQualities, mint } = require('../../util/checkers');
 
 describe('Direct Migration', () => {
 

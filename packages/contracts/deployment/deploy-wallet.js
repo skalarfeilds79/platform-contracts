@@ -41,7 +41,7 @@ const deploy = async (network, secret) => {
 
     backupModule = await deployer.deploy(BackupModule, {}, SECURITY_PERIOD, SECURITY_WINDOW);
     recovery = await deployer.deploy(
-        RecoveryModule, {}, 
+        RecoveryModule, {},
         lock.contractAddress, backups.contractAddress, RECOVERY_PERIOD, LOCK_PERIOD
     );
     transferModule = await deployer.deploy(TransferModule);
@@ -59,7 +59,7 @@ const deploy = async (network, secret) => {
     const bytecode = `${Proxy.bytecode}${encodeParam('address', wallet.contractAddress).slice(2)}`
 
     factory = await deployer.deploy(Factory, {}, modules.contractAddress, delegates.contractAddress, limiter.contractAddress, bytecode);
-	
+
 };
 
 module.exports = {

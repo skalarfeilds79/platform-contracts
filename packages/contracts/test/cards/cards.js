@@ -1,11 +1,11 @@
 
 
 
-const Cards = require('../build/Cards');
-const TestManager = require("../util/test-manager");
+const Cards = require('../../build/Cards');
+const TestManager = require("../../util/test-manager");
 const ethers = require('ethers');
 
-const { mint, checkQualities } = require('../util/checkers');
+const { mint, checkQualities } = require('../../util/checkers');
 
 describe('Card Creation Tests', () => {
 

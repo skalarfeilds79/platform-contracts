@@ -1,9 +1,9 @@
 
 
 
-const Registry = require('../build/Registry');
+const Registry = require('../../build/Registry');
 
-const TestManager = require("../util/test-manager");
+const TestManager = require("../../util/test-manager");
 
 describe('Example', () => {
 
@@ -80,5 +80,5 @@ describe('Example', () => {
 
     });
 
-   
+
 });

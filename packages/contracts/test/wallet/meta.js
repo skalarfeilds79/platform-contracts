@@ -1,8 +1,8 @@
 
 
-const SimpleMeta = require("../build/SimpleMeta");
+const SimpleMeta = require("../../build/SimpleMeta");
 
-const TestManager = require("../util/test-manager");
+const TestManager = require("../../util/test-manager");
 
 describe('Example', () => {
 
@@ -41,11 +41,11 @@ describe('Example', () => {
         it("should validate nonce", async() => {
 
             // await meta.publicValidateNonce('0x0000000000000000000000000000000000000000', 0, '');
-            
+
 
         })
 
     });
 
-   
+
 });

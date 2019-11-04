@@ -1,18 +1,18 @@
-const BackupModule = require("../build/BackupModule");
-const RecoveryModule = require("../build/RecoveryModule");
-const LockLimiter = require("../build/LockLimiter");
-const Wallet = require("../build/Wallet");
-const Registry = require("../build/Registry");
-const LimitedModules = require('../build/LimitedModules');
-const SimpleDelegates = require('../build/SimpleDelegate');
-const Factory = require('../build/Factory');
-const Proxy = require('../build/Proxy');
-const MultiLimiter = require('../build/MultiLimiter');
-const TestManager = require("../util/test-manager");
+const BackupModule = require("../../build/BackupModule");
+const RecoveryModule = require("../../build/RecoveryModule");
+const LockLimiter = require("../../build/LockLimiter");
+const Wallet = require("../../build/Wallet");
+const Registry = require("../../build/Registry");
+const LimitedModules = require('../../build/LimitedModules');
+const SimpleDelegates = require('../../build/SimpleDelegate');
+const Factory = require('../../build/Factory');
+const Proxy = require('../../build/Proxy');
+const MultiLimiter = require('../../build/MultiLimiter');
+const TestManager = require("../../util/test-manager");
 
-const { encodeParam, parseRelayReceipt, sortAddresses } = require('../util/shared.js');
+const { encodeParam, parseRelayReceipt, sortAddresses } = require('../../util/shared.js');
 
-const { createWallet } = require('../util/common.js');
+const { createWallet } = require('../../util/common.js');
 
 describe("RecoveryModule", function () {
 
@@ -42,7 +42,7 @@ describe("RecoveryModule", function () {
     beforeEach(async () => {
 
         deployer = manager.getDeployer();
-        
+
         registry = await deployer.deploy(Registry, {}, DELAY);
 
         modules = await deployer.deploy(LimitedModules, {}, registry.contractAddress);
@@ -52,7 +52,7 @@ describe("RecoveryModule", function () {
         backupModule = await deployer.deploy(BackupModule, {}, SECURITY_PERIOD, SECURITY_WINDOW);
         lock = await deployer.deploy(LockLimiter);
         recovery = await deployer.deploy(
-            RecoveryModule, {}, 
+            RecoveryModule, {},
             lock.contractAddress, backupModule.contractAddress, RECOVERY_PERIOD, LOCK_PERIOD
         );
 
@@ -68,13 +68,13 @@ describe("RecoveryModule", function () {
         factory = await deployer.deploy(Factory, {}, modules.contractAddress, delegates.contractAddress, limiter.contractAddress, bytecode);
 
         userAddress = await createWallet(factory, owner.address, [backupModule.contractAddress, recovery.contractAddress], []);
-    
+
         userWallet = new ethers.Contract(userAddress, Wallet.abi, manager.provider);
 
     });
 
     async function createContractBackups(backups) {
-        // better js syntax will muck up the 
+        // better js syntax will muck up the
         let wallets = [];
         for (let b of backups) {
             let w = await createWallet(factory, b.address, [backupModule.contractAddress], []);
@@ -124,9 +124,9 @@ describe("RecoveryModule", function () {
     }
 
     function testFinalizeRecovery() {
-        
+
         it("anyone should be able to finalize post-recovery period", async () => {
-            await manager.increaseTime(RECOVERY_PERIOD + 1); 
+            await manager.increaseTime(RECOVERY_PERIOD + 1);
             await manager.relay(recovery, 'finalize', [userAddress], userAddress, []);
             const isLocked = await lock.isLocked(userAddress);
             assert.isFalse(isLocked, "should no longer be locked after finalization of recovery");
@@ -148,7 +148,7 @@ describe("RecoveryModule", function () {
             await manager.relay(recovery, 'cancel', [userAddress], userAddress, sortAddresses([b1, b2]));
             const isLocked = await lock.isLocked(userAddress);
             assert.isFalse(isLocked, "should no longer be locked by recovery");
-            await manager.increaseTime(RECOVERY_PERIOD + 1); 
+            await manager.increaseTime(RECOVERY_PERIOD + 1);
             const txReceipt = await manager.relay(recovery, 'finalize', [userAddress], userAddress, []);
             const success = parseRelayReceipt(txReceipt);
             assert.isNotOk(success, 'finalization should have failed');
@@ -162,7 +162,7 @@ describe("RecoveryModule", function () {
             assert.isOk(success, 'cancellation should have succeeded');
             const isLocked = await lock.isLocked(userAddress);
             assert.isFalse(isLocked, "should no longer be locked by recovery");
-            await manager.increaseTime(RECOVERY_PERIOD + 1); 
+            await manager.increaseTime(RECOVERY_PERIOD + 1);
             txReceipt = await manager.relay(recovery, 'finalize', [userAddress], userAddress, []);
             success = parseRelayReceipt(txReceipt);
             assert.isNotOk(success, 'finalization should have failed');

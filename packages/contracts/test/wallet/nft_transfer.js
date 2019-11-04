@@ -1,18 +1,18 @@
-const TransferModule = require("../build/TransferModule");
-const Wallet = require("../build/Wallet");
-const Registry = require("../build/Registry");
-const LimitedModules = require('../build/LimitedModules');
-const SimpleDelegates = require('../build/SimpleDelegate');
-const Factory = require('../build/Factory');
-const Proxy = require('../build/Proxy');
-const TestERC721 = require('../build/TestERC721');
-const MultiLimiter = require('../build/MultiLimiter');
+const TransferModule = require("../../build/TransferModule");
+const Wallet = require("../../build/Wallet");
+const Registry = require("../../build/Registry");
+const LimitedModules = require('../../build/LimitedModules');
+const SimpleDelegates = require('../../build/SimpleDelegate');
+const Factory = require('../../build/Factory');
+const Proxy = require('../../build/Proxy');
+const TestERC721 = require('../../build/TestERC721');
+const MultiLimiter = require('../../build/MultiLimiter');
 
 const ethers = require('ethers');
 
-const TestManager = require("../util/test-manager");
+const TestManager = require("../../util/test-manager");
 
-const { createWallet, getProxyBytecode } = require('../util/common.js');
+const { createWallet, getProxyBytecode } = require('../../util/common.js');
 
 describe("TransferModule", function () {
 
@@ -36,12 +36,12 @@ describe("TransferModule", function () {
     before(async() => {
 
         deployer = manager.getDeployer();
-        
+
         registry = await deployer.deploy(Registry, {}, DELAY);
         transfer = await deployer.deploy(TransferModule);
         await registry.register(transfer.contractAddress, ethers.utils.formatBytes32String("Transfers"));
         await manager.increaseTime(DELAY * 2);
-    
+
         wallet = await deployer.deploy(Wallet);
         modules = await deployer.deploy(LimitedModules, {}, registry.contractAddress);
         delegates = await deployer.deploy(SimpleDelegates);
@@ -73,7 +73,7 @@ describe("TransferModule", function () {
     });
 
     async function testERC721Transfer({ safe = true, relayed, recipient, nftId = tokenId }) {
-    
+
         let beforeSender = await erc721.balanceOf(userAddress);
         let beforeRecipient = await erc721.balanceOf(recipient);
 
@@ -84,10 +84,10 @@ describe("TransferModule", function () {
         assert.equal(beforeSender.sub(afterSender).toNumber(), 1, 'sender should have one fewer NFT');
         assert.equal(afterRecipient.sub(beforeRecipient).toNumber(), 1, `recipient should have one more NFT`);
     }
-   
+
     describe("ERC721 transfers ", () => {
 
-    
+
         describe("transfer to external", () => {
 
             it('should allow unsafe NFT transfer from contract to external', async () => {

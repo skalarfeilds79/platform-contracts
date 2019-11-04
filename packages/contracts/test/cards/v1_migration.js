@@ -1,14 +1,14 @@
 
 
 
-const Cards = require('../build/Cards');
-const V1Migration = require('../build/v1Migration');
-const CardIntegrationTwo = require('../build/CardIntegrationTwo');
-const RarePackFour = require('../build/RarePackFour');
-const TestManager = require("../util/test-manager");
+const Cards = require('../../build/Cards');
+const V1Migration = require('../../build/v1Migration');
+const CardIntegrationTwo = require('../../build/CardIntegrationTwo');
+const RarePackFour = require('../../build/RarePackFour');
+const TestManager = require("../../util/test-manager");
 const ethers = require('ethers');
 
-const { checkOwner, checkProtos, checkBalance, checkSupply, checkQualities, mint } = require('../util/checkers');
+const { checkOwner, checkProtos, checkBalance, checkSupply, checkQualities, mint } = require('../../util/checkers');
 
 describe('v1 Migration', () => {
 

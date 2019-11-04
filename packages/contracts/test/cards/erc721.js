@@ -1,13 +1,13 @@
 
 
 
-const Cards = require('../build/Cards');
-const ValidReceiver = require('../build/ValidReceiver');
-const InvalidReceiver = require('../build/InvalidReceiver');
-const TestManager = require("../util/test-manager");
+const Cards = require('../../build/Cards');
+const ValidReceiver = require('../../build/ValidReceiver');
+const InvalidReceiver = require('../../build/InvalidReceiver');
+const TestManager = require("../../util/test-manager");
 const ethers = require('ethers');
 
-const { checkBalance, checkSupply } = require('../util/checkers');
+const { checkBalance, checkSupply } = require('../../util/checkers');
 
 describe('Example', () => {
 

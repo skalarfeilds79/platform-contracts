@@ -1,7 +1,7 @@
 
 const etherlime = require('etherlime-lib');
 
-const secrets = require('../../../secrets.json');
+const secrets = require('../secrets.json');
 
 class DeployManager {
 

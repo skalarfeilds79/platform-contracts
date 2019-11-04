@@ -1,17 +1,17 @@
-const Wallet = require("../build/Wallet");
-const Registry = require("../build/Registry");
-const LimitedModules = require('../build/LimitedModules');
-const SimpleDelegates = require('../build/SimpleDelegate');
-const Factory = require('../build/Factory');
-const SimpleLocker = require('../build/SimpleLocker');
-const LockLimiter = require('../build/LockLimiter');
-const MultiLimiter = require('../build/MultiLimiter');
+const Wallet = require("../../build/Wallet");
+const Registry = require("../../build/Registry");
+const LimitedModules = require('../../build/LimitedModules');
+const SimpleDelegates = require('../../build/SimpleDelegate');
+const Factory = require('../../build/Factory');
+const SimpleLocker = require('../../build/SimpleLocker');
+const LockLimiter = require('../../build/LockLimiter');
+const MultiLimiter = require('../../build/MultiLimiter');
 
 const ethers = require('ethers');
 
-const TestManager = require("../util/test-manager");
+const TestManager = require("../../util/test-manager");
 
-const { createWallet, getProxyBytecode } = require('../util/common.js');
+const { createWallet, getProxyBytecode } = require('../../util/common.js');
 
 describe("Lock", function () {
 
@@ -40,7 +40,7 @@ describe("Lock", function () {
         await registry.register(locker.contractAddress, ethers.utils.formatBytes32String("SimpleLocker"));
         await registry.register(fakeLocker.contractAddress, ethers.utils.formatBytes32String("FakeLocker"));
         await manager.increaseTime(DELAY * 2);
-    
+
         wallet = await deployer.deploy(Wallet);
         modules = await deployer.deploy(LimitedModules, {}, registry.contractAddress);
         delegates = await deployer.deploy(SimpleDelegates);
@@ -97,13 +97,13 @@ describe("Lock", function () {
         //     await locker.allow(prefix, owner.address);
         //     let isAllowed = await locker.isAllowed(prefix, owner.address);
         //     assert(isAllowed, "not allowed to call method");
- 
+
         // });
 
         // it("non-module should not be able to permanently allow method", async () => {
 
         //     assert.revert(locker.from(nonowner).allow(userAddress, prefix, owner.address));
-     
+
         // });
 
         // it("module should be able to permanently disallow method", async () => {

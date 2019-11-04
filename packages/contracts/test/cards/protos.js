@@ -1,8 +1,8 @@
 
 
 
-const Cards = require('../build/Cards');
-const TestManager = require("../util/test-manager");
+const Cards = require('../../build/Cards');
+const TestManager = require("../../util/test-manager");
 const ethers = require('ethers');
 
 describe('Example', () => {

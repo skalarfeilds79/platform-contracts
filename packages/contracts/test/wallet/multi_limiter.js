@@ -1,14 +1,14 @@
-const Wallet = require("../build/Wallet");
-const Registry = require("../build/Registry");
-const LimitedModules = require('../build/LimitedModules');
-const SimpleDelegates = require('../build/SimpleDelegate');
-const Factory = require('../build/Factory');
-const MultiLimiter = require('../build/MultiLimiter');
-const EmptyModule = require('../build/EmptyModule');
+const Wallet = require("../../build/Wallet");
+const Registry = require("../../build/Registry");
+const LimitedModules = require('../../build/LimitedModules');
+const SimpleDelegates = require('../../build/SimpleDelegate');
+const Factory = require('../../build/Factory');
+const MultiLimiter = require('../../build/MultiLimiter');
+const EmptyModule = require('../../build/EmptyModule');
 
-const TestManager = require("../util/test-manager");
+const TestManager = require("../../util/test-manager");
 
-const { createWallet, getProxyBytecode } = require('../util/common.js');
+const { createWallet, getProxyBytecode } = require('../../util/common.js');
 
 describe("Multi Limiter", function () {
 
@@ -36,11 +36,11 @@ describe("Multi Limiter", function () {
         empty = await deployer.deploy(EmptyModule);
         await registry.register(empty.contractAddress, ethers.utils.formatBytes32String("Empty"));
         await manager.increaseTime(DELAY * 2);
-    
+
         wallet = await deployer.deploy(Wallet);
         modules = await deployer.deploy(LimitedModules, {}, registry.contractAddress);
         delegates = await deployer.deploy(SimpleDelegates);
-        
+
     });
 
     beforeEach(async() => {
@@ -48,10 +48,10 @@ describe("Multi Limiter", function () {
         limiter = await deployer.deploy(MultiLimiter);
 
         let bytecode = getProxyBytecode(wallet.contractAddress);
-        factory = await deployer.deploy(Factory, {}, 
+        factory = await deployer.deploy(Factory, {},
             modules.contractAddress, delegates.contractAddress, limiter.contractAddress, bytecode
         );
-        
+
         userAddress = await createWallet(factory, owner.address, [empty.contractAddress], []);
 
     });

@@ -1,5 +1,5 @@
-import { ethers } from '@immutable/test-utils/src/node_modules/ethers';
-import { Provider } from '@immutable/test-utils/src/node_modules/ethers/providers';
+import { ethers } from  'ethers';
+import { Provider } from 'ethers/providers';
 
 const privateKeys = [
   '0xf2f48ee19680706196e2e339e5da3491186e0c4c5030670656b0e0164837257d',

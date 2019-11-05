@@ -89,10 +89,13 @@ async function create() {
   const ids = await mint();
   console.log(`Creating orders for:\n\n${ids}`);
   await send(ids);
+  return `*** Finished deploying ${config.MINT_AMOUNT} cards! ***`
 }
 
 create().then(result => {
   console.log(result);
+  process.exit()
 }).catch(e => {
   console.log(e);
+  process.exit(1);
 });

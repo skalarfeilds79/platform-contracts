@@ -44,8 +44,9 @@ const walkSync = (dir, filelist = []) => {
 
 async function replaceTypingsWithInterfaces() {
   const files = walkSync(TYPES_PATH);
+  console.log(files);
   files
-  .filter(item => !item.name.includes('Factory'))
+  .filter(item => item.file.includes('.d.ts'))
   .forEach((file) => {
     const data = fs.readFileSync(file.path, 'utf8');
     const newPath = file.path.replace('.d.ts', '.ts');

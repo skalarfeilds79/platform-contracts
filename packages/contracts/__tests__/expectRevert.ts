@@ -1,3 +1,5 @@
+import { fail } from "assert";
+
 export async function expectException(promise, expectedError) {
   try {
     await promise;

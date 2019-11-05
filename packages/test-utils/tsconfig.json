@@ -14,10 +14,10 @@
       "node_modules/@types",
       "node_modules/@immutable/types"
     ],
-    "types": ["node"]
+    "types": ["node", "jest"]
   },
   "include": [
-    "src"
+    "src", "../contracts/__tests__/expectRevert.ts"
   ],
   "compileOnSave": true
 }

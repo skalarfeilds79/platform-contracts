@@ -1,6 +1,6 @@
-import { BigNumber } from '@immutable/test-utils/src/node_modules/bignumber.js';
-import { JsonRpcProvider } from '@immutable/test-utils/src/node_modules/ethers/providers';
-import { ethers } from '@immutable/test-utils/src/node_modules/ethers';
+import { BigNumber } from 'bignumber.js';
+import { JsonRpcProvider } from 'ethers/providers';
+import { ethers } from 'ethers';
 
 export class Blockchain {
   private _snapshotId: number;

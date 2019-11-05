@@ -1,41 +1,38 @@
+<h1 align="center">Welcome to Immutable Monorepo 👋</h1>
+<p>
+</p>
 
-# Gods Unchained Smart Contracts
+> Monorepo containing smart contract code and other packages used for development.
 
-## Bug Bounty
+### 🏠 [Homepage](immutable.com)
 
-We will pay a bug bounty for bugs found in the following contracts, scaled based on severity. To report bugs, please DM ```@ender``` on Gods Unchained Discord or email ```alex@immutable.com```.
+## Run Local Chain
 
-```
-Cards.sol
-util/StorageWrite.sol
-util/String.sol
-token/MultiTransfer.sol
-token/ImmutableToken.sol
-token/InscribableToken.sol
-token/BatchToken.sol
-migration/DirectMigration.sol
-migration/BaseMigration.sol
-migration/MigrationMigration.sol
+```sh
+yarn chain
 ```
 
-The following contracts will be added once finalised:
+## Compile Contracts
 
+```sh
+yarn setup
 ```
-migration/v1Migration.sol
-migration/v2Migration.sol
+
+## Run tests
+
+```sh
+yarn test
 ```
 
-Users who have reported issues with confirmed bounties.
+## Author
 
-- nightman
-- nate
-- gotyourback
+👤 **Fuel Games Pty Ltd**
 
-## Quality
+* Website: immutable.com
 
-```
-1 = Diamond
-2 = Gold
-3 = Shadow
-4 = Meteorite
-```
+## Show your support
+
+Give a ⭐️ if this project helped you!
+
+***
+_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_

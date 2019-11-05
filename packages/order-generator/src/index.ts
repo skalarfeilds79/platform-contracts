@@ -22,23 +22,28 @@ const config = dotenv.config().parsed;
 const provider = new ethers.providers.JsonRpcProvider(config.RPC_ENDPOINT, 3);
 const wallet = new ethers.Wallet(config.PRIVATE_KEY, provider)
 
-const protos = Array(config.MINT_AMOUNT).fill(Math.floor(Math.random() * 377) + 1);
-const qualities = Array(config.MINT_AMOUNT).fill(Math.floor(Math.random() * 4) + 1);
+let protos: number[] = [];
+let qualities: number[] = [];
+
+for (let i = 0; i < config.MINT_AMOUNT; i++) {
+  protos.push(Math.floor(Math.random() * 377) + 1);
+  qualities.push(Math.floor(Math.random() * 4) + 1);
+}
 
 let engine = new Web3ProviderEngine();
 engine.addProvider(new PrivateKeyWalletSubprovider(config.PRIVATE_KEY))
 engine.addProvider(new RPCSubprovider(config.RPC_ENDPOINT));
 engine.start();
 
-async function mint(): Promise<string[]> {
+async function mint(): Promise<number[]> {
   const openMinter = await new OpenMinterFactory(wallet).attach(config.OPEN_MINTER_ADDRESS);
   const tx = await openMinter.functions.mintCards(wallet.address, protos, qualities);
   const receipt = await tx.wait();
-  const ids = receipt.events.map(item => item.topics[3]);
+  const ids = receipt.events.map(item => parseInt(item.topics[3]));
   return ids;
 }
 
-async function send(ids: string[]): Promise<any> {
+async function send(ids: number[]): Promise<any> {
   const erc721Contract = new ERC721Factory(wallet).attach(config.CARD_ADDRESS);
   const isApproved = await erc721Contract.functions.isApprovedForAll(wallet.address, config.ERC721_PROXY_ADDRESS)
 

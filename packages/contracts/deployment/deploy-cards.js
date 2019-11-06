@@ -3,13 +3,13 @@ const OpenMinter = require('../build/OpenMinter');
 const DirectMigration = require('../build/DirectMigration');
 const MigrationMigration = require('../build/MigrationMigration');
 
-const secrets = require('../../../secrets.json');
+const secrets = require('../secrets.json');
 
 const DeployManager = require('../util/deploy-manager.js');
 
 const deploy = async (network, secret, etherscanApiKey) => {
 
-	const manager = new DeployManager(network, secrets.networks.mainnet.privateKey);
+	const manager = new DeployManager(network, secrets.networks.ropsten.privateKey);
 
 	deployer = manager.getDeployer();
 
@@ -25,22 +25,22 @@ const deploy = async (network, secret, etherscanApiKey) => {
 
 	// let direct = await deployer.deployAndVerify(DirectMigration, {}, old, cards.contractAddress, 300);
 
-	let migration = await deployer.deployAndVerify(MigrationMigration, {}, oldNew, cards.contractAddress);
+	// let migration = await deployer.deployAndVerify(MigrationMigration, {}, oldNew, cards.contractAddress);
 
 	await cards.startSeason("Genesis", 1, 377, {gasLimit: 1000000});
 	await cards.startSeason("Etherbots", 380, 396, {gasLimit: 1000000});
 	await cards.startSeason("Promo", 400, 500, {gasLimit: 1000000});
 
-	await cards.addFactory(migration.contractAddress, 1, {gasLimit: 1000000});
-	await cards.addFactory(migration.contractAddress, 2,{gasLimit: 1000000});
-	await cards.addFactory(migration.contractAddress, 3, {gasLimit: 1000000});
+	// await cards.addFactory(migration.contractAddress, 1, {gasLimit: 1000000});
+	// await cards.addFactory(migration.contractAddress, 2,{gasLimit: 1000000});
+	// await cards.addFactory(migration.contractAddress, 3, {gasLimit: 1000000});
 
-	//let minter = await deployer.deployAndVerify(OpenMinter, {}, cards.contractAddress);
+	let minter = await deployer.deployAndVerify(OpenMinter, {}, cards.contractAddress);
 
-	/*	await cards.startSeason(1, 377, "Genesis");
-		await cards.addFactory(minter.contractAddress, 0);
-		await cards.unlockTrading(0);
-	*/
+	// await cards.startSeason(1, 377, "Genesis");
+	await cards.addFactory(minter.contractAddress, 0);
+	await cards.unlockTrading(0);
+
 };
 
 module.exports = {

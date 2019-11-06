@@ -13,8 +13,8 @@
     "generate-typings": "node scripts/generate-typings.js",
     "compile": "yarn lint:sol && yarn truffle compile --all",
     "prepare-test": "yarn clean && yarn compile && yarn generate-typings",
-    "test-legacy": "yarn etherlime test --solcVersion=0.5.11 --output=none --timeout=10000 --runs=200",
-    "test": "yarn prepare-test && yarn reset-test-evm && yarn jest __tests__/core --runInBand",
+    "setup": "yarn etherlime test --solcVersion=0.5.11 --output=none --timeout=10000 --runs=200",
+    "test": "yarn setup && yarn reset-test-evm && yarn jest __tests__/core --runInBand",
     "test:watch": "yarn reset-test-evm && yarn jest __tests__/core --runInBand --watch",
     "reset-test-evm": "node scripts/reset-test-evm.js"
   },

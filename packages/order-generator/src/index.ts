@@ -17,7 +17,7 @@ import { asyncForEach } from './asyncForEach';
 import { PrivateKeyWalletSubprovider, RPCSubprovider } from '@0x/subproviders';
 
 const dotenv = require('dotenv');
-const config = dotenv.config().parsed;
+const config = dotenv.config({path: '../../.env'}).parsed;
 
 const provider = new ethers.providers.JsonRpcProvider(config.RPC_ENDPOINT, 3);
 const wallet = new ethers.Wallet(config.PRIVATE_KEY, provider)

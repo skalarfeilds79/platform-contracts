@@ -2,7 +2,7 @@ import { WalletFactory, RegistryFactory, LockLimiterFactory, BackupModuleFactory
 import { ethers } from 'ethers';
 
 const dotenv = require('dotenv');
-const config = dotenv.config().parsed;
+const config = dotenv.config({path: '../../.env'}).parsed;
 
 const DELAY = 0;
 const SECURITY_PERIOD = 10;

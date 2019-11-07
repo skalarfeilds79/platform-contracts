@@ -21,6 +21,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@0x/contracts-exchange-libs": "^3.0.8",
     "@immutable/test-utils": "^1.0.0",
     "@immutable/types": "^1.0.0",
     "@openzeppelin/contracts": "^2.3.0",

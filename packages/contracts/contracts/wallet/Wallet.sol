@@ -3,7 +3,6 @@ pragma solidity ^0.5.8;
 import "./delegates/Delegates.sol";
 import "./modules/Modules.sol";
 import "./ProxyData.sol";
-import "./modules/Module.sol";
 
 contract Wallet is ProxyData {
 

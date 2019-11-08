@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import { ethers } from 'ethers';
 import { OpenMinterFactory, ERC721Factory } from '@immutable/types';
+import { getAddressBook } from '@immutable/artifacts';
 
 import {
   assetDataUtils,
@@ -18,6 +19,7 @@ import { PrivateKeyWalletSubprovider, RPCSubprovider } from '@0x/subproviders';
 
 const dotenv = require('dotenv');
 const config = dotenv.config({path: '../../.env'}).parsed;
+const addressBook = getAddressBook(config.DEPLOYMENT_NETWORK_ID, config.DEPLOYMENT_ENVIRONMENT);
 
 const provider = new ethers.providers.JsonRpcProvider(config.RPC_ENDPOINT, 3);
 const wallet = new ethers.Wallet(config.PRIVATE_KEY, provider)
@@ -36,7 +38,7 @@ engine.addProvider(new RPCSubprovider(config.RPC_ENDPOINT));
 engine.start();
 
 async function mint(): Promise<number[]> {
-  const openMinter = await new OpenMinterFactory(wallet).attach(config.OPEN_MINTER_ADDRESS);
+  const openMinter = await new OpenMinterFactory(wallet).attach(addressBook.openMinterAddress);
   const tx = await openMinter.functions.mintCards(wallet.address, protos, qualities);
   const receipt = await tx.wait();
   const ids = receipt.events.map(item => parseInt(item.topics[3]));
@@ -44,26 +46,26 @@ async function mint(): Promise<number[]> {
 }
 
 async function send(ids: number[]): Promise<any> {
-  const erc721Contract = new ERC721Factory(wallet).attach(config.CARD_ADDRESS);
-  const isApproved = await erc721Contract.functions.isApprovedForAll(wallet.address, config.ERC721_PROXY_ADDRESS)
+  const erc721Contract = new ERC721Factory(wallet).attach(addressBook.cardsAddress);
+  const isApproved = await erc721Contract.functions.isApprovedForAll(wallet.address, addressBook.zeroExERC721ProxyAddress)
 
   if (!isApproved) {
-    const approve = await erc721Contract.functions.setApprovalForAll(config.ERC721_PROXY_ADDRESS, true);
+    const approve = await erc721Contract.functions.setApprovalForAll(addressBook.zeroExERC721ProxyAddress, true);
     await approve.wait();
   }
 
   return await asyncForEach(ids, async (tokenId) => {
     const makerAssetData = assetDataUtils.encodeERC721AssetData(
-      config.CARD_ADDRESS,
+      addressBook.cardsAddress,
       new BigNumber(tokenId),
     );
 
     const takerAssetData = assetDataUtils.encodeERC20AssetData(
-      config.WETH_ADDRESS,
+      addressBook.wethAddress,
     );
 
     const order: Order = {
-      exchangeAddress: config.EXCHANGE_ADDRESS,
+      exchangeAddress: addressBook.zeroExExchangeAddress,
       makerAddress: wallet.address,
       takerAddress: ethers.constants.AddressZero,
       senderAddress: ethers.constants.AddressZero,

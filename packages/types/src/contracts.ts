@@ -95,6 +95,7 @@ export { WalletFactory } from './generated/WalletFactory';
 export { v1MigrationFactory } from './generated/v1MigrationFactory';
 export { v2MigrationFactory } from './generated/v2MigrationFactory';
 
+export {  } from './generated/';
 export { BackupModule } from './generated/BackupModule';
 export { BaseLimiter } from './generated/BaseLimiter';
 export { BaseMigration } from './generated/BaseMigration';

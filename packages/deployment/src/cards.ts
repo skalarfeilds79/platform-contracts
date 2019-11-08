@@ -1,5 +1,6 @@
 import { CardsFactory, OpenMinterFactory} from '@immutable/types';
 import { ethers } from 'ethers';
+import { writeContractToOutputs, writeStateToOutputs } from './utils/outputHelpers';
 
 const BATCH_SIZE = 1251;
 
@@ -30,6 +31,9 @@ async function deploy() {
 
     console.log('Unlocking Trading...')
     await cards.functions.unlockTrading(1);
+
+    await writeContractToOutputs('Cards', cards.address);
+    await writeContractToOutputs('OpenMinter', cards.address);
 
     return `Cards: ${cards.address}\nMinter: ${minter.address}`;
 

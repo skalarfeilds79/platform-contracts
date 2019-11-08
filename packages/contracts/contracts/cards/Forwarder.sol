@@ -61,7 +61,7 @@ contract Forwarder is LibOrder {
             address(CARDS_TOKEN).call(
                 abi.encodePacked(
                     "transferFrom(address,address,uint256)",
-                    abi.encode(address(this), msg.sender, 1)
+                    abi.encode(address(this), msg.sender, tokenIDs[i])
                 )
             );
         }

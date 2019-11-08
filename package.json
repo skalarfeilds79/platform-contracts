@@ -10,7 +10,7 @@
       "delete:yarn.lock": "find . -name \"yarn.lock\" -exec rm -rf '{}' +",
       "setup": "yarn --cwd packages/contracts chain",
       "chain": "yarn --cwd packages/contracts setup",
-      "generate-cards": "yarn --cwd packages/contracts setup",
+      "generate-cards": "yarn --cwd packages/contracts create",
       "lint": "yarn lerna run lint",
       "build": "tsc & yarn lerna run build",
       "test": "yarn lerna run test"

@@ -9,7 +9,7 @@
 	},
 	"dependencies": {
 		"0x.js": "^7.0.2",
-		"@immutable/artifacts": "^1.0.0",
+		"@immutable/addresses": "^1.0.0",
 		"@immutable/test-utils": "^1.0.0",
 		"@immutable/types": "^1.0.0",
 		"axios": "^0.19.0",

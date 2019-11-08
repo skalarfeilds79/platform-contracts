@@ -5,14 +5,20 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "dependencies": {
+    "@immutable/artifacts": "^1.0.0",
     "@immutable/types": "^1.0.0",
-		"dotenv": "^8.2.0",
-		"ethers": "^4.0.39",
-		"ts-node": "^8.4.1",
-		"typescript": "^3.6.4"
+    "dotenv": "^8.2.0",
+    "ethers": "^4.0.39",
+    "fs-extra": "^8.1.0",
+    "ts-node": "^8.4.1",
+    "typescript": "^3.6.4"
   },
   "scripts": {
-    "lint": "tslint --project . -t verbose 'src/**/*.{tsx,ts}'"
+    "lint": "tslint --project . -t verbose 'src/**/*.{tsx,ts}'",
+    "generate-outputs": "bash scripts/generate-outputs.sh",
+    "deploy-cards": "yarn ts-node src/cards && yarn generate-outputs",
+    "deploy-forwarder": "yarn ts-node src/forwarder && yarn generate-outputs",
+    "deploy-wallet": "yarn ts-node src/wallet && yarn generate-outputs"
   },
   "devDependencies": {
     "@0xproject/types": "^1.1.4",

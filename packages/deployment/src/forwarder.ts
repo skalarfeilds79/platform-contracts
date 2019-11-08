@@ -1,5 +1,6 @@
 import { ForwarderFactory } from '@immutable/types';
 import { ethers } from 'ethers';
+import { findDependency, getContractAddress, writeContractToOutputs } from './utils/outputHelpers';
 
 const BATCH_SIZE = 1251;
 
@@ -11,14 +12,15 @@ const wallet = new ethers.Wallet(config.PRIVATE_KEY, provider);
 
 async function deploy() {
     const forwarder = await new ForwarderFactory(wallet).deploy(
-        config.EXCHANGE_ADDRESS,
-        config.ERC721_PROXY_ADDRESS,
-        config.WETH_ADDRESS,
-        config.CARD_ADDRESS
+        await findDependency('ZERO_EX_EXCHANGE'),
+        await findDependency('ZERO_EX_ERC20_PROXY'),
+        await findDependency('WETH'),
+        await getContractAddress('Cards')
     );
 
-    return `Forwarder: ${forwarder.address}`;
+    await writeContractToOutputs('Forwarder', forwarder.address);
 
+    return `Forwarder: ${forwarder.address}`;
 }
 
 deploy().then(result => {

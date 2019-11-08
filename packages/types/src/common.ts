@@ -18,3 +18,15 @@ export enum DeploymentEnvironment {
   Staging = 'staging',
   Production = 'production'
 };
+
+export type AddressBook = {
+  cardsAddress?: string;
+  openMinterAddress?: string;
+  forwarderAddress?: string;
+  walletAddress?: string;
+  walletDeployerAddress?: string;
+  wethAddress?: string;
+  zeroExExchangeAddress?: string;
+  zeroExERC20ProxyAddress?: string;
+  zeroExERC721ProxyAddress?: string;
+}

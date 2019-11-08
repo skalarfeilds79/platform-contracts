@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { ethers } from 'ethers';
 import { OpenMinterFactory, ERC721Factory } from '@immutable/types';
-import { getAddressBook } from '@immutable/artifacts';
+import { getAddressBook } from '@immutable/addresses';
 
 import {
   assetDataUtils,

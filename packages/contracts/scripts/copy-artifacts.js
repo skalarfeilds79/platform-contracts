@@ -36,8 +36,11 @@ const walkSync = (dir, filenames = [], filelist = []) => {
 async function copyFiles() {
     const files = walkSync(TYPES_PATH, CONTRACT_NAMES);
     files.map((file) => {
-        fs.copyFileSync(file.path, `../artifacts/src/json/${file.file}`);
-        fs.writeFileSync(`../artifacts/src/ts/${file.name}.ts`, `export const ${file.name} = ${fs.readFileSync(file.path)}`);
+        let newFile = JSON.parse(fs.readFileSync(file.path));
+        newFile = newFile.abi;
+        newFile = JSON.stringify(newFile, null, 2);
+        fs.writeFileSync(`../artifacts/src/json/${file.file}`, newFile);
+        fs.writeFileSync(`../artifacts/src/ts/${file.name}.ts`, `export const ${file.name} = ${newFile}`);
     });
 
     const exports = files.map(item => {

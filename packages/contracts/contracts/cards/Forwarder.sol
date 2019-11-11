@@ -6,8 +6,8 @@ import "@0x/contracts-exchange-libs/contracts/src/LibOrder.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
-import "./IExchange.sol";
-import "./IEtherToken.sol";
+import "./interfaces/IExchange.sol";
+import "./interfaces/IEtherToken.sol";
 
 contract Forwarder is LibOrder {
 

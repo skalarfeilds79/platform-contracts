@@ -4,7 +4,7 @@ pragma solidity 0.5.11;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
-import "../ICards.sol";
+import "../interfaces/ICards.sol";
 import "./OldToken.sol";
 import "./BaseMigration.sol";
 

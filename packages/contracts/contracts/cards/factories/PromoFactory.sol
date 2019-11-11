@@ -1,26 +1,109 @@
 pragma solidity ^0.5.11;
 
+import "@openzeppelin/contracts/ownership/Ownable.sol";
 
-contract PromoFactory {
+import "../interfaces/ICards.sol";
 
-    mapping(uint16 => bool) locked;
-    mapping(uint16 => address) minters;
+contract PromoFactory is Ownable {
 
-    function mint(uint16 promo) public {
-        require(!locked[promo], "can mint");
+    ICards public cards;
+
+    mapping(uint16 => Promo) public promos;
+
+    uint16 public maxProto;
+    uint16 public minProto;
+
+    struct Promo {
+        bool isLocked;
+        address minter;
     }
 
-    function assignProto(uint16 proto, address minter) public {
+    event PromoAssigned(
+        uint16 promo,
+        address minter
+    );
+
+    event PromoLocked(
+        uint16 promo
+    );
+
+    constructor(
+        ICards _cards,
+        uint16 _minProto,
+        uint16 _maxProto
+    )
+        public
+    {
+        cards = _cards;
+        minProto = _minProto;
+        maxProto = _maxProto;
+    }
+
+    function assignPromoMinter(
+        address minter,
+        uint16 proto
+    )
+        public
+        onlyOwner
+    {
+        require(
+            proto >= minProto,
+            "Promo Factory: promo must be greater than min proto"
+        );
+
+        require(
+            proto <= maxProto,
+            "Promo Factory: promo must be less than max proto"
+        );
+
+        require(
+            promos[proto].isLocked == false,
+            "Promo Factory: promo already locked"
+        );
+
+        promos[proto].minter = minter;
+
+        emit PromoAssigned(proto, minter);
 
     }
 
-    // // 
-    // mapping(uint16 => bool) locked;
+    function mint(
+        uint16 promo
+    )
+        public
+    {
+        require(
+            promos[promo].minter == msg.sender,
+            "Promo Factory: only assigned minter can mint for this promo"
+        );
 
-    // mapping()
+        require(
+            promos[promo].isLocked == false,
+            "Promo Factory: cannot mint a locked promo"
+        );
 
-    // function mint(uint16 promo) {
-    //     require(!locked[promo], "promo must not have been locked");
+        // TODO: Call mint function;
 
-    // }
+    }
+
+    function lock(
+        uint16 promo
+    )
+        public
+        onlyOwner
+    {
+        require(
+            promos[promo].minter != address(0),
+            "Promo Factory: must be an assigned promo"
+        );
+
+        require(
+            promos[promo].isLocked == false,
+            "Promo Factory: cannot lock a locked promo"
+        );
+
+        promos[promo].isLocked = true;
+
+        emit PromoLocked(promo);
+    }
 }

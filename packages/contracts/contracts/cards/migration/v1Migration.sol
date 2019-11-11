@@ -1,6 +1,6 @@
 pragma solidity 0.5.11;
 
-import "../ICards.sol";
+import "../interfaces/ICards.sol";
 import "../legacy/packs/four/IPackFour.sol";
 import "./BaseMigration.sol";
 contract v1Migration is BaseMigration {

@@ -5,7 +5,7 @@ import dependencies from '../dependencies';
 const dotenv = require('dotenv');
 const config = dotenv.config({path: '../../.env'}).parsed;
 
-const OUTPUTS_PATH = '../artifacts/src/outputs.json';
+const OUTPUTS_PATH = '../addresses/src/outputs.json';
 
 const privateKey: string = process.env.DEPLOYMENT_PRIVATE_KEY;
 

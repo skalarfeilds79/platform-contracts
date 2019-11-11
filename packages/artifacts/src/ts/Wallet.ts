@@ -353,14 +353,14 @@ export const Wallet = {
     "absolutePath": "/Users/kerman/immutable/gods-unchained-contracts/packages/contracts/contracts/wallet/Wallet.sol",
     "exportedSymbols": {
       "Wallet": [
-        11495
+        11514
       ]
     },
-    "id": 11496,
+    "id": 11515,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 11174,
+        "id": 11193,
         "literals": [
           "solidity",
           "^",
@@ -373,10 +373,10 @@ export const Wallet = {
       {
         "absolutePath": "/Users/kerman/immutable/gods-unchained-contracts/packages/contracts/contracts/wallet/delegates/Delegates.sol",
         "file": "./delegates/Delegates.sol",
-        "id": 11175,
+        "id": 11194,
         "nodeType": "ImportDirective",
-        "scope": 11496,
-        "sourceUnit": 12091,
+        "scope": 11515,
+        "sourceUnit": 12110,
         "src": "25:35:52",
         "symbolAliases": [],
         "unitAlias": ""
@@ -384,10 +384,10 @@ export const Wallet = {
       {
         "absolutePath": "/Users/kerman/immutable/gods-unchained-contracts/packages/contracts/contracts/wallet/modules/Modules.sol",
         "file": "./modules/Modules.sol",
-        "id": 11176,
+        "id": 11195,
         "nodeType": "ImportDirective",
-        "scope": 11496,
-        "sourceUnit": 15036,
+        "scope": 11515,
+        "sourceUnit": 15055,
         "src": "61:31:52",
         "symbolAliases": [],
         "unitAlias": ""
@@ -395,10 +395,10 @@ export const Wallet = {
       {
         "absolutePath": "/Users/kerman/immutable/gods-unchained-contracts/packages/contracts/contracts/wallet/ProxyData.sol",
         "file": "./ProxyData.sol",
-        "id": 11177,
+        "id": 11196,
         "nodeType": "ImportDirective",
-        "scope": 11496,
-        "sourceUnit": 11173,
+        "scope": 11515,
+        "sourceUnit": 11192,
         "src": "93:25:52",
         "symbolAliases": [],
         "unitAlias": ""
@@ -409,43 +409,43 @@ export const Wallet = {
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 11178,
+              "id": 11197,
               "name": "ProxyData",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 11172,
+              "referencedDeclaration": 11191,
               "src": "139:9:52",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ProxyData_$11172",
+                "typeIdentifier": "t_contract$_ProxyData_$11191",
                 "typeString": "contract ProxyData"
               }
             },
-            "id": 11179,
+            "id": 11198,
             "nodeType": "InheritanceSpecifier",
             "src": "139:9:52"
           }
         ],
         "contractDependencies": [
-          11172,
-          12166
+          11191,
+          12185
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 11495,
+        "id": 11514,
         "linearizedBaseContracts": [
-          11495,
-          11172,
-          12166
+          11514,
+          11191,
+          12185
         ],
         "name": "Wallet",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 11181,
+            "id": 11200,
             "name": "owner",
             "nodeType": "VariableDeclaration",
-            "scope": 11495,
+            "scope": 11514,
             "src": "156:20:52",
             "stateVariable": true,
             "storageLocation": "default",
@@ -454,7 +454,7 @@ export const Wallet = {
               "typeString": "address"
             },
             "typeName": {
-              "id": 11180,
+              "id": 11199,
               "name": "address",
               "nodeType": "ElementaryTypeName",
               "src": "156:7:52",
@@ -469,26 +469,26 @@ export const Wallet = {
           },
           {
             "constant": false,
-            "id": 11183,
+            "id": 11202,
             "name": "modules",
             "nodeType": "VariableDeclaration",
-            "scope": 11495,
+            "scope": 11514,
             "src": "182:22:52",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_Modules_$15035",
+              "typeIdentifier": "t_contract$_Modules_$15054",
               "typeString": "contract Modules"
             },
             "typeName": {
               "contractScope": null,
-              "id": 11182,
+              "id": 11201,
               "name": "Modules",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 15035,
+              "referencedDeclaration": 15054,
               "src": "182:7:52",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Modules_$15035",
+                "typeIdentifier": "t_contract$_Modules_$15054",
                 "typeString": "contract Modules"
               }
             },
@@ -497,26 +497,26 @@ export const Wallet = {
           },
           {
             "constant": false,
-            "id": 11185,
+            "id": 11204,
             "name": "delegates",
             "nodeType": "VariableDeclaration",
-            "scope": 11495,
+            "scope": 11514,
             "src": "210:26:52",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_Delegates_$12090",
+              "typeIdentifier": "t_contract$_Delegates_$12109",
               "typeString": "contract Delegates"
             },
             "typeName": {
               "contractScope": null,
-              "id": 11184,
+              "id": 11203,
               "name": "Delegates",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 12090,
+              "referencedDeclaration": 12109,
               "src": "210:9:52",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Delegates_$12090",
+                "typeIdentifier": "t_contract$_Delegates_$12109",
                 "typeString": "contract Delegates"
               }
             },
@@ -525,10 +525,10 @@ export const Wallet = {
           },
           {
             "constant": false,
-            "id": 11187,
+            "id": 11206,
             "name": "creator",
             "nodeType": "VariableDeclaration",
-            "scope": 11495,
+            "scope": 11514,
             "src": "242:22:52",
             "stateVariable": true,
             "storageLocation": "default",
@@ -537,7 +537,7 @@ export const Wallet = {
               "typeString": "address"
             },
             "typeName": {
-              "id": 11186,
+              "id": 11205,
               "name": "address",
               "nodeType": "ElementaryTypeName",
               "src": "242:7:52",
@@ -552,10 +552,10 @@ export const Wallet = {
           },
           {
             "constant": false,
-            "id": 11189,
+            "id": 11208,
             "name": "creationTime",
             "nodeType": "VariableDeclaration",
-            "scope": 11495,
+            "scope": 11514,
             "src": "270:26:52",
             "stateVariable": true,
             "storageLocation": "default",
@@ -564,7 +564,7 @@ export const Wallet = {
               "typeString": "uint64"
             },
             "typeName": {
-              "id": 11188,
+              "id": 11207,
               "name": "uint64",
               "nodeType": "ElementaryTypeName",
               "src": "270:6:52",
@@ -579,20 +579,20 @@ export const Wallet = {
           {
             "anonymous": false,
             "documentation": null,
-            "id": 11197,
+            "id": 11216,
             "name": "Received",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 11196,
+              "id": 11215,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11191,
+                  "id": 11210,
                   "indexed": true,
                   "name": "sender",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11197,
+                  "scope": 11216,
                   "src": "327:22:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -601,7 +601,7 @@ export const Wallet = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11190,
+                    "id": 11209,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "327:7:52",
@@ -616,11 +616,11 @@ export const Wallet = {
                 },
                 {
                   "constant": false,
-                  "id": 11193,
+                  "id": 11212,
                   "indexed": false,
                   "name": "data",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11197,
+                  "scope": 11216,
                   "src": "359:10:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -629,7 +629,7 @@ export const Wallet = {
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 11192,
+                    "id": 11211,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
                     "src": "359:5:52",
@@ -643,11 +643,11 @@ export const Wallet = {
                 },
                 {
                   "constant": false,
-                  "id": 11195,
+                  "id": 11214,
                   "indexed": false,
                   "name": "value",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11197,
+                  "scope": 11216,
                   "src": "379:10:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -656,7 +656,7 @@ export const Wallet = {
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 11194,
+                    "id": 11213,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "379:4:52",
@@ -676,20 +676,20 @@ export const Wallet = {
           {
             "anonymous": false,
             "documentation": null,
-            "id": 11207,
+            "id": 11226,
             "name": "Executed",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 11206,
+              "id": 11225,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11199,
+                  "id": 11218,
                   "indexed": true,
                   "name": "sender",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11207,
+                  "scope": 11226,
                   "src": "426:22:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -698,7 +698,7 @@ export const Wallet = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11198,
+                    "id": 11217,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "426:7:52",
@@ -713,11 +713,11 @@ export const Wallet = {
                 },
                 {
                   "constant": false,
-                  "id": 11201,
+                  "id": 11220,
                   "indexed": true,
                   "name": "to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11207,
+                  "scope": 11226,
                   "src": "458:18:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -726,7 +726,7 @@ export const Wallet = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11200,
+                    "id": 11219,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "458:7:52",
@@ -741,11 +741,11 @@ export const Wallet = {
                 },
                 {
                   "constant": false,
-                  "id": 11203,
+                  "id": 11222,
                   "indexed": false,
                   "name": "data",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11207,
+                  "scope": 11226,
                   "src": "486:10:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -754,7 +754,7 @@ export const Wallet = {
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 11202,
+                    "id": 11221,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
                     "src": "486:5:52",
@@ -768,11 +768,11 @@ export const Wallet = {
                 },
                 {
                   "constant": false,
-                  "id": 11205,
+                  "id": 11224,
                   "indexed": false,
                   "name": "value",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11207,
+                  "scope": 11226,
                   "src": "506:10:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -781,7 +781,7 @@ export const Wallet = {
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 11204,
+                    "id": 11223,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "506:4:52",
@@ -801,20 +801,20 @@ export const Wallet = {
           {
             "anonymous": false,
             "documentation": null,
-            "id": 11211,
+            "id": 11230,
             "name": "OwnerChanged",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 11210,
+              "id": 11229,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11209,
+                  "id": 11228,
                   "indexed": true,
                   "name": "owner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11211,
+                  "scope": 11230,
                   "src": "548:21:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -823,7 +823,7 @@ export const Wallet = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11208,
+                    "id": 11227,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "548:7:52",
@@ -844,20 +844,20 @@ export const Wallet = {
           {
             "anonymous": false,
             "documentation": null,
-            "id": 11215,
+            "id": 11234,
             "name": "ModulesChanged",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 11214,
+              "id": 11233,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11213,
+                  "id": 11232,
                   "indexed": true,
                   "name": "modules",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11215,
+                  "scope": 11234,
                   "src": "598:23:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -866,7 +866,7 @@ export const Wallet = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11212,
+                    "id": 11231,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "598:7:52",
@@ -887,20 +887,20 @@ export const Wallet = {
           {
             "anonymous": false,
             "documentation": null,
-            "id": 11219,
+            "id": 11238,
             "name": "DelegatesChanged",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 11218,
+              "id": 11237,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11217,
+                  "id": 11236,
                   "indexed": true,
                   "name": "delegates",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11219,
+                  "scope": 11238,
                   "src": "652:25:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -909,7 +909,7 @@ export const Wallet = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11216,
+                    "id": 11235,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "652:7:52",
@@ -929,7 +929,7 @@ export const Wallet = {
           },
           {
             "body": {
-              "id": 11232,
+              "id": 11251,
               "nodeType": "Block",
               "src": "703:133:52",
               "statements": [
@@ -943,7 +943,7 @@ export const Wallet = {
                           "typeIdentifier": "t_address_payable",
                           "typeString": "address payable"
                         },
-                        "id": 11227,
+                        "id": 11246,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -952,18 +952,18 @@ export const Wallet = {
                           "argumentTypes": null,
                           "expression": {
                             "argumentTypes": null,
-                            "id": 11222,
+                            "id": 11241,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 19385,
+                            "referencedDeclaration": 19404,
                             "src": "734:3:52",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
                               "typeString": "msg"
                             }
                           },
-                          "id": 11223,
+                          "id": 11242,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -984,14 +984,14 @@ export const Wallet = {
                           "arguments": [
                             {
                               "argumentTypes": null,
-                              "id": 11225,
+                              "id": 11244,
                               "name": "this",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 19553,
+                              "referencedDeclaration": 19572,
                               "src": "756:4:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_contract$_Wallet_$11495",
+                                "typeIdentifier": "t_contract$_Wallet_$11514",
                                 "typeString": "contract Wallet"
                               }
                             }
@@ -999,11 +999,11 @@ export const Wallet = {
                           "expression": {
                             "argumentTypes": [
                               {
-                                "typeIdentifier": "t_contract$_Wallet_$11495",
+                                "typeIdentifier": "t_contract$_Wallet_$11514",
                                 "typeString": "contract Wallet"
                               }
                             ],
-                            "id": 11224,
+                            "id": 11243,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -1016,7 +1016,7 @@ export const Wallet = {
                             },
                             "typeName": "address"
                           },
-                          "id": 11226,
+                          "id": 11245,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1039,7 +1039,7 @@ export const Wallet = {
                       {
                         "argumentTypes": null,
                         "hexValue": "6d7573742062652063616c6c6564206279207468697320636f6e7472616374",
-                        "id": 11228,
+                        "id": 11247,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -1066,21 +1066,21 @@ export const Wallet = {
                           "typeString": "literal_string \"must be called by this contract\""
                         }
                       ],
-                      "id": 11221,
+                      "id": 11240,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "713:7:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11229,
+                    "id": 11248,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1094,23 +1094,23 @@ export const Wallet = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11230,
+                  "id": 11249,
                   "nodeType": "ExpressionStatement",
                   "src": "713:105:52"
                 },
                 {
-                  "id": 11231,
+                  "id": 11250,
                   "nodeType": "PlaceholderStatement",
                   "src": "828:1:52"
                 }
               ]
             },
             "documentation": null,
-            "id": 11233,
+            "id": 11252,
             "name": "onlySelf",
             "nodeType": "ModifierDefinition",
             "parameters": {
-              "id": 11220,
+              "id": 11239,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "703:0:52"
@@ -1120,7 +1120,7 @@ export const Wallet = {
           },
           {
             "body": {
-              "id": 11257,
+              "id": 11276,
               "nodeType": "Block",
               "src": "895:168:52",
               "statements": [
@@ -1134,18 +1134,18 @@ export const Wallet = {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
-                        "id": 11245,
+                        "id": 11264,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
                           "argumentTypes": null,
-                          "id": 11241,
+                          "id": 11260,
                           "name": "_owner",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11235,
+                          "referencedDeclaration": 11254,
                           "src": "926:6:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -1160,7 +1160,7 @@ export const Wallet = {
                             {
                               "argumentTypes": null,
                               "hexValue": "30",
-                              "id": 11243,
+                              "id": 11262,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -1183,7 +1183,7 @@ export const Wallet = {
                                 "typeString": "int_const 0"
                               }
                             ],
-                            "id": 11242,
+                            "id": 11261,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -1196,7 +1196,7 @@ export const Wallet = {
                             },
                             "typeName": "address"
                           },
-                          "id": 11244,
+                          "id": 11263,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -1219,7 +1219,7 @@ export const Wallet = {
                       {
                         "argumentTypes": null,
                         "hexValue": "41646472657373206d757374206e6f74206265206e756c6c",
-                        "id": 11246,
+                        "id": 11265,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -1246,21 +1246,21 @@ export const Wallet = {
                           "typeString": "literal_string \"Address must not be null\""
                         }
                       ],
-                      "id": 11240,
+                      "id": 11259,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "905:7:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11247,
+                    "id": 11266,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1274,25 +1274,25 @@ export const Wallet = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11248,
+                  "id": 11267,
                   "nodeType": "ExpressionStatement",
                   "src": "905:91:52"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 11251,
+                    "id": 11270,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 11249,
+                      "id": 11268,
                       "name": "owner",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11181,
+                      "referencedDeclaration": 11200,
                       "src": "1007:5:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -1303,11 +1303,11 @@ export const Wallet = {
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 11250,
+                      "id": 11269,
                       "name": "_owner",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11235,
+                      "referencedDeclaration": 11254,
                       "src": "1015:6:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -1320,7 +1320,7 @@ export const Wallet = {
                       "typeString": "address"
                     }
                   },
-                  "id": 11252,
+                  "id": 11271,
                   "nodeType": "ExpressionStatement",
                   "src": "1007:14:52"
                 },
@@ -1330,11 +1330,11 @@ export const Wallet = {
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 11254,
+                        "id": 11273,
                         "name": "_owner",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11235,
+                        "referencedDeclaration": 11254,
                         "src": "1049:6:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -1349,18 +1349,18 @@ export const Wallet = {
                           "typeString": "address"
                         }
                       ],
-                      "id": 11253,
+                      "id": 11272,
                       "name": "OwnerChanged",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11211,
+                      "referencedDeclaration": 11230,
                       "src": "1036:12:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_address_$returns$__$",
                         "typeString": "function (address)"
                       }
                     },
-                    "id": 11255,
+                    "id": 11274,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1374,27 +1374,27 @@ export const Wallet = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11256,
+                  "id": 11275,
                   "nodeType": "EmitStatement",
                   "src": "1031:25:52"
                 }
               ]
             },
             "documentation": null,
-            "id": 11258,
+            "id": 11277,
             "implemented": true,
             "kind": "function",
             "modifiers": [
               {
                 "arguments": null,
-                "id": 11238,
+                "id": 11257,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 11237,
+                  "id": 11256,
                   "name": "onlySelf",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 11233,
+                  "referencedDeclaration": 11252,
                   "src": "886:8:52",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -1408,15 +1408,15 @@ export const Wallet = {
             "name": "changeOwner",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11236,
+              "id": 11255,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11235,
+                  "id": 11254,
                   "name": "_owner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11258,
+                  "scope": 11277,
                   "src": "863:14:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1425,7 +1425,7 @@ export const Wallet = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11234,
+                    "id": 11253,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "863:7:52",
@@ -1442,12 +1442,12 @@ export const Wallet = {
               "src": "862:16:52"
             },
             "returnParameters": {
-              "id": 11239,
+              "id": 11258,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "895:0:52"
             },
-            "scope": 11495,
+            "scope": 11514,
             "src": "842:221:52",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -1455,7 +1455,7 @@ export const Wallet = {
           },
           {
             "body": {
-              "id": 11286,
+              "id": 11305,
               "nodeType": "Block",
               "src": "1126:196:52",
               "statements": [
@@ -1469,7 +1469,7 @@ export const Wallet = {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
-                        "id": 11272,
+                        "id": 11291,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1479,14 +1479,14 @@ export const Wallet = {
                           "arguments": [
                             {
                               "argumentTypes": null,
-                              "id": 11267,
+                              "id": 11286,
                               "name": "_modules",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 11260,
+                              "referencedDeclaration": 11279,
                               "src": "1165:8:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_contract$_Modules_$15035",
+                                "typeIdentifier": "t_contract$_Modules_$15054",
                                 "typeString": "contract Modules"
                               }
                             }
@@ -1494,11 +1494,11 @@ export const Wallet = {
                           "expression": {
                             "argumentTypes": [
                               {
-                                "typeIdentifier": "t_contract$_Modules_$15035",
+                                "typeIdentifier": "t_contract$_Modules_$15054",
                                 "typeString": "contract Modules"
                               }
                             ],
-                            "id": 11266,
+                            "id": 11285,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -1511,7 +1511,7 @@ export const Wallet = {
                             },
                             "typeName": "address"
                           },
-                          "id": 11268,
+                          "id": 11287,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1533,7 +1533,7 @@ export const Wallet = {
                             {
                               "argumentTypes": null,
                               "hexValue": "30",
-                              "id": 11270,
+                              "id": 11289,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -1556,7 +1556,7 @@ export const Wallet = {
                                 "typeString": "int_const 0"
                               }
                             ],
-                            "id": 11269,
+                            "id": 11288,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -1569,7 +1569,7 @@ export const Wallet = {
                             },
                             "typeName": "address"
                           },
-                          "id": 11271,
+                          "id": 11290,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -1592,7 +1592,7 @@ export const Wallet = {
                       {
                         "argumentTypes": null,
                         "hexValue": "41646472657373206d757374206e6f74206265206e756c6c",
-                        "id": 11273,
+                        "id": 11292,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -1619,21 +1619,21 @@ export const Wallet = {
                           "typeString": "literal_string \"Address must not be null\""
                         }
                       ],
-                      "id": 11265,
+                      "id": 11284,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "1136:7:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11274,
+                    "id": 11293,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1647,28 +1647,28 @@ export const Wallet = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11275,
+                  "id": 11294,
                   "nodeType": "ExpressionStatement",
                   "src": "1136:102:52"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 11278,
+                    "id": 11297,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 11276,
+                      "id": 11295,
                       "name": "modules",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11183,
+                      "referencedDeclaration": 11202,
                       "src": "1249:7:52",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Modules_$15035",
+                        "typeIdentifier": "t_contract$_Modules_$15054",
                         "typeString": "contract Modules"
                       }
                     },
@@ -1676,24 +1676,24 @@ export const Wallet = {
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 11277,
+                      "id": 11296,
                       "name": "_modules",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11260,
+                      "referencedDeclaration": 11279,
                       "src": "1259:8:52",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Modules_$15035",
+                        "typeIdentifier": "t_contract$_Modules_$15054",
                         "typeString": "contract Modules"
                       }
                     },
                     "src": "1249:18:52",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_Modules_$15035",
+                      "typeIdentifier": "t_contract$_Modules_$15054",
                       "typeString": "contract Modules"
                     }
                   },
-                  "id": 11279,
+                  "id": 11298,
                   "nodeType": "ExpressionStatement",
                   "src": "1249:18:52"
                 },
@@ -1706,14 +1706,14 @@ export const Wallet = {
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 11282,
+                            "id": 11301,
                             "name": "_modules",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 11260,
+                            "referencedDeclaration": 11279,
                             "src": "1305:8:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_Modules_$15035",
+                              "typeIdentifier": "t_contract$_Modules_$15054",
                               "typeString": "contract Modules"
                             }
                           }
@@ -1721,11 +1721,11 @@ export const Wallet = {
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_contract$_Modules_$15035",
+                              "typeIdentifier": "t_contract$_Modules_$15054",
                               "typeString": "contract Modules"
                             }
                           ],
-                          "id": 11281,
+                          "id": 11300,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -1738,7 +1738,7 @@ export const Wallet = {
                           },
                           "typeName": "address"
                         },
-                        "id": 11283,
+                        "id": 11302,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1760,18 +1760,18 @@ export const Wallet = {
                           "typeString": "address"
                         }
                       ],
-                      "id": 11280,
+                      "id": 11299,
                       "name": "ModulesChanged",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11215,
+                      "referencedDeclaration": 11234,
                       "src": "1282:14:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_address_$returns$__$",
                         "typeString": "function (address)"
                       }
                     },
-                    "id": 11284,
+                    "id": 11303,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1785,27 +1785,27 @@ export const Wallet = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11285,
+                  "id": 11304,
                   "nodeType": "EmitStatement",
                   "src": "1277:38:52"
                 }
               ]
             },
             "documentation": null,
-            "id": 11287,
+            "id": 11306,
             "implemented": true,
             "kind": "function",
             "modifiers": [
               {
                 "arguments": null,
-                "id": 11263,
+                "id": 11282,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 11262,
+                  "id": 11281,
                   "name": "onlySelf",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 11233,
+                  "referencedDeclaration": 11252,
                   "src": "1117:8:52",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -1819,31 +1819,31 @@ export const Wallet = {
             "name": "changeModules",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11261,
+              "id": 11280,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11260,
+                  "id": 11279,
                   "name": "_modules",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11287,
+                  "scope": 11306,
                   "src": "1092:16:52",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_Modules_$15035",
+                    "typeIdentifier": "t_contract$_Modules_$15054",
                     "typeString": "contract Modules"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 11259,
+                    "id": 11278,
                     "name": "Modules",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 15035,
+                    "referencedDeclaration": 15054,
                     "src": "1092:7:52",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_Modules_$15035",
+                      "typeIdentifier": "t_contract$_Modules_$15054",
                       "typeString": "contract Modules"
                     }
                   },
@@ -1854,12 +1854,12 @@ export const Wallet = {
               "src": "1091:18:52"
             },
             "returnParameters": {
-              "id": 11264,
+              "id": 11283,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1126:0:52"
             },
-            "scope": 11495,
+            "scope": 11514,
             "src": "1069:253:52",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -1867,7 +1867,7 @@ export const Wallet = {
           },
           {
             "body": {
-              "id": 11315,
+              "id": 11334,
               "nodeType": "Block",
               "src": "1391:204:52",
               "statements": [
@@ -1881,7 +1881,7 @@ export const Wallet = {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
-                        "id": 11301,
+                        "id": 11320,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1891,14 +1891,14 @@ export const Wallet = {
                           "arguments": [
                             {
                               "argumentTypes": null,
-                              "id": 11296,
+                              "id": 11315,
                               "name": "_delegates",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 11289,
+                              "referencedDeclaration": 11308,
                               "src": "1430:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_contract$_Delegates_$12090",
+                                "typeIdentifier": "t_contract$_Delegates_$12109",
                                 "typeString": "contract Delegates"
                               }
                             }
@@ -1906,11 +1906,11 @@ export const Wallet = {
                           "expression": {
                             "argumentTypes": [
                               {
-                                "typeIdentifier": "t_contract$_Delegates_$12090",
+                                "typeIdentifier": "t_contract$_Delegates_$12109",
                                 "typeString": "contract Delegates"
                               }
                             ],
-                            "id": 11295,
+                            "id": 11314,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -1923,7 +1923,7 @@ export const Wallet = {
                             },
                             "typeName": "address"
                           },
-                          "id": 11297,
+                          "id": 11316,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1945,7 +1945,7 @@ export const Wallet = {
                             {
                               "argumentTypes": null,
                               "hexValue": "30",
-                              "id": 11299,
+                              "id": 11318,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -1968,7 +1968,7 @@ export const Wallet = {
                                 "typeString": "int_const 0"
                               }
                             ],
-                            "id": 11298,
+                            "id": 11317,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -1981,7 +1981,7 @@ export const Wallet = {
                             },
                             "typeName": "address"
                           },
-                          "id": 11300,
+                          "id": 11319,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -2004,7 +2004,7 @@ export const Wallet = {
                       {
                         "argumentTypes": null,
                         "hexValue": "41646472657373206d757374206e6f74206265206e756c6c",
-                        "id": 11302,
+                        "id": 11321,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -2031,21 +2031,21 @@ export const Wallet = {
                           "typeString": "literal_string \"Address must not be null\""
                         }
                       ],
-                      "id": 11294,
+                      "id": 11313,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "1401:7:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11303,
+                    "id": 11322,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2059,28 +2059,28 @@ export const Wallet = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11304,
+                  "id": 11323,
                   "nodeType": "ExpressionStatement",
                   "src": "1401:104:52"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 11307,
+                    "id": 11326,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 11305,
+                      "id": 11324,
                       "name": "delegates",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11185,
+                      "referencedDeclaration": 11204,
                       "src": "1516:9:52",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Delegates_$12090",
+                        "typeIdentifier": "t_contract$_Delegates_$12109",
                         "typeString": "contract Delegates"
                       }
                     },
@@ -2088,24 +2088,24 @@ export const Wallet = {
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 11306,
+                      "id": 11325,
                       "name": "_delegates",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11289,
+                      "referencedDeclaration": 11308,
                       "src": "1528:10:52",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Delegates_$12090",
+                        "typeIdentifier": "t_contract$_Delegates_$12109",
                         "typeString": "contract Delegates"
                       }
                     },
                     "src": "1516:22:52",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_Delegates_$12090",
+                      "typeIdentifier": "t_contract$_Delegates_$12109",
                       "typeString": "contract Delegates"
                     }
                   },
-                  "id": 11308,
+                  "id": 11327,
                   "nodeType": "ExpressionStatement",
                   "src": "1516:22:52"
                 },
@@ -2118,14 +2118,14 @@ export const Wallet = {
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 11311,
+                            "id": 11330,
                             "name": "_delegates",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 11289,
+                            "referencedDeclaration": 11308,
                             "src": "1576:10:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_Delegates_$12090",
+                              "typeIdentifier": "t_contract$_Delegates_$12109",
                               "typeString": "contract Delegates"
                             }
                           }
@@ -2133,11 +2133,11 @@ export const Wallet = {
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_contract$_Delegates_$12090",
+                              "typeIdentifier": "t_contract$_Delegates_$12109",
                               "typeString": "contract Delegates"
                             }
                           ],
-                          "id": 11310,
+                          "id": 11329,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -2150,7 +2150,7 @@ export const Wallet = {
                           },
                           "typeName": "address"
                         },
-                        "id": 11312,
+                        "id": 11331,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2172,18 +2172,18 @@ export const Wallet = {
                           "typeString": "address"
                         }
                       ],
-                      "id": 11309,
+                      "id": 11328,
                       "name": "ModulesChanged",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11215,
+                      "referencedDeclaration": 11234,
                       "src": "1553:14:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_address_$returns$__$",
                         "typeString": "function (address)"
                       }
                     },
-                    "id": 11313,
+                    "id": 11332,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2197,27 +2197,27 @@ export const Wallet = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11314,
+                  "id": 11333,
                   "nodeType": "EmitStatement",
                   "src": "1548:40:52"
                 }
               ]
             },
             "documentation": null,
-            "id": 11316,
+            "id": 11335,
             "implemented": true,
             "kind": "function",
             "modifiers": [
               {
                 "arguments": null,
-                "id": 11292,
+                "id": 11311,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 11291,
+                  "id": 11310,
                   "name": "onlySelf",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 11233,
+                  "referencedDeclaration": 11252,
                   "src": "1382:8:52",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -2231,31 +2231,31 @@ export const Wallet = {
             "name": "changeDelegates",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11290,
+              "id": 11309,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11289,
+                  "id": 11308,
                   "name": "_delegates",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11316,
+                  "scope": 11335,
                   "src": "1353:20:52",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_Delegates_$12090",
+                    "typeIdentifier": "t_contract$_Delegates_$12109",
                     "typeString": "contract Delegates"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 11288,
+                    "id": 11307,
                     "name": "Delegates",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 12090,
+                    "referencedDeclaration": 12109,
                     "src": "1353:9:52",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_Delegates_$12090",
+                      "typeIdentifier": "t_contract$_Delegates_$12109",
                       "typeString": "contract Delegates"
                     }
                   },
@@ -2266,12 +2266,12 @@ export const Wallet = {
               "src": "1352:22:52"
             },
             "returnParameters": {
-              "id": 11293,
+              "id": 11312,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1391:0:52"
             },
-            "scope": 11495,
+            "scope": 11514,
             "src": "1328:267:52",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -2279,7 +2279,7 @@ export const Wallet = {
           },
           {
             "body": {
-              "id": 11388,
+              "id": 11407,
               "nodeType": "Block",
               "src": "1720:575:52",
               "statements": [
@@ -2293,18 +2293,18 @@ export const Wallet = {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
-                        "id": 11330,
+                        "id": 11349,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
                           "argumentTypes": null,
-                          "id": 11326,
+                          "id": 11345,
                           "name": "owner",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11181,
+                          "referencedDeclaration": 11200,
                           "src": "1751:5:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -2319,7 +2319,7 @@ export const Wallet = {
                             {
                               "argumentTypes": null,
                               "hexValue": "30",
-                              "id": 11328,
+                              "id": 11347,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -2342,7 +2342,7 @@ export const Wallet = {
                                 "typeString": "int_const 0"
                               }
                             ],
-                            "id": 11327,
+                            "id": 11346,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -2355,7 +2355,7 @@ export const Wallet = {
                             },
                             "typeName": "address"
                           },
-                          "id": 11329,
+                          "id": 11348,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -2378,7 +2378,7 @@ export const Wallet = {
                       {
                         "argumentTypes": null,
                         "hexValue": "63616e206f6e6c7920696e6974206f6e6365",
-                        "id": 11331,
+                        "id": 11350,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -2405,21 +2405,21 @@ export const Wallet = {
                           "typeString": "literal_string \"can only init once\""
                         }
                       ],
-                      "id": 11325,
+                      "id": 11344,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "1730:7:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11332,
+                    "id": 11351,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2433,7 +2433,7 @@ export const Wallet = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11333,
+                  "id": 11352,
                   "nodeType": "ExpressionStatement",
                   "src": "1730:84:52"
                 },
@@ -2447,18 +2447,18 @@ export const Wallet = {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
-                        "id": 11339,
+                        "id": 11358,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
                           "argumentTypes": null,
-                          "id": 11335,
+                          "id": 11354,
                           "name": "_owner",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11318,
+                          "referencedDeclaration": 11337,
                           "src": "1846:6:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -2473,7 +2473,7 @@ export const Wallet = {
                             {
                               "argumentTypes": null,
                               "hexValue": "30",
-                              "id": 11337,
+                              "id": 11356,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -2496,7 +2496,7 @@ export const Wallet = {
                                 "typeString": "int_const 0"
                               }
                             ],
-                            "id": 11336,
+                            "id": 11355,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -2509,7 +2509,7 @@ export const Wallet = {
                             },
                             "typeName": "address"
                           },
-                          "id": 11338,
+                          "id": 11357,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -2532,7 +2532,7 @@ export const Wallet = {
                       {
                         "argumentTypes": null,
                         "hexValue": "6f776e65722063616e6e6f74206265206e756c6c",
-                        "id": 11340,
+                        "id": 11359,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -2559,21 +2559,21 @@ export const Wallet = {
                           "typeString": "literal_string \"owner cannot be null\""
                         }
                       ],
-                      "id": 11334,
+                      "id": 11353,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "1825:7:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11341,
+                    "id": 11360,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2587,7 +2587,7 @@ export const Wallet = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11342,
+                  "id": 11361,
                   "nodeType": "ExpressionStatement",
                   "src": "1825:87:52"
                 },
@@ -2601,7 +2601,7 @@ export const Wallet = {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
-                        "id": 11350,
+                        "id": 11369,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2611,14 +2611,14 @@ export const Wallet = {
                           "arguments": [
                             {
                               "argumentTypes": null,
-                              "id": 11345,
+                              "id": 11364,
                               "name": "_modules",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 11322,
+                              "referencedDeclaration": 11341,
                               "src": "1952:8:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_contract$_Modules_$15035",
+                                "typeIdentifier": "t_contract$_Modules_$15054",
                                 "typeString": "contract Modules"
                               }
                             }
@@ -2626,11 +2626,11 @@ export const Wallet = {
                           "expression": {
                             "argumentTypes": [
                               {
-                                "typeIdentifier": "t_contract$_Modules_$15035",
+                                "typeIdentifier": "t_contract$_Modules_$15054",
                                 "typeString": "contract Modules"
                               }
                             ],
-                            "id": 11344,
+                            "id": 11363,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -2643,7 +2643,7 @@ export const Wallet = {
                             },
                             "typeName": "address"
                           },
-                          "id": 11346,
+                          "id": 11365,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -2665,7 +2665,7 @@ export const Wallet = {
                             {
                               "argumentTypes": null,
                               "hexValue": "30",
-                              "id": 11348,
+                              "id": 11367,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -2688,7 +2688,7 @@ export const Wallet = {
                                 "typeString": "int_const 0"
                               }
                             ],
-                            "id": 11347,
+                            "id": 11366,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -2701,7 +2701,7 @@ export const Wallet = {
                             },
                             "typeName": "address"
                           },
-                          "id": 11349,
+                          "id": 11368,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -2724,7 +2724,7 @@ export const Wallet = {
                       {
                         "argumentTypes": null,
                         "hexValue": "6d6f64756c65732063616e6f74206265206e756c6c",
-                        "id": 11351,
+                        "id": 11370,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -2751,21 +2751,21 @@ export const Wallet = {
                           "typeString": "literal_string \"modules canot be null\""
                         }
                       ],
-                      "id": 11343,
+                      "id": 11362,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "1923:7:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11352,
+                    "id": 11371,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2779,7 +2779,7 @@ export const Wallet = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11353,
+                  "id": 11372,
                   "nodeType": "ExpressionStatement",
                   "src": "1923:99:52"
                 },
@@ -2793,7 +2793,7 @@ export const Wallet = {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
-                        "id": 11361,
+                        "id": 11380,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2803,14 +2803,14 @@ export const Wallet = {
                           "arguments": [
                             {
                               "argumentTypes": null,
-                              "id": 11356,
+                              "id": 11375,
                               "name": "_delegates",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 11320,
+                              "referencedDeclaration": 11339,
                               "src": "2062:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_contract$_Delegates_$12090",
+                                "typeIdentifier": "t_contract$_Delegates_$12109",
                                 "typeString": "contract Delegates"
                               }
                             }
@@ -2818,11 +2818,11 @@ export const Wallet = {
                           "expression": {
                             "argumentTypes": [
                               {
-                                "typeIdentifier": "t_contract$_Delegates_$12090",
+                                "typeIdentifier": "t_contract$_Delegates_$12109",
                                 "typeString": "contract Delegates"
                               }
                             ],
-                            "id": 11355,
+                            "id": 11374,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -2835,7 +2835,7 @@ export const Wallet = {
                             },
                             "typeName": "address"
                           },
-                          "id": 11357,
+                          "id": 11376,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -2857,7 +2857,7 @@ export const Wallet = {
                             {
                               "argumentTypes": null,
                               "hexValue": "30",
-                              "id": 11359,
+                              "id": 11378,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -2880,7 +2880,7 @@ export const Wallet = {
                                 "typeString": "int_const 0"
                               }
                             ],
-                            "id": 11358,
+                            "id": 11377,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -2893,7 +2893,7 @@ export const Wallet = {
                             },
                             "typeName": "address"
                           },
-                          "id": 11360,
+                          "id": 11379,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -2916,7 +2916,7 @@ export const Wallet = {
                       {
                         "argumentTypes": null,
                         "hexValue": "64656c6567617465732063616e6e6f74206265206e756c6c",
-                        "id": 11362,
+                        "id": 11381,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -2943,21 +2943,21 @@ export const Wallet = {
                           "typeString": "literal_string \"delegates cannot be null\""
                         }
                       ],
-                      "id": 11354,
+                      "id": 11373,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "2033:7:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11363,
+                    "id": 11382,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2971,25 +2971,25 @@ export const Wallet = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11364,
+                  "id": 11383,
                   "nodeType": "ExpressionStatement",
                   "src": "2033:104:52"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 11367,
+                    "id": 11386,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 11365,
+                      "id": 11384,
                       "name": "owner",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11181,
+                      "referencedDeclaration": 11200,
                       "src": "2148:5:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -3000,11 +3000,11 @@ export const Wallet = {
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 11366,
+                      "id": 11385,
                       "name": "_owner",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11318,
+                      "referencedDeclaration": 11337,
                       "src": "2156:6:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -3017,28 +3017,28 @@ export const Wallet = {
                       "typeString": "address"
                     }
                   },
-                  "id": 11368,
+                  "id": 11387,
                   "nodeType": "ExpressionStatement",
                   "src": "2148:14:52"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 11371,
+                    "id": 11390,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 11369,
+                      "id": 11388,
                       "name": "delegates",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11185,
+                      "referencedDeclaration": 11204,
                       "src": "2172:9:52",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Delegates_$12090",
+                        "typeIdentifier": "t_contract$_Delegates_$12109",
                         "typeString": "contract Delegates"
                       }
                     },
@@ -3046,45 +3046,45 @@ export const Wallet = {
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 11370,
+                      "id": 11389,
                       "name": "_delegates",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11320,
+                      "referencedDeclaration": 11339,
                       "src": "2184:10:52",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Delegates_$12090",
+                        "typeIdentifier": "t_contract$_Delegates_$12109",
                         "typeString": "contract Delegates"
                       }
                     },
                     "src": "2172:22:52",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_Delegates_$12090",
+                      "typeIdentifier": "t_contract$_Delegates_$12109",
                       "typeString": "contract Delegates"
                     }
                   },
-                  "id": 11372,
+                  "id": 11391,
                   "nodeType": "ExpressionStatement",
                   "src": "2172:22:52"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 11375,
+                    "id": 11394,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 11373,
+                      "id": 11392,
                       "name": "modules",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11183,
+                      "referencedDeclaration": 11202,
                       "src": "2204:7:52",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Modules_$15035",
+                        "typeIdentifier": "t_contract$_Modules_$15054",
                         "typeString": "contract Modules"
                       }
                     },
@@ -3092,42 +3092,42 @@ export const Wallet = {
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 11374,
+                      "id": 11393,
                       "name": "_modules",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11322,
+                      "referencedDeclaration": 11341,
                       "src": "2214:8:52",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Modules_$15035",
+                        "typeIdentifier": "t_contract$_Modules_$15054",
                         "typeString": "contract Modules"
                       }
                     },
                     "src": "2204:18:52",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_Modules_$15035",
+                      "typeIdentifier": "t_contract$_Modules_$15054",
                       "typeString": "contract Modules"
                     }
                   },
-                  "id": 11376,
+                  "id": 11395,
                   "nodeType": "ExpressionStatement",
                   "src": "2204:18:52"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 11380,
+                    "id": 11399,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 11377,
+                      "id": 11396,
                       "name": "creator",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11187,
+                      "referencedDeclaration": 11206,
                       "src": "2232:7:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -3140,18 +3140,18 @@ export const Wallet = {
                       "argumentTypes": null,
                       "expression": {
                         "argumentTypes": null,
-                        "id": 11378,
+                        "id": 11397,
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 19385,
+                        "referencedDeclaration": 19404,
                         "src": "2242:3:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
                           "typeString": "msg"
                         }
                       },
-                      "id": 11379,
+                      "id": 11398,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -3171,25 +3171,25 @@ export const Wallet = {
                       "typeString": "address"
                     }
                   },
-                  "id": 11381,
+                  "id": 11400,
                   "nodeType": "ExpressionStatement",
                   "src": "2232:20:52"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 11386,
+                    "id": 11405,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 11382,
+                      "id": 11401,
                       "name": "creationTime",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11189,
+                      "referencedDeclaration": 11208,
                       "src": "2262:12:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint64",
@@ -3203,11 +3203,11 @@ export const Wallet = {
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 11384,
+                          "id": 11403,
                           "name": "now",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 19387,
+                          "referencedDeclaration": 19406,
                           "src": "2284:3:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -3222,7 +3222,7 @@ export const Wallet = {
                             "typeString": "uint256"
                           }
                         ],
-                        "id": 11383,
+                        "id": 11402,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -3235,7 +3235,7 @@ export const Wallet = {
                         },
                         "typeName": "uint64"
                       },
-                      "id": 11385,
+                      "id": 11404,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -3255,29 +3255,29 @@ export const Wallet = {
                       "typeString": "uint64"
                     }
                   },
-                  "id": 11387,
+                  "id": 11406,
                   "nodeType": "ExpressionStatement",
                   "src": "2262:26:52"
                 }
               ]
             },
             "documentation": null,
-            "id": 11389,
+            "id": 11408,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "init",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11323,
+              "id": 11342,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11318,
+                  "id": 11337,
                   "name": "_owner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11389,
+                  "scope": 11408,
                   "src": "1624:14:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3286,7 +3286,7 @@ export const Wallet = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11317,
+                    "id": 11336,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1624:7:52",
@@ -3301,26 +3301,26 @@ export const Wallet = {
                 },
                 {
                   "constant": false,
-                  "id": 11320,
+                  "id": 11339,
                   "name": "_delegates",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11389,
+                  "scope": 11408,
                   "src": "1648:20:52",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_Delegates_$12090",
+                    "typeIdentifier": "t_contract$_Delegates_$12109",
                     "typeString": "contract Delegates"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 11319,
+                    "id": 11338,
                     "name": "Delegates",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 12090,
+                    "referencedDeclaration": 12109,
                     "src": "1648:9:52",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_Delegates_$12090",
+                      "typeIdentifier": "t_contract$_Delegates_$12109",
                       "typeString": "contract Delegates"
                     }
                   },
@@ -3329,26 +3329,26 @@ export const Wallet = {
                 },
                 {
                   "constant": false,
-                  "id": 11322,
+                  "id": 11341,
                   "name": "_modules",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11389,
+                  "scope": 11408,
                   "src": "1678:16:52",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_Modules_$15035",
+                    "typeIdentifier": "t_contract$_Modules_$15054",
                     "typeString": "contract Modules"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 11321,
+                    "id": 11340,
                     "name": "Modules",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 15035,
+                    "referencedDeclaration": 15054,
                     "src": "1678:7:52",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_Modules_$15035",
+                      "typeIdentifier": "t_contract$_Modules_$15054",
                       "typeString": "contract Modules"
                     }
                   },
@@ -3359,12 +3359,12 @@ export const Wallet = {
               "src": "1614:86:52"
             },
             "returnParameters": {
-              "id": 11324,
+              "id": 11343,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1720:0:52"
             },
-            "scope": 11495,
+            "scope": 11514,
             "src": "1601:694:52",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -3372,7 +3372,7 @@ export const Wallet = {
           },
           {
             "body": {
-              "id": 11436,
+              "id": 11455,
               "nodeType": "Block",
               "src": "2418:486:52",
               "statements": [
@@ -3385,14 +3385,14 @@ export const Wallet = {
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 11401,
+                            "id": 11420,
                             "name": "this",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 19553,
+                            "referencedDeclaration": 19572,
                             "src": "2485:4:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_Wallet_$11495",
+                              "typeIdentifier": "t_contract$_Wallet_$11514",
                               "typeString": "contract Wallet"
                             }
                           },
@@ -3403,18 +3403,18 @@ export const Wallet = {
                                 "argumentTypes": null,
                                 "expression": {
                                   "argumentTypes": null,
-                                  "id": 11403,
+                                  "id": 11422,
                                   "name": "msg",
                                   "nodeType": "Identifier",
                                   "overloadedDeclarations": [],
-                                  "referencedDeclaration": 19385,
+                                  "referencedDeclaration": 19404,
                                   "src": "2514:3:52",
                                   "typeDescriptions": {
                                     "typeIdentifier": "t_magic_message",
                                     "typeString": "msg"
                                   }
                                 },
-                                "id": 11404,
+                                "id": 11423,
                                 "isConstant": false,
                                 "isLValue": false,
                                 "isPure": false,
@@ -3436,18 +3436,18 @@ export const Wallet = {
                                   "typeString": "address payable"
                                 }
                               ],
-                              "id": 11402,
+                              "id": 11421,
                               "name": "Module",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 14992,
+                              "referencedDeclaration": 15011,
                               "src": "2507:6:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_type$_t_contract$_Module_$14992_$",
+                                "typeIdentifier": "t_type$_t_contract$_Module_$15011_$",
                                 "typeString": "type(contract Module)"
                               }
                             },
-                            "id": 11405,
+                            "id": 11424,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -3457,17 +3457,17 @@ export const Wallet = {
                             "nodeType": "FunctionCall",
                             "src": "2507:18:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_Module_$14992",
+                              "typeIdentifier": "t_contract$_Module_$15011",
                               "typeString": "contract Module"
                             }
                           },
                           {
                             "argumentTypes": null,
-                            "id": 11406,
+                            "id": 11425,
                             "name": "_to",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 11391,
+                            "referencedDeclaration": 11410,
                             "src": "2543:3:52",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
@@ -3476,11 +3476,11 @@ export const Wallet = {
                           },
                           {
                             "argumentTypes": null,
-                            "id": 11407,
+                            "id": 11426,
                             "name": "_data",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 11393,
+                            "referencedDeclaration": 11412,
                             "src": "2564:5:52",
                             "typeDescriptions": {
                               "typeIdentifier": "t_bytes_memory_ptr",
@@ -3489,11 +3489,11 @@ export const Wallet = {
                           },
                           {
                             "argumentTypes": null,
-                            "id": 11408,
+                            "id": 11427,
                             "name": "_value",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 11395,
+                            "referencedDeclaration": 11414,
                             "src": "2587:6:52",
                             "typeDescriptions": {
                               "typeIdentifier": "t_uint256",
@@ -3504,11 +3504,11 @@ export const Wallet = {
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_contract$_Wallet_$11495",
+                              "typeIdentifier": "t_contract$_Wallet_$11514",
                               "typeString": "contract Wallet"
                             },
                             {
-                              "typeIdentifier": "t_contract$_Module_$14992",
+                              "typeIdentifier": "t_contract$_Module_$15011",
                               "typeString": "contract Module"
                             },
                             {
@@ -3526,32 +3526,32 @@ export const Wallet = {
                           ],
                           "expression": {
                             "argumentTypes": null,
-                            "id": 11399,
+                            "id": 11418,
                             "name": "modules",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 11183,
+                            "referencedDeclaration": 11202,
                             "src": "2449:7:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_Modules_$15035",
+                              "typeIdentifier": "t_contract$_Modules_$15054",
                               "typeString": "contract Modules"
                             }
                           },
-                          "id": 11400,
+                          "id": 11419,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
                           "lValueRequested": false,
                           "memberName": "canExecute",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 15011,
+                          "referencedDeclaration": 15030,
                           "src": "2449:18:52",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_function_external_nonpayable$_t_contract$_Wallet_$11495_$_t_contract$_Module_$14992_$_t_address_$_t_bytes_memory_ptr_$_t_uint256_$returns$_t_bool_$",
+                            "typeIdentifier": "t_function_external_nonpayable$_t_contract$_Wallet_$11514_$_t_contract$_Module_$15011_$_t_address_$_t_bytes_memory_ptr_$_t_uint256_$returns$_t_bool_$",
                             "typeString": "function (contract Wallet,contract Module,address,bytes memory,uint256) external returns (bool)"
                           }
                         },
-                        "id": 11409,
+                        "id": 11428,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -3568,7 +3568,7 @@ export const Wallet = {
                       {
                         "argumentTypes": null,
                         "hexValue": "73656e646572206e6f7420617574686f726973656420666f722074686973206f7065726174696f6e",
-                        "id": 11410,
+                        "id": 11429,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -3595,21 +3595,21 @@ export const Wallet = {
                           "typeString": "literal_string \"sender not authorised for this operation\""
                         }
                       ],
-                      "id": 11398,
+                      "id": 11417,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "2428:7:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11411,
+                    "id": 11430,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3623,22 +3623,22 @@ export const Wallet = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11412,
+                  "id": 11431,
                   "nodeType": "ExpressionStatement",
                   "src": "2428:245:52"
                 },
                 {
                   "assignments": [
-                    11414,
+                    11433,
                     null
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 11414,
+                      "id": 11433,
                       "name": "success",
                       "nodeType": "VariableDeclaration",
-                      "scope": 11436,
+                      "scope": 11455,
                       "src": "2743:12:52",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -3647,7 +3647,7 @@ export const Wallet = {
                         "typeString": "bool"
                       },
                       "typeName": {
-                        "id": 11413,
+                        "id": 11432,
                         "name": "bool",
                         "nodeType": "ElementaryTypeName",
                         "src": "2743:4:52",
@@ -3661,17 +3661,17 @@ export const Wallet = {
                     },
                     null
                   ],
-                  "id": 11422,
+                  "id": 11441,
                   "initialValue": {
                     "argumentTypes": null,
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 11420,
+                        "id": 11439,
                         "name": "_data",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11393,
+                        "referencedDeclaration": 11412,
                         "src": "2784:5:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bytes_memory_ptr",
@@ -3689,11 +3689,11 @@ export const Wallet = {
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 11418,
+                          "id": 11437,
                           "name": "_value",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11395,
+                          "referencedDeclaration": 11414,
                           "src": "2776:6:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -3712,18 +3712,18 @@ export const Wallet = {
                           "argumentTypes": null,
                           "expression": {
                             "argumentTypes": null,
-                            "id": 11415,
+                            "id": 11434,
                             "name": "_to",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 11391,
+                            "referencedDeclaration": 11410,
                             "src": "2761:3:52",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
                               "typeString": "address"
                             }
                           },
-                          "id": 11416,
+                          "id": 11435,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -3737,7 +3737,7 @@ export const Wallet = {
                             "typeString": "function (bytes memory) payable returns (bool,bytes memory)"
                           }
                         },
-                        "id": 11417,
+                        "id": 11436,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -3751,7 +3751,7 @@ export const Wallet = {
                           "typeString": "function (uint256) pure returns (function (bytes memory) payable returns (bool,bytes memory))"
                         }
                       },
-                      "id": 11419,
+                      "id": 11438,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -3765,7 +3765,7 @@ export const Wallet = {
                         "typeString": "function (bytes memory) payable returns (bool,bytes memory)"
                       }
                     },
-                    "id": 11421,
+                    "id": 11440,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3788,11 +3788,11 @@ export const Wallet = {
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 11424,
+                        "id": 11443,
                         "name": "success",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11414,
+                        "referencedDeclaration": 11433,
                         "src": "2808:7:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bool",
@@ -3802,7 +3802,7 @@ export const Wallet = {
                       {
                         "argumentTypes": null,
                         "hexValue": "657865637574696f6e20756e7375636365737366756c",
-                        "id": 11425,
+                        "id": 11444,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -3829,21 +3829,21 @@ export const Wallet = {
                           "typeString": "literal_string \"execution unsuccessful\""
                         }
                       ],
-                      "id": 11423,
+                      "id": 11442,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "2800:7:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11426,
+                    "id": 11445,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3857,7 +3857,7 @@ export const Wallet = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11427,
+                  "id": 11446,
                   "nodeType": "ExpressionStatement",
                   "src": "2800:42:52"
                 },
@@ -3869,18 +3869,18 @@ export const Wallet = {
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 11429,
+                          "id": 11448,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 19385,
+                          "referencedDeclaration": 19404,
                           "src": "2866:3:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 11430,
+                        "id": 11449,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -3896,11 +3896,11 @@ export const Wallet = {
                       },
                       {
                         "argumentTypes": null,
-                        "id": 11431,
+                        "id": 11450,
                         "name": "_to",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11391,
+                        "referencedDeclaration": 11410,
                         "src": "2878:3:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -3909,11 +3909,11 @@ export const Wallet = {
                       },
                       {
                         "argumentTypes": null,
-                        "id": 11432,
+                        "id": 11451,
                         "name": "_data",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11393,
+                        "referencedDeclaration": 11412,
                         "src": "2883:5:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bytes_memory_ptr",
@@ -3922,11 +3922,11 @@ export const Wallet = {
                       },
                       {
                         "argumentTypes": null,
-                        "id": 11433,
+                        "id": 11452,
                         "name": "_value",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11395,
+                        "referencedDeclaration": 11414,
                         "src": "2890:6:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -3953,18 +3953,18 @@ export const Wallet = {
                           "typeString": "uint256"
                         }
                       ],
-                      "id": 11428,
+                      "id": 11447,
                       "name": "Executed",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11207,
+                      "referencedDeclaration": 11226,
                       "src": "2857:8:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_address_$_t_bytes_memory_ptr_$_t_uint256_$returns$__$",
                         "typeString": "function (address,address,bytes memory,uint256)"
                       }
                     },
-                    "id": 11434,
+                    "id": 11453,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3978,29 +3978,29 @@ export const Wallet = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11435,
+                  "id": 11454,
                   "nodeType": "EmitStatement",
                   "src": "2852:45:52"
                 }
               ]
             },
             "documentation": null,
-            "id": 11437,
+            "id": 11456,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "executeValue",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11396,
+              "id": 11415,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11391,
+                  "id": 11410,
                   "name": "_to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11437,
+                  "scope": 11456,
                   "src": "2332:11:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -4009,7 +4009,7 @@ export const Wallet = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11390,
+                    "id": 11409,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "2332:7:52",
@@ -4024,10 +4024,10 @@ export const Wallet = {
                 },
                 {
                   "constant": false,
-                  "id": 11393,
+                  "id": 11412,
                   "name": "_data",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11437,
+                  "scope": 11456,
                   "src": "2353:18:52",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -4036,7 +4036,7 @@ export const Wallet = {
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 11392,
+                    "id": 11411,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
                     "src": "2353:5:52",
@@ -4050,10 +4050,10 @@ export const Wallet = {
                 },
                 {
                   "constant": false,
-                  "id": 11395,
+                  "id": 11414,
                   "name": "_value",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11437,
+                  "scope": 11456,
                   "src": "2381:11:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -4062,7 +4062,7 @@ export const Wallet = {
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 11394,
+                    "id": 11413,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "2381:4:52",
@@ -4078,12 +4078,12 @@ export const Wallet = {
               "src": "2322:76:52"
             },
             "returnParameters": {
-              "id": 11397,
+              "id": 11416,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "2418:0:52"
             },
-            "scope": 11495,
+            "scope": 11514,
             "src": "2301:603:52",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -4091,7 +4091,7 @@ export const Wallet = {
           },
           {
             "body": {
-              "id": 11450,
+              "id": 11469,
               "nodeType": "Block",
               "src": "2967:44:52",
               "statements": [
@@ -4101,11 +4101,11 @@ export const Wallet = {
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 11445,
+                        "id": 11464,
                         "name": "_to",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11439,
+                        "referencedDeclaration": 11458,
                         "src": "2990:3:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -4114,11 +4114,11 @@ export const Wallet = {
                       },
                       {
                         "argumentTypes": null,
-                        "id": 11446,
+                        "id": 11465,
                         "name": "_data",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11441,
+                        "referencedDeclaration": 11460,
                         "src": "2995:5:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bytes_memory_ptr",
@@ -4128,7 +4128,7 @@ export const Wallet = {
                       {
                         "argumentTypes": null,
                         "hexValue": "30",
-                        "id": 11447,
+                        "id": 11466,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -4159,18 +4159,18 @@ export const Wallet = {
                           "typeString": "int_const 0"
                         }
                       ],
-                      "id": 11444,
+                      "id": 11463,
                       "name": "executeValue",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11437,
+                      "referencedDeclaration": 11456,
                       "src": "2977:12:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_bytes_memory_ptr_$_t_uint256_$returns$__$",
                         "typeString": "function (address,bytes memory,uint256)"
                       }
                     },
-                    "id": 11448,
+                    "id": 11467,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -4184,29 +4184,29 @@ export const Wallet = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11449,
+                  "id": 11468,
                   "nodeType": "ExpressionStatement",
                   "src": "2977:27:52"
                 }
               ]
             },
             "documentation": null,
-            "id": 11451,
+            "id": 11470,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "execute",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11442,
+              "id": 11461,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11439,
+                  "id": 11458,
                   "name": "_to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11451,
+                  "scope": 11470,
                   "src": "2927:11:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -4215,7 +4215,7 @@ export const Wallet = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11438,
+                    "id": 11457,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "2927:7:52",
@@ -4230,10 +4230,10 @@ export const Wallet = {
                 },
                 {
                   "constant": false,
-                  "id": 11441,
+                  "id": 11460,
                   "name": "_data",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11451,
+                  "scope": 11470,
                   "src": "2940:18:52",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -4242,7 +4242,7 @@ export const Wallet = {
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 11440,
+                    "id": 11459,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
                     "src": "2940:5:52",
@@ -4258,12 +4258,12 @@ export const Wallet = {
               "src": "2926:33:52"
             },
             "returnParameters": {
-              "id": 11443,
+              "id": 11462,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "2967:0:52"
             },
-            "scope": 11495,
+            "scope": 11514,
             "src": "2910:101:52",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -4271,7 +4271,7 @@ export const Wallet = {
           },
           {
             "body": {
-              "id": 11473,
+              "id": 11492,
               "nodeType": "Block",
               "src": "3073:248:52",
               "statements": [
@@ -4284,14 +4284,14 @@ export const Wallet = {
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 11460,
+                            "id": 11479,
                             "name": "delegates",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 11185,
+                            "referencedDeclaration": 11204,
                             "src": "3112:9:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_Delegates_$12090",
+                              "typeIdentifier": "t_contract$_Delegates_$12109",
                               "typeString": "contract Delegates"
                             }
                           }
@@ -4299,11 +4299,11 @@ export const Wallet = {
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_contract$_Delegates_$12090",
+                              "typeIdentifier": "t_contract$_Delegates_$12109",
                               "typeString": "contract Delegates"
                             }
                           ],
-                          "id": 11459,
+                          "id": 11478,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -4316,7 +4316,7 @@ export const Wallet = {
                           },
                           "typeName": "address"
                         },
-                        "id": 11461,
+                        "id": 11480,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -4336,7 +4336,7 @@ export const Wallet = {
                           {
                             "argumentTypes": null,
                             "hexValue": "726567697374657228616464726573732c6279746573342c6164647265737329",
-                            "id": 11464,
+                            "id": 11483,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -4356,14 +4356,14 @@ export const Wallet = {
                             "arguments": [
                               {
                                 "argumentTypes": null,
-                                "id": 11466,
+                                "id": 11485,
                                 "name": "this",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 19553,
+                                "referencedDeclaration": 19572,
                                 "src": "3237:4:52",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_contract$_Wallet_$11495",
+                                  "typeIdentifier": "t_contract$_Wallet_$11514",
                                   "typeString": "contract Wallet"
                                 }
                               }
@@ -4371,11 +4371,11 @@ export const Wallet = {
                             "expression": {
                               "argumentTypes": [
                                 {
-                                  "typeIdentifier": "t_contract$_Wallet_$11495",
+                                  "typeIdentifier": "t_contract$_Wallet_$11514",
                                   "typeString": "contract Wallet"
                                 }
                               ],
-                              "id": 11465,
+                              "id": 11484,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -4388,7 +4388,7 @@ export const Wallet = {
                               },
                               "typeName": "address"
                             },
-                            "id": 11467,
+                            "id": 11486,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -4404,11 +4404,11 @@ export const Wallet = {
                           },
                           {
                             "argumentTypes": null,
-                            "id": 11468,
+                            "id": 11487,
                             "name": "_function",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 11453,
+                            "referencedDeclaration": 11472,
                             "src": "3260:9:52",
                             "typeDescriptions": {
                               "typeIdentifier": "t_bytes4",
@@ -4417,11 +4417,11 @@ export const Wallet = {
                           },
                           {
                             "argumentTypes": null,
-                            "id": 11469,
+                            "id": 11488,
                             "name": "_to",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 11455,
+                            "referencedDeclaration": 11474,
                             "src": "3287:3:52",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
@@ -4450,18 +4450,18 @@ export const Wallet = {
                           ],
                           "expression": {
                             "argumentTypes": null,
-                            "id": 11462,
+                            "id": 11481,
                             "name": "abi",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 19372,
+                            "referencedDeclaration": 19391,
                             "src": "3136:3:52",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_abi",
                               "typeString": "abi"
                             }
                           },
-                          "id": 11463,
+                          "id": 11482,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -4475,7 +4475,7 @@ export const Wallet = {
                             "typeString": "function (string memory) pure returns (bytes memory)"
                           }
                         },
-                        "id": 11470,
+                        "id": 11489,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -4501,18 +4501,18 @@ export const Wallet = {
                           "typeString": "bytes memory"
                         }
                       ],
-                      "id": 11458,
+                      "id": 11477,
                       "name": "execute",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11451,
+                      "referencedDeclaration": 11470,
                       "src": "3083:7:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_bytes_memory_ptr_$returns$__$",
                         "typeString": "function (address,bytes memory)"
                       }
                     },
-                    "id": 11471,
+                    "id": 11490,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -4526,29 +4526,29 @@ export const Wallet = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11472,
+                  "id": 11491,
                   "nodeType": "ExpressionStatement",
                   "src": "3083:231:52"
                 }
               ]
             },
             "documentation": null,
-            "id": 11474,
+            "id": 11493,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "register",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11456,
+              "id": 11475,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11453,
+                  "id": 11472,
                   "name": "_function",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11474,
+                  "scope": 11493,
                   "src": "3035:16:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -4557,7 +4557,7 @@ export const Wallet = {
                     "typeString": "bytes4"
                   },
                   "typeName": {
-                    "id": 11452,
+                    "id": 11471,
                     "name": "bytes4",
                     "nodeType": "ElementaryTypeName",
                     "src": "3035:6:52",
@@ -4571,10 +4571,10 @@ export const Wallet = {
                 },
                 {
                   "constant": false,
-                  "id": 11455,
+                  "id": 11474,
                   "name": "_to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11474,
+                  "scope": 11493,
                   "src": "3053:11:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -4583,7 +4583,7 @@ export const Wallet = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11454,
+                    "id": 11473,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "3053:7:52",
@@ -4600,12 +4600,12 @@ export const Wallet = {
               "src": "3034:31:52"
             },
             "returnParameters": {
-              "id": 11457,
+              "id": 11476,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "3073:0:52"
             },
-            "scope": 11495,
+            "scope": 11514,
             "src": "3017:304:52",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -4613,21 +4613,21 @@ export const Wallet = {
           },
           {
             "body": {
-              "id": 11493,
+              "id": 11512,
               "nodeType": "Block",
               "src": "3356:571:52",
               "statements": [
                 {
                   "assignments": [
-                    11478
+                    11497
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 11478,
+                      "id": 11497,
                       "name": "delegate",
                       "nodeType": "VariableDeclaration",
-                      "scope": 11493,
+                      "scope": 11512,
                       "src": "3366:16:52",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -4636,7 +4636,7 @@ export const Wallet = {
                         "typeString": "address"
                       },
                       "typeName": {
-                        "id": 11477,
+                        "id": 11496,
                         "name": "address",
                         "nodeType": "ElementaryTypeName",
                         "src": "3366:7:52",
@@ -4650,20 +4650,20 @@ export const Wallet = {
                       "visibility": "internal"
                     }
                   ],
-                  "id": 11491,
+                  "id": 11510,
                   "initialValue": {
                     "argumentTypes": null,
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 11481,
+                        "id": 11500,
                         "name": "this",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 19553,
+                        "referencedDeclaration": 19572,
                         "src": "3420:4:52",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_Wallet_$11495",
+                          "typeIdentifier": "t_contract$_Wallet_$11514",
                           "typeString": "contract Wallet"
                         }
                       },
@@ -4671,18 +4671,18 @@ export const Wallet = {
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 11482,
+                          "id": 11501,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 19385,
+                          "referencedDeclaration": 19404,
                           "src": "3438:3:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 11483,
+                        "id": 11502,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -4700,18 +4700,18 @@ export const Wallet = {
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 11484,
+                          "id": 11503,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 19385,
+                          "referencedDeclaration": 19404,
                           "src": "3459:3:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 11485,
+                        "id": 11504,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -4729,18 +4729,18 @@ export const Wallet = {
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 11486,
+                          "id": 11505,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 19385,
+                          "referencedDeclaration": 19404,
                           "src": "3481:3:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 11487,
+                        "id": 11506,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -4758,18 +4758,18 @@ export const Wallet = {
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 11488,
+                          "id": 11507,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 19385,
+                          "referencedDeclaration": 19404,
                           "src": "3504:3:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 11489,
+                        "id": 11508,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -4787,7 +4787,7 @@ export const Wallet = {
                     "expression": {
                       "argumentTypes": [
                         {
-                          "typeIdentifier": "t_contract$_Wallet_$11495",
+                          "typeIdentifier": "t_contract$_Wallet_$11514",
                           "typeString": "contract Wallet"
                         },
                         {
@@ -4809,32 +4809,32 @@ export const Wallet = {
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 11479,
+                        "id": 11498,
                         "name": "delegates",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11185,
+                        "referencedDeclaration": 11204,
                         "src": "3385:9:52",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_Delegates_$12090",
+                          "typeIdentifier": "t_contract$_Delegates_$12109",
                           "typeString": "contract Delegates"
                         }
                       },
-                      "id": 11480,
+                      "id": 11499,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "getDelegate",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 12086,
+                      "referencedDeclaration": 12105,
                       "src": "3385:21:52",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_external_nonpayable$_t_contract$_Wallet_$11495_$_t_bytes4_$_t_bytes_memory_ptr_$_t_uint256_$_t_address_$returns$_t_address_$",
+                        "typeIdentifier": "t_function_external_nonpayable$_t_contract$_Wallet_$11514_$_t_bytes4_$_t_bytes_memory_ptr_$_t_uint256_$_t_address_$returns$_t_address_$",
                         "typeString": "function (contract Wallet,bytes4,bytes memory,uint256,address) external returns (address)"
                       }
                     },
-                    "id": 11490,
+                    "id": 11509,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -4855,7 +4855,7 @@ export const Wallet = {
                   "externalReferences": [
                     {
                       "delegate": {
-                        "declaration": 11478,
+                        "declaration": 11497,
                         "isOffset": false,
                         "isSlot": false,
                         "src": "3699:8:52",
@@ -4863,7 +4863,7 @@ export const Wallet = {
                       }
                     }
                   ],
-                  "id": 11492,
+                  "id": 11511,
                   "nodeType": "InlineAssembly",
                   "operations": "{\n    calldatacopy(0, 0, calldatasize())\n    let result := staticcall(gas(), delegate, 0, calldatasize(), 0, 0)\n    returndatacopy(0, 0, returndatasize())\n    switch result\n    case 0 { revert(0, returndatasize()) }\n    default { return(0, returndatasize()) }\n}",
                   "src": "3599:321:52"
@@ -4871,32 +4871,32 @@ export const Wallet = {
               ]
             },
             "documentation": null,
-            "id": 11494,
+            "id": 11513,
             "implemented": true,
             "kind": "fallback",
             "modifiers": [],
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11475,
+              "id": 11494,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "3336:2:52"
             },
             "returnParameters": {
-              "id": 11476,
+              "id": 11495,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "3356:0:52"
             },
-            "scope": 11495,
+            "scope": 11514,
             "src": "3327:600:52",
             "stateMutability": "payable",
             "superFunction": null,
             "visibility": "external"
           }
         ],
-        "scope": 11496,
+        "scope": 11515,
         "src": "120:3810:52"
       }
     ],
@@ -4906,14 +4906,14 @@ export const Wallet = {
     "absolutePath": "/Users/kerman/immutable/gods-unchained-contracts/packages/contracts/contracts/wallet/Wallet.sol",
     "exportedSymbols": {
       "Wallet": [
-        11495
+        11514
       ]
     },
-    "id": 11496,
+    "id": 11515,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 11174,
+        "id": 11193,
         "literals": [
           "solidity",
           "^",
@@ -4926,10 +4926,10 @@ export const Wallet = {
       {
         "absolutePath": "/Users/kerman/immutable/gods-unchained-contracts/packages/contracts/contracts/wallet/delegates/Delegates.sol",
         "file": "./delegates/Delegates.sol",
-        "id": 11175,
+        "id": 11194,
         "nodeType": "ImportDirective",
-        "scope": 11496,
-        "sourceUnit": 12091,
+        "scope": 11515,
+        "sourceUnit": 12110,
         "src": "25:35:52",
         "symbolAliases": [],
         "unitAlias": ""
@@ -4937,10 +4937,10 @@ export const Wallet = {
       {
         "absolutePath": "/Users/kerman/immutable/gods-unchained-contracts/packages/contracts/contracts/wallet/modules/Modules.sol",
         "file": "./modules/Modules.sol",
-        "id": 11176,
+        "id": 11195,
         "nodeType": "ImportDirective",
-        "scope": 11496,
-        "sourceUnit": 15036,
+        "scope": 11515,
+        "sourceUnit": 15055,
         "src": "61:31:52",
         "symbolAliases": [],
         "unitAlias": ""
@@ -4948,10 +4948,10 @@ export const Wallet = {
       {
         "absolutePath": "/Users/kerman/immutable/gods-unchained-contracts/packages/contracts/contracts/wallet/ProxyData.sol",
         "file": "./ProxyData.sol",
-        "id": 11177,
+        "id": 11196,
         "nodeType": "ImportDirective",
-        "scope": 11496,
-        "sourceUnit": 11173,
+        "scope": 11515,
+        "sourceUnit": 11192,
         "src": "93:25:52",
         "symbolAliases": [],
         "unitAlias": ""
@@ -4962,43 +4962,43 @@ export const Wallet = {
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 11178,
+              "id": 11197,
               "name": "ProxyData",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 11172,
+              "referencedDeclaration": 11191,
               "src": "139:9:52",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ProxyData_$11172",
+                "typeIdentifier": "t_contract$_ProxyData_$11191",
                 "typeString": "contract ProxyData"
               }
             },
-            "id": 11179,
+            "id": 11198,
             "nodeType": "InheritanceSpecifier",
             "src": "139:9:52"
           }
         ],
         "contractDependencies": [
-          11172,
-          12166
+          11191,
+          12185
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 11495,
+        "id": 11514,
         "linearizedBaseContracts": [
-          11495,
-          11172,
-          12166
+          11514,
+          11191,
+          12185
         ],
         "name": "Wallet",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 11181,
+            "id": 11200,
             "name": "owner",
             "nodeType": "VariableDeclaration",
-            "scope": 11495,
+            "scope": 11514,
             "src": "156:20:52",
             "stateVariable": true,
             "storageLocation": "default",
@@ -5007,7 +5007,7 @@ export const Wallet = {
               "typeString": "address"
             },
             "typeName": {
-              "id": 11180,
+              "id": 11199,
               "name": "address",
               "nodeType": "ElementaryTypeName",
               "src": "156:7:52",
@@ -5022,26 +5022,26 @@ export const Wallet = {
           },
           {
             "constant": false,
-            "id": 11183,
+            "id": 11202,
             "name": "modules",
             "nodeType": "VariableDeclaration",
-            "scope": 11495,
+            "scope": 11514,
             "src": "182:22:52",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_Modules_$15035",
+              "typeIdentifier": "t_contract$_Modules_$15054",
               "typeString": "contract Modules"
             },
             "typeName": {
               "contractScope": null,
-              "id": 11182,
+              "id": 11201,
               "name": "Modules",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 15035,
+              "referencedDeclaration": 15054,
               "src": "182:7:52",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Modules_$15035",
+                "typeIdentifier": "t_contract$_Modules_$15054",
                 "typeString": "contract Modules"
               }
             },
@@ -5050,26 +5050,26 @@ export const Wallet = {
           },
           {
             "constant": false,
-            "id": 11185,
+            "id": 11204,
             "name": "delegates",
             "nodeType": "VariableDeclaration",
-            "scope": 11495,
+            "scope": 11514,
             "src": "210:26:52",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_Delegates_$12090",
+              "typeIdentifier": "t_contract$_Delegates_$12109",
               "typeString": "contract Delegates"
             },
             "typeName": {
               "contractScope": null,
-              "id": 11184,
+              "id": 11203,
               "name": "Delegates",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 12090,
+              "referencedDeclaration": 12109,
               "src": "210:9:52",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Delegates_$12090",
+                "typeIdentifier": "t_contract$_Delegates_$12109",
                 "typeString": "contract Delegates"
               }
             },
@@ -5078,10 +5078,10 @@ export const Wallet = {
           },
           {
             "constant": false,
-            "id": 11187,
+            "id": 11206,
             "name": "creator",
             "nodeType": "VariableDeclaration",
-            "scope": 11495,
+            "scope": 11514,
             "src": "242:22:52",
             "stateVariable": true,
             "storageLocation": "default",
@@ -5090,7 +5090,7 @@ export const Wallet = {
               "typeString": "address"
             },
             "typeName": {
-              "id": 11186,
+              "id": 11205,
               "name": "address",
               "nodeType": "ElementaryTypeName",
               "src": "242:7:52",
@@ -5105,10 +5105,10 @@ export const Wallet = {
           },
           {
             "constant": false,
-            "id": 11189,
+            "id": 11208,
             "name": "creationTime",
             "nodeType": "VariableDeclaration",
-            "scope": 11495,
+            "scope": 11514,
             "src": "270:26:52",
             "stateVariable": true,
             "storageLocation": "default",
@@ -5117,7 +5117,7 @@ export const Wallet = {
               "typeString": "uint64"
             },
             "typeName": {
-              "id": 11188,
+              "id": 11207,
               "name": "uint64",
               "nodeType": "ElementaryTypeName",
               "src": "270:6:52",
@@ -5132,20 +5132,20 @@ export const Wallet = {
           {
             "anonymous": false,
             "documentation": null,
-            "id": 11197,
+            "id": 11216,
             "name": "Received",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 11196,
+              "id": 11215,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11191,
+                  "id": 11210,
                   "indexed": true,
                   "name": "sender",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11197,
+                  "scope": 11216,
                   "src": "327:22:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -5154,7 +5154,7 @@ export const Wallet = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11190,
+                    "id": 11209,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "327:7:52",
@@ -5169,11 +5169,11 @@ export const Wallet = {
                 },
                 {
                   "constant": false,
-                  "id": 11193,
+                  "id": 11212,
                   "indexed": false,
                   "name": "data",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11197,
+                  "scope": 11216,
                   "src": "359:10:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -5182,7 +5182,7 @@ export const Wallet = {
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 11192,
+                    "id": 11211,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
                     "src": "359:5:52",
@@ -5196,11 +5196,11 @@ export const Wallet = {
                 },
                 {
                   "constant": false,
-                  "id": 11195,
+                  "id": 11214,
                   "indexed": false,
                   "name": "value",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11197,
+                  "scope": 11216,
                   "src": "379:10:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -5209,7 +5209,7 @@ export const Wallet = {
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 11194,
+                    "id": 11213,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "379:4:52",
@@ -5229,20 +5229,20 @@ export const Wallet = {
           {
             "anonymous": false,
             "documentation": null,
-            "id": 11207,
+            "id": 11226,
             "name": "Executed",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 11206,
+              "id": 11225,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11199,
+                  "id": 11218,
                   "indexed": true,
                   "name": "sender",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11207,
+                  "scope": 11226,
                   "src": "426:22:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -5251,7 +5251,7 @@ export const Wallet = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11198,
+                    "id": 11217,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "426:7:52",
@@ -5266,11 +5266,11 @@ export const Wallet = {
                 },
                 {
                   "constant": false,
-                  "id": 11201,
+                  "id": 11220,
                   "indexed": true,
                   "name": "to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11207,
+                  "scope": 11226,
                   "src": "458:18:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -5279,7 +5279,7 @@ export const Wallet = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11200,
+                    "id": 11219,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "458:7:52",
@@ -5294,11 +5294,11 @@ export const Wallet = {
                 },
                 {
                   "constant": false,
-                  "id": 11203,
+                  "id": 11222,
                   "indexed": false,
                   "name": "data",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11207,
+                  "scope": 11226,
                   "src": "486:10:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -5307,7 +5307,7 @@ export const Wallet = {
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 11202,
+                    "id": 11221,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
                     "src": "486:5:52",
@@ -5321,11 +5321,11 @@ export const Wallet = {
                 },
                 {
                   "constant": false,
-                  "id": 11205,
+                  "id": 11224,
                   "indexed": false,
                   "name": "value",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11207,
+                  "scope": 11226,
                   "src": "506:10:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -5334,7 +5334,7 @@ export const Wallet = {
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 11204,
+                    "id": 11223,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "506:4:52",
@@ -5354,20 +5354,20 @@ export const Wallet = {
           {
             "anonymous": false,
             "documentation": null,
-            "id": 11211,
+            "id": 11230,
             "name": "OwnerChanged",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 11210,
+              "id": 11229,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11209,
+                  "id": 11228,
                   "indexed": true,
                   "name": "owner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11211,
+                  "scope": 11230,
                   "src": "548:21:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -5376,7 +5376,7 @@ export const Wallet = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11208,
+                    "id": 11227,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "548:7:52",
@@ -5397,20 +5397,20 @@ export const Wallet = {
           {
             "anonymous": false,
             "documentation": null,
-            "id": 11215,
+            "id": 11234,
             "name": "ModulesChanged",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 11214,
+              "id": 11233,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11213,
+                  "id": 11232,
                   "indexed": true,
                   "name": "modules",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11215,
+                  "scope": 11234,
                   "src": "598:23:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -5419,7 +5419,7 @@ export const Wallet = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11212,
+                    "id": 11231,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "598:7:52",
@@ -5440,20 +5440,20 @@ export const Wallet = {
           {
             "anonymous": false,
             "documentation": null,
-            "id": 11219,
+            "id": 11238,
             "name": "DelegatesChanged",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 11218,
+              "id": 11237,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11217,
+                  "id": 11236,
                   "indexed": true,
                   "name": "delegates",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11219,
+                  "scope": 11238,
                   "src": "652:25:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -5462,7 +5462,7 @@ export const Wallet = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11216,
+                    "id": 11235,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "652:7:52",
@@ -5482,7 +5482,7 @@ export const Wallet = {
           },
           {
             "body": {
-              "id": 11232,
+              "id": 11251,
               "nodeType": "Block",
               "src": "703:133:52",
               "statements": [
@@ -5496,7 +5496,7 @@ export const Wallet = {
                           "typeIdentifier": "t_address_payable",
                           "typeString": "address payable"
                         },
-                        "id": 11227,
+                        "id": 11246,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -5505,18 +5505,18 @@ export const Wallet = {
                           "argumentTypes": null,
                           "expression": {
                             "argumentTypes": null,
-                            "id": 11222,
+                            "id": 11241,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 19385,
+                            "referencedDeclaration": 19404,
                             "src": "734:3:52",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
                               "typeString": "msg"
                             }
                           },
-                          "id": 11223,
+                          "id": 11242,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -5537,14 +5537,14 @@ export const Wallet = {
                           "arguments": [
                             {
                               "argumentTypes": null,
-                              "id": 11225,
+                              "id": 11244,
                               "name": "this",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 19553,
+                              "referencedDeclaration": 19572,
                               "src": "756:4:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_contract$_Wallet_$11495",
+                                "typeIdentifier": "t_contract$_Wallet_$11514",
                                 "typeString": "contract Wallet"
                               }
                             }
@@ -5552,11 +5552,11 @@ export const Wallet = {
                           "expression": {
                             "argumentTypes": [
                               {
-                                "typeIdentifier": "t_contract$_Wallet_$11495",
+                                "typeIdentifier": "t_contract$_Wallet_$11514",
                                 "typeString": "contract Wallet"
                               }
                             ],
-                            "id": 11224,
+                            "id": 11243,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -5569,7 +5569,7 @@ export const Wallet = {
                             },
                             "typeName": "address"
                           },
-                          "id": 11226,
+                          "id": 11245,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -5592,7 +5592,7 @@ export const Wallet = {
                       {
                         "argumentTypes": null,
                         "hexValue": "6d7573742062652063616c6c6564206279207468697320636f6e7472616374",
-                        "id": 11228,
+                        "id": 11247,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -5619,21 +5619,21 @@ export const Wallet = {
                           "typeString": "literal_string \"must be called by this contract\""
                         }
                       ],
-                      "id": 11221,
+                      "id": 11240,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "713:7:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11229,
+                    "id": 11248,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -5647,23 +5647,23 @@ export const Wallet = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11230,
+                  "id": 11249,
                   "nodeType": "ExpressionStatement",
                   "src": "713:105:52"
                 },
                 {
-                  "id": 11231,
+                  "id": 11250,
                   "nodeType": "PlaceholderStatement",
                   "src": "828:1:52"
                 }
               ]
             },
             "documentation": null,
-            "id": 11233,
+            "id": 11252,
             "name": "onlySelf",
             "nodeType": "ModifierDefinition",
             "parameters": {
-              "id": 11220,
+              "id": 11239,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "703:0:52"
@@ -5673,7 +5673,7 @@ export const Wallet = {
           },
           {
             "body": {
-              "id": 11257,
+              "id": 11276,
               "nodeType": "Block",
               "src": "895:168:52",
               "statements": [
@@ -5687,18 +5687,18 @@ export const Wallet = {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
-                        "id": 11245,
+                        "id": 11264,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
                           "argumentTypes": null,
-                          "id": 11241,
+                          "id": 11260,
                           "name": "_owner",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11235,
+                          "referencedDeclaration": 11254,
                           "src": "926:6:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -5713,7 +5713,7 @@ export const Wallet = {
                             {
                               "argumentTypes": null,
                               "hexValue": "30",
-                              "id": 11243,
+                              "id": 11262,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -5736,7 +5736,7 @@ export const Wallet = {
                                 "typeString": "int_const 0"
                               }
                             ],
-                            "id": 11242,
+                            "id": 11261,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -5749,7 +5749,7 @@ export const Wallet = {
                             },
                             "typeName": "address"
                           },
-                          "id": 11244,
+                          "id": 11263,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -5772,7 +5772,7 @@ export const Wallet = {
                       {
                         "argumentTypes": null,
                         "hexValue": "41646472657373206d757374206e6f74206265206e756c6c",
-                        "id": 11246,
+                        "id": 11265,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -5799,21 +5799,21 @@ export const Wallet = {
                           "typeString": "literal_string \"Address must not be null\""
                         }
                       ],
-                      "id": 11240,
+                      "id": 11259,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "905:7:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11247,
+                    "id": 11266,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -5827,25 +5827,25 @@ export const Wallet = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11248,
+                  "id": 11267,
                   "nodeType": "ExpressionStatement",
                   "src": "905:91:52"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 11251,
+                    "id": 11270,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 11249,
+                      "id": 11268,
                       "name": "owner",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11181,
+                      "referencedDeclaration": 11200,
                       "src": "1007:5:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -5856,11 +5856,11 @@ export const Wallet = {
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 11250,
+                      "id": 11269,
                       "name": "_owner",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11235,
+                      "referencedDeclaration": 11254,
                       "src": "1015:6:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -5873,7 +5873,7 @@ export const Wallet = {
                       "typeString": "address"
                     }
                   },
-                  "id": 11252,
+                  "id": 11271,
                   "nodeType": "ExpressionStatement",
                   "src": "1007:14:52"
                 },
@@ -5883,11 +5883,11 @@ export const Wallet = {
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 11254,
+                        "id": 11273,
                         "name": "_owner",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11235,
+                        "referencedDeclaration": 11254,
                         "src": "1049:6:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -5902,18 +5902,18 @@ export const Wallet = {
                           "typeString": "address"
                         }
                       ],
-                      "id": 11253,
+                      "id": 11272,
                       "name": "OwnerChanged",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11211,
+                      "referencedDeclaration": 11230,
                       "src": "1036:12:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_address_$returns$__$",
                         "typeString": "function (address)"
                       }
                     },
-                    "id": 11255,
+                    "id": 11274,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -5927,27 +5927,27 @@ export const Wallet = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11256,
+                  "id": 11275,
                   "nodeType": "EmitStatement",
                   "src": "1031:25:52"
                 }
               ]
             },
             "documentation": null,
-            "id": 11258,
+            "id": 11277,
             "implemented": true,
             "kind": "function",
             "modifiers": [
               {
                 "arguments": null,
-                "id": 11238,
+                "id": 11257,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 11237,
+                  "id": 11256,
                   "name": "onlySelf",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 11233,
+                  "referencedDeclaration": 11252,
                   "src": "886:8:52",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -5961,15 +5961,15 @@ export const Wallet = {
             "name": "changeOwner",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11236,
+              "id": 11255,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11235,
+                  "id": 11254,
                   "name": "_owner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11258,
+                  "scope": 11277,
                   "src": "863:14:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -5978,7 +5978,7 @@ export const Wallet = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11234,
+                    "id": 11253,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "863:7:52",
@@ -5995,12 +5995,12 @@ export const Wallet = {
               "src": "862:16:52"
             },
             "returnParameters": {
-              "id": 11239,
+              "id": 11258,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "895:0:52"
             },
-            "scope": 11495,
+            "scope": 11514,
             "src": "842:221:52",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -6008,7 +6008,7 @@ export const Wallet = {
           },
           {
             "body": {
-              "id": 11286,
+              "id": 11305,
               "nodeType": "Block",
               "src": "1126:196:52",
               "statements": [
@@ -6022,7 +6022,7 @@ export const Wallet = {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
-                        "id": 11272,
+                        "id": 11291,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -6032,14 +6032,14 @@ export const Wallet = {
                           "arguments": [
                             {
                               "argumentTypes": null,
-                              "id": 11267,
+                              "id": 11286,
                               "name": "_modules",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 11260,
+                              "referencedDeclaration": 11279,
                               "src": "1165:8:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_contract$_Modules_$15035",
+                                "typeIdentifier": "t_contract$_Modules_$15054",
                                 "typeString": "contract Modules"
                               }
                             }
@@ -6047,11 +6047,11 @@ export const Wallet = {
                           "expression": {
                             "argumentTypes": [
                               {
-                                "typeIdentifier": "t_contract$_Modules_$15035",
+                                "typeIdentifier": "t_contract$_Modules_$15054",
                                 "typeString": "contract Modules"
                               }
                             ],
-                            "id": 11266,
+                            "id": 11285,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -6064,7 +6064,7 @@ export const Wallet = {
                             },
                             "typeName": "address"
                           },
-                          "id": 11268,
+                          "id": 11287,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -6086,7 +6086,7 @@ export const Wallet = {
                             {
                               "argumentTypes": null,
                               "hexValue": "30",
-                              "id": 11270,
+                              "id": 11289,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -6109,7 +6109,7 @@ export const Wallet = {
                                 "typeString": "int_const 0"
                               }
                             ],
-                            "id": 11269,
+                            "id": 11288,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -6122,7 +6122,7 @@ export const Wallet = {
                             },
                             "typeName": "address"
                           },
-                          "id": 11271,
+                          "id": 11290,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -6145,7 +6145,7 @@ export const Wallet = {
                       {
                         "argumentTypes": null,
                         "hexValue": "41646472657373206d757374206e6f74206265206e756c6c",
-                        "id": 11273,
+                        "id": 11292,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -6172,21 +6172,21 @@ export const Wallet = {
                           "typeString": "literal_string \"Address must not be null\""
                         }
                       ],
-                      "id": 11265,
+                      "id": 11284,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "1136:7:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11274,
+                    "id": 11293,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -6200,28 +6200,28 @@ export const Wallet = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11275,
+                  "id": 11294,
                   "nodeType": "ExpressionStatement",
                   "src": "1136:102:52"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 11278,
+                    "id": 11297,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 11276,
+                      "id": 11295,
                       "name": "modules",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11183,
+                      "referencedDeclaration": 11202,
                       "src": "1249:7:52",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Modules_$15035",
+                        "typeIdentifier": "t_contract$_Modules_$15054",
                         "typeString": "contract Modules"
                       }
                     },
@@ -6229,24 +6229,24 @@ export const Wallet = {
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 11277,
+                      "id": 11296,
                       "name": "_modules",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11260,
+                      "referencedDeclaration": 11279,
                       "src": "1259:8:52",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Modules_$15035",
+                        "typeIdentifier": "t_contract$_Modules_$15054",
                         "typeString": "contract Modules"
                       }
                     },
                     "src": "1249:18:52",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_Modules_$15035",
+                      "typeIdentifier": "t_contract$_Modules_$15054",
                       "typeString": "contract Modules"
                     }
                   },
-                  "id": 11279,
+                  "id": 11298,
                   "nodeType": "ExpressionStatement",
                   "src": "1249:18:52"
                 },
@@ -6259,14 +6259,14 @@ export const Wallet = {
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 11282,
+                            "id": 11301,
                             "name": "_modules",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 11260,
+                            "referencedDeclaration": 11279,
                             "src": "1305:8:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_Modules_$15035",
+                              "typeIdentifier": "t_contract$_Modules_$15054",
                               "typeString": "contract Modules"
                             }
                           }
@@ -6274,11 +6274,11 @@ export const Wallet = {
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_contract$_Modules_$15035",
+                              "typeIdentifier": "t_contract$_Modules_$15054",
                               "typeString": "contract Modules"
                             }
                           ],
-                          "id": 11281,
+                          "id": 11300,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -6291,7 +6291,7 @@ export const Wallet = {
                           },
                           "typeName": "address"
                         },
-                        "id": 11283,
+                        "id": 11302,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -6313,18 +6313,18 @@ export const Wallet = {
                           "typeString": "address"
                         }
                       ],
-                      "id": 11280,
+                      "id": 11299,
                       "name": "ModulesChanged",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11215,
+                      "referencedDeclaration": 11234,
                       "src": "1282:14:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_address_$returns$__$",
                         "typeString": "function (address)"
                       }
                     },
-                    "id": 11284,
+                    "id": 11303,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -6338,27 +6338,27 @@ export const Wallet = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11285,
+                  "id": 11304,
                   "nodeType": "EmitStatement",
                   "src": "1277:38:52"
                 }
               ]
             },
             "documentation": null,
-            "id": 11287,
+            "id": 11306,
             "implemented": true,
             "kind": "function",
             "modifiers": [
               {
                 "arguments": null,
-                "id": 11263,
+                "id": 11282,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 11262,
+                  "id": 11281,
                   "name": "onlySelf",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 11233,
+                  "referencedDeclaration": 11252,
                   "src": "1117:8:52",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -6372,31 +6372,31 @@ export const Wallet = {
             "name": "changeModules",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11261,
+              "id": 11280,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11260,
+                  "id": 11279,
                   "name": "_modules",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11287,
+                  "scope": 11306,
                   "src": "1092:16:52",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_Modules_$15035",
+                    "typeIdentifier": "t_contract$_Modules_$15054",
                     "typeString": "contract Modules"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 11259,
+                    "id": 11278,
                     "name": "Modules",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 15035,
+                    "referencedDeclaration": 15054,
                     "src": "1092:7:52",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_Modules_$15035",
+                      "typeIdentifier": "t_contract$_Modules_$15054",
                       "typeString": "contract Modules"
                     }
                   },
@@ -6407,12 +6407,12 @@ export const Wallet = {
               "src": "1091:18:52"
             },
             "returnParameters": {
-              "id": 11264,
+              "id": 11283,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1126:0:52"
             },
-            "scope": 11495,
+            "scope": 11514,
             "src": "1069:253:52",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -6420,7 +6420,7 @@ export const Wallet = {
           },
           {
             "body": {
-              "id": 11315,
+              "id": 11334,
               "nodeType": "Block",
               "src": "1391:204:52",
               "statements": [
@@ -6434,7 +6434,7 @@ export const Wallet = {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
-                        "id": 11301,
+                        "id": 11320,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -6444,14 +6444,14 @@ export const Wallet = {
                           "arguments": [
                             {
                               "argumentTypes": null,
-                              "id": 11296,
+                              "id": 11315,
                               "name": "_delegates",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 11289,
+                              "referencedDeclaration": 11308,
                               "src": "1430:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_contract$_Delegates_$12090",
+                                "typeIdentifier": "t_contract$_Delegates_$12109",
                                 "typeString": "contract Delegates"
                               }
                             }
@@ -6459,11 +6459,11 @@ export const Wallet = {
                           "expression": {
                             "argumentTypes": [
                               {
-                                "typeIdentifier": "t_contract$_Delegates_$12090",
+                                "typeIdentifier": "t_contract$_Delegates_$12109",
                                 "typeString": "contract Delegates"
                               }
                             ],
-                            "id": 11295,
+                            "id": 11314,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -6476,7 +6476,7 @@ export const Wallet = {
                             },
                             "typeName": "address"
                           },
-                          "id": 11297,
+                          "id": 11316,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -6498,7 +6498,7 @@ export const Wallet = {
                             {
                               "argumentTypes": null,
                               "hexValue": "30",
-                              "id": 11299,
+                              "id": 11318,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -6521,7 +6521,7 @@ export const Wallet = {
                                 "typeString": "int_const 0"
                               }
                             ],
-                            "id": 11298,
+                            "id": 11317,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -6534,7 +6534,7 @@ export const Wallet = {
                             },
                             "typeName": "address"
                           },
-                          "id": 11300,
+                          "id": 11319,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -6557,7 +6557,7 @@ export const Wallet = {
                       {
                         "argumentTypes": null,
                         "hexValue": "41646472657373206d757374206e6f74206265206e756c6c",
-                        "id": 11302,
+                        "id": 11321,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -6584,21 +6584,21 @@ export const Wallet = {
                           "typeString": "literal_string \"Address must not be null\""
                         }
                       ],
-                      "id": 11294,
+                      "id": 11313,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "1401:7:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11303,
+                    "id": 11322,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -6612,28 +6612,28 @@ export const Wallet = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11304,
+                  "id": 11323,
                   "nodeType": "ExpressionStatement",
                   "src": "1401:104:52"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 11307,
+                    "id": 11326,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 11305,
+                      "id": 11324,
                       "name": "delegates",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11185,
+                      "referencedDeclaration": 11204,
                       "src": "1516:9:52",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Delegates_$12090",
+                        "typeIdentifier": "t_contract$_Delegates_$12109",
                         "typeString": "contract Delegates"
                       }
                     },
@@ -6641,24 +6641,24 @@ export const Wallet = {
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 11306,
+                      "id": 11325,
                       "name": "_delegates",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11289,
+                      "referencedDeclaration": 11308,
                       "src": "1528:10:52",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Delegates_$12090",
+                        "typeIdentifier": "t_contract$_Delegates_$12109",
                         "typeString": "contract Delegates"
                       }
                     },
                     "src": "1516:22:52",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_Delegates_$12090",
+                      "typeIdentifier": "t_contract$_Delegates_$12109",
                       "typeString": "contract Delegates"
                     }
                   },
-                  "id": 11308,
+                  "id": 11327,
                   "nodeType": "ExpressionStatement",
                   "src": "1516:22:52"
                 },
@@ -6671,14 +6671,14 @@ export const Wallet = {
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 11311,
+                            "id": 11330,
                             "name": "_delegates",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 11289,
+                            "referencedDeclaration": 11308,
                             "src": "1576:10:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_Delegates_$12090",
+                              "typeIdentifier": "t_contract$_Delegates_$12109",
                               "typeString": "contract Delegates"
                             }
                           }
@@ -6686,11 +6686,11 @@ export const Wallet = {
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_contract$_Delegates_$12090",
+                              "typeIdentifier": "t_contract$_Delegates_$12109",
                               "typeString": "contract Delegates"
                             }
                           ],
-                          "id": 11310,
+                          "id": 11329,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -6703,7 +6703,7 @@ export const Wallet = {
                           },
                           "typeName": "address"
                         },
-                        "id": 11312,
+                        "id": 11331,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -6725,18 +6725,18 @@ export const Wallet = {
                           "typeString": "address"
                         }
                       ],
-                      "id": 11309,
+                      "id": 11328,
                       "name": "ModulesChanged",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11215,
+                      "referencedDeclaration": 11234,
                       "src": "1553:14:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_address_$returns$__$",
                         "typeString": "function (address)"
                       }
                     },
-                    "id": 11313,
+                    "id": 11332,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -6750,27 +6750,27 @@ export const Wallet = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11314,
+                  "id": 11333,
                   "nodeType": "EmitStatement",
                   "src": "1548:40:52"
                 }
               ]
             },
             "documentation": null,
-            "id": 11316,
+            "id": 11335,
             "implemented": true,
             "kind": "function",
             "modifiers": [
               {
                 "arguments": null,
-                "id": 11292,
+                "id": 11311,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 11291,
+                  "id": 11310,
                   "name": "onlySelf",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 11233,
+                  "referencedDeclaration": 11252,
                   "src": "1382:8:52",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -6784,31 +6784,31 @@ export const Wallet = {
             "name": "changeDelegates",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11290,
+              "id": 11309,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11289,
+                  "id": 11308,
                   "name": "_delegates",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11316,
+                  "scope": 11335,
                   "src": "1353:20:52",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_Delegates_$12090",
+                    "typeIdentifier": "t_contract$_Delegates_$12109",
                     "typeString": "contract Delegates"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 11288,
+                    "id": 11307,
                     "name": "Delegates",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 12090,
+                    "referencedDeclaration": 12109,
                     "src": "1353:9:52",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_Delegates_$12090",
+                      "typeIdentifier": "t_contract$_Delegates_$12109",
                       "typeString": "contract Delegates"
                     }
                   },
@@ -6819,12 +6819,12 @@ export const Wallet = {
               "src": "1352:22:52"
             },
             "returnParameters": {
-              "id": 11293,
+              "id": 11312,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1391:0:52"
             },
-            "scope": 11495,
+            "scope": 11514,
             "src": "1328:267:52",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -6832,7 +6832,7 @@ export const Wallet = {
           },
           {
             "body": {
-              "id": 11388,
+              "id": 11407,
               "nodeType": "Block",
               "src": "1720:575:52",
               "statements": [
@@ -6846,18 +6846,18 @@ export const Wallet = {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
-                        "id": 11330,
+                        "id": 11349,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
                           "argumentTypes": null,
-                          "id": 11326,
+                          "id": 11345,
                           "name": "owner",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11181,
+                          "referencedDeclaration": 11200,
                           "src": "1751:5:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -6872,7 +6872,7 @@ export const Wallet = {
                             {
                               "argumentTypes": null,
                               "hexValue": "30",
-                              "id": 11328,
+                              "id": 11347,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -6895,7 +6895,7 @@ export const Wallet = {
                                 "typeString": "int_const 0"
                               }
                             ],
-                            "id": 11327,
+                            "id": 11346,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -6908,7 +6908,7 @@ export const Wallet = {
                             },
                             "typeName": "address"
                           },
-                          "id": 11329,
+                          "id": 11348,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -6931,7 +6931,7 @@ export const Wallet = {
                       {
                         "argumentTypes": null,
                         "hexValue": "63616e206f6e6c7920696e6974206f6e6365",
-                        "id": 11331,
+                        "id": 11350,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -6958,21 +6958,21 @@ export const Wallet = {
                           "typeString": "literal_string \"can only init once\""
                         }
                       ],
-                      "id": 11325,
+                      "id": 11344,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "1730:7:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11332,
+                    "id": 11351,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -6986,7 +6986,7 @@ export const Wallet = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11333,
+                  "id": 11352,
                   "nodeType": "ExpressionStatement",
                   "src": "1730:84:52"
                 },
@@ -7000,18 +7000,18 @@ export const Wallet = {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
-                        "id": 11339,
+                        "id": 11358,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
                           "argumentTypes": null,
-                          "id": 11335,
+                          "id": 11354,
                           "name": "_owner",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11318,
+                          "referencedDeclaration": 11337,
                           "src": "1846:6:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -7026,7 +7026,7 @@ export const Wallet = {
                             {
                               "argumentTypes": null,
                               "hexValue": "30",
-                              "id": 11337,
+                              "id": 11356,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -7049,7 +7049,7 @@ export const Wallet = {
                                 "typeString": "int_const 0"
                               }
                             ],
-                            "id": 11336,
+                            "id": 11355,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -7062,7 +7062,7 @@ export const Wallet = {
                             },
                             "typeName": "address"
                           },
-                          "id": 11338,
+                          "id": 11357,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -7085,7 +7085,7 @@ export const Wallet = {
                       {
                         "argumentTypes": null,
                         "hexValue": "6f776e65722063616e6e6f74206265206e756c6c",
-                        "id": 11340,
+                        "id": 11359,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -7112,21 +7112,21 @@ export const Wallet = {
                           "typeString": "literal_string \"owner cannot be null\""
                         }
                       ],
-                      "id": 11334,
+                      "id": 11353,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "1825:7:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11341,
+                    "id": 11360,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -7140,7 +7140,7 @@ export const Wallet = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11342,
+                  "id": 11361,
                   "nodeType": "ExpressionStatement",
                   "src": "1825:87:52"
                 },
@@ -7154,7 +7154,7 @@ export const Wallet = {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
-                        "id": 11350,
+                        "id": 11369,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -7164,14 +7164,14 @@ export const Wallet = {
                           "arguments": [
                             {
                               "argumentTypes": null,
-                              "id": 11345,
+                              "id": 11364,
                               "name": "_modules",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 11322,
+                              "referencedDeclaration": 11341,
                               "src": "1952:8:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_contract$_Modules_$15035",
+                                "typeIdentifier": "t_contract$_Modules_$15054",
                                 "typeString": "contract Modules"
                               }
                             }
@@ -7179,11 +7179,11 @@ export const Wallet = {
                           "expression": {
                             "argumentTypes": [
                               {
-                                "typeIdentifier": "t_contract$_Modules_$15035",
+                                "typeIdentifier": "t_contract$_Modules_$15054",
                                 "typeString": "contract Modules"
                               }
                             ],
-                            "id": 11344,
+                            "id": 11363,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -7196,7 +7196,7 @@ export const Wallet = {
                             },
                             "typeName": "address"
                           },
-                          "id": 11346,
+                          "id": 11365,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -7218,7 +7218,7 @@ export const Wallet = {
                             {
                               "argumentTypes": null,
                               "hexValue": "30",
-                              "id": 11348,
+                              "id": 11367,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -7241,7 +7241,7 @@ export const Wallet = {
                                 "typeString": "int_const 0"
                               }
                             ],
-                            "id": 11347,
+                            "id": 11366,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -7254,7 +7254,7 @@ export const Wallet = {
                             },
                             "typeName": "address"
                           },
-                          "id": 11349,
+                          "id": 11368,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -7277,7 +7277,7 @@ export const Wallet = {
                       {
                         "argumentTypes": null,
                         "hexValue": "6d6f64756c65732063616e6f74206265206e756c6c",
-                        "id": 11351,
+                        "id": 11370,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -7304,21 +7304,21 @@ export const Wallet = {
                           "typeString": "literal_string \"modules canot be null\""
                         }
                       ],
-                      "id": 11343,
+                      "id": 11362,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "1923:7:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11352,
+                    "id": 11371,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -7332,7 +7332,7 @@ export const Wallet = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11353,
+                  "id": 11372,
                   "nodeType": "ExpressionStatement",
                   "src": "1923:99:52"
                 },
@@ -7346,7 +7346,7 @@ export const Wallet = {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
-                        "id": 11361,
+                        "id": 11380,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -7356,14 +7356,14 @@ export const Wallet = {
                           "arguments": [
                             {
                               "argumentTypes": null,
-                              "id": 11356,
+                              "id": 11375,
                               "name": "_delegates",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 11320,
+                              "referencedDeclaration": 11339,
                               "src": "2062:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_contract$_Delegates_$12090",
+                                "typeIdentifier": "t_contract$_Delegates_$12109",
                                 "typeString": "contract Delegates"
                               }
                             }
@@ -7371,11 +7371,11 @@ export const Wallet = {
                           "expression": {
                             "argumentTypes": [
                               {
-                                "typeIdentifier": "t_contract$_Delegates_$12090",
+                                "typeIdentifier": "t_contract$_Delegates_$12109",
                                 "typeString": "contract Delegates"
                               }
                             ],
-                            "id": 11355,
+                            "id": 11374,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -7388,7 +7388,7 @@ export const Wallet = {
                             },
                             "typeName": "address"
                           },
-                          "id": 11357,
+                          "id": 11376,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -7410,7 +7410,7 @@ export const Wallet = {
                             {
                               "argumentTypes": null,
                               "hexValue": "30",
-                              "id": 11359,
+                              "id": 11378,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -7433,7 +7433,7 @@ export const Wallet = {
                                 "typeString": "int_const 0"
                               }
                             ],
-                            "id": 11358,
+                            "id": 11377,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -7446,7 +7446,7 @@ export const Wallet = {
                             },
                             "typeName": "address"
                           },
-                          "id": 11360,
+                          "id": 11379,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -7469,7 +7469,7 @@ export const Wallet = {
                       {
                         "argumentTypes": null,
                         "hexValue": "64656c6567617465732063616e6e6f74206265206e756c6c",
-                        "id": 11362,
+                        "id": 11381,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -7496,21 +7496,21 @@ export const Wallet = {
                           "typeString": "literal_string \"delegates cannot be null\""
                         }
                       ],
-                      "id": 11354,
+                      "id": 11373,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "2033:7:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11363,
+                    "id": 11382,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -7524,25 +7524,25 @@ export const Wallet = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11364,
+                  "id": 11383,
                   "nodeType": "ExpressionStatement",
                   "src": "2033:104:52"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 11367,
+                    "id": 11386,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 11365,
+                      "id": 11384,
                       "name": "owner",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11181,
+                      "referencedDeclaration": 11200,
                       "src": "2148:5:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -7553,11 +7553,11 @@ export const Wallet = {
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 11366,
+                      "id": 11385,
                       "name": "_owner",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11318,
+                      "referencedDeclaration": 11337,
                       "src": "2156:6:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -7570,28 +7570,28 @@ export const Wallet = {
                       "typeString": "address"
                     }
                   },
-                  "id": 11368,
+                  "id": 11387,
                   "nodeType": "ExpressionStatement",
                   "src": "2148:14:52"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 11371,
+                    "id": 11390,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 11369,
+                      "id": 11388,
                       "name": "delegates",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11185,
+                      "referencedDeclaration": 11204,
                       "src": "2172:9:52",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Delegates_$12090",
+                        "typeIdentifier": "t_contract$_Delegates_$12109",
                         "typeString": "contract Delegates"
                       }
                     },
@@ -7599,45 +7599,45 @@ export const Wallet = {
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 11370,
+                      "id": 11389,
                       "name": "_delegates",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11320,
+                      "referencedDeclaration": 11339,
                       "src": "2184:10:52",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Delegates_$12090",
+                        "typeIdentifier": "t_contract$_Delegates_$12109",
                         "typeString": "contract Delegates"
                       }
                     },
                     "src": "2172:22:52",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_Delegates_$12090",
+                      "typeIdentifier": "t_contract$_Delegates_$12109",
                       "typeString": "contract Delegates"
                     }
                   },
-                  "id": 11372,
+                  "id": 11391,
                   "nodeType": "ExpressionStatement",
                   "src": "2172:22:52"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 11375,
+                    "id": 11394,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 11373,
+                      "id": 11392,
                       "name": "modules",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11183,
+                      "referencedDeclaration": 11202,
                       "src": "2204:7:52",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Modules_$15035",
+                        "typeIdentifier": "t_contract$_Modules_$15054",
                         "typeString": "contract Modules"
                       }
                     },
@@ -7645,42 +7645,42 @@ export const Wallet = {
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 11374,
+                      "id": 11393,
                       "name": "_modules",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11322,
+                      "referencedDeclaration": 11341,
                       "src": "2214:8:52",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Modules_$15035",
+                        "typeIdentifier": "t_contract$_Modules_$15054",
                         "typeString": "contract Modules"
                       }
                     },
                     "src": "2204:18:52",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_Modules_$15035",
+                      "typeIdentifier": "t_contract$_Modules_$15054",
                       "typeString": "contract Modules"
                     }
                   },
-                  "id": 11376,
+                  "id": 11395,
                   "nodeType": "ExpressionStatement",
                   "src": "2204:18:52"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 11380,
+                    "id": 11399,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 11377,
+                      "id": 11396,
                       "name": "creator",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11187,
+                      "referencedDeclaration": 11206,
                       "src": "2232:7:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -7693,18 +7693,18 @@ export const Wallet = {
                       "argumentTypes": null,
                       "expression": {
                         "argumentTypes": null,
-                        "id": 11378,
+                        "id": 11397,
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 19385,
+                        "referencedDeclaration": 19404,
                         "src": "2242:3:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
                           "typeString": "msg"
                         }
                       },
-                      "id": 11379,
+                      "id": 11398,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -7724,25 +7724,25 @@ export const Wallet = {
                       "typeString": "address"
                     }
                   },
-                  "id": 11381,
+                  "id": 11400,
                   "nodeType": "ExpressionStatement",
                   "src": "2232:20:52"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 11386,
+                    "id": 11405,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 11382,
+                      "id": 11401,
                       "name": "creationTime",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11189,
+                      "referencedDeclaration": 11208,
                       "src": "2262:12:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint64",
@@ -7756,11 +7756,11 @@ export const Wallet = {
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 11384,
+                          "id": 11403,
                           "name": "now",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 19387,
+                          "referencedDeclaration": 19406,
                           "src": "2284:3:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -7775,7 +7775,7 @@ export const Wallet = {
                             "typeString": "uint256"
                           }
                         ],
-                        "id": 11383,
+                        "id": 11402,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -7788,7 +7788,7 @@ export const Wallet = {
                         },
                         "typeName": "uint64"
                       },
-                      "id": 11385,
+                      "id": 11404,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -7808,29 +7808,29 @@ export const Wallet = {
                       "typeString": "uint64"
                     }
                   },
-                  "id": 11387,
+                  "id": 11406,
                   "nodeType": "ExpressionStatement",
                   "src": "2262:26:52"
                 }
               ]
             },
             "documentation": null,
-            "id": 11389,
+            "id": 11408,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "init",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11323,
+              "id": 11342,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11318,
+                  "id": 11337,
                   "name": "_owner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11389,
+                  "scope": 11408,
                   "src": "1624:14:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -7839,7 +7839,7 @@ export const Wallet = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11317,
+                    "id": 11336,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1624:7:52",
@@ -7854,26 +7854,26 @@ export const Wallet = {
                 },
                 {
                   "constant": false,
-                  "id": 11320,
+                  "id": 11339,
                   "name": "_delegates",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11389,
+                  "scope": 11408,
                   "src": "1648:20:52",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_Delegates_$12090",
+                    "typeIdentifier": "t_contract$_Delegates_$12109",
                     "typeString": "contract Delegates"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 11319,
+                    "id": 11338,
                     "name": "Delegates",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 12090,
+                    "referencedDeclaration": 12109,
                     "src": "1648:9:52",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_Delegates_$12090",
+                      "typeIdentifier": "t_contract$_Delegates_$12109",
                       "typeString": "contract Delegates"
                     }
                   },
@@ -7882,26 +7882,26 @@ export const Wallet = {
                 },
                 {
                   "constant": false,
-                  "id": 11322,
+                  "id": 11341,
                   "name": "_modules",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11389,
+                  "scope": 11408,
                   "src": "1678:16:52",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_Modules_$15035",
+                    "typeIdentifier": "t_contract$_Modules_$15054",
                     "typeString": "contract Modules"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 11321,
+                    "id": 11340,
                     "name": "Modules",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 15035,
+                    "referencedDeclaration": 15054,
                     "src": "1678:7:52",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_Modules_$15035",
+                      "typeIdentifier": "t_contract$_Modules_$15054",
                       "typeString": "contract Modules"
                     }
                   },
@@ -7912,12 +7912,12 @@ export const Wallet = {
               "src": "1614:86:52"
             },
             "returnParameters": {
-              "id": 11324,
+              "id": 11343,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1720:0:52"
             },
-            "scope": 11495,
+            "scope": 11514,
             "src": "1601:694:52",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -7925,7 +7925,7 @@ export const Wallet = {
           },
           {
             "body": {
-              "id": 11436,
+              "id": 11455,
               "nodeType": "Block",
               "src": "2418:486:52",
               "statements": [
@@ -7938,14 +7938,14 @@ export const Wallet = {
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 11401,
+                            "id": 11420,
                             "name": "this",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 19553,
+                            "referencedDeclaration": 19572,
                             "src": "2485:4:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_Wallet_$11495",
+                              "typeIdentifier": "t_contract$_Wallet_$11514",
                               "typeString": "contract Wallet"
                             }
                           },
@@ -7956,18 +7956,18 @@ export const Wallet = {
                                 "argumentTypes": null,
                                 "expression": {
                                   "argumentTypes": null,
-                                  "id": 11403,
+                                  "id": 11422,
                                   "name": "msg",
                                   "nodeType": "Identifier",
                                   "overloadedDeclarations": [],
-                                  "referencedDeclaration": 19385,
+                                  "referencedDeclaration": 19404,
                                   "src": "2514:3:52",
                                   "typeDescriptions": {
                                     "typeIdentifier": "t_magic_message",
                                     "typeString": "msg"
                                   }
                                 },
-                                "id": 11404,
+                                "id": 11423,
                                 "isConstant": false,
                                 "isLValue": false,
                                 "isPure": false,
@@ -7989,18 +7989,18 @@ export const Wallet = {
                                   "typeString": "address payable"
                                 }
                               ],
-                              "id": 11402,
+                              "id": 11421,
                               "name": "Module",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 14992,
+                              "referencedDeclaration": 15011,
                               "src": "2507:6:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_type$_t_contract$_Module_$14992_$",
+                                "typeIdentifier": "t_type$_t_contract$_Module_$15011_$",
                                 "typeString": "type(contract Module)"
                               }
                             },
-                            "id": 11405,
+                            "id": 11424,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -8010,17 +8010,17 @@ export const Wallet = {
                             "nodeType": "FunctionCall",
                             "src": "2507:18:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_Module_$14992",
+                              "typeIdentifier": "t_contract$_Module_$15011",
                               "typeString": "contract Module"
                             }
                           },
                           {
                             "argumentTypes": null,
-                            "id": 11406,
+                            "id": 11425,
                             "name": "_to",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 11391,
+                            "referencedDeclaration": 11410,
                             "src": "2543:3:52",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
@@ -8029,11 +8029,11 @@ export const Wallet = {
                           },
                           {
                             "argumentTypes": null,
-                            "id": 11407,
+                            "id": 11426,
                             "name": "_data",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 11393,
+                            "referencedDeclaration": 11412,
                             "src": "2564:5:52",
                             "typeDescriptions": {
                               "typeIdentifier": "t_bytes_memory_ptr",
@@ -8042,11 +8042,11 @@ export const Wallet = {
                           },
                           {
                             "argumentTypes": null,
-                            "id": 11408,
+                            "id": 11427,
                             "name": "_value",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 11395,
+                            "referencedDeclaration": 11414,
                             "src": "2587:6:52",
                             "typeDescriptions": {
                               "typeIdentifier": "t_uint256",
@@ -8057,11 +8057,11 @@ export const Wallet = {
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_contract$_Wallet_$11495",
+                              "typeIdentifier": "t_contract$_Wallet_$11514",
                               "typeString": "contract Wallet"
                             },
                             {
-                              "typeIdentifier": "t_contract$_Module_$14992",
+                              "typeIdentifier": "t_contract$_Module_$15011",
                               "typeString": "contract Module"
                             },
                             {
@@ -8079,32 +8079,32 @@ export const Wallet = {
                           ],
                           "expression": {
                             "argumentTypes": null,
-                            "id": 11399,
+                            "id": 11418,
                             "name": "modules",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 11183,
+                            "referencedDeclaration": 11202,
                             "src": "2449:7:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_Modules_$15035",
+                              "typeIdentifier": "t_contract$_Modules_$15054",
                               "typeString": "contract Modules"
                             }
                           },
-                          "id": 11400,
+                          "id": 11419,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
                           "lValueRequested": false,
                           "memberName": "canExecute",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 15011,
+                          "referencedDeclaration": 15030,
                           "src": "2449:18:52",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_function_external_nonpayable$_t_contract$_Wallet_$11495_$_t_contract$_Module_$14992_$_t_address_$_t_bytes_memory_ptr_$_t_uint256_$returns$_t_bool_$",
+                            "typeIdentifier": "t_function_external_nonpayable$_t_contract$_Wallet_$11514_$_t_contract$_Module_$15011_$_t_address_$_t_bytes_memory_ptr_$_t_uint256_$returns$_t_bool_$",
                             "typeString": "function (contract Wallet,contract Module,address,bytes memory,uint256) external returns (bool)"
                           }
                         },
-                        "id": 11409,
+                        "id": 11428,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -8121,7 +8121,7 @@ export const Wallet = {
                       {
                         "argumentTypes": null,
                         "hexValue": "73656e646572206e6f7420617574686f726973656420666f722074686973206f7065726174696f6e",
-                        "id": 11410,
+                        "id": 11429,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -8148,21 +8148,21 @@ export const Wallet = {
                           "typeString": "literal_string \"sender not authorised for this operation\""
                         }
                       ],
-                      "id": 11398,
+                      "id": 11417,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "2428:7:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11411,
+                    "id": 11430,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -8176,22 +8176,22 @@ export const Wallet = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11412,
+                  "id": 11431,
                   "nodeType": "ExpressionStatement",
                   "src": "2428:245:52"
                 },
                 {
                   "assignments": [
-                    11414,
+                    11433,
                     null
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 11414,
+                      "id": 11433,
                       "name": "success",
                       "nodeType": "VariableDeclaration",
-                      "scope": 11436,
+                      "scope": 11455,
                       "src": "2743:12:52",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -8200,7 +8200,7 @@ export const Wallet = {
                         "typeString": "bool"
                       },
                       "typeName": {
-                        "id": 11413,
+                        "id": 11432,
                         "name": "bool",
                         "nodeType": "ElementaryTypeName",
                         "src": "2743:4:52",
@@ -8214,17 +8214,17 @@ export const Wallet = {
                     },
                     null
                   ],
-                  "id": 11422,
+                  "id": 11441,
                   "initialValue": {
                     "argumentTypes": null,
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 11420,
+                        "id": 11439,
                         "name": "_data",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11393,
+                        "referencedDeclaration": 11412,
                         "src": "2784:5:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bytes_memory_ptr",
@@ -8242,11 +8242,11 @@ export const Wallet = {
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 11418,
+                          "id": 11437,
                           "name": "_value",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11395,
+                          "referencedDeclaration": 11414,
                           "src": "2776:6:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -8265,18 +8265,18 @@ export const Wallet = {
                           "argumentTypes": null,
                           "expression": {
                             "argumentTypes": null,
-                            "id": 11415,
+                            "id": 11434,
                             "name": "_to",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 11391,
+                            "referencedDeclaration": 11410,
                             "src": "2761:3:52",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
                               "typeString": "address"
                             }
                           },
-                          "id": 11416,
+                          "id": 11435,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -8290,7 +8290,7 @@ export const Wallet = {
                             "typeString": "function (bytes memory) payable returns (bool,bytes memory)"
                           }
                         },
-                        "id": 11417,
+                        "id": 11436,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -8304,7 +8304,7 @@ export const Wallet = {
                           "typeString": "function (uint256) pure returns (function (bytes memory) payable returns (bool,bytes memory))"
                         }
                       },
-                      "id": 11419,
+                      "id": 11438,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -8318,7 +8318,7 @@ export const Wallet = {
                         "typeString": "function (bytes memory) payable returns (bool,bytes memory)"
                       }
                     },
-                    "id": 11421,
+                    "id": 11440,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -8341,11 +8341,11 @@ export const Wallet = {
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 11424,
+                        "id": 11443,
                         "name": "success",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11414,
+                        "referencedDeclaration": 11433,
                         "src": "2808:7:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bool",
@@ -8355,7 +8355,7 @@ export const Wallet = {
                       {
                         "argumentTypes": null,
                         "hexValue": "657865637574696f6e20756e7375636365737366756c",
-                        "id": 11425,
+                        "id": 11444,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -8382,21 +8382,21 @@ export const Wallet = {
                           "typeString": "literal_string \"execution unsuccessful\""
                         }
                       ],
-                      "id": 11423,
+                      "id": 11442,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "2800:7:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11426,
+                    "id": 11445,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -8410,7 +8410,7 @@ export const Wallet = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11427,
+                  "id": 11446,
                   "nodeType": "ExpressionStatement",
                   "src": "2800:42:52"
                 },
@@ -8422,18 +8422,18 @@ export const Wallet = {
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 11429,
+                          "id": 11448,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 19385,
+                          "referencedDeclaration": 19404,
                           "src": "2866:3:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 11430,
+                        "id": 11449,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -8449,11 +8449,11 @@ export const Wallet = {
                       },
                       {
                         "argumentTypes": null,
-                        "id": 11431,
+                        "id": 11450,
                         "name": "_to",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11391,
+                        "referencedDeclaration": 11410,
                         "src": "2878:3:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -8462,11 +8462,11 @@ export const Wallet = {
                       },
                       {
                         "argumentTypes": null,
-                        "id": 11432,
+                        "id": 11451,
                         "name": "_data",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11393,
+                        "referencedDeclaration": 11412,
                         "src": "2883:5:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bytes_memory_ptr",
@@ -8475,11 +8475,11 @@ export const Wallet = {
                       },
                       {
                         "argumentTypes": null,
-                        "id": 11433,
+                        "id": 11452,
                         "name": "_value",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11395,
+                        "referencedDeclaration": 11414,
                         "src": "2890:6:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -8506,18 +8506,18 @@ export const Wallet = {
                           "typeString": "uint256"
                         }
                       ],
-                      "id": 11428,
+                      "id": 11447,
                       "name": "Executed",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11207,
+                      "referencedDeclaration": 11226,
                       "src": "2857:8:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_address_$_t_bytes_memory_ptr_$_t_uint256_$returns$__$",
                         "typeString": "function (address,address,bytes memory,uint256)"
                       }
                     },
-                    "id": 11434,
+                    "id": 11453,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -8531,29 +8531,29 @@ export const Wallet = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11435,
+                  "id": 11454,
                   "nodeType": "EmitStatement",
                   "src": "2852:45:52"
                 }
               ]
             },
             "documentation": null,
-            "id": 11437,
+            "id": 11456,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "executeValue",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11396,
+              "id": 11415,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11391,
+                  "id": 11410,
                   "name": "_to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11437,
+                  "scope": 11456,
                   "src": "2332:11:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -8562,7 +8562,7 @@ export const Wallet = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11390,
+                    "id": 11409,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "2332:7:52",
@@ -8577,10 +8577,10 @@ export const Wallet = {
                 },
                 {
                   "constant": false,
-                  "id": 11393,
+                  "id": 11412,
                   "name": "_data",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11437,
+                  "scope": 11456,
                   "src": "2353:18:52",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -8589,7 +8589,7 @@ export const Wallet = {
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 11392,
+                    "id": 11411,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
                     "src": "2353:5:52",
@@ -8603,10 +8603,10 @@ export const Wallet = {
                 },
                 {
                   "constant": false,
-                  "id": 11395,
+                  "id": 11414,
                   "name": "_value",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11437,
+                  "scope": 11456,
                   "src": "2381:11:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -8615,7 +8615,7 @@ export const Wallet = {
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 11394,
+                    "id": 11413,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "2381:4:52",
@@ -8631,12 +8631,12 @@ export const Wallet = {
               "src": "2322:76:52"
             },
             "returnParameters": {
-              "id": 11397,
+              "id": 11416,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "2418:0:52"
             },
-            "scope": 11495,
+            "scope": 11514,
             "src": "2301:603:52",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -8644,7 +8644,7 @@ export const Wallet = {
           },
           {
             "body": {
-              "id": 11450,
+              "id": 11469,
               "nodeType": "Block",
               "src": "2967:44:52",
               "statements": [
@@ -8654,11 +8654,11 @@ export const Wallet = {
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 11445,
+                        "id": 11464,
                         "name": "_to",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11439,
+                        "referencedDeclaration": 11458,
                         "src": "2990:3:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -8667,11 +8667,11 @@ export const Wallet = {
                       },
                       {
                         "argumentTypes": null,
-                        "id": 11446,
+                        "id": 11465,
                         "name": "_data",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11441,
+                        "referencedDeclaration": 11460,
                         "src": "2995:5:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bytes_memory_ptr",
@@ -8681,7 +8681,7 @@ export const Wallet = {
                       {
                         "argumentTypes": null,
                         "hexValue": "30",
-                        "id": 11447,
+                        "id": 11466,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -8712,18 +8712,18 @@ export const Wallet = {
                           "typeString": "int_const 0"
                         }
                       ],
-                      "id": 11444,
+                      "id": 11463,
                       "name": "executeValue",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11437,
+                      "referencedDeclaration": 11456,
                       "src": "2977:12:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_bytes_memory_ptr_$_t_uint256_$returns$__$",
                         "typeString": "function (address,bytes memory,uint256)"
                       }
                     },
-                    "id": 11448,
+                    "id": 11467,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -8737,29 +8737,29 @@ export const Wallet = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11449,
+                  "id": 11468,
                   "nodeType": "ExpressionStatement",
                   "src": "2977:27:52"
                 }
               ]
             },
             "documentation": null,
-            "id": 11451,
+            "id": 11470,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "execute",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11442,
+              "id": 11461,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11439,
+                  "id": 11458,
                   "name": "_to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11451,
+                  "scope": 11470,
                   "src": "2927:11:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -8768,7 +8768,7 @@ export const Wallet = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11438,
+                    "id": 11457,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "2927:7:52",
@@ -8783,10 +8783,10 @@ export const Wallet = {
                 },
                 {
                   "constant": false,
-                  "id": 11441,
+                  "id": 11460,
                   "name": "_data",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11451,
+                  "scope": 11470,
                   "src": "2940:18:52",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -8795,7 +8795,7 @@ export const Wallet = {
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 11440,
+                    "id": 11459,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
                     "src": "2940:5:52",
@@ -8811,12 +8811,12 @@ export const Wallet = {
               "src": "2926:33:52"
             },
             "returnParameters": {
-              "id": 11443,
+              "id": 11462,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "2967:0:52"
             },
-            "scope": 11495,
+            "scope": 11514,
             "src": "2910:101:52",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -8824,7 +8824,7 @@ export const Wallet = {
           },
           {
             "body": {
-              "id": 11473,
+              "id": 11492,
               "nodeType": "Block",
               "src": "3073:248:52",
               "statements": [
@@ -8837,14 +8837,14 @@ export const Wallet = {
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 11460,
+                            "id": 11479,
                             "name": "delegates",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 11185,
+                            "referencedDeclaration": 11204,
                             "src": "3112:9:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_Delegates_$12090",
+                              "typeIdentifier": "t_contract$_Delegates_$12109",
                               "typeString": "contract Delegates"
                             }
                           }
@@ -8852,11 +8852,11 @@ export const Wallet = {
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_contract$_Delegates_$12090",
+                              "typeIdentifier": "t_contract$_Delegates_$12109",
                               "typeString": "contract Delegates"
                             }
                           ],
-                          "id": 11459,
+                          "id": 11478,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -8869,7 +8869,7 @@ export const Wallet = {
                           },
                           "typeName": "address"
                         },
-                        "id": 11461,
+                        "id": 11480,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -8889,7 +8889,7 @@ export const Wallet = {
                           {
                             "argumentTypes": null,
                             "hexValue": "726567697374657228616464726573732c6279746573342c6164647265737329",
-                            "id": 11464,
+                            "id": 11483,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -8909,14 +8909,14 @@ export const Wallet = {
                             "arguments": [
                               {
                                 "argumentTypes": null,
-                                "id": 11466,
+                                "id": 11485,
                                 "name": "this",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 19553,
+                                "referencedDeclaration": 19572,
                                 "src": "3237:4:52",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_contract$_Wallet_$11495",
+                                  "typeIdentifier": "t_contract$_Wallet_$11514",
                                   "typeString": "contract Wallet"
                                 }
                               }
@@ -8924,11 +8924,11 @@ export const Wallet = {
                             "expression": {
                               "argumentTypes": [
                                 {
-                                  "typeIdentifier": "t_contract$_Wallet_$11495",
+                                  "typeIdentifier": "t_contract$_Wallet_$11514",
                                   "typeString": "contract Wallet"
                                 }
                               ],
-                              "id": 11465,
+                              "id": 11484,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -8941,7 +8941,7 @@ export const Wallet = {
                               },
                               "typeName": "address"
                             },
-                            "id": 11467,
+                            "id": 11486,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -8957,11 +8957,11 @@ export const Wallet = {
                           },
                           {
                             "argumentTypes": null,
-                            "id": 11468,
+                            "id": 11487,
                             "name": "_function",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 11453,
+                            "referencedDeclaration": 11472,
                             "src": "3260:9:52",
                             "typeDescriptions": {
                               "typeIdentifier": "t_bytes4",
@@ -8970,11 +8970,11 @@ export const Wallet = {
                           },
                           {
                             "argumentTypes": null,
-                            "id": 11469,
+                            "id": 11488,
                             "name": "_to",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 11455,
+                            "referencedDeclaration": 11474,
                             "src": "3287:3:52",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
@@ -9003,18 +9003,18 @@ export const Wallet = {
                           ],
                           "expression": {
                             "argumentTypes": null,
-                            "id": 11462,
+                            "id": 11481,
                             "name": "abi",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 19372,
+                            "referencedDeclaration": 19391,
                             "src": "3136:3:52",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_abi",
                               "typeString": "abi"
                             }
                           },
-                          "id": 11463,
+                          "id": 11482,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -9028,7 +9028,7 @@ export const Wallet = {
                             "typeString": "function (string memory) pure returns (bytes memory)"
                           }
                         },
-                        "id": 11470,
+                        "id": 11489,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -9054,18 +9054,18 @@ export const Wallet = {
                           "typeString": "bytes memory"
                         }
                       ],
-                      "id": 11458,
+                      "id": 11477,
                       "name": "execute",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11451,
+                      "referencedDeclaration": 11470,
                       "src": "3083:7:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_bytes_memory_ptr_$returns$__$",
                         "typeString": "function (address,bytes memory)"
                       }
                     },
-                    "id": 11471,
+                    "id": 11490,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -9079,29 +9079,29 @@ export const Wallet = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11472,
+                  "id": 11491,
                   "nodeType": "ExpressionStatement",
                   "src": "3083:231:52"
                 }
               ]
             },
             "documentation": null,
-            "id": 11474,
+            "id": 11493,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "register",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11456,
+              "id": 11475,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11453,
+                  "id": 11472,
                   "name": "_function",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11474,
+                  "scope": 11493,
                   "src": "3035:16:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -9110,7 +9110,7 @@ export const Wallet = {
                     "typeString": "bytes4"
                   },
                   "typeName": {
-                    "id": 11452,
+                    "id": 11471,
                     "name": "bytes4",
                     "nodeType": "ElementaryTypeName",
                     "src": "3035:6:52",
@@ -9124,10 +9124,10 @@ export const Wallet = {
                 },
                 {
                   "constant": false,
-                  "id": 11455,
+                  "id": 11474,
                   "name": "_to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11474,
+                  "scope": 11493,
                   "src": "3053:11:52",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -9136,7 +9136,7 @@ export const Wallet = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11454,
+                    "id": 11473,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "3053:7:52",
@@ -9153,12 +9153,12 @@ export const Wallet = {
               "src": "3034:31:52"
             },
             "returnParameters": {
-              "id": 11457,
+              "id": 11476,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "3073:0:52"
             },
-            "scope": 11495,
+            "scope": 11514,
             "src": "3017:304:52",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -9166,21 +9166,21 @@ export const Wallet = {
           },
           {
             "body": {
-              "id": 11493,
+              "id": 11512,
               "nodeType": "Block",
               "src": "3356:571:52",
               "statements": [
                 {
                   "assignments": [
-                    11478
+                    11497
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 11478,
+                      "id": 11497,
                       "name": "delegate",
                       "nodeType": "VariableDeclaration",
-                      "scope": 11493,
+                      "scope": 11512,
                       "src": "3366:16:52",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -9189,7 +9189,7 @@ export const Wallet = {
                         "typeString": "address"
                       },
                       "typeName": {
-                        "id": 11477,
+                        "id": 11496,
                         "name": "address",
                         "nodeType": "ElementaryTypeName",
                         "src": "3366:7:52",
@@ -9203,20 +9203,20 @@ export const Wallet = {
                       "visibility": "internal"
                     }
                   ],
-                  "id": 11491,
+                  "id": 11510,
                   "initialValue": {
                     "argumentTypes": null,
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 11481,
+                        "id": 11500,
                         "name": "this",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 19553,
+                        "referencedDeclaration": 19572,
                         "src": "3420:4:52",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_Wallet_$11495",
+                          "typeIdentifier": "t_contract$_Wallet_$11514",
                           "typeString": "contract Wallet"
                         }
                       },
@@ -9224,18 +9224,18 @@ export const Wallet = {
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 11482,
+                          "id": 11501,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 19385,
+                          "referencedDeclaration": 19404,
                           "src": "3438:3:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 11483,
+                        "id": 11502,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -9253,18 +9253,18 @@ export const Wallet = {
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 11484,
+                          "id": 11503,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 19385,
+                          "referencedDeclaration": 19404,
                           "src": "3459:3:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 11485,
+                        "id": 11504,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -9282,18 +9282,18 @@ export const Wallet = {
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 11486,
+                          "id": 11505,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 19385,
+                          "referencedDeclaration": 19404,
                           "src": "3481:3:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 11487,
+                        "id": 11506,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -9311,18 +9311,18 @@ export const Wallet = {
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 11488,
+                          "id": 11507,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 19385,
+                          "referencedDeclaration": 19404,
                           "src": "3504:3:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 11489,
+                        "id": 11508,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -9340,7 +9340,7 @@ export const Wallet = {
                     "expression": {
                       "argumentTypes": [
                         {
-                          "typeIdentifier": "t_contract$_Wallet_$11495",
+                          "typeIdentifier": "t_contract$_Wallet_$11514",
                           "typeString": "contract Wallet"
                         },
                         {
@@ -9362,32 +9362,32 @@ export const Wallet = {
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 11479,
+                        "id": 11498,
                         "name": "delegates",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11185,
+                        "referencedDeclaration": 11204,
                         "src": "3385:9:52",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_Delegates_$12090",
+                          "typeIdentifier": "t_contract$_Delegates_$12109",
                           "typeString": "contract Delegates"
                         }
                       },
-                      "id": 11480,
+                      "id": 11499,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "getDelegate",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 12086,
+                      "referencedDeclaration": 12105,
                       "src": "3385:21:52",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_external_nonpayable$_t_contract$_Wallet_$11495_$_t_bytes4_$_t_bytes_memory_ptr_$_t_uint256_$_t_address_$returns$_t_address_$",
+                        "typeIdentifier": "t_function_external_nonpayable$_t_contract$_Wallet_$11514_$_t_bytes4_$_t_bytes_memory_ptr_$_t_uint256_$_t_address_$returns$_t_address_$",
                         "typeString": "function (contract Wallet,bytes4,bytes memory,uint256,address) external returns (address)"
                       }
                     },
-                    "id": 11490,
+                    "id": 11509,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -9408,7 +9408,7 @@ export const Wallet = {
                   "externalReferences": [
                     {
                       "delegate": {
-                        "declaration": 11478,
+                        "declaration": 11497,
                         "isOffset": false,
                         "isSlot": false,
                         "src": "3699:8:52",
@@ -9416,7 +9416,7 @@ export const Wallet = {
                       }
                     }
                   ],
-                  "id": 11492,
+                  "id": 11511,
                   "nodeType": "InlineAssembly",
                   "operations": "{\n    calldatacopy(0, 0, calldatasize())\n    let result := staticcall(gas(), delegate, 0, calldatasize(), 0, 0)\n    returndatacopy(0, 0, returndatasize())\n    switch result\n    case 0 { revert(0, returndatasize()) }\n    default { return(0, returndatasize()) }\n}",
                   "src": "3599:321:52"
@@ -9424,32 +9424,32 @@ export const Wallet = {
               ]
             },
             "documentation": null,
-            "id": 11494,
+            "id": 11513,
             "implemented": true,
             "kind": "fallback",
             "modifiers": [],
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11475,
+              "id": 11494,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "3336:2:52"
             },
             "returnParameters": {
-              "id": 11476,
+              "id": 11495,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "3356:0:52"
             },
-            "scope": 11495,
+            "scope": 11514,
             "src": "3327:600:52",
             "stateMutability": "payable",
             "superFunction": null,
             "visibility": "external"
           }
         ],
-        "scope": 11496,
+        "scope": 11515,
         "src": "120:3810:52"
       }
     ],
@@ -9461,7 +9461,7 @@ export const Wallet = {
   },
   "networks": {},
   "schemaVersion": "3.0.16",
-  "updatedAt": "2019-11-08T05:02:33.507Z",
+  "updatedAt": "2019-11-11T00:47:34.700Z",
   "devdoc": {
     "methods": {}
   },

@@ -85,14 +85,14 @@ export const Proxy = {
     "absolutePath": "/Users/kerman/immutable/gods-unchained-contracts/packages/contracts/contracts/wallet/Proxy.sol",
     "exportedSymbols": {
       "Proxy": [
-        11161
+        11180
       ]
     },
-    "id": 11162,
+    "id": 11181,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 11103,
+        "id": 11122,
         "literals": [
           "solidity",
           "^",
@@ -105,10 +105,10 @@ export const Proxy = {
       {
         "absolutePath": "/Users/kerman/immutable/gods-unchained-contracts/packages/contracts/contracts/wallet/ProxyData.sol",
         "file": "./ProxyData.sol",
-        "id": 11104,
+        "id": 11123,
         "nodeType": "ImportDirective",
-        "scope": 11162,
-        "sourceUnit": 11173,
+        "scope": 11181,
+        "sourceUnit": 11192,
         "src": "25:25:50",
         "symbolAliases": [],
         "unitAlias": ""
@@ -119,33 +119,33 @@ export const Proxy = {
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 11105,
+              "id": 11124,
               "name": "ProxyData",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 11172,
+              "referencedDeclaration": 11191,
               "src": "70:9:50",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ProxyData_$11172",
+                "typeIdentifier": "t_contract$_ProxyData_$11191",
                 "typeString": "contract ProxyData"
               }
             },
-            "id": 11106,
+            "id": 11125,
             "nodeType": "InheritanceSpecifier",
             "src": "70:9:50"
           }
         ],
         "contractDependencies": [
-          11172,
-          12166
+          11191,
+          12185
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 11161,
+        "id": 11180,
         "linearizedBaseContracts": [
-          11161,
-          11172,
-          12166
+          11180,
+          11191,
+          12185
         ],
         "name": "Proxy",
         "nodeType": "ContractDefinition",
@@ -153,20 +153,20 @@ export const Proxy = {
           {
             "anonymous": false,
             "documentation": null,
-            "id": 11114,
+            "id": 11133,
             "name": "Received",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 11113,
+              "id": 11132,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11108,
+                  "id": 11127,
                   "indexed": true,
                   "name": "from",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11114,
+                  "scope": 11133,
                   "src": "213:20:50",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -175,7 +175,7 @@ export const Proxy = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11107,
+                    "id": 11126,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "213:7:50",
@@ -190,11 +190,11 @@ export const Proxy = {
                 },
                 {
                   "constant": false,
-                  "id": 11110,
+                  "id": 11129,
                   "indexed": false,
                   "name": "data",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11114,
+                  "scope": 11133,
                   "src": "235:10:50",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -203,7 +203,7 @@ export const Proxy = {
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 11109,
+                    "id": 11128,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
                     "src": "235:5:50",
@@ -217,11 +217,11 @@ export const Proxy = {
                 },
                 {
                   "constant": false,
-                  "id": 11112,
+                  "id": 11131,
                   "indexed": false,
                   "name": "value",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11114,
+                  "scope": 11133,
                   "src": "247:10:50",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -230,7 +230,7 @@ export const Proxy = {
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 11111,
+                    "id": 11130,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "247:4:50",
@@ -249,7 +249,7 @@ export const Proxy = {
           },
           {
             "body": {
-              "id": 11132,
+              "id": 11151,
               "nodeType": "Block",
               "src": "299:100:50",
               "statements": [
@@ -263,18 +263,18 @@ export const Proxy = {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
-                        "id": 11124,
+                        "id": 11143,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
                           "argumentTypes": null,
-                          "id": 11120,
+                          "id": 11139,
                           "name": "_impl",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11116,
+                          "referencedDeclaration": 11135,
                           "src": "317:5:50",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -289,7 +289,7 @@ export const Proxy = {
                             {
                               "argumentTypes": null,
                               "hexValue": "30",
-                              "id": 11122,
+                              "id": 11141,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -312,7 +312,7 @@ export const Proxy = {
                                 "typeString": "int_const 0"
                               }
                             ],
-                            "id": 11121,
+                            "id": 11140,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -325,7 +325,7 @@ export const Proxy = {
                             },
                             "typeName": "address"
                           },
-                          "id": 11123,
+                          "id": 11142,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -348,7 +348,7 @@ export const Proxy = {
                       {
                         "argumentTypes": null,
                         "hexValue": "6e756c6c20696d706c656d656e746174696f6e",
-                        "id": 11125,
+                        "id": 11144,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -375,21 +375,21 @@ export const Proxy = {
                           "typeString": "literal_string \"null implementation\""
                         }
                       ],
-                      "id": 11119,
+                      "id": 11138,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "309:7:50",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11126,
+                    "id": 11145,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -403,25 +403,25 @@ export const Proxy = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11127,
+                  "id": 11146,
                   "nodeType": "ExpressionStatement",
                   "src": "309:51:50"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 11130,
+                    "id": 11149,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 11128,
+                      "id": 11147,
                       "name": "implementation",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11168,
+                      "referencedDeclaration": 11187,
                       "src": "370:14:50",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -432,11 +432,11 @@ export const Proxy = {
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 11129,
+                      "id": 11148,
                       "name": "_impl",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11116,
+                      "referencedDeclaration": 11135,
                       "src": "387:5:50",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -449,29 +449,29 @@ export const Proxy = {
                       "typeString": "address"
                     }
                   },
-                  "id": 11131,
+                  "id": 11150,
                   "nodeType": "ExpressionStatement",
                   "src": "370:22:50"
                 }
               ]
             },
             "documentation": null,
-            "id": 11133,
+            "id": 11152,
             "implemented": true,
             "kind": "constructor",
             "modifiers": [],
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11117,
+              "id": 11136,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11116,
+                  "id": 11135,
                   "name": "_impl",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11133,
+                  "scope": 11152,
                   "src": "277:13:50",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -480,7 +480,7 @@ export const Proxy = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11115,
+                    "id": 11134,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "277:7:50",
@@ -497,12 +497,12 @@ export const Proxy = {
               "src": "276:15:50"
             },
             "returnParameters": {
-              "id": 11118,
+              "id": 11137,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "299:0:50"
             },
-            "scope": 11161,
+            "scope": 11180,
             "src": "265:134:50",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -510,7 +510,7 @@ export const Proxy = {
           },
           {
             "body": {
-              "id": 11159,
+              "id": 11178,
               "nodeType": "Block",
               "src": "433:616:50",
               "statements": [
@@ -521,7 +521,7 @@ export const Proxy = {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     },
-                    "id": 11145,
+                    "id": 11164,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -532,7 +532,7 @@ export const Proxy = {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       },
-                      "id": 11140,
+                      "id": 11159,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -543,18 +543,18 @@ export const Proxy = {
                           "argumentTypes": null,
                           "expression": {
                             "argumentTypes": null,
-                            "id": 11136,
+                            "id": 11155,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 19385,
+                            "referencedDeclaration": 19404,
                             "src": "447:3:50",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
                               "typeString": "msg"
                             }
                           },
-                          "id": 11137,
+                          "id": 11156,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -568,7 +568,7 @@ export const Proxy = {
                             "typeString": "bytes calldata"
                           }
                         },
-                        "id": 11138,
+                        "id": 11157,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -587,7 +587,7 @@ export const Proxy = {
                       "rightExpression": {
                         "argumentTypes": null,
                         "hexValue": "30",
-                        "id": 11139,
+                        "id": 11158,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -616,7 +616,7 @@ export const Proxy = {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       },
-                      "id": 11144,
+                      "id": 11163,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -625,18 +625,18 @@ export const Proxy = {
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 11141,
+                          "id": 11160,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 19385,
+                          "referencedDeclaration": 19404,
                           "src": "471:3:50",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 11142,
+                        "id": 11161,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -655,7 +655,7 @@ export const Proxy = {
                       "rightExpression": {
                         "argumentTypes": null,
                         "hexValue": "30",
-                        "id": 11143,
+                        "id": 11162,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -683,24 +683,24 @@ export const Proxy = {
                     }
                   },
                   "falseBody": {
-                    "id": 11157,
+                    "id": 11176,
                     "nodeType": "Block",
                     "src": "563:480:50",
                     "statements": [
                       {
                         "externalReferences": [],
-                        "id": 11156,
+                        "id": 11175,
                         "nodeType": "InlineAssembly",
                         "operations": "{\n    let target := sload(0)\n    calldatacopy(0, 0, calldatasize())\n    let result := delegatecall(gas(), target, 0, calldatasize(), 0, 0)\n    returndatacopy(0, 0, returndatasize())\n    switch result\n    case 0 { revert(0, returndatasize()) }\n    default { return(0, returndatasize()) }\n}",
                         "src": "645:388:50"
                       }
                     ]
                   },
-                  "id": 11158,
+                  "id": 11177,
                   "nodeType": "IfStatement",
                   "src": "443:600:50",
                   "trueBody": {
-                    "id": 11155,
+                    "id": 11174,
                     "nodeType": "Block",
                     "src": "486:71:50",
                     "statements": [
@@ -712,18 +712,18 @@ export const Proxy = {
                               "argumentTypes": null,
                               "expression": {
                                 "argumentTypes": null,
-                                "id": 11147,
+                                "id": 11166,
                                 "name": "msg",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 19385,
+                                "referencedDeclaration": 19404,
                                 "src": "514:3:50",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_magic_message",
                                   "typeString": "msg"
                                 }
                               },
-                              "id": 11148,
+                              "id": 11167,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": false,
@@ -741,18 +741,18 @@ export const Proxy = {
                               "argumentTypes": null,
                               "expression": {
                                 "argumentTypes": null,
-                                "id": 11149,
+                                "id": 11168,
                                 "name": "msg",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 19385,
+                                "referencedDeclaration": 19404,
                                 "src": "526:3:50",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_magic_message",
                                   "typeString": "msg"
                                 }
                               },
-                              "id": 11150,
+                              "id": 11169,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": false,
@@ -770,18 +770,18 @@ export const Proxy = {
                               "argumentTypes": null,
                               "expression": {
                                 "argumentTypes": null,
-                                "id": 11151,
+                                "id": 11170,
                                 "name": "msg",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 19385,
+                                "referencedDeclaration": 19404,
                                 "src": "536:3:50",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_magic_message",
                                   "typeString": "msg"
                                 }
                               },
-                              "id": 11152,
+                              "id": 11171,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": false,
@@ -811,18 +811,18 @@ export const Proxy = {
                                 "typeString": "uint256"
                               }
                             ],
-                            "id": 11146,
+                            "id": 11165,
                             "name": "Received",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 11114,
+                            "referencedDeclaration": 11133,
                             "src": "505:8:50",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_bytes_memory_ptr_$_t_uint256_$returns$__$",
                               "typeString": "function (address,bytes memory,uint256)"
                             }
                           },
-                          "id": 11153,
+                          "id": 11172,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -836,7 +836,7 @@ export const Proxy = {
                             "typeString": "tuple()"
                           }
                         },
-                        "id": 11154,
+                        "id": 11173,
                         "nodeType": "EmitStatement",
                         "src": "500:46:50"
                       }
@@ -846,32 +846,32 @@ export const Proxy = {
               ]
             },
             "documentation": null,
-            "id": 11160,
+            "id": 11179,
             "implemented": true,
             "kind": "fallback",
             "modifiers": [],
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11134,
+              "id": 11153,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "413:2:50"
             },
             "returnParameters": {
-              "id": 11135,
+              "id": 11154,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "433:0:50"
             },
-            "scope": 11161,
+            "scope": 11180,
             "src": "405:644:50",
             "stateMutability": "payable",
             "superFunction": null,
             "visibility": "external"
           }
         ],
-        "scope": 11162,
+        "scope": 11181,
         "src": "52:1000:50"
       }
     ],
@@ -881,14 +881,14 @@ export const Proxy = {
     "absolutePath": "/Users/kerman/immutable/gods-unchained-contracts/packages/contracts/contracts/wallet/Proxy.sol",
     "exportedSymbols": {
       "Proxy": [
-        11161
+        11180
       ]
     },
-    "id": 11162,
+    "id": 11181,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 11103,
+        "id": 11122,
         "literals": [
           "solidity",
           "^",
@@ -901,10 +901,10 @@ export const Proxy = {
       {
         "absolutePath": "/Users/kerman/immutable/gods-unchained-contracts/packages/contracts/contracts/wallet/ProxyData.sol",
         "file": "./ProxyData.sol",
-        "id": 11104,
+        "id": 11123,
         "nodeType": "ImportDirective",
-        "scope": 11162,
-        "sourceUnit": 11173,
+        "scope": 11181,
+        "sourceUnit": 11192,
         "src": "25:25:50",
         "symbolAliases": [],
         "unitAlias": ""
@@ -915,33 +915,33 @@ export const Proxy = {
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 11105,
+              "id": 11124,
               "name": "ProxyData",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 11172,
+              "referencedDeclaration": 11191,
               "src": "70:9:50",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ProxyData_$11172",
+                "typeIdentifier": "t_contract$_ProxyData_$11191",
                 "typeString": "contract ProxyData"
               }
             },
-            "id": 11106,
+            "id": 11125,
             "nodeType": "InheritanceSpecifier",
             "src": "70:9:50"
           }
         ],
         "contractDependencies": [
-          11172,
-          12166
+          11191,
+          12185
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 11161,
+        "id": 11180,
         "linearizedBaseContracts": [
-          11161,
-          11172,
-          12166
+          11180,
+          11191,
+          12185
         ],
         "name": "Proxy",
         "nodeType": "ContractDefinition",
@@ -949,20 +949,20 @@ export const Proxy = {
           {
             "anonymous": false,
             "documentation": null,
-            "id": 11114,
+            "id": 11133,
             "name": "Received",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 11113,
+              "id": 11132,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11108,
+                  "id": 11127,
                   "indexed": true,
                   "name": "from",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11114,
+                  "scope": 11133,
                   "src": "213:20:50",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -971,7 +971,7 @@ export const Proxy = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11107,
+                    "id": 11126,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "213:7:50",
@@ -986,11 +986,11 @@ export const Proxy = {
                 },
                 {
                   "constant": false,
-                  "id": 11110,
+                  "id": 11129,
                   "indexed": false,
                   "name": "data",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11114,
+                  "scope": 11133,
                   "src": "235:10:50",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -999,7 +999,7 @@ export const Proxy = {
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 11109,
+                    "id": 11128,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
                     "src": "235:5:50",
@@ -1013,11 +1013,11 @@ export const Proxy = {
                 },
                 {
                   "constant": false,
-                  "id": 11112,
+                  "id": 11131,
                   "indexed": false,
                   "name": "value",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11114,
+                  "scope": 11133,
                   "src": "247:10:50",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1026,7 +1026,7 @@ export const Proxy = {
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 11111,
+                    "id": 11130,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "247:4:50",
@@ -1045,7 +1045,7 @@ export const Proxy = {
           },
           {
             "body": {
-              "id": 11132,
+              "id": 11151,
               "nodeType": "Block",
               "src": "299:100:50",
               "statements": [
@@ -1059,18 +1059,18 @@ export const Proxy = {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
-                        "id": 11124,
+                        "id": 11143,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
                           "argumentTypes": null,
-                          "id": 11120,
+                          "id": 11139,
                           "name": "_impl",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11116,
+                          "referencedDeclaration": 11135,
                           "src": "317:5:50",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -1085,7 +1085,7 @@ export const Proxy = {
                             {
                               "argumentTypes": null,
                               "hexValue": "30",
-                              "id": 11122,
+                              "id": 11141,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -1108,7 +1108,7 @@ export const Proxy = {
                                 "typeString": "int_const 0"
                               }
                             ],
-                            "id": 11121,
+                            "id": 11140,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -1121,7 +1121,7 @@ export const Proxy = {
                             },
                             "typeName": "address"
                           },
-                          "id": 11123,
+                          "id": 11142,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -1144,7 +1144,7 @@ export const Proxy = {
                       {
                         "argumentTypes": null,
                         "hexValue": "6e756c6c20696d706c656d656e746174696f6e",
-                        "id": 11125,
+                        "id": 11144,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -1171,21 +1171,21 @@ export const Proxy = {
                           "typeString": "literal_string \"null implementation\""
                         }
                       ],
-                      "id": 11119,
+                      "id": 11138,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "309:7:50",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11126,
+                    "id": 11145,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1199,25 +1199,25 @@ export const Proxy = {
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11127,
+                  "id": 11146,
                   "nodeType": "ExpressionStatement",
                   "src": "309:51:50"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 11130,
+                    "id": 11149,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 11128,
+                      "id": 11147,
                       "name": "implementation",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11168,
+                      "referencedDeclaration": 11187,
                       "src": "370:14:50",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -1228,11 +1228,11 @@ export const Proxy = {
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 11129,
+                      "id": 11148,
                       "name": "_impl",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11116,
+                      "referencedDeclaration": 11135,
                       "src": "387:5:50",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -1245,29 +1245,29 @@ export const Proxy = {
                       "typeString": "address"
                     }
                   },
-                  "id": 11131,
+                  "id": 11150,
                   "nodeType": "ExpressionStatement",
                   "src": "370:22:50"
                 }
               ]
             },
             "documentation": null,
-            "id": 11133,
+            "id": 11152,
             "implemented": true,
             "kind": "constructor",
             "modifiers": [],
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11117,
+              "id": 11136,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11116,
+                  "id": 11135,
                   "name": "_impl",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11133,
+                  "scope": 11152,
                   "src": "277:13:50",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1276,7 +1276,7 @@ export const Proxy = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11115,
+                    "id": 11134,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "277:7:50",
@@ -1293,12 +1293,12 @@ export const Proxy = {
               "src": "276:15:50"
             },
             "returnParameters": {
-              "id": 11118,
+              "id": 11137,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "299:0:50"
             },
-            "scope": 11161,
+            "scope": 11180,
             "src": "265:134:50",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -1306,7 +1306,7 @@ export const Proxy = {
           },
           {
             "body": {
-              "id": 11159,
+              "id": 11178,
               "nodeType": "Block",
               "src": "433:616:50",
               "statements": [
@@ -1317,7 +1317,7 @@ export const Proxy = {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     },
-                    "id": 11145,
+                    "id": 11164,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1328,7 +1328,7 @@ export const Proxy = {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       },
-                      "id": 11140,
+                      "id": 11159,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1339,18 +1339,18 @@ export const Proxy = {
                           "argumentTypes": null,
                           "expression": {
                             "argumentTypes": null,
-                            "id": 11136,
+                            "id": 11155,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 19385,
+                            "referencedDeclaration": 19404,
                             "src": "447:3:50",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
                               "typeString": "msg"
                             }
                           },
-                          "id": 11137,
+                          "id": 11156,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1364,7 +1364,7 @@ export const Proxy = {
                             "typeString": "bytes calldata"
                           }
                         },
-                        "id": 11138,
+                        "id": 11157,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1383,7 +1383,7 @@ export const Proxy = {
                       "rightExpression": {
                         "argumentTypes": null,
                         "hexValue": "30",
-                        "id": 11139,
+                        "id": 11158,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -1412,7 +1412,7 @@ export const Proxy = {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       },
-                      "id": 11144,
+                      "id": 11163,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1421,18 +1421,18 @@ export const Proxy = {
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 11141,
+                          "id": 11160,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 19385,
+                          "referencedDeclaration": 19404,
                           "src": "471:3:50",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 11142,
+                        "id": 11161,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1451,7 +1451,7 @@ export const Proxy = {
                       "rightExpression": {
                         "argumentTypes": null,
                         "hexValue": "30",
-                        "id": 11143,
+                        "id": 11162,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -1479,24 +1479,24 @@ export const Proxy = {
                     }
                   },
                   "falseBody": {
-                    "id": 11157,
+                    "id": 11176,
                     "nodeType": "Block",
                     "src": "563:480:50",
                     "statements": [
                       {
                         "externalReferences": [],
-                        "id": 11156,
+                        "id": 11175,
                         "nodeType": "InlineAssembly",
                         "operations": "{\n    let target := sload(0)\n    calldatacopy(0, 0, calldatasize())\n    let result := delegatecall(gas(), target, 0, calldatasize(), 0, 0)\n    returndatacopy(0, 0, returndatasize())\n    switch result\n    case 0 { revert(0, returndatasize()) }\n    default { return(0, returndatasize()) }\n}",
                         "src": "645:388:50"
                       }
                     ]
                   },
-                  "id": 11158,
+                  "id": 11177,
                   "nodeType": "IfStatement",
                   "src": "443:600:50",
                   "trueBody": {
-                    "id": 11155,
+                    "id": 11174,
                     "nodeType": "Block",
                     "src": "486:71:50",
                     "statements": [
@@ -1508,18 +1508,18 @@ export const Proxy = {
                               "argumentTypes": null,
                               "expression": {
                                 "argumentTypes": null,
-                                "id": 11147,
+                                "id": 11166,
                                 "name": "msg",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 19385,
+                                "referencedDeclaration": 19404,
                                 "src": "514:3:50",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_magic_message",
                                   "typeString": "msg"
                                 }
                               },
-                              "id": 11148,
+                              "id": 11167,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": false,
@@ -1537,18 +1537,18 @@ export const Proxy = {
                               "argumentTypes": null,
                               "expression": {
                                 "argumentTypes": null,
-                                "id": 11149,
+                                "id": 11168,
                                 "name": "msg",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 19385,
+                                "referencedDeclaration": 19404,
                                 "src": "526:3:50",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_magic_message",
                                   "typeString": "msg"
                                 }
                               },
-                              "id": 11150,
+                              "id": 11169,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": false,
@@ -1566,18 +1566,18 @@ export const Proxy = {
                               "argumentTypes": null,
                               "expression": {
                                 "argumentTypes": null,
-                                "id": 11151,
+                                "id": 11170,
                                 "name": "msg",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 19385,
+                                "referencedDeclaration": 19404,
                                 "src": "536:3:50",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_magic_message",
                                   "typeString": "msg"
                                 }
                               },
-                              "id": 11152,
+                              "id": 11171,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": false,
@@ -1607,18 +1607,18 @@ export const Proxy = {
                                 "typeString": "uint256"
                               }
                             ],
-                            "id": 11146,
+                            "id": 11165,
                             "name": "Received",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 11114,
+                            "referencedDeclaration": 11133,
                             "src": "505:8:50",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_bytes_memory_ptr_$_t_uint256_$returns$__$",
                               "typeString": "function (address,bytes memory,uint256)"
                             }
                           },
-                          "id": 11153,
+                          "id": 11172,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1632,7 +1632,7 @@ export const Proxy = {
                             "typeString": "tuple()"
                           }
                         },
-                        "id": 11154,
+                        "id": 11173,
                         "nodeType": "EmitStatement",
                         "src": "500:46:50"
                       }
@@ -1642,32 +1642,32 @@ export const Proxy = {
               ]
             },
             "documentation": null,
-            "id": 11160,
+            "id": 11179,
             "implemented": true,
             "kind": "fallback",
             "modifiers": [],
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11134,
+              "id": 11153,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "413:2:50"
             },
             "returnParameters": {
-              "id": 11135,
+              "id": 11154,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "433:0:50"
             },
-            "scope": 11161,
+            "scope": 11180,
             "src": "405:644:50",
             "stateMutability": "payable",
             "superFunction": null,
             "visibility": "external"
           }
         ],
-        "scope": 11162,
+        "scope": 11181,
         "src": "52:1000:50"
       }
     ],
@@ -1679,7 +1679,7 @@ export const Proxy = {
   },
   "networks": {},
   "schemaVersion": "3.0.16",
-  "updatedAt": "2019-11-08T05:02:33.506Z",
+  "updatedAt": "2019-11-11T00:47:34.698Z",
   "devdoc": {
     "methods": {}
   },

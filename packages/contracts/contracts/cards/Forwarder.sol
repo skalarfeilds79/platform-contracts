@@ -51,11 +51,9 @@ contract Forwarder is LibOrder {
 
         IExchange v2Exchange = IExchange(ZERO_EX_EXCHANGE);
 
-        v2Exchange.batchFillOrdersNoThrow(
-            orders,
-            takerAssetFillAmounts,
-            signatures
-        );
+        for (uint i = 0; i < orders.length; i++) {
+            v2Exchange.fillOrKillOrder(orders[i], takerAssetFillAmounts[i], signatures[i]);
+        }
 
         for (uint i = 0; i < tokenIDs.length; i++) {
             address(CARDS_TOKEN).call(

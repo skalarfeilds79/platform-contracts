@@ -1725,7 +1725,7 @@ export const Cards = {
         "id": 2,
         "nodeType": "ImportDirective",
         "scope": 1147,
-        "sourceUnit": 17359,
+        "sourceUnit": 17378,
         "src": "72:55:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1736,7 +1736,7 @@ export const Cards = {
         "id": 3,
         "nodeType": "ImportDirective",
         "scope": 1147,
-        "sourceUnit": 17245,
+        "sourceUnit": 17264,
         "src": "128:51:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1747,7 +1747,7 @@ export const Cards = {
         "id": 4,
         "nodeType": "ImportDirective",
         "scope": 1147,
-        "sourceUnit": 10330,
+        "sourceUnit": 10349,
         "src": "180:35:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1758,7 +1758,7 @@ export const Cards = {
         "id": 5,
         "nodeType": "ImportDirective",
         "scope": 1147,
-        "sourceUnit": 10030,
+        "sourceUnit": 10049,
         "src": "216:32:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1769,7 +1769,7 @@ export const Cards = {
         "id": 6,
         "nodeType": "ImportDirective",
         "scope": 1147,
-        "sourceUnit": 10063,
+        "sourceUnit": 10082,
         "src": "249:36:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1780,7 +1780,7 @@ export const Cards = {
         "id": 7,
         "nodeType": "ImportDirective",
         "scope": 1147,
-        "sourceUnit": 10200,
+        "sourceUnit": 10219,
         "src": "286:38:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1791,7 +1791,7 @@ export const Cards = {
         "id": 8,
         "nodeType": "ImportDirective",
         "scope": 1147,
-        "sourceUnit": 1360,
+        "sourceUnit": 1379,
         "src": "326:22:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1802,7 +1802,7 @@ export const Cards = {
         "id": 9,
         "nodeType": "ImportDirective",
         "scope": 1147,
-        "sourceUnit": 10785,
+        "sourceUnit": 10804,
         "src": "349:33:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1816,10 +1816,10 @@ export const Cards = {
               "id": 10,
               "name": "Ownable",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 17358,
+              "referencedDeclaration": 17377,
               "src": "402:7:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Ownable_$17358",
+                "typeIdentifier": "t_contract$_Ownable_$17377",
                 "typeString": "contract Ownable"
               }
             },
@@ -1834,10 +1834,10 @@ export const Cards = {
               "id": 12,
               "name": "MultiTransfer",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 10329,
+              "referencedDeclaration": 10348,
               "src": "411:13:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_MultiTransfer_$10329",
+                "typeIdentifier": "t_contract$_MultiTransfer_$10348",
                 "typeString": "contract MultiTransfer"
               }
             },
@@ -1852,10 +1852,10 @@ export const Cards = {
               "id": 14,
               "name": "BatchToken",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 10029,
+              "referencedDeclaration": 10048,
               "src": "426:10:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_BatchToken_$10029",
+                "typeIdentifier": "t_contract$_BatchToken_$10048",
                 "typeString": "contract BatchToken"
               }
             },
@@ -1870,10 +1870,10 @@ export const Cards = {
               "id": 16,
               "name": "ImmutableToken",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 10062,
+              "referencedDeclaration": 10081,
               "src": "438:14:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ImmutableToken_$10062",
+                "typeIdentifier": "t_contract$_ImmutableToken_$10081",
                 "typeString": "contract ImmutableToken"
               }
             },
@@ -1888,10 +1888,10 @@ export const Cards = {
               "id": 18,
               "name": "InscribableToken",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 10199,
+              "referencedDeclaration": 10218,
               "src": "454:16:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_InscribableToken_$10199",
+                "typeIdentifier": "t_contract$_InscribableToken_$10218",
                 "typeString": "contract InscribableToken"
               }
             },
@@ -1901,18 +1901,18 @@ export const Cards = {
           }
         ],
         "contractDependencies": [
-          10029,
-          10062,
-          10199,
-          10329,
-          16758,
-          17047,
-          17057,
-          17358,
-          18561,
-          19057,
-          19229,
-          19279
+          10048,
+          10081,
+          10218,
+          10348,
+          16777,
+          17066,
+          17076,
+          17377,
+          18580,
+          19076,
+          19248,
+          19298
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -1920,18 +1920,18 @@ export const Cards = {
         "id": 1146,
         "linearizedBaseContracts": [
           1146,
-          10199,
-          10062,
-          10029,
-          19057,
-          19279,
-          18561,
-          10329,
-          19229,
-          17047,
-          17057,
-          17358,
-          16758
+          10218,
+          10081,
+          10048,
+          19076,
+          19298,
+          18580,
+          10348,
+          19248,
+          17066,
+          17076,
+          17377,
+          16777
         ],
         "name": "Cards",
         "nodeType": "ContractDefinition",
@@ -3335,7 +3335,7 @@ export const Cards = {
                       "name": "MAX_LENGTH",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 9487,
+                      "referencedDeclaration": 9506,
                       "src": "2372:10:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -3397,7 +3397,7 @@ export const Cards = {
                       "name": "MAX_LENGTH",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 9487,
+                      "referencedDeclaration": 9506,
                       "src": "2415:10:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -3459,7 +3459,7 @@ export const Cards = {
                       "name": "MAX_LENGTH",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 9487,
+                      "referencedDeclaration": 9506,
                       "src": "2458:10:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -3521,7 +3521,7 @@ export const Cards = {
                       "name": "MAX_LENGTH",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 9487,
+                      "referencedDeclaration": 9506,
                       "src": "2494:10:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -3569,7 +3569,7 @@ export const Cards = {
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 19385,
+                        "referencedDeclaration": 19404,
                         "src": "2532:3:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
@@ -3656,10 +3656,10 @@ export const Cards = {
                   "name": "BatchToken",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 10029,
+                  "referencedDeclaration": 10048,
                   "src": "2299:10:0",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_BatchToken_$10029_$",
+                    "typeIdentifier": "t_type$_t_contract$_BatchToken_$10048_$",
                     "typeString": "type(contract BatchToken)"
                   }
                 },
@@ -4061,7 +4061,7 @@ export const Cards = {
                         "name": "_batchMint",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 9676,
+                        "referencedDeclaration": 9695,
                         "src": "2912:10:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_uint16_$returns$_t_uint256_$",
@@ -5058,10 +5058,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "3420:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -5201,10 +5201,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "3521:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -5361,7 +5361,7 @@ export const Cards = {
                       "name": "_batchMint",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 9676,
+                      "referencedDeclaration": 9695,
                       "src": "3679:10:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_uint16_$returns$_t_uint256_$",
@@ -5856,10 +5856,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "3997:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -5972,10 +5972,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "4103:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -6121,10 +6121,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "4198:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -6243,10 +6243,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "4329:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -6392,7 +6392,7 @@ export const Cards = {
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 17291,
+                  "referencedDeclaration": 17310,
                   "src": "3973:9:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -6566,10 +6566,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "4627:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -6715,10 +6715,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "4724:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -6864,7 +6864,7 @@ export const Cards = {
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 17291,
+                  "referencedDeclaration": 17310,
                   "src": "4603:9:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -7038,10 +7038,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "5028:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -7160,10 +7160,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "5131:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -7282,7 +7282,7 @@ export const Cards = {
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 17291,
+                  "referencedDeclaration": 17310,
                   "src": "5004:9:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -7514,10 +7514,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "5391:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -7636,10 +7636,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "5519:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -7758,7 +7758,7 @@ export const Cards = {
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 17291,
+                  "referencedDeclaration": 17310,
                   "src": "5367:9:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -7909,10 +7909,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "5801:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -8002,7 +8002,7 @@ export const Cards = {
                         "name": "super",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 19438,
+                        "referencedDeclaration": 19457,
                         "src": "5900:5:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_super$_Cards_$1146",
@@ -8016,7 +8016,7 @@ export const Cards = {
                       "lValueRequested": false,
                       "memberName": "transferFrom",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 9846,
+                      "referencedDeclaration": 9865,
                       "src": "5900:18:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_address_$_t_uint256_$returns$__$",
@@ -8146,7 +8146,7 @@ export const Cards = {
             "scope": 1146,
             "src": "5677:267:0",
             "stateMutability": "nonpayable",
-            "superFunction": 9846,
+            "superFunction": 9865,
             "visibility": "public"
           },
           {
@@ -8242,10 +8242,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "5999:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -8301,7 +8301,7 @@ export const Cards = {
                         "name": "super",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 19438,
+                        "referencedDeclaration": 19457,
                         "src": "6099:5:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_super$_Cards_$1146",
@@ -8315,7 +8315,7 @@ export const Cards = {
                       "lValueRequested": false,
                       "memberName": "burn",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 9903,
+                      "referencedDeclaration": 9922,
                       "src": "6099:10:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_uint256_$returns$__$",
@@ -8391,7 +8391,7 @@ export const Cards = {
             "scope": 1146,
             "src": "5950:176:0",
             "stateMutability": "nonpayable",
-            "superFunction": 9903,
+            "superFunction": 9922,
             "visibility": "public"
           },
           {
@@ -9142,10 +9142,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "6728:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -9253,10 +9253,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "6821:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -9545,10 +9545,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "6916:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -9656,10 +9656,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "7063:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -10110,10 +10110,10 @@ export const Cards = {
                         "name": "StorageWrite",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10784,
+                        "referencedDeclaration": 10803,
                         "src": "7354:12:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_StorageWrite_$10784_$",
+                          "typeIdentifier": "t_type$_t_contract$_StorageWrite_$10803_$",
                           "typeString": "type(library StorageWrite)"
                         }
                       },
@@ -10124,7 +10124,7 @@ export const Cards = {
                       "lValueRequested": false,
                       "memberName": "repeatUint16",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 10677,
+                      "referencedDeclaration": 10696,
                       "src": "7354:25:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_uint256_$_t_uint256_$_t_uint256_$_t_uint16_$returns$__$",
@@ -10289,7 +10289,7 @@ export const Cards = {
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 17291,
+                  "referencedDeclaration": 17310,
                   "src": "6681:9:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -10602,10 +10602,10 @@ export const Cards = {
                             "name": "require",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [
-                              19388,
-                              19389
+                              19407,
+                              19408
                             ],
-                            "referencedDeclaration": 19389,
+                            "referencedDeclaration": 19408,
                             "src": "7896:7:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -10791,10 +10791,10 @@ export const Cards = {
                             "name": "require",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [
-                              19388,
-                              19389
+                              19407,
+                              19408
                             ],
-                            "referencedDeclaration": 19389,
+                            "referencedDeclaration": 19408,
                             "src": "8049:7:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -11498,7 +11498,7 @@ export const Cards = {
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 17291,
+                  "referencedDeclaration": 17310,
                   "src": "7786:9:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -11928,10 +11928,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "8631:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -12126,10 +12126,10 @@ export const Cards = {
                             "name": "require",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [
-                              19388,
-                              19389
+                              19407,
+                              19408
                             ],
-                            "referencedDeclaration": 19389,
+                            "referencedDeclaration": 19408,
                             "src": "8807:7:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -12315,10 +12315,10 @@ export const Cards = {
                             "name": "require",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [
-                              19388,
-                              19389
+                              19407,
+                              19408
                             ],
-                            "referencedDeclaration": 19389,
+                            "referencedDeclaration": 19408,
                             "src": "8956:7:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -12410,10 +12410,10 @@ export const Cards = {
                             "name": "require",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [
-                              19388,
-                              19389
+                              19407,
+                              19408
                             ],
-                            "referencedDeclaration": 19389,
+                            "referencedDeclaration": 19408,
                             "src": "9058:7:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -12730,7 +12730,7 @@ export const Cards = {
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 17291,
+                  "referencedDeclaration": 17310,
                   "src": "8611:9:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -12986,10 +12986,10 @@ export const Cards = {
                         "name": "StorageWrite",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10784,
+                        "referencedDeclaration": 10803,
                         "src": "9496:12:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_StorageWrite_$10784_$",
+                          "typeIdentifier": "t_type$_t_contract$_StorageWrite_$10803_$",
                           "typeString": "type(library StorageWrite)"
                         }
                       },
@@ -13000,7 +13000,7 @@ export const Cards = {
                       "lValueRequested": false,
                       "memberName": "uint16s",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 10730,
+                      "referencedDeclaration": 10749,
                       "src": "9496:20:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_uint256_$_t_uint256_$_t_array$_t_uint16_$dyn_memory_ptr_$returns$__$",
@@ -13153,10 +13153,10 @@ export const Cards = {
                         "name": "StorageWrite",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10784,
+                        "referencedDeclaration": 10803,
                         "src": "9612:12:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_StorageWrite_$10784_$",
+                          "typeIdentifier": "t_type$_t_contract$_StorageWrite_$10803_$",
                           "typeString": "type(library StorageWrite)"
                         }
                       },
@@ -13167,7 +13167,7 @@ export const Cards = {
                       "lValueRequested": false,
                       "memberName": "uint8s",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 10783,
+                      "referencedDeclaration": 10802,
                       "src": "9612:19:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_uint256_$_t_uint256_$_t_array$_t_uint8_$dyn_memory_ptr_$returns$__$",
@@ -13539,10 +13539,10 @@ export const Cards = {
                             "name": "require",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [
-                              19388,
-                              19389
+                              19407,
+                              19408
                             ],
-                            "referencedDeclaration": 19389,
+                            "referencedDeclaration": 19408,
                             "src": "9881:7:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -13597,7 +13597,7 @@ export const Cards = {
                                     "name": "msg",
                                     "nodeType": "Identifier",
                                     "overloadedDeclarations": [],
-                                    "referencedDeclaration": 19385,
+                                    "referencedDeclaration": 19404,
                                     "src": "10033:3:0",
                                     "typeDescriptions": {
                                       "typeIdentifier": "t_magic_message",
@@ -13688,10 +13688,10 @@ export const Cards = {
                             "name": "require",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [
-                              19388,
-                              19389
+                              19407,
+                              19408
                             ],
-                            "referencedDeclaration": 19389,
+                            "referencedDeclaration": 19408,
                             "src": "9992:7:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -14733,10 +14733,10 @@ export const Cards = {
                             "name": "require",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [
-                              19388,
-                              19389
+                              19407,
+                              19408
                             ],
-                            "referencedDeclaration": 19389,
+                            "referencedDeclaration": 19408,
                             "src": "10851:7:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -14871,10 +14871,10 @@ export const Cards = {
                             "name": "require",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [
-                              19388,
-                              19389
+                              19407,
+                              19408
                             ],
-                            "referencedDeclaration": 19389,
+                            "referencedDeclaration": 19408,
                             "src": "10962:7:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -14929,7 +14929,7 @@ export const Cards = {
                                     "name": "msg",
                                     "nodeType": "Identifier",
                                     "overloadedDeclarations": [],
-                                    "referencedDeclaration": 19385,
+                                    "referencedDeclaration": 19404,
                                     "src": "11158:3:0",
                                     "typeDescriptions": {
                                       "typeIdentifier": "t_magic_message",
@@ -15020,10 +15020,10 @@ export const Cards = {
                             "name": "require",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [
-                              19388,
-                              19389
+                              19407,
+                              19408
                             ],
-                            "referencedDeclaration": 19389,
+                            "referencedDeclaration": 19408,
                             "src": "11117:7:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -15176,7 +15176,7 @@ export const Cards = {
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 19385,
+                            "referencedDeclaration": 19404,
                             "src": "11388:3:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
@@ -15242,10 +15242,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "11345:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -15364,10 +15364,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "11476:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -15712,7 +15712,7 @@ export const Cards = {
                               "name": "msg",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 19385,
+                              "referencedDeclaration": 19404,
                               "src": "11916:3:0",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_magic_message",
@@ -15803,10 +15803,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "11879:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -15942,7 +15942,7 @@ export const Cards = {
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 19385,
+                          "referencedDeclaration": 19404,
                           "src": "12105:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -16156,7 +16156,7 @@ export const Cards = {
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 17291,
+                  "referencedDeclaration": 17310,
                   "src": "12182:9:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -16244,7 +16244,7 @@ export const Cards = {
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 19385,
+                            "referencedDeclaration": 19404,
                             "src": "12343:3:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
@@ -16320,10 +16320,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "12322:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -16411,7 +16411,7 @@ export const Cards = {
                       "name": "_setProperty",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10107,
+                      "referencedDeclaration": 10126,
                       "src": "12439:12:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_uint256_$_t_bytes32_$_t_bytes32_$returns$__$",
@@ -16571,7 +16571,7 @@ export const Cards = {
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 19385,
+                            "referencedDeclaration": 19404,
                             "src": "12577:3:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
@@ -16647,10 +16647,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "12556:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -16721,7 +16721,7 @@ export const Cards = {
                       "name": "_setClassProperty",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10145,
+                      "referencedDeclaration": 10164,
                       "src": "12673:17:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_bytes32_$_t_bytes32_$returns$__$",
@@ -16859,7 +16859,7 @@ export const Cards = {
         "id": 2,
         "nodeType": "ImportDirective",
         "scope": 1147,
-        "sourceUnit": 17359,
+        "sourceUnit": 17378,
         "src": "72:55:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -16870,7 +16870,7 @@ export const Cards = {
         "id": 3,
         "nodeType": "ImportDirective",
         "scope": 1147,
-        "sourceUnit": 17245,
+        "sourceUnit": 17264,
         "src": "128:51:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -16881,7 +16881,7 @@ export const Cards = {
         "id": 4,
         "nodeType": "ImportDirective",
         "scope": 1147,
-        "sourceUnit": 10330,
+        "sourceUnit": 10349,
         "src": "180:35:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -16892,7 +16892,7 @@ export const Cards = {
         "id": 5,
         "nodeType": "ImportDirective",
         "scope": 1147,
-        "sourceUnit": 10030,
+        "sourceUnit": 10049,
         "src": "216:32:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -16903,7 +16903,7 @@ export const Cards = {
         "id": 6,
         "nodeType": "ImportDirective",
         "scope": 1147,
-        "sourceUnit": 10063,
+        "sourceUnit": 10082,
         "src": "249:36:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -16914,7 +16914,7 @@ export const Cards = {
         "id": 7,
         "nodeType": "ImportDirective",
         "scope": 1147,
-        "sourceUnit": 10200,
+        "sourceUnit": 10219,
         "src": "286:38:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -16925,7 +16925,7 @@ export const Cards = {
         "id": 8,
         "nodeType": "ImportDirective",
         "scope": 1147,
-        "sourceUnit": 1360,
+        "sourceUnit": 1379,
         "src": "326:22:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -16936,7 +16936,7 @@ export const Cards = {
         "id": 9,
         "nodeType": "ImportDirective",
         "scope": 1147,
-        "sourceUnit": 10785,
+        "sourceUnit": 10804,
         "src": "349:33:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -16950,10 +16950,10 @@ export const Cards = {
               "id": 10,
               "name": "Ownable",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 17358,
+              "referencedDeclaration": 17377,
               "src": "402:7:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Ownable_$17358",
+                "typeIdentifier": "t_contract$_Ownable_$17377",
                 "typeString": "contract Ownable"
               }
             },
@@ -16968,10 +16968,10 @@ export const Cards = {
               "id": 12,
               "name": "MultiTransfer",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 10329,
+              "referencedDeclaration": 10348,
               "src": "411:13:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_MultiTransfer_$10329",
+                "typeIdentifier": "t_contract$_MultiTransfer_$10348",
                 "typeString": "contract MultiTransfer"
               }
             },
@@ -16986,10 +16986,10 @@ export const Cards = {
               "id": 14,
               "name": "BatchToken",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 10029,
+              "referencedDeclaration": 10048,
               "src": "426:10:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_BatchToken_$10029",
+                "typeIdentifier": "t_contract$_BatchToken_$10048",
                 "typeString": "contract BatchToken"
               }
             },
@@ -17004,10 +17004,10 @@ export const Cards = {
               "id": 16,
               "name": "ImmutableToken",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 10062,
+              "referencedDeclaration": 10081,
               "src": "438:14:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ImmutableToken_$10062",
+                "typeIdentifier": "t_contract$_ImmutableToken_$10081",
                 "typeString": "contract ImmutableToken"
               }
             },
@@ -17022,10 +17022,10 @@ export const Cards = {
               "id": 18,
               "name": "InscribableToken",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 10199,
+              "referencedDeclaration": 10218,
               "src": "454:16:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_InscribableToken_$10199",
+                "typeIdentifier": "t_contract$_InscribableToken_$10218",
                 "typeString": "contract InscribableToken"
               }
             },
@@ -17035,18 +17035,18 @@ export const Cards = {
           }
         ],
         "contractDependencies": [
-          10029,
-          10062,
-          10199,
-          10329,
-          16758,
-          17047,
-          17057,
-          17358,
-          18561,
-          19057,
-          19229,
-          19279
+          10048,
+          10081,
+          10218,
+          10348,
+          16777,
+          17066,
+          17076,
+          17377,
+          18580,
+          19076,
+          19248,
+          19298
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -17054,18 +17054,18 @@ export const Cards = {
         "id": 1146,
         "linearizedBaseContracts": [
           1146,
-          10199,
-          10062,
-          10029,
-          19057,
-          19279,
-          18561,
-          10329,
-          19229,
-          17047,
-          17057,
-          17358,
-          16758
+          10218,
+          10081,
+          10048,
+          19076,
+          19298,
+          18580,
+          10348,
+          19248,
+          17066,
+          17076,
+          17377,
+          16777
         ],
         "name": "Cards",
         "nodeType": "ContractDefinition",
@@ -18469,7 +18469,7 @@ export const Cards = {
                       "name": "MAX_LENGTH",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 9487,
+                      "referencedDeclaration": 9506,
                       "src": "2372:10:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -18531,7 +18531,7 @@ export const Cards = {
                       "name": "MAX_LENGTH",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 9487,
+                      "referencedDeclaration": 9506,
                       "src": "2415:10:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -18593,7 +18593,7 @@ export const Cards = {
                       "name": "MAX_LENGTH",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 9487,
+                      "referencedDeclaration": 9506,
                       "src": "2458:10:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -18655,7 +18655,7 @@ export const Cards = {
                       "name": "MAX_LENGTH",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 9487,
+                      "referencedDeclaration": 9506,
                       "src": "2494:10:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -18703,7 +18703,7 @@ export const Cards = {
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 19385,
+                        "referencedDeclaration": 19404,
                         "src": "2532:3:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
@@ -18790,10 +18790,10 @@ export const Cards = {
                   "name": "BatchToken",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 10029,
+                  "referencedDeclaration": 10048,
                   "src": "2299:10:0",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_BatchToken_$10029_$",
+                    "typeIdentifier": "t_type$_t_contract$_BatchToken_$10048_$",
                     "typeString": "type(contract BatchToken)"
                   }
                 },
@@ -19195,7 +19195,7 @@ export const Cards = {
                         "name": "_batchMint",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 9676,
+                        "referencedDeclaration": 9695,
                         "src": "2912:10:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_uint16_$returns$_t_uint256_$",
@@ -20192,10 +20192,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "3420:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -20335,10 +20335,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "3521:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -20495,7 +20495,7 @@ export const Cards = {
                       "name": "_batchMint",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 9676,
+                      "referencedDeclaration": 9695,
                       "src": "3679:10:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_uint16_$returns$_t_uint256_$",
@@ -20990,10 +20990,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "3997:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -21106,10 +21106,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "4103:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -21255,10 +21255,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "4198:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -21377,10 +21377,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "4329:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -21526,7 +21526,7 @@ export const Cards = {
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 17291,
+                  "referencedDeclaration": 17310,
                   "src": "3973:9:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -21700,10 +21700,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "4627:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -21849,10 +21849,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "4724:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -21998,7 +21998,7 @@ export const Cards = {
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 17291,
+                  "referencedDeclaration": 17310,
                   "src": "4603:9:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -22172,10 +22172,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "5028:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -22294,10 +22294,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "5131:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -22416,7 +22416,7 @@ export const Cards = {
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 17291,
+                  "referencedDeclaration": 17310,
                   "src": "5004:9:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -22648,10 +22648,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "5391:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -22770,10 +22770,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "5519:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -22892,7 +22892,7 @@ export const Cards = {
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 17291,
+                  "referencedDeclaration": 17310,
                   "src": "5367:9:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -23043,10 +23043,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "5801:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -23136,7 +23136,7 @@ export const Cards = {
                         "name": "super",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 19438,
+                        "referencedDeclaration": 19457,
                         "src": "5900:5:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_super$_Cards_$1146",
@@ -23150,7 +23150,7 @@ export const Cards = {
                       "lValueRequested": false,
                       "memberName": "transferFrom",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 9846,
+                      "referencedDeclaration": 9865,
                       "src": "5900:18:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_address_$_t_uint256_$returns$__$",
@@ -23280,7 +23280,7 @@ export const Cards = {
             "scope": 1146,
             "src": "5677:267:0",
             "stateMutability": "nonpayable",
-            "superFunction": 9846,
+            "superFunction": 9865,
             "visibility": "public"
           },
           {
@@ -23376,10 +23376,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "5999:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -23435,7 +23435,7 @@ export const Cards = {
                         "name": "super",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 19438,
+                        "referencedDeclaration": 19457,
                         "src": "6099:5:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_super$_Cards_$1146",
@@ -23449,7 +23449,7 @@ export const Cards = {
                       "lValueRequested": false,
                       "memberName": "burn",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 9903,
+                      "referencedDeclaration": 9922,
                       "src": "6099:10:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_uint256_$returns$__$",
@@ -23525,7 +23525,7 @@ export const Cards = {
             "scope": 1146,
             "src": "5950:176:0",
             "stateMutability": "nonpayable",
-            "superFunction": 9903,
+            "superFunction": 9922,
             "visibility": "public"
           },
           {
@@ -24276,10 +24276,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "6728:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -24387,10 +24387,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "6821:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -24679,10 +24679,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "6916:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -24790,10 +24790,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "7063:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -25244,10 +25244,10 @@ export const Cards = {
                         "name": "StorageWrite",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10784,
+                        "referencedDeclaration": 10803,
                         "src": "7354:12:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_StorageWrite_$10784_$",
+                          "typeIdentifier": "t_type$_t_contract$_StorageWrite_$10803_$",
                           "typeString": "type(library StorageWrite)"
                         }
                       },
@@ -25258,7 +25258,7 @@ export const Cards = {
                       "lValueRequested": false,
                       "memberName": "repeatUint16",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 10677,
+                      "referencedDeclaration": 10696,
                       "src": "7354:25:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_uint256_$_t_uint256_$_t_uint256_$_t_uint16_$returns$__$",
@@ -25423,7 +25423,7 @@ export const Cards = {
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 17291,
+                  "referencedDeclaration": 17310,
                   "src": "6681:9:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -25736,10 +25736,10 @@ export const Cards = {
                             "name": "require",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [
-                              19388,
-                              19389
+                              19407,
+                              19408
                             ],
-                            "referencedDeclaration": 19389,
+                            "referencedDeclaration": 19408,
                             "src": "7896:7:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -25925,10 +25925,10 @@ export const Cards = {
                             "name": "require",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [
-                              19388,
-                              19389
+                              19407,
+                              19408
                             ],
-                            "referencedDeclaration": 19389,
+                            "referencedDeclaration": 19408,
                             "src": "8049:7:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -26632,7 +26632,7 @@ export const Cards = {
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 17291,
+                  "referencedDeclaration": 17310,
                   "src": "7786:9:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -27062,10 +27062,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "8631:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -27260,10 +27260,10 @@ export const Cards = {
                             "name": "require",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [
-                              19388,
-                              19389
+                              19407,
+                              19408
                             ],
-                            "referencedDeclaration": 19389,
+                            "referencedDeclaration": 19408,
                             "src": "8807:7:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -27449,10 +27449,10 @@ export const Cards = {
                             "name": "require",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [
-                              19388,
-                              19389
+                              19407,
+                              19408
                             ],
-                            "referencedDeclaration": 19389,
+                            "referencedDeclaration": 19408,
                             "src": "8956:7:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -27544,10 +27544,10 @@ export const Cards = {
                             "name": "require",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [
-                              19388,
-                              19389
+                              19407,
+                              19408
                             ],
-                            "referencedDeclaration": 19389,
+                            "referencedDeclaration": 19408,
                             "src": "9058:7:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -27864,7 +27864,7 @@ export const Cards = {
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 17291,
+                  "referencedDeclaration": 17310,
                   "src": "8611:9:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -28120,10 +28120,10 @@ export const Cards = {
                         "name": "StorageWrite",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10784,
+                        "referencedDeclaration": 10803,
                         "src": "9496:12:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_StorageWrite_$10784_$",
+                          "typeIdentifier": "t_type$_t_contract$_StorageWrite_$10803_$",
                           "typeString": "type(library StorageWrite)"
                         }
                       },
@@ -28134,7 +28134,7 @@ export const Cards = {
                       "lValueRequested": false,
                       "memberName": "uint16s",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 10730,
+                      "referencedDeclaration": 10749,
                       "src": "9496:20:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_uint256_$_t_uint256_$_t_array$_t_uint16_$dyn_memory_ptr_$returns$__$",
@@ -28287,10 +28287,10 @@ export const Cards = {
                         "name": "StorageWrite",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10784,
+                        "referencedDeclaration": 10803,
                         "src": "9612:12:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_StorageWrite_$10784_$",
+                          "typeIdentifier": "t_type$_t_contract$_StorageWrite_$10803_$",
                           "typeString": "type(library StorageWrite)"
                         }
                       },
@@ -28301,7 +28301,7 @@ export const Cards = {
                       "lValueRequested": false,
                       "memberName": "uint8s",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 10783,
+                      "referencedDeclaration": 10802,
                       "src": "9612:19:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_uint256_$_t_uint256_$_t_array$_t_uint8_$dyn_memory_ptr_$returns$__$",
@@ -28673,10 +28673,10 @@ export const Cards = {
                             "name": "require",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [
-                              19388,
-                              19389
+                              19407,
+                              19408
                             ],
-                            "referencedDeclaration": 19389,
+                            "referencedDeclaration": 19408,
                             "src": "9881:7:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -28731,7 +28731,7 @@ export const Cards = {
                                     "name": "msg",
                                     "nodeType": "Identifier",
                                     "overloadedDeclarations": [],
-                                    "referencedDeclaration": 19385,
+                                    "referencedDeclaration": 19404,
                                     "src": "10033:3:0",
                                     "typeDescriptions": {
                                       "typeIdentifier": "t_magic_message",
@@ -28822,10 +28822,10 @@ export const Cards = {
                             "name": "require",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [
-                              19388,
-                              19389
+                              19407,
+                              19408
                             ],
-                            "referencedDeclaration": 19389,
+                            "referencedDeclaration": 19408,
                             "src": "9992:7:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -29867,10 +29867,10 @@ export const Cards = {
                             "name": "require",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [
-                              19388,
-                              19389
+                              19407,
+                              19408
                             ],
-                            "referencedDeclaration": 19389,
+                            "referencedDeclaration": 19408,
                             "src": "10851:7:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -30005,10 +30005,10 @@ export const Cards = {
                             "name": "require",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [
-                              19388,
-                              19389
+                              19407,
+                              19408
                             ],
-                            "referencedDeclaration": 19389,
+                            "referencedDeclaration": 19408,
                             "src": "10962:7:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -30063,7 +30063,7 @@ export const Cards = {
                                     "name": "msg",
                                     "nodeType": "Identifier",
                                     "overloadedDeclarations": [],
-                                    "referencedDeclaration": 19385,
+                                    "referencedDeclaration": 19404,
                                     "src": "11158:3:0",
                                     "typeDescriptions": {
                                       "typeIdentifier": "t_magic_message",
@@ -30154,10 +30154,10 @@ export const Cards = {
                             "name": "require",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [
-                              19388,
-                              19389
+                              19407,
+                              19408
                             ],
-                            "referencedDeclaration": 19389,
+                            "referencedDeclaration": 19408,
                             "src": "11117:7:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -30310,7 +30310,7 @@ export const Cards = {
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 19385,
+                            "referencedDeclaration": 19404,
                             "src": "11388:3:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
@@ -30376,10 +30376,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "11345:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -30498,10 +30498,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "11476:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -30846,7 +30846,7 @@ export const Cards = {
                               "name": "msg",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 19385,
+                              "referencedDeclaration": 19404,
                               "src": "11916:3:0",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_magic_message",
@@ -30937,10 +30937,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "11879:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -31076,7 +31076,7 @@ export const Cards = {
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 19385,
+                          "referencedDeclaration": 19404,
                           "src": "12105:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -31290,7 +31290,7 @@ export const Cards = {
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 17291,
+                  "referencedDeclaration": 17310,
                   "src": "12182:9:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -31378,7 +31378,7 @@ export const Cards = {
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 19385,
+                            "referencedDeclaration": 19404,
                             "src": "12343:3:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
@@ -31454,10 +31454,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "12322:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -31545,7 +31545,7 @@ export const Cards = {
                       "name": "_setProperty",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10107,
+                      "referencedDeclaration": 10126,
                       "src": "12439:12:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_uint256_$_t_bytes32_$_t_bytes32_$returns$__$",
@@ -31705,7 +31705,7 @@ export const Cards = {
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 19385,
+                            "referencedDeclaration": 19404,
                             "src": "12577:3:0",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
@@ -31781,10 +31781,10 @@ export const Cards = {
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "12556:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -31855,7 +31855,7 @@ export const Cards = {
                       "name": "_setClassProperty",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10145,
+                      "referencedDeclaration": 10164,
                       "src": "12673:17:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_bytes32_$_t_bytes32_$returns$__$",
@@ -31973,7 +31973,7 @@ export const Cards = {
   },
   "networks": {},
   "schemaVersion": "3.0.16",
-  "updatedAt": "2019-11-08T05:02:33.377Z",
+  "updatedAt": "2019-11-11T00:47:34.529Z",
   "devdoc": {
     "methods": {
       "isApprovedForAll(address,address)": {

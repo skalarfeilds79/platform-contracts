@@ -65,14 +65,14 @@
     "absolutePath": "/Users/kerman/immutable/gods-unchained-contracts/packages/contracts/contracts/cards/factories/OpenMinter.sol",
     "exportedSymbols": {
       "OpenMinter": [
-        1683
+        1702
       ]
     },
-    "id": 1684,
+    "id": 1703,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 1649,
+        "id": 1668,
         "literals": [
           "solidity",
           "0.5",
@@ -84,10 +84,10 @@
       {
         "absolutePath": "/Users/kerman/immutable/gods-unchained-contracts/packages/contracts/contracts/cards/ICards.sol",
         "file": "../ICards.sol",
-        "id": 1650,
+        "id": 1669,
         "nodeType": "ImportDirective",
-        "scope": 1684,
-        "sourceUnit": 1360,
+        "scope": 1703,
+        "sourceUnit": 1379,
         "src": "25:23:6",
         "symbolAliases": [],
         "unitAlias": ""
@@ -98,35 +98,35 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 1683,
+        "id": 1702,
         "linearizedBaseContracts": [
-          1683
+          1702
         ],
         "name": "OpenMinter",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 1652,
+            "id": 1671,
             "name": "cards",
             "nodeType": "VariableDeclaration",
-            "scope": 1683,
+            "scope": 1702,
             "src": "77:19:6",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_ICards_$1359",
+              "typeIdentifier": "t_contract$_ICards_$1378",
               "typeString": "contract ICards"
             },
             "typeName": {
               "contractScope": null,
-              "id": 1651,
+              "id": 1670,
               "name": "ICards",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1359,
+              "referencedDeclaration": 1378,
               "src": "77:6:6",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ICards_$1359",
+                "typeIdentifier": "t_contract$_ICards_$1378",
                 "typeString": "contract ICards"
               }
             },
@@ -135,28 +135,28 @@
           },
           {
             "body": {
-              "id": 1661,
+              "id": 1680,
               "nodeType": "Block",
               "src": "137:31:6",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 1659,
+                    "id": 1678,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 1657,
+                      "id": 1676,
                       "name": "cards",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1652,
+                      "referencedDeclaration": 1671,
                       "src": "147:5:6",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_ICards_$1359",
+                        "typeIdentifier": "t_contract$_ICards_$1378",
                         "typeString": "contract ICards"
                       }
                     },
@@ -164,62 +164,62 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 1658,
+                      "id": 1677,
                       "name": "_cards",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1654,
+                      "referencedDeclaration": 1673,
                       "src": "155:6:6",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_ICards_$1359",
+                        "typeIdentifier": "t_contract$_ICards_$1378",
                         "typeString": "contract ICards"
                       }
                     },
                     "src": "147:14:6",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_ICards_$1359",
+                      "typeIdentifier": "t_contract$_ICards_$1378",
                       "typeString": "contract ICards"
                     }
                   },
-                  "id": 1660,
+                  "id": 1679,
                   "nodeType": "ExpressionStatement",
                   "src": "147:14:6"
                 }
               ]
             },
             "documentation": null,
-            "id": 1662,
+            "id": 1681,
             "implemented": true,
             "kind": "constructor",
             "modifiers": [],
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1655,
+              "id": 1674,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1654,
+                  "id": 1673,
                   "name": "_cards",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1662,
+                  "scope": 1681,
                   "src": "115:13:6",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_ICards_$1359",
+                    "typeIdentifier": "t_contract$_ICards_$1378",
                     "typeString": "contract ICards"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 1653,
+                    "id": 1672,
                     "name": "ICards",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 1359,
+                    "referencedDeclaration": 1378,
                     "src": "115:6:6",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_ICards_$1359",
+                      "typeIdentifier": "t_contract$_ICards_$1378",
                       "typeString": "contract ICards"
                     }
                   },
@@ -230,12 +230,12 @@
               "src": "114:15:6"
             },
             "returnParameters": {
-              "id": 1656,
+              "id": 1675,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "137:0:6"
             },
-            "scope": 1683,
+            "scope": 1702,
             "src": "103:65:6",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -243,7 +243,7 @@
           },
           {
             "body": {
-              "id": 1681,
+              "id": 1700,
               "nodeType": "Block",
               "src": "264:57:6",
               "statements": [
@@ -253,11 +253,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 1676,
+                        "id": 1695,
                         "name": "to",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1664,
+                        "referencedDeclaration": 1683,
                         "src": "290:2:6",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -266,11 +266,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 1677,
+                        "id": 1696,
                         "name": "_protos",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1667,
+                        "referencedDeclaration": 1686,
                         "src": "294:7:6",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_uint16_$dyn_memory_ptr",
@@ -279,11 +279,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 1678,
+                        "id": 1697,
                         "name": "_qualities",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1670,
+                        "referencedDeclaration": 1689,
                         "src": "303:10:6",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_uint8_$dyn_memory_ptr",
@@ -308,32 +308,32 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 1673,
+                        "id": 1692,
                         "name": "cards",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1652,
+                        "referencedDeclaration": 1671,
                         "src": "274:5:6",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_ICards_$1359",
+                          "typeIdentifier": "t_contract$_ICards_$1378",
                           "typeString": "contract ICards"
                         }
                       },
-                      "id": 1675,
+                      "id": 1694,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "mintCards",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 1337,
+                      "referencedDeclaration": 1356,
                       "src": "274:15:6",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_array$_t_uint16_$dyn_memory_ptr_$_t_array$_t_uint8_$dyn_memory_ptr_$returns$_t_uint256_$",
                         "typeString": "function (address,uint16[] memory,uint8[] memory) external returns (uint256)"
                       }
                     },
-                    "id": 1679,
+                    "id": 1698,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -347,29 +347,29 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 1680,
+                  "id": 1699,
                   "nodeType": "ExpressionStatement",
                   "src": "274:40:6"
                 }
               ]
             },
             "documentation": null,
-            "id": 1682,
+            "id": 1701,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "mintCards",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1671,
+              "id": 1690,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1664,
+                  "id": 1683,
                   "name": "to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1682,
+                  "scope": 1701,
                   "src": "193:10:6",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -378,7 +378,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1663,
+                    "id": 1682,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "193:7:6",
@@ -393,10 +393,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 1667,
+                  "id": 1686,
                   "name": "_protos",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1682,
+                  "scope": 1701,
                   "src": "205:23:6",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -406,7 +406,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 1665,
+                      "id": 1684,
                       "name": "uint16",
                       "nodeType": "ElementaryTypeName",
                       "src": "205:6:6",
@@ -415,7 +415,7 @@
                         "typeString": "uint16"
                       }
                     },
-                    "id": 1666,
+                    "id": 1685,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "205:8:6",
@@ -429,10 +429,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 1670,
+                  "id": 1689,
                   "name": "_qualities",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1682,
+                  "scope": 1701,
                   "src": "230:25:6",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -442,7 +442,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 1668,
+                      "id": 1687,
                       "name": "uint8",
                       "nodeType": "ElementaryTypeName",
                       "src": "230:5:6",
@@ -451,7 +451,7 @@
                         "typeString": "uint8"
                       }
                     },
-                    "id": 1669,
+                    "id": 1688,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "230:7:6",
@@ -467,19 +467,19 @@
               "src": "192:64:6"
             },
             "returnParameters": {
-              "id": 1672,
+              "id": 1691,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "264:0:6"
             },
-            "scope": 1683,
+            "scope": 1702,
             "src": "174:147:6",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 1684,
+        "scope": 1703,
         "src": "50:274:6"
       }
     ],
@@ -489,14 +489,14 @@
     "absolutePath": "/Users/kerman/immutable/gods-unchained-contracts/packages/contracts/contracts/cards/factories/OpenMinter.sol",
     "exportedSymbols": {
       "OpenMinter": [
-        1683
+        1702
       ]
     },
-    "id": 1684,
+    "id": 1703,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 1649,
+        "id": 1668,
         "literals": [
           "solidity",
           "0.5",
@@ -508,10 +508,10 @@
       {
         "absolutePath": "/Users/kerman/immutable/gods-unchained-contracts/packages/contracts/contracts/cards/ICards.sol",
         "file": "../ICards.sol",
-        "id": 1650,
+        "id": 1669,
         "nodeType": "ImportDirective",
-        "scope": 1684,
-        "sourceUnit": 1360,
+        "scope": 1703,
+        "sourceUnit": 1379,
         "src": "25:23:6",
         "symbolAliases": [],
         "unitAlias": ""
@@ -522,35 +522,35 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 1683,
+        "id": 1702,
         "linearizedBaseContracts": [
-          1683
+          1702
         ],
         "name": "OpenMinter",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 1652,
+            "id": 1671,
             "name": "cards",
             "nodeType": "VariableDeclaration",
-            "scope": 1683,
+            "scope": 1702,
             "src": "77:19:6",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_ICards_$1359",
+              "typeIdentifier": "t_contract$_ICards_$1378",
               "typeString": "contract ICards"
             },
             "typeName": {
               "contractScope": null,
-              "id": 1651,
+              "id": 1670,
               "name": "ICards",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1359,
+              "referencedDeclaration": 1378,
               "src": "77:6:6",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ICards_$1359",
+                "typeIdentifier": "t_contract$_ICards_$1378",
                 "typeString": "contract ICards"
               }
             },
@@ -559,28 +559,28 @@
           },
           {
             "body": {
-              "id": 1661,
+              "id": 1680,
               "nodeType": "Block",
               "src": "137:31:6",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 1659,
+                    "id": 1678,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 1657,
+                      "id": 1676,
                       "name": "cards",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1652,
+                      "referencedDeclaration": 1671,
                       "src": "147:5:6",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_ICards_$1359",
+                        "typeIdentifier": "t_contract$_ICards_$1378",
                         "typeString": "contract ICards"
                       }
                     },
@@ -588,62 +588,62 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 1658,
+                      "id": 1677,
                       "name": "_cards",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1654,
+                      "referencedDeclaration": 1673,
                       "src": "155:6:6",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_ICards_$1359",
+                        "typeIdentifier": "t_contract$_ICards_$1378",
                         "typeString": "contract ICards"
                       }
                     },
                     "src": "147:14:6",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_ICards_$1359",
+                      "typeIdentifier": "t_contract$_ICards_$1378",
                       "typeString": "contract ICards"
                     }
                   },
-                  "id": 1660,
+                  "id": 1679,
                   "nodeType": "ExpressionStatement",
                   "src": "147:14:6"
                 }
               ]
             },
             "documentation": null,
-            "id": 1662,
+            "id": 1681,
             "implemented": true,
             "kind": "constructor",
             "modifiers": [],
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1655,
+              "id": 1674,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1654,
+                  "id": 1673,
                   "name": "_cards",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1662,
+                  "scope": 1681,
                   "src": "115:13:6",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_ICards_$1359",
+                    "typeIdentifier": "t_contract$_ICards_$1378",
                     "typeString": "contract ICards"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 1653,
+                    "id": 1672,
                     "name": "ICards",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 1359,
+                    "referencedDeclaration": 1378,
                     "src": "115:6:6",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_ICards_$1359",
+                      "typeIdentifier": "t_contract$_ICards_$1378",
                       "typeString": "contract ICards"
                     }
                   },
@@ -654,12 +654,12 @@
               "src": "114:15:6"
             },
             "returnParameters": {
-              "id": 1656,
+              "id": 1675,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "137:0:6"
             },
-            "scope": 1683,
+            "scope": 1702,
             "src": "103:65:6",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -667,7 +667,7 @@
           },
           {
             "body": {
-              "id": 1681,
+              "id": 1700,
               "nodeType": "Block",
               "src": "264:57:6",
               "statements": [
@@ -677,11 +677,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 1676,
+                        "id": 1695,
                         "name": "to",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1664,
+                        "referencedDeclaration": 1683,
                         "src": "290:2:6",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -690,11 +690,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 1677,
+                        "id": 1696,
                         "name": "_protos",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1667,
+                        "referencedDeclaration": 1686,
                         "src": "294:7:6",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_uint16_$dyn_memory_ptr",
@@ -703,11 +703,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 1678,
+                        "id": 1697,
                         "name": "_qualities",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1670,
+                        "referencedDeclaration": 1689,
                         "src": "303:10:6",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_uint8_$dyn_memory_ptr",
@@ -732,32 +732,32 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 1673,
+                        "id": 1692,
                         "name": "cards",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1652,
+                        "referencedDeclaration": 1671,
                         "src": "274:5:6",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_ICards_$1359",
+                          "typeIdentifier": "t_contract$_ICards_$1378",
                           "typeString": "contract ICards"
                         }
                       },
-                      "id": 1675,
+                      "id": 1694,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "mintCards",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 1337,
+                      "referencedDeclaration": 1356,
                       "src": "274:15:6",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_array$_t_uint16_$dyn_memory_ptr_$_t_array$_t_uint8_$dyn_memory_ptr_$returns$_t_uint256_$",
                         "typeString": "function (address,uint16[] memory,uint8[] memory) external returns (uint256)"
                       }
                     },
-                    "id": 1679,
+                    "id": 1698,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -771,29 +771,29 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 1680,
+                  "id": 1699,
                   "nodeType": "ExpressionStatement",
                   "src": "274:40:6"
                 }
               ]
             },
             "documentation": null,
-            "id": 1682,
+            "id": 1701,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "mintCards",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1671,
+              "id": 1690,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1664,
+                  "id": 1683,
                   "name": "to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1682,
+                  "scope": 1701,
                   "src": "193:10:6",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -802,7 +802,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1663,
+                    "id": 1682,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "193:7:6",
@@ -817,10 +817,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 1667,
+                  "id": 1686,
                   "name": "_protos",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1682,
+                  "scope": 1701,
                   "src": "205:23:6",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -830,7 +830,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 1665,
+                      "id": 1684,
                       "name": "uint16",
                       "nodeType": "ElementaryTypeName",
                       "src": "205:6:6",
@@ -839,7 +839,7 @@
                         "typeString": "uint16"
                       }
                     },
-                    "id": 1666,
+                    "id": 1685,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "205:8:6",
@@ -853,10 +853,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 1670,
+                  "id": 1689,
                   "name": "_qualities",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1682,
+                  "scope": 1701,
                   "src": "230:25:6",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -866,7 +866,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 1668,
+                      "id": 1687,
                       "name": "uint8",
                       "nodeType": "ElementaryTypeName",
                       "src": "230:5:6",
@@ -875,7 +875,7 @@
                         "typeString": "uint8"
                       }
                     },
-                    "id": 1669,
+                    "id": 1688,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "230:7:6",
@@ -891,19 +891,19 @@
               "src": "192:64:6"
             },
             "returnParameters": {
-              "id": 1672,
+              "id": 1691,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "264:0:6"
             },
-            "scope": 1683,
+            "scope": 1702,
             "src": "174:147:6",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 1684,
+        "scope": 1703,
         "src": "50:274:6"
       }
     ],
@@ -915,7 +915,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.16",
-  "updatedAt": "2019-11-08T05:02:33.392Z",
+  "updatedAt": "2019-11-11T00:47:34.565Z",
   "devdoc": {
     "methods": {}
   },

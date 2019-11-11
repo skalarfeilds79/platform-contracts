@@ -13,7 +13,7 @@ const wallet = new ethers.Wallet(config.PRIVATE_KEY, provider);
 async function deploy() {
     const forwarder = await new ForwarderFactory(wallet).deploy(
         await findDependency('ZERO_EX_EXCHANGE'),
-        await findDependency('ZERO_EX_ERC20_PROXY'),
+        await findDependency('ZERO_EX_ERC721_PROXY'),
         await findDependency('WETH'),
         await getContractAddress('Cards')
     );

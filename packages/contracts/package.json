@@ -14,8 +14,8 @@
     "generate-artifacts": "node scripts/copy-artifacts.js",
     "verify-contracts": "node scripts/verify-contracts.js",
     "compile": "yarn lint:sol && yarn truffle compile --all && yarn generate-artifacts",
-    "prepare-test": "yarn clean && yarn compile && yarn generate-typings",
-    "setup": "yarn etherlime test --solcVersion=0.5.11 --output=none --timeout=10000 --runs=200",
+    "setup": "yarn clean && yarn compile && yarn generate-typings",
+    "test-legacy": "yarn etherlime test --solcVersion=0.5.11 --output=none --timeout=10000 --runs=200",
     "test": "yarn setup && yarn reset-test-evm && yarn jest __tests__/core --runInBand",
     "test:watch": "yarn reset-test-evm && yarn jest __tests__/core --runInBand --watch",
     "reset-test-evm": "node scripts/reset-test-evm.js"

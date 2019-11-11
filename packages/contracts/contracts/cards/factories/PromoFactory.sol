@@ -4,28 +4,36 @@ import "@openzeppelin/contracts/ownership/Ownable.sol";
 
 import "../interfaces/ICards.sol";
 
-contract PromoFactory is Ownable {
+contract ProtoFactory is Ownable {
 
     ICards public cards;
 
-    mapping(uint16 => Promo) public promos;
+    mapping(uint16 => Proto) public protos;
 
     uint16 public maxProto;
     uint16 public minProto;
 
-    struct Promo {
+    struct Proto {
         bool isLocked;
         address minter;
     }
 
-    event PromoAssigned(
-        uint16 promo,
+    /**
+     * Events
+     */
+
+    event ProtoAssigned(
+        uint16 proto,
         address minter
     );
 
-    event PromoLocked(
-        uint16 promo
+    event ProtoLocked(
+        uint16 proto
     );
+
+    /**
+     * Constructor
+     */
 
     constructor(
         ICards _cards,
@@ -39,7 +47,42 @@ contract PromoFactory is Ownable {
         maxProto = _maxProto;
     }
 
-    function assignPromoMinter(
+    /**
+     * Public functions
+     */
+
+    function mint(
+        address to,
+        uint16[] memory _protos,
+        uint8[] memory _qualities
+    )
+        public
+    {
+        require(
+            _protos.length == _qualities.length,
+            "Proto Factory: array length mismatch between protos and qualities"
+        );
+
+        for (uint i; i < _protos.length; i++) {
+            require(
+                protos[_protos[i]].minter == msg.sender,
+                "Proto Factory: only assigned minter can mint for this proto"
+            );
+
+            require(
+                protos[_protos[i]].isLocked == false,
+                "Proto Factory: cannot mint a locked proto"
+            );
+        }
+
+        cards.mintCards(to, _protos, _qualities);
+    }
+
+    /**
+     * Only Owner functions
+     */
+
+    function assignProtoMinter(
         address minter,
         uint16 proto
     )
@@ -48,62 +91,43 @@ contract PromoFactory is Ownable {
     {
         require(
             proto >= minProto,
-            "Promo Factory: promo must be greater than min proto"
+            "Proto Factory: proto must be greater than min proto"
         );
 
         require(
             proto <= maxProto,
-            "Promo Factory: promo must be less than max proto"
+            "Proto Factory: proto must be less than max proto"
         );
 
         require(
-            promos[proto].isLocked == false,
-            "Promo Factory: promo already locked"
+            protos[proto].isLocked == false,
+            "Proto Factory: proto already locked"
         );
 
-        promos[proto].minter = minter;
+        protos[proto].minter = minter;
 
-        emit PromoAssigned(proto, minter);
-
-    }
-
-    function mint(
-        uint16 promo
-    )
-        public
-    {
-        require(
-            promos[promo].minter == msg.sender,
-            "Promo Factory: only assigned minter can mint for this promo"
-        );
-
-        require(
-            promos[promo].isLocked == false,
-            "Promo Factory: cannot mint a locked promo"
-        );
-
-        // TODO: Call mint function;
+        emit ProtoAssigned(proto, minter);
 
     }
 
     function lock(
-        uint16 promo
+        uint16 proto
     )
         public
         onlyOwner
     {
         require(
-            promos[promo].minter != address(0),
-            "Promo Factory: must be an assigned promo"
+            protos[proto].minter != address(0),
+            "Proto Factory: must be an assigned proto"
         );
 
         require(
-            promos[promo].isLocked == false,
-            "Promo Factory: cannot lock a locked promo"
+            protos[proto].isLocked == false,
+            "Proto Factory: cannot lock a locked proto"
         );
 
-        promos[promo].isLocked = true;
+        protos[proto].isLocked = true;
 
-        emit PromoLocked(promo);
+        emit ProtoLocked(proto);
     }
 }

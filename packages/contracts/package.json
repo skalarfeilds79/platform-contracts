@@ -30,6 +30,7 @@
     "dotenv": "^8.2.0",
     "ethers": "^4.0.39",
     "fs-readdir-recursive": "^1.1.0",
+    "mustache": "^3.1.0",
     "openzeppelin-solidity": "^2.3.0",
     "recursive-readdir": "^2.2.2",
     "truffle-flattener": "^1.4.2",

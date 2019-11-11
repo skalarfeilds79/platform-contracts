@@ -1,6 +1,7 @@
 const fs = require('fs-extra')
 const path = require('path');
 const cwd = process.cwd();
+const mustache = require('mustache');
 
 const CONTRACT_NAMES = require('../MAIN_CONTRACTS');
 
@@ -8,6 +9,7 @@ const TYPES_PATH = './build/Contracts';
 const CONTRACTS_PATH = './contracts/';
 const TS_PATH = '../artifacts/src/ts/';
 const JSON_PATH = '../artifacts/src/json/';
+const ADDRESSES_PATH = '../addresses/src/';
 
 fs.ensureDirSync(TS_PATH);
 fs.ensureDirSync(JSON_PATH);
@@ -54,3 +56,6 @@ async function copyFiles() {
 }
 
 copyFiles();
+
+var mainReadme = mustache.render(fs.readFileSync('../../readme.mustache').toString(), fs.readJSONSync(ADDRESSES_PATH + 'outputs' + '.json'));
+fs.writeFileSync('../../README.md', mainReadme);

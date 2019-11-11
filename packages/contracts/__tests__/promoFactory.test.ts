@@ -147,13 +147,15 @@ describe('Core', () => {
 
       await cards.functions.startSeason("Promo", 400, 500);
       await cards.functions.addFactory(promoFactory.address, 1);
-      await promoFactory.functions.assignProtoMinter(minterWallet.address, callerProtos);
+
+      // TODO: Make into async loop rather than using first element
+      await promoFactory.functions.assignProtoMinter(minterWallet.address, callerProtos[0]);
 
     });
 
     async function subject(): Promise<any> {
       const newProtoFactory = await new ProtoFactoryFactory(caller).attach(promoFactory.address);
-      return newProtoFactory.functions.mint(userWallet.address, callerProtos, callerQualities);
+      return await newProtoFactory.functions.mint(userWallet.address, callerProtos, callerQualities);
     }
 
     it('should not be able to mint as an unauthorised user', async () => {
@@ -163,7 +165,7 @@ describe('Core', () => {
 
     it('should not be able to mint a locked promo', async () => {
       caller = ownerWallet;
-      await promoFactory.functions.lock(callerProtos);
+      await promoFactory.functions.lock(callerProtos[0]);
       caller = minterWallet;
       await expectRevert(subject());
     });
@@ -175,10 +177,10 @@ describe('Core', () => {
 
     it('should be able to mint a promo', async () => {
       await subject();
-      const promo = await promoFactory.functions.protos(callerProtos)
+      const promo = await promoFactory.functions.protos(callerProtos[0])
       expect(promo.minter).toBe(minterWallet.address);
       const result = await cards.functions.balanceOf(userWallet.address);
-      expect(result).toBe(1);
+      expect(result.toNumber()).toBe(1);
     });
 
   });

@@ -5,8 +5,8 @@ import {
   CardsFactory,
   Cards,
   Address,
-  PromoFactory,
-  PromoFactoryFactory
+  ProtoFactory,
+  ProtoFactoryFactory
 } from '@immutable/types'
 import { expectRevert } from './expectRevert';
 
@@ -30,7 +30,7 @@ describe('Core', () => {
 
     it('should be able to deploy', async () => {
       const cards = await new CardsFactory(ownerWallet).deploy(BATCH_SIZE, 'Test', 'TEST');
-      const promoFactory = await new PromoFactoryFactory(ownerWallet).deploy(
+      const promoFactory = await new ProtoFactoryFactory(ownerWallet).deploy(
         cards.address,
         400,
         500
@@ -49,18 +49,18 @@ describe('Core', () => {
   describe('#assignPromoMinter', () => {
 
     let cards: Cards;
-    let promoFactory: PromoFactory;
+    let promoFactory: ProtoFactory;
 
     let caller: Wallet;
-    let callerPromo: number;
+    let callerProtos: number;
     let callerMinter;
 
     beforeEach(async () => {
       caller = ownerWallet;
       callerMinter = minterWallet;
-      callerPromo = 400;
+      callerProtos = 400;
       cards = await new CardsFactory(ownerWallet).deploy(BATCH_SIZE, 'Test', 'TEST');
-      promoFactory = await new PromoFactoryFactory(ownerWallet).deploy(
+      promoFactory = await new ProtoFactoryFactory(ownerWallet).deploy(
         cards.address,
         400,
         500
@@ -71,8 +71,8 @@ describe('Core', () => {
     });
 
     async function subject(): Promise<any> {
-      const newPromoFactory = await new PromoFactoryFactory(caller).attach(promoFactory.address);
-      await newPromoFactory.functions.assignPromoMinter(callerMinter.address, callerPromo);
+      const newProtoFactory = await new ProtoFactoryFactory(caller).attach(promoFactory.address);
+      await newProtoFactory.functions.assignProtoMinter(callerMinter.address, callerProtos);
     }
 
     it('should not be able to assign a minter as an unauthorised user', async () => {
@@ -81,18 +81,18 @@ describe('Core', () => {
     });
 
     it('should not be able to assign a promo below the min proto', async () => {
-      callerPromo = 399;
+      callerProtos = 399;
       await expectRevert(subject());
     });
 
     it('should not be able to assign a promo above the max proto', async () => {
-      callerPromo = 501;
+      callerProtos = 501;
       await expectRevert(subject());
     });
 
     it('should be able to to assign a minter', async () => {
       await subject();
-      const promo = await promoFactory.functions.promos(callerPromo);
+      const promo = await promoFactory.functions.protos(callerProtos);
       expect(promo.minter).toEqual(minterWallet.address);
       expect(promo.isLocked).toBeFalsy();
     });
@@ -101,7 +101,7 @@ describe('Core', () => {
       await subject();
       callerMinter = userWallet;
       await subject();
-      const promo = await promoFactory.functions.promos(callerPromo);
+      const promo = await promoFactory.functions.protos(callerProtos);
       expect(promo.minter).toEqual(userWallet.address);
       expect(promo.isLocked).toBeFalsy();
     });
@@ -115,7 +115,7 @@ describe('Core', () => {
 
     it('should not be able to assign a minter to a locked promo', async () => {
       await subject();
-      await promoFactory.functions.lock(callerPromo);
+      await promoFactory.functions.lock(callerProtos);
       callerMinter = userWallet;
       await expectRevert(subject());
     });
@@ -125,17 +125,21 @@ describe('Core', () => {
   describe('#mint', () => {
 
     let cards: Cards;
-    let promoFactory: PromoFactory;
+    let promoFactory: ProtoFactory;
 
     let caller: Wallet;
-    let callerPromo: number;
+
+    let callerTo: Address;
+    let callerProtos: number[];
+    let callerQualities: number[]
 
     beforeEach(async () => {
-      callerPromo = 400;
+      callerProtos = [400];
+      callerQualities = [1];
       caller = minterWallet;
 
       cards = await new CardsFactory(ownerWallet).deploy(BATCH_SIZE, 'Test', 'TEST');
-      promoFactory = await new PromoFactoryFactory(ownerWallet).deploy(
+      promoFactory = await new ProtoFactoryFactory(ownerWallet).deploy(
         cards.address,
         400,
         500
@@ -143,13 +147,13 @@ describe('Core', () => {
 
       await cards.functions.startSeason("Promo", 400, 500);
       await cards.functions.addFactory(promoFactory.address, 1);
-      await promoFactory.functions.assignPromoMinter(minterWallet.address, callerPromo);
+      await promoFactory.functions.assignProtoMinter(minterWallet.address, callerProtos);
 
     });
 
     async function subject(): Promise<any> {
-      const newPromoFactory = await new PromoFactoryFactory(caller).attach(promoFactory.address);
-      return newPromoFactory.functions.mint(callerPromo);
+      const newProtoFactory = await new ProtoFactoryFactory(caller).attach(promoFactory.address);
+      return newProtoFactory.functions.mint(userWallet.address, callerProtos, callerQualities);
     }
 
     it('should not be able to mint as an unauthorised user', async () => {
@@ -159,21 +163,21 @@ describe('Core', () => {
 
     it('should not be able to mint a locked promo', async () => {
       caller = ownerWallet;
-      await promoFactory.functions.lock(callerPromo);
+      await promoFactory.functions.lock(callerProtos);
       caller = minterWallet;
       await expectRevert(subject());
     });
 
     it('should not be able to mint an unassigned promo', async () => {
-      callerPromo = 401;
+      callerProtos = [400, 401];
       await expectRevert(subject());
     });
 
     it('should be able to mint a promo', async () => {
       await subject();
-      const promo = await promoFactory.functions.promos(callerPromo)
+      const promo = await promoFactory.functions.protos(callerProtos)
       expect(promo.minter).toBe(minterWallet.address);
-      const result = await cards.functions.balanceOf(minterWallet.address);
+      const result = await cards.functions.balanceOf(userWallet.address);
       expect(result).toBe(1);
     });
 
@@ -182,16 +186,16 @@ describe('Core', () => {
   describe('#lock', () => {
 
     let cards: Cards;
-    let promoFactory: PromoFactory;
+    let promoFactory: ProtoFactory;
 
     let caller: Wallet;
-    let callerPromo: number;
+    let callerProtos: number;
 
     beforeEach(async () => {
       caller = ownerWallet;
-      callerPromo = 400;
+      callerProtos = 400;
       cards = await new CardsFactory(ownerWallet).deploy(BATCH_SIZE, 'Test', 'TEST');
-      promoFactory = await new PromoFactoryFactory(ownerWallet).deploy(
+      promoFactory = await new ProtoFactoryFactory(ownerWallet).deploy(
         cards.address,
         400,
         500
@@ -199,13 +203,13 @@ describe('Core', () => {
 
       await cards.functions.startSeason("Promo", 400, 500);
       await cards.functions.addFactory(promoFactory.address, 1);
-      await promoFactory.functions.assignPromoMinter(minterWallet.address, callerPromo);
+      await promoFactory.functions.assignProtoMinter(minterWallet.address, callerProtos);
 
     });
 
     async function subject(): Promise<any> {
-      const newPromoFactory = await new PromoFactoryFactory(caller).attach(promoFactory.address);
-      return newPromoFactory.functions.lock(callerPromo);
+      const newProtoFactory = await new ProtoFactoryFactory(caller).attach(promoFactory.address);
+      return newProtoFactory.functions.lock(callerProtos);
     }
 
     it('should not be able to lock as an unauthorised user', async () => {
@@ -214,13 +218,13 @@ describe('Core', () => {
     });
 
     it('should not be able to lock an unassigned promo', async () => {
-      callerPromo = 401;
+      callerProtos = 401;
       await expectRevert(subject());
     });
 
     it('should be able to lock a promo', async () => {
       await subject();
-      const promo = await promoFactory.functions.promos(callerPromo);
+      const promo = await promoFactory.functions.protos(callerProtos);
       expect(promo.isLocked).toBeTruthy();
     });
 

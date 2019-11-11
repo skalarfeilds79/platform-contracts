@@ -1,6 +1,6 @@
 pragma solidity 0.5.11;
 
-import "../ICards.sol";
+import "../interfaces/ICards.sol";
 
 contract Forge {
 
@@ -24,7 +24,7 @@ contract Forge {
             quality > diamond,
             "Forge: cannot forge diamond cards"
         );
-        
+
         for (uint i = 1; i < 5; i++) {
             (uint16 nextProto, uint8 nextQuality) = cards.getDetails(_ids[i]);
 

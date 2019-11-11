@@ -9,7 +9,8 @@ import "./token/BatchToken.sol";
 import "./token/ImmutableToken.sol";
 import "./token/InscribableToken.sol";
 
-import "./ICards.sol";
+import "./interfaces/ICards.sol";
+
 import "./util/StorageWrite.sol";
 
 contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, InscribableToken {

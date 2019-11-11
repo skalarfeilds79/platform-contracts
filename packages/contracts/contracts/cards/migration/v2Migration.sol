@@ -1,6 +1,6 @@
 pragma solidity 0.5.11;
 
-import "../ICards.sol";
+import "../interfaces/ICards.sol";
 import "../legacy/packs/five/IPackFive.sol";
 import "./BaseMigration.sol";
 

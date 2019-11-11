@@ -223,14 +223,14 @@
     "absolutePath": "/Users/kerman/immutable/gods-unchained-contracts/packages/contracts/contracts/wallet/Factory.sol",
     "exportedSymbols": {
       "Factory": [
-        11101
+        11120
       ]
     },
-    "id": 11102,
+    "id": 11121,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 10966,
+        "id": 10985,
         "literals": [
           "solidity",
           "^",
@@ -243,10 +243,10 @@
       {
         "absolutePath": "@openzeppelin/contracts/ownership/Ownable.sol",
         "file": "@openzeppelin/contracts/ownership/Ownable.sol",
-        "id": 10967,
+        "id": 10986,
         "nodeType": "ImportDirective",
-        "scope": 11102,
-        "sourceUnit": 17359,
+        "scope": 11121,
+        "sourceUnit": 17378,
         "src": "25:55:49",
         "symbolAliases": [],
         "unitAlias": ""
@@ -254,10 +254,10 @@
       {
         "absolutePath": "/Users/kerman/immutable/gods-unchained-contracts/packages/contracts/contracts/wallet/Proxy.sol",
         "file": "./Proxy.sol",
-        "id": 10968,
+        "id": 10987,
         "nodeType": "ImportDirective",
-        "scope": 11102,
-        "sourceUnit": 11162,
+        "scope": 11121,
+        "sourceUnit": 11181,
         "src": "82:21:49",
         "symbolAliases": [],
         "unitAlias": ""
@@ -265,10 +265,10 @@
       {
         "absolutePath": "/Users/kerman/immutable/gods-unchained-contracts/packages/contracts/contracts/wallet/Wallet.sol",
         "file": "./Wallet.sol",
-        "id": 10969,
+        "id": 10988,
         "nodeType": "ImportDirective",
-        "scope": 11102,
-        "sourceUnit": 11496,
+        "scope": 11121,
+        "sourceUnit": 11515,
         "src": "104:22:49",
         "symbolAliases": [],
         "unitAlias": ""
@@ -276,10 +276,10 @@
       {
         "absolutePath": "/Users/kerman/immutable/gods-unchained-contracts/packages/contracts/contracts/wallet/modules/LimitedModules.sol",
         "file": "./modules/LimitedModules.sol",
-        "id": 10970,
+        "id": 10989,
         "nodeType": "ImportDirective",
-        "scope": 11102,
-        "sourceUnit": 14548,
+        "scope": 11121,
+        "sourceUnit": 14567,
         "src": "127:38:49",
         "symbolAliases": [],
         "unitAlias": ""
@@ -287,10 +287,10 @@
       {
         "absolutePath": "/Users/kerman/immutable/gods-unchained-contracts/packages/contracts/contracts/wallet/limiters/MultiLimiter.sol",
         "file": "./limiters/MultiLimiter.sol",
-        "id": 10971,
+        "id": 10990,
         "nodeType": "ImportDirective",
-        "scope": 11102,
-        "sourceUnit": 13139,
+        "scope": 11121,
+        "sourceUnit": 13158,
         "src": "166:37:49",
         "symbolAliases": [],
         "unitAlias": ""
@@ -301,59 +301,59 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 10972,
+              "id": 10991,
               "name": "Ownable",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 17358,
+              "referencedDeclaration": 17377,
               "src": "225:7:49",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Ownable_$17358",
+                "typeIdentifier": "t_contract$_Ownable_$17377",
                 "typeString": "contract Ownable"
               }
             },
-            "id": 10973,
+            "id": 10992,
             "nodeType": "InheritanceSpecifier",
             "src": "225:7:49"
           }
         ],
         "contractDependencies": [
-          16758,
-          17358
+          16777,
+          17377
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 11101,
+        "id": 11120,
         "linearizedBaseContracts": [
-          11101,
-          17358,
-          16758
+          11120,
+          17377,
+          16777
         ],
         "name": "Factory",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 10975,
+            "id": 10994,
             "name": "modules",
             "nodeType": "VariableDeclaration",
-            "scope": 11101,
+            "scope": 11120,
             "src": "240:29:49",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_LimitedModules_$14547",
+              "typeIdentifier": "t_contract$_LimitedModules_$14566",
               "typeString": "contract LimitedModules"
             },
             "typeName": {
               "contractScope": null,
-              "id": 10974,
+              "id": 10993,
               "name": "LimitedModules",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 14547,
+              "referencedDeclaration": 14566,
               "src": "240:14:49",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_LimitedModules_$14547",
+                "typeIdentifier": "t_contract$_LimitedModules_$14566",
                 "typeString": "contract LimitedModules"
               }
             },
@@ -362,26 +362,26 @@
           },
           {
             "constant": false,
-            "id": 10977,
+            "id": 10996,
             "name": "delegates",
             "nodeType": "VariableDeclaration",
-            "scope": 11101,
+            "scope": 11120,
             "src": "275:26:49",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_Delegates_$12090",
+              "typeIdentifier": "t_contract$_Delegates_$12109",
               "typeString": "contract Delegates"
             },
             "typeName": {
               "contractScope": null,
-              "id": 10976,
+              "id": 10995,
               "name": "Delegates",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 12090,
+              "referencedDeclaration": 12109,
               "src": "275:9:49",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Delegates_$12090",
+                "typeIdentifier": "t_contract$_Delegates_$12109",
                 "typeString": "contract Delegates"
               }
             },
@@ -390,26 +390,26 @@
           },
           {
             "constant": false,
-            "id": 10979,
+            "id": 10998,
             "name": "multiLimiter",
             "nodeType": "VariableDeclaration",
-            "scope": 11101,
+            "scope": 11120,
             "src": "307:32:49",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_MultiLimiter_$13138",
+              "typeIdentifier": "t_contract$_MultiLimiter_$13157",
               "typeString": "contract MultiLimiter"
             },
             "typeName": {
               "contractScope": null,
-              "id": 10978,
+              "id": 10997,
               "name": "MultiLimiter",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 13138,
+              "referencedDeclaration": 13157,
               "src": "307:12:49",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_MultiLimiter_$13138",
+                "typeIdentifier": "t_contract$_MultiLimiter_$13157",
                 "typeString": "contract MultiLimiter"
               }
             },
@@ -418,10 +418,10 @@
           },
           {
             "constant": false,
-            "id": 10981,
+            "id": 11000,
             "name": "bytecode",
             "nodeType": "VariableDeclaration",
-            "scope": 11101,
+            "scope": 11120,
             "src": "345:21:49",
             "stateVariable": true,
             "storageLocation": "default",
@@ -430,7 +430,7 @@
               "typeString": "bytes"
             },
             "typeName": {
-              "id": 10980,
+              "id": 10999,
               "name": "bytes",
               "nodeType": "ElementaryTypeName",
               "src": "345:5:49",
@@ -445,20 +445,20 @@
           {
             "anonymous": false,
             "documentation": null,
-            "id": 10987,
+            "id": 11006,
             "name": "WalletCreated",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 10986,
+              "id": 11005,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10983,
+                  "id": 11002,
                   "indexed": true,
                   "name": "wallet",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10987,
+                  "scope": 11006,
                   "src": "402:22:49",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -467,7 +467,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 10982,
+                    "id": 11001,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "402:7:49",
@@ -482,11 +482,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 10985,
+                  "id": 11004,
                   "indexed": true,
                   "name": "owner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10987,
+                  "scope": 11006,
                   "src": "434:21:49",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -495,7 +495,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 10984,
+                    "id": 11003,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "434:7:49",
@@ -515,28 +515,28 @@
           },
           {
             "body": {
-              "id": 11014,
+              "id": 11033,
               "nodeType": "Block",
               "src": "636:135:49",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 11000,
+                    "id": 11019,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 10998,
+                      "id": 11017,
                       "name": "modules",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10975,
+                      "referencedDeclaration": 10994,
                       "src": "646:7:49",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_LimitedModules_$14547",
+                        "typeIdentifier": "t_contract$_LimitedModules_$14566",
                         "typeString": "contract LimitedModules"
                       }
                     },
@@ -544,45 +544,45 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 10999,
+                      "id": 11018,
                       "name": "_modules",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10989,
+                      "referencedDeclaration": 11008,
                       "src": "656:8:49",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_LimitedModules_$14547",
+                        "typeIdentifier": "t_contract$_LimitedModules_$14566",
                         "typeString": "contract LimitedModules"
                       }
                     },
                     "src": "646:18:49",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_LimitedModules_$14547",
+                      "typeIdentifier": "t_contract$_LimitedModules_$14566",
                       "typeString": "contract LimitedModules"
                     }
                   },
-                  "id": 11001,
+                  "id": 11020,
                   "nodeType": "ExpressionStatement",
                   "src": "646:18:49"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 11004,
+                    "id": 11023,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 11002,
+                      "id": 11021,
                       "name": "delegates",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10977,
+                      "referencedDeclaration": 10996,
                       "src": "674:9:49",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Delegates_$12090",
+                        "typeIdentifier": "t_contract$_Delegates_$12109",
                         "typeString": "contract Delegates"
                       }
                     },
@@ -590,45 +590,45 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 11003,
+                      "id": 11022,
                       "name": "_delegates",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10991,
+                      "referencedDeclaration": 11010,
                       "src": "686:10:49",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Delegates_$12090",
+                        "typeIdentifier": "t_contract$_Delegates_$12109",
                         "typeString": "contract Delegates"
                       }
                     },
                     "src": "674:22:49",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_Delegates_$12090",
+                      "typeIdentifier": "t_contract$_Delegates_$12109",
                       "typeString": "contract Delegates"
                     }
                   },
-                  "id": 11005,
+                  "id": 11024,
                   "nodeType": "ExpressionStatement",
                   "src": "674:22:49"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 11008,
+                    "id": 11027,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 11006,
+                      "id": 11025,
                       "name": "multiLimiter",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10979,
+                      "referencedDeclaration": 10998,
                       "src": "706:12:49",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_MultiLimiter_$13138",
+                        "typeIdentifier": "t_contract$_MultiLimiter_$13157",
                         "typeString": "contract MultiLimiter"
                       }
                     },
@@ -636,42 +636,42 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 11007,
+                      "id": 11026,
                       "name": "_multiLimiter",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10993,
+                      "referencedDeclaration": 11012,
                       "src": "721:13:49",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_MultiLimiter_$13138",
+                        "typeIdentifier": "t_contract$_MultiLimiter_$13157",
                         "typeString": "contract MultiLimiter"
                       }
                     },
                     "src": "706:28:49",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_MultiLimiter_$13138",
+                      "typeIdentifier": "t_contract$_MultiLimiter_$13157",
                       "typeString": "contract MultiLimiter"
                     }
                   },
-                  "id": 11009,
+                  "id": 11028,
                   "nodeType": "ExpressionStatement",
                   "src": "706:28:49"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 11012,
+                    "id": 11031,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 11010,
+                      "id": 11029,
                       "name": "bytecode",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10981,
+                      "referencedDeclaration": 11000,
                       "src": "744:8:49",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes_storage",
@@ -682,11 +682,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 11011,
+                      "id": 11030,
                       "name": "_bytecode",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10995,
+                      "referencedDeclaration": 11014,
                       "src": "755:9:49",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes_memory_ptr",
@@ -699,45 +699,45 @@
                       "typeString": "bytes storage ref"
                     }
                   },
-                  "id": 11013,
+                  "id": 11032,
                   "nodeType": "ExpressionStatement",
                   "src": "744:20:49"
                 }
               ]
             },
             "documentation": null,
-            "id": 11015,
+            "id": 11034,
             "implemented": true,
             "kind": "constructor",
             "modifiers": [],
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 10996,
+              "id": 11015,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10989,
+                  "id": 11008,
                   "name": "_modules",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11015,
+                  "scope": 11034,
                   "src": "489:23:49",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_LimitedModules_$14547",
+                    "typeIdentifier": "t_contract$_LimitedModules_$14566",
                     "typeString": "contract LimitedModules"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 10988,
+                    "id": 11007,
                     "name": "LimitedModules",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 14547,
+                    "referencedDeclaration": 14566,
                     "src": "489:14:49",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_LimitedModules_$14547",
+                      "typeIdentifier": "t_contract$_LimitedModules_$14566",
                       "typeString": "contract LimitedModules"
                     }
                   },
@@ -746,26 +746,26 @@
                 },
                 {
                   "constant": false,
-                  "id": 10991,
+                  "id": 11010,
                   "name": "_delegates",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11015,
+                  "scope": 11034,
                   "src": "522:20:49",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_Delegates_$12090",
+                    "typeIdentifier": "t_contract$_Delegates_$12109",
                     "typeString": "contract Delegates"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 10990,
+                    "id": 11009,
                     "name": "Delegates",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 12090,
+                    "referencedDeclaration": 12109,
                     "src": "522:9:49",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_Delegates_$12090",
+                      "typeIdentifier": "t_contract$_Delegates_$12109",
                       "typeString": "contract Delegates"
                     }
                   },
@@ -774,26 +774,26 @@
                 },
                 {
                   "constant": false,
-                  "id": 10993,
+                  "id": 11012,
                   "name": "_multiLimiter",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11015,
+                  "scope": 11034,
                   "src": "552:26:49",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_MultiLimiter_$13138",
+                    "typeIdentifier": "t_contract$_MultiLimiter_$13157",
                     "typeString": "contract MultiLimiter"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 10992,
+                    "id": 11011,
                     "name": "MultiLimiter",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 13138,
+                    "referencedDeclaration": 13157,
                     "src": "552:12:49",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_MultiLimiter_$13138",
+                      "typeIdentifier": "t_contract$_MultiLimiter_$13157",
                       "typeString": "contract MultiLimiter"
                     }
                   },
@@ -802,10 +802,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 10995,
+                  "id": 11014,
                   "name": "_bytecode",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11015,
+                  "scope": 11034,
                   "src": "588:22:49",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -814,7 +814,7 @@
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 10994,
+                    "id": 11013,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
                     "src": "588:5:49",
@@ -830,12 +830,12 @@
               "src": "479:137:49"
             },
             "returnParameters": {
-              "id": 10997,
+              "id": 11016,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "636:0:49"
             },
-            "scope": 11101,
+            "scope": 11120,
             "src": "468:303:49",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -843,7 +843,7 @@
           },
           {
             "body": {
-              "id": 11099,
+              "id": 11118,
               "nodeType": "Block",
               "src": "1010:749:49",
               "statements": [
@@ -857,18 +857,18 @@
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
-                        "id": 11033,
+                        "id": 11052,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
                           "argumentTypes": null,
-                          "id": 11029,
+                          "id": 11048,
                           "name": "_owner",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11017,
+                          "referencedDeclaration": 11036,
                           "src": "1028:6:49",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -883,7 +883,7 @@
                             {
                               "argumentTypes": null,
                               "hexValue": "30",
-                              "id": 11031,
+                              "id": 11050,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -906,7 +906,7 @@
                                 "typeString": "int_const 0"
                               }
                             ],
-                            "id": 11030,
+                            "id": 11049,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -919,7 +919,7 @@
                             },
                             "typeName": "address"
                           },
-                          "id": 11032,
+                          "id": 11051,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -942,7 +942,7 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "6f776e6572206d757374206e6f74206265206e756c6c",
-                        "id": 11034,
+                        "id": 11053,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -969,21 +969,21 @@
                           "typeString": "literal_string \"owner must not be null\""
                         }
                       ],
-                      "id": 11028,
+                      "id": 11047,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "1020:7:49",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11035,
+                    "id": 11054,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -997,21 +997,21 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11036,
+                  "id": 11055,
                   "nodeType": "ExpressionStatement",
                   "src": "1020:55:49"
                 },
                 {
                   "assignments": [
-                    11038
+                    11057
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 11038,
+                      "id": 11057,
                       "name": "salt",
                       "nodeType": "VariableDeclaration",
-                      "scope": 11099,
+                      "scope": 11118,
                       "src": "1085:12:49",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -1020,7 +1020,7 @@
                         "typeString": "bytes32"
                       },
                       "typeName": {
-                        "id": 11037,
+                        "id": 11056,
                         "name": "bytes32",
                         "nodeType": "ElementaryTypeName",
                         "src": "1085:7:49",
@@ -1033,7 +1033,7 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 11050,
+                  "id": 11069,
                   "initialValue": {
                     "argumentTypes": null,
                     "arguments": [
@@ -1044,18 +1044,18 @@
                             "argumentTypes": null,
                             "expression": {
                               "argumentTypes": null,
-                              "id": 11042,
+                              "id": 11061,
                               "name": "msg",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 19385,
+                              "referencedDeclaration": 19404,
                               "src": "1127:3:49",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_magic_message",
                                 "typeString": "msg"
                               }
                             },
-                            "id": 11043,
+                            "id": 11062,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -1071,11 +1071,11 @@
                           },
                           {
                             "argumentTypes": null,
-                            "id": 11044,
+                            "id": 11063,
                             "name": "_owner",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 11017,
+                            "referencedDeclaration": 11036,
                             "src": "1139:6:49",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
@@ -1087,14 +1087,14 @@
                             "arguments": [
                               {
                                 "argumentTypes": null,
-                                "id": 11046,
+                                "id": 11065,
                                 "name": "this",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 19565,
+                                "referencedDeclaration": 19584,
                                 "src": "1155:4:49",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_contract$_Factory_$11101",
+                                  "typeIdentifier": "t_contract$_Factory_$11120",
                                   "typeString": "contract Factory"
                                 }
                               }
@@ -1102,11 +1102,11 @@
                             "expression": {
                               "argumentTypes": [
                                 {
-                                  "typeIdentifier": "t_contract$_Factory_$11101",
+                                  "typeIdentifier": "t_contract$_Factory_$11120",
                                   "typeString": "contract Factory"
                                 }
                               ],
-                              "id": 11045,
+                              "id": 11064,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -1119,7 +1119,7 @@
                               },
                               "typeName": "address"
                             },
-                            "id": 11047,
+                            "id": 11066,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -1151,18 +1151,18 @@
                           ],
                           "expression": {
                             "argumentTypes": null,
-                            "id": 11040,
+                            "id": 11059,
                             "name": "abi",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 19372,
+                            "referencedDeclaration": 19391,
                             "src": "1110:3:49",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_abi",
                               "typeString": "abi"
                             }
                           },
-                          "id": 11041,
+                          "id": 11060,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -1176,7 +1176,7 @@
                             "typeString": "function () pure returns (bytes memory)"
                           }
                         },
-                        "id": 11048,
+                        "id": 11067,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1198,18 +1198,18 @@
                           "typeString": "bytes memory"
                         }
                       ],
-                      "id": 11039,
+                      "id": 11058,
                       "name": "keccak256",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 19379,
+                      "referencedDeclaration": 19398,
                       "src": "1100:9:49",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_keccak256_pure$_t_bytes_memory_ptr_$returns$_t_bytes32_$",
                         "typeString": "function (bytes memory) pure returns (bytes32)"
                       }
                     },
-                    "id": 11049,
+                    "id": 11068,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1228,15 +1228,15 @@
                 },
                 {
                   "assignments": [
-                    11052
+                    11071
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 11052,
+                      "id": 11071,
                       "name": "_code",
                       "nodeType": "VariableDeclaration",
-                      "scope": 11099,
+                      "scope": 11118,
                       "src": "1172:18:49",
                       "stateVariable": false,
                       "storageLocation": "memory",
@@ -1245,7 +1245,7 @@
                         "typeString": "bytes"
                       },
                       "typeName": {
-                        "id": 11051,
+                        "id": 11070,
                         "name": "bytes",
                         "nodeType": "ElementaryTypeName",
                         "src": "1172:5:49",
@@ -1258,14 +1258,14 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 11054,
+                  "id": 11073,
                   "initialValue": {
                     "argumentTypes": null,
-                    "id": 11053,
+                    "id": 11072,
                     "name": "bytecode",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 10981,
+                    "referencedDeclaration": 11000,
                     "src": "1193:8:49",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bytes_storage",
@@ -1279,7 +1279,7 @@
                   "externalReferences": [
                     {
                       "proxy": {
-                        "declaration": 11026,
+                        "declaration": 11045,
                         "isOffset": false,
                         "isSlot": false,
                         "src": "1299:5:49",
@@ -1288,7 +1288,7 @@
                     },
                     {
                       "_code": {
-                        "declaration": 11052,
+                        "declaration": 11071,
                         "isOffset": false,
                         "isSlot": false,
                         "src": "1343:5:49",
@@ -1297,7 +1297,7 @@
                     },
                     {
                       "_code": {
-                        "declaration": 11052,
+                        "declaration": 11071,
                         "isOffset": false,
                         "isSlot": false,
                         "src": "1323:5:49",
@@ -1306,7 +1306,7 @@
                     },
                     {
                       "salt": {
-                        "declaration": 11038,
+                        "declaration": 11057,
                         "isOffset": false,
                         "isSlot": false,
                         "src": "1351:4:49",
@@ -1315,7 +1315,7 @@
                     },
                     {
                       "proxy": {
-                        "declaration": 11026,
+                        "declaration": 11045,
                         "isOffset": false,
                         "isSlot": false,
                         "src": "1391:5:49",
@@ -1323,38 +1323,38 @@
                       }
                     }
                   ],
-                  "id": 11055,
+                  "id": 11074,
                   "nodeType": "InlineAssembly",
                   "operations": "{\n    proxy := create2(0, add(_code, 0x20), mload(_code), salt)\n    if iszero(extcodesize(proxy)) { revert(0, 0) }\n}",
                   "src": "1276:177:49"
                 },
                 {
                   "assignments": [
-                    11057
+                    11076
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 11057,
+                      "id": 11076,
                       "name": "wallet",
                       "nodeType": "VariableDeclaration",
-                      "scope": 11099,
+                      "scope": 11118,
                       "src": "1463:13:49",
                       "stateVariable": false,
                       "storageLocation": "default",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Wallet_$11495",
+                        "typeIdentifier": "t_contract$_Wallet_$11514",
                         "typeString": "contract Wallet"
                       },
                       "typeName": {
                         "contractScope": null,
-                        "id": 11056,
+                        "id": 11075,
                         "name": "Wallet",
                         "nodeType": "UserDefinedTypeName",
-                        "referencedDeclaration": 11495,
+                        "referencedDeclaration": 11514,
                         "src": "1463:6:49",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_Wallet_$11495",
+                          "typeIdentifier": "t_contract$_Wallet_$11514",
                           "typeString": "contract Wallet"
                         }
                       },
@@ -1362,17 +1362,17 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 11061,
+                  "id": 11080,
                   "initialValue": {
                     "argumentTypes": null,
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 11059,
+                        "id": 11078,
                         "name": "proxy",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11026,
+                        "referencedDeclaration": 11045,
                         "src": "1486:5:49",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address_payable",
@@ -1387,18 +1387,18 @@
                           "typeString": "address payable"
                         }
                       ],
-                      "id": 11058,
+                      "id": 11077,
                       "name": "Wallet",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11495,
+                      "referencedDeclaration": 11514,
                       "src": "1479:6:49",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_type$_t_contract$_Wallet_$11495_$",
+                        "typeIdentifier": "t_type$_t_contract$_Wallet_$11514_$",
                         "typeString": "type(contract Wallet)"
                       }
                     },
-                    "id": 11060,
+                    "id": 11079,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1408,7 +1408,7 @@
                     "nodeType": "FunctionCall",
                     "src": "1479:13:49",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_Wallet_$11495",
+                      "typeIdentifier": "t_contract$_Wallet_$11514",
                       "typeString": "contract Wallet"
                     }
                   },
@@ -1421,11 +1421,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 11065,
+                        "id": 11084,
                         "name": "_owner",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11017,
+                        "referencedDeclaration": 11036,
                         "src": "1515:6:49",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -1434,27 +1434,27 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 11066,
+                        "id": 11085,
                         "name": "delegates",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10977,
+                        "referencedDeclaration": 10996,
                         "src": "1523:9:49",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_Delegates_$12090",
+                          "typeIdentifier": "t_contract$_Delegates_$12109",
                           "typeString": "contract Delegates"
                         }
                       },
                       {
                         "argumentTypes": null,
-                        "id": 11067,
+                        "id": 11086,
                         "name": "modules",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10975,
+                        "referencedDeclaration": 10994,
                         "src": "1534:7:49",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_LimitedModules_$14547",
+                          "typeIdentifier": "t_contract$_LimitedModules_$14566",
                           "typeString": "contract LimitedModules"
                         }
                       }
@@ -1466,42 +1466,42 @@
                           "typeString": "address"
                         },
                         {
-                          "typeIdentifier": "t_contract$_Delegates_$12090",
+                          "typeIdentifier": "t_contract$_Delegates_$12109",
                           "typeString": "contract Delegates"
                         },
                         {
-                          "typeIdentifier": "t_contract$_LimitedModules_$14547",
+                          "typeIdentifier": "t_contract$_LimitedModules_$14566",
                           "typeString": "contract LimitedModules"
                         }
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 11062,
+                        "id": 11081,
                         "name": "wallet",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11057,
+                        "referencedDeclaration": 11076,
                         "src": "1503:6:49",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_Wallet_$11495",
+                          "typeIdentifier": "t_contract$_Wallet_$11514",
                           "typeString": "contract Wallet"
                         }
                       },
-                      "id": 11064,
+                      "id": 11083,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "init",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 11389,
+                      "referencedDeclaration": 11408,
                       "src": "1503:11:49",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_contract$_Delegates_$12090_$_t_contract$_Modules_$15035_$returns$__$",
+                        "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_contract$_Delegates_$12109_$_t_contract$_Modules_$15054_$returns$__$",
                         "typeString": "function (address,contract Delegates,contract Modules) external"
                       }
                     },
-                    "id": 11068,
+                    "id": 11087,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1515,7 +1515,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11069,
+                  "id": 11088,
                   "nodeType": "ExpressionStatement",
                   "src": "1503:39:49"
                 },
@@ -1525,24 +1525,24 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 11073,
+                        "id": 11092,
                         "name": "wallet",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11057,
+                        "referencedDeclaration": 11076,
                         "src": "1565:6:49",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_Wallet_$11495",
+                          "typeIdentifier": "t_contract$_Wallet_$11514",
                           "typeString": "contract Wallet"
                         }
                       },
                       {
                         "argumentTypes": null,
-                        "id": 11074,
+                        "id": 11093,
                         "name": "_modules",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11020,
+                        "referencedDeclaration": 11039,
                         "src": "1573:8:49",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
@@ -1551,14 +1551,14 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 11075,
+                        "id": 11094,
                         "name": "multiLimiter",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10979,
+                        "referencedDeclaration": 10998,
                         "src": "1583:12:49",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_MultiLimiter_$13138",
+                          "typeIdentifier": "t_contract$_MultiLimiter_$13157",
                           "typeString": "contract MultiLimiter"
                         }
                       }
@@ -1566,7 +1566,7 @@
                     "expression": {
                       "argumentTypes": [
                         {
-                          "typeIdentifier": "t_contract$_Wallet_$11495",
+                          "typeIdentifier": "t_contract$_Wallet_$11514",
                           "typeString": "contract Wallet"
                         },
                         {
@@ -1574,38 +1574,38 @@
                           "typeString": "address[] memory"
                         },
                         {
-                          "typeIdentifier": "t_contract$_MultiLimiter_$13138",
+                          "typeIdentifier": "t_contract$_MultiLimiter_$13157",
                           "typeString": "contract MultiLimiter"
                         }
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 11070,
+                        "id": 11089,
                         "name": "modules",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10975,
+                        "referencedDeclaration": 10994,
                         "src": "1552:7:49",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_LimitedModules_$14547",
+                          "typeIdentifier": "t_contract$_LimitedModules_$14566",
                           "typeString": "contract LimitedModules"
                         }
                       },
-                      "id": 11072,
+                      "id": 11091,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "init",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 14364,
+                      "referencedDeclaration": 14383,
                       "src": "1552:12:49",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_external_nonpayable$_t_contract$_Wallet_$11495_$_t_array$_t_address_$dyn_memory_ptr_$_t_contract$_Limiter_$12279_$returns$__$",
+                        "typeIdentifier": "t_function_external_nonpayable$_t_contract$_Wallet_$11514_$_t_array$_t_address_$dyn_memory_ptr_$_t_contract$_Limiter_$12298_$returns$__$",
                         "typeString": "function (contract Wallet,address[] memory,contract Limiter) external"
                       }
                     },
-                    "id": 11076,
+                    "id": 11095,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1619,7 +1619,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11077,
+                  "id": 11096,
                   "nodeType": "ExpressionStatement",
                   "src": "1552:44:49"
                 },
@@ -1629,27 +1629,27 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 11081,
+                        "id": 11100,
                         "name": "wallet",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11057,
+                        "referencedDeclaration": 11076,
                         "src": "1624:6:49",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_Wallet_$11495",
+                          "typeIdentifier": "t_contract$_Wallet_$11514",
                           "typeString": "contract Wallet"
                         }
                       },
                       {
                         "argumentTypes": null,
-                        "id": 11082,
+                        "id": 11101,
                         "name": "_limiters",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11023,
+                        "referencedDeclaration": 11042,
                         "src": "1632:9:49",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_array$_t_contract$_Limiter_$12279_$dyn_memory_ptr",
+                          "typeIdentifier": "t_array$_t_contract$_Limiter_$12298_$dyn_memory_ptr",
                           "typeString": "contract Limiter[] memory"
                         }
                       }
@@ -1657,42 +1657,42 @@
                     "expression": {
                       "argumentTypes": [
                         {
-                          "typeIdentifier": "t_contract$_Wallet_$11495",
+                          "typeIdentifier": "t_contract$_Wallet_$11514",
                           "typeString": "contract Wallet"
                         },
                         {
-                          "typeIdentifier": "t_array$_t_contract$_Limiter_$12279_$dyn_memory_ptr",
+                          "typeIdentifier": "t_array$_t_contract$_Limiter_$12298_$dyn_memory_ptr",
                           "typeString": "contract Limiter[] memory"
                         }
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 11078,
+                        "id": 11097,
                         "name": "multiLimiter",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10979,
+                        "referencedDeclaration": 10998,
                         "src": "1606:12:49",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_MultiLimiter_$13138",
+                          "typeIdentifier": "t_contract$_MultiLimiter_$13157",
                           "typeString": "contract MultiLimiter"
                         }
                       },
-                      "id": 11080,
+                      "id": 11099,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "init",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 12861,
+                      "referencedDeclaration": 12880,
                       "src": "1606:17:49",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_external_nonpayable$_t_contract$_Wallet_$11495_$_t_array$_t_contract$_Limiter_$12279_$dyn_memory_ptr_$returns$__$",
+                        "typeIdentifier": "t_function_external_nonpayable$_t_contract$_Wallet_$11514_$_t_array$_t_contract$_Limiter_$12298_$dyn_memory_ptr_$returns$__$",
                         "typeString": "function (contract Wallet,contract Limiter[] memory) external"
                       }
                     },
-                    "id": 11083,
+                    "id": 11102,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1706,7 +1706,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11084,
+                  "id": 11103,
                   "nodeType": "ExpressionStatement",
                   "src": "1606:36:49"
                 },
@@ -1716,11 +1716,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 11086,
+                        "id": 11105,
                         "name": "proxy",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11026,
+                        "referencedDeclaration": 11045,
                         "src": "1672:5:49",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address_payable",
@@ -1729,11 +1729,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 11087,
+                        "id": 11106,
                         "name": "_owner",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11017,
+                        "referencedDeclaration": 11036,
                         "src": "1679:6:49",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -1752,18 +1752,18 @@
                           "typeString": "address"
                         }
                       ],
-                      "id": 11085,
+                      "id": 11104,
                       "name": "WalletCreated",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10987,
+                      "referencedDeclaration": 11006,
                       "src": "1658:13:49",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_address_$returns$__$",
                         "typeString": "function (address,address)"
                       }
                     },
-                    "id": 11088,
+                    "id": 11107,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1777,7 +1777,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11089,
+                  "id": 11108,
                   "nodeType": "EmitStatement",
                   "src": "1653:33:49"
                 },
@@ -1791,7 +1791,7 @@
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
-                        "id": 11095,
+                        "id": 11114,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1803,32 +1803,32 @@
                             "argumentTypes": [],
                             "expression": {
                               "argumentTypes": null,
-                              "id": 11091,
+                              "id": 11110,
                               "name": "wallet",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 11057,
+                              "referencedDeclaration": 11076,
                               "src": "1704:6:49",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_contract$_Wallet_$11495",
+                                "typeIdentifier": "t_contract$_Wallet_$11514",
                                 "typeString": "contract Wallet"
                               }
                             },
-                            "id": 11092,
+                            "id": 11111,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
                             "lValueRequested": false,
                             "memberName": "owner",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 11181,
+                            "referencedDeclaration": 11200,
                             "src": "1704:12:49",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_external_view$__$returns$_t_address_$",
                               "typeString": "function () view external returns (address)"
                             }
                           },
-                          "id": 11093,
+                          "id": 11112,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1846,11 +1846,11 @@
                         "operator": "==",
                         "rightExpression": {
                           "argumentTypes": null,
-                          "id": 11094,
+                          "id": 11113,
                           "name": "_owner",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11017,
+                          "referencedDeclaration": 11036,
                           "src": "1722:6:49",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -1866,7 +1866,7 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "77726f6e672077616c6c6574206f776e6572",
-                        "id": 11096,
+                        "id": 11115,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -1893,21 +1893,21 @@
                           "typeString": "literal_string \"wrong wallet owner\""
                         }
                       ],
-                      "id": 11090,
+                      "id": 11109,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "1696:7:49",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11097,
+                    "id": 11116,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1921,29 +1921,29 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11098,
+                  "id": 11117,
                   "nodeType": "ExpressionStatement",
                   "src": "1696:55:49"
                 }
               ]
             },
             "documentation": null,
-            "id": 11100,
+            "id": 11119,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "createProxyWallet",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11024,
+              "id": 11043,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11017,
+                  "id": 11036,
                   "name": "_owner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11100,
+                  "scope": 11119,
                   "src": "859:14:49",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1952,7 +1952,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11016,
+                    "id": 11035,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "859:7:49",
@@ -1967,10 +1967,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 11020,
+                  "id": 11039,
                   "name": "_modules",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11100,
+                  "scope": 11119,
                   "src": "883:25:49",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -1980,7 +1980,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 11018,
+                      "id": 11037,
                       "name": "address",
                       "nodeType": "ElementaryTypeName",
                       "src": "883:7:49",
@@ -1990,7 +1990,7 @@
                         "typeString": "address"
                       }
                     },
-                    "id": 11019,
+                    "id": 11038,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "883:9:49",
@@ -2004,36 +2004,36 @@
                 },
                 {
                   "constant": false,
-                  "id": 11023,
+                  "id": 11042,
                   "name": "_limiters",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11100,
+                  "scope": 11119,
                   "src": "918:26:49",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_array$_t_contract$_Limiter_$12279_$dyn_memory_ptr",
+                    "typeIdentifier": "t_array$_t_contract$_Limiter_$12298_$dyn_memory_ptr",
                     "typeString": "contract Limiter[]"
                   },
                   "typeName": {
                     "baseType": {
                       "contractScope": null,
-                      "id": 11021,
+                      "id": 11040,
                       "name": "Limiter",
                       "nodeType": "UserDefinedTypeName",
-                      "referencedDeclaration": 12279,
+                      "referencedDeclaration": 12298,
                       "src": "918:7:49",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Limiter_$12279",
+                        "typeIdentifier": "t_contract$_Limiter_$12298",
                         "typeString": "contract Limiter"
                       }
                     },
-                    "id": 11022,
+                    "id": 11041,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "918:9:49",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_array$_t_contract$_Limiter_$12279_$dyn_storage_ptr",
+                      "typeIdentifier": "t_array$_t_contract$_Limiter_$12298_$dyn_storage_ptr",
                       "typeString": "contract Limiter[]"
                     }
                   },
@@ -2044,15 +2044,15 @@
               "src": "849:101:49"
             },
             "returnParameters": {
-              "id": 11027,
+              "id": 11046,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11026,
+                  "id": 11045,
                   "name": "proxy",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11100,
+                  "scope": 11119,
                   "src": "983:21:49",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2061,7 +2061,7 @@
                     "typeString": "address payable"
                   },
                   "typeName": {
-                    "id": 11025,
+                    "id": 11044,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "983:15:49",
@@ -2077,14 +2077,14 @@
               ],
               "src": "982:23:49"
             },
-            "scope": 11101,
+            "scope": 11120,
             "src": "823:936:49",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 11102,
+        "scope": 11121,
         "src": "205:1556:49"
       }
     ],
@@ -2094,14 +2094,14 @@
     "absolutePath": "/Users/kerman/immutable/gods-unchained-contracts/packages/contracts/contracts/wallet/Factory.sol",
     "exportedSymbols": {
       "Factory": [
-        11101
+        11120
       ]
     },
-    "id": 11102,
+    "id": 11121,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 10966,
+        "id": 10985,
         "literals": [
           "solidity",
           "^",
@@ -2114,10 +2114,10 @@
       {
         "absolutePath": "@openzeppelin/contracts/ownership/Ownable.sol",
         "file": "@openzeppelin/contracts/ownership/Ownable.sol",
-        "id": 10967,
+        "id": 10986,
         "nodeType": "ImportDirective",
-        "scope": 11102,
-        "sourceUnit": 17359,
+        "scope": 11121,
+        "sourceUnit": 17378,
         "src": "25:55:49",
         "symbolAliases": [],
         "unitAlias": ""
@@ -2125,10 +2125,10 @@
       {
         "absolutePath": "/Users/kerman/immutable/gods-unchained-contracts/packages/contracts/contracts/wallet/Proxy.sol",
         "file": "./Proxy.sol",
-        "id": 10968,
+        "id": 10987,
         "nodeType": "ImportDirective",
-        "scope": 11102,
-        "sourceUnit": 11162,
+        "scope": 11121,
+        "sourceUnit": 11181,
         "src": "82:21:49",
         "symbolAliases": [],
         "unitAlias": ""
@@ -2136,10 +2136,10 @@
       {
         "absolutePath": "/Users/kerman/immutable/gods-unchained-contracts/packages/contracts/contracts/wallet/Wallet.sol",
         "file": "./Wallet.sol",
-        "id": 10969,
+        "id": 10988,
         "nodeType": "ImportDirective",
-        "scope": 11102,
-        "sourceUnit": 11496,
+        "scope": 11121,
+        "sourceUnit": 11515,
         "src": "104:22:49",
         "symbolAliases": [],
         "unitAlias": ""
@@ -2147,10 +2147,10 @@
       {
         "absolutePath": "/Users/kerman/immutable/gods-unchained-contracts/packages/contracts/contracts/wallet/modules/LimitedModules.sol",
         "file": "./modules/LimitedModules.sol",
-        "id": 10970,
+        "id": 10989,
         "nodeType": "ImportDirective",
-        "scope": 11102,
-        "sourceUnit": 14548,
+        "scope": 11121,
+        "sourceUnit": 14567,
         "src": "127:38:49",
         "symbolAliases": [],
         "unitAlias": ""
@@ -2158,10 +2158,10 @@
       {
         "absolutePath": "/Users/kerman/immutable/gods-unchained-contracts/packages/contracts/contracts/wallet/limiters/MultiLimiter.sol",
         "file": "./limiters/MultiLimiter.sol",
-        "id": 10971,
+        "id": 10990,
         "nodeType": "ImportDirective",
-        "scope": 11102,
-        "sourceUnit": 13139,
+        "scope": 11121,
+        "sourceUnit": 13158,
         "src": "166:37:49",
         "symbolAliases": [],
         "unitAlias": ""
@@ -2172,59 +2172,59 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 10972,
+              "id": 10991,
               "name": "Ownable",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 17358,
+              "referencedDeclaration": 17377,
               "src": "225:7:49",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Ownable_$17358",
+                "typeIdentifier": "t_contract$_Ownable_$17377",
                 "typeString": "contract Ownable"
               }
             },
-            "id": 10973,
+            "id": 10992,
             "nodeType": "InheritanceSpecifier",
             "src": "225:7:49"
           }
         ],
         "contractDependencies": [
-          16758,
-          17358
+          16777,
+          17377
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 11101,
+        "id": 11120,
         "linearizedBaseContracts": [
-          11101,
-          17358,
-          16758
+          11120,
+          17377,
+          16777
         ],
         "name": "Factory",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 10975,
+            "id": 10994,
             "name": "modules",
             "nodeType": "VariableDeclaration",
-            "scope": 11101,
+            "scope": 11120,
             "src": "240:29:49",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_LimitedModules_$14547",
+              "typeIdentifier": "t_contract$_LimitedModules_$14566",
               "typeString": "contract LimitedModules"
             },
             "typeName": {
               "contractScope": null,
-              "id": 10974,
+              "id": 10993,
               "name": "LimitedModules",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 14547,
+              "referencedDeclaration": 14566,
               "src": "240:14:49",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_LimitedModules_$14547",
+                "typeIdentifier": "t_contract$_LimitedModules_$14566",
                 "typeString": "contract LimitedModules"
               }
             },
@@ -2233,26 +2233,26 @@
           },
           {
             "constant": false,
-            "id": 10977,
+            "id": 10996,
             "name": "delegates",
             "nodeType": "VariableDeclaration",
-            "scope": 11101,
+            "scope": 11120,
             "src": "275:26:49",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_Delegates_$12090",
+              "typeIdentifier": "t_contract$_Delegates_$12109",
               "typeString": "contract Delegates"
             },
             "typeName": {
               "contractScope": null,
-              "id": 10976,
+              "id": 10995,
               "name": "Delegates",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 12090,
+              "referencedDeclaration": 12109,
               "src": "275:9:49",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Delegates_$12090",
+                "typeIdentifier": "t_contract$_Delegates_$12109",
                 "typeString": "contract Delegates"
               }
             },
@@ -2261,26 +2261,26 @@
           },
           {
             "constant": false,
-            "id": 10979,
+            "id": 10998,
             "name": "multiLimiter",
             "nodeType": "VariableDeclaration",
-            "scope": 11101,
+            "scope": 11120,
             "src": "307:32:49",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_MultiLimiter_$13138",
+              "typeIdentifier": "t_contract$_MultiLimiter_$13157",
               "typeString": "contract MultiLimiter"
             },
             "typeName": {
               "contractScope": null,
-              "id": 10978,
+              "id": 10997,
               "name": "MultiLimiter",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 13138,
+              "referencedDeclaration": 13157,
               "src": "307:12:49",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_MultiLimiter_$13138",
+                "typeIdentifier": "t_contract$_MultiLimiter_$13157",
                 "typeString": "contract MultiLimiter"
               }
             },
@@ -2289,10 +2289,10 @@
           },
           {
             "constant": false,
-            "id": 10981,
+            "id": 11000,
             "name": "bytecode",
             "nodeType": "VariableDeclaration",
-            "scope": 11101,
+            "scope": 11120,
             "src": "345:21:49",
             "stateVariable": true,
             "storageLocation": "default",
@@ -2301,7 +2301,7 @@
               "typeString": "bytes"
             },
             "typeName": {
-              "id": 10980,
+              "id": 10999,
               "name": "bytes",
               "nodeType": "ElementaryTypeName",
               "src": "345:5:49",
@@ -2316,20 +2316,20 @@
           {
             "anonymous": false,
             "documentation": null,
-            "id": 10987,
+            "id": 11006,
             "name": "WalletCreated",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 10986,
+              "id": 11005,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10983,
+                  "id": 11002,
                   "indexed": true,
                   "name": "wallet",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10987,
+                  "scope": 11006,
                   "src": "402:22:49",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2338,7 +2338,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 10982,
+                    "id": 11001,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "402:7:49",
@@ -2353,11 +2353,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 10985,
+                  "id": 11004,
                   "indexed": true,
                   "name": "owner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10987,
+                  "scope": 11006,
                   "src": "434:21:49",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2366,7 +2366,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 10984,
+                    "id": 11003,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "434:7:49",
@@ -2386,28 +2386,28 @@
           },
           {
             "body": {
-              "id": 11014,
+              "id": 11033,
               "nodeType": "Block",
               "src": "636:135:49",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 11000,
+                    "id": 11019,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 10998,
+                      "id": 11017,
                       "name": "modules",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10975,
+                      "referencedDeclaration": 10994,
                       "src": "646:7:49",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_LimitedModules_$14547",
+                        "typeIdentifier": "t_contract$_LimitedModules_$14566",
                         "typeString": "contract LimitedModules"
                       }
                     },
@@ -2415,45 +2415,45 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 10999,
+                      "id": 11018,
                       "name": "_modules",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10989,
+                      "referencedDeclaration": 11008,
                       "src": "656:8:49",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_LimitedModules_$14547",
+                        "typeIdentifier": "t_contract$_LimitedModules_$14566",
                         "typeString": "contract LimitedModules"
                       }
                     },
                     "src": "646:18:49",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_LimitedModules_$14547",
+                      "typeIdentifier": "t_contract$_LimitedModules_$14566",
                       "typeString": "contract LimitedModules"
                     }
                   },
-                  "id": 11001,
+                  "id": 11020,
                   "nodeType": "ExpressionStatement",
                   "src": "646:18:49"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 11004,
+                    "id": 11023,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 11002,
+                      "id": 11021,
                       "name": "delegates",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10977,
+                      "referencedDeclaration": 10996,
                       "src": "674:9:49",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Delegates_$12090",
+                        "typeIdentifier": "t_contract$_Delegates_$12109",
                         "typeString": "contract Delegates"
                       }
                     },
@@ -2461,45 +2461,45 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 11003,
+                      "id": 11022,
                       "name": "_delegates",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10991,
+                      "referencedDeclaration": 11010,
                       "src": "686:10:49",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Delegates_$12090",
+                        "typeIdentifier": "t_contract$_Delegates_$12109",
                         "typeString": "contract Delegates"
                       }
                     },
                     "src": "674:22:49",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_Delegates_$12090",
+                      "typeIdentifier": "t_contract$_Delegates_$12109",
                       "typeString": "contract Delegates"
                     }
                   },
-                  "id": 11005,
+                  "id": 11024,
                   "nodeType": "ExpressionStatement",
                   "src": "674:22:49"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 11008,
+                    "id": 11027,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 11006,
+                      "id": 11025,
                       "name": "multiLimiter",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10979,
+                      "referencedDeclaration": 10998,
                       "src": "706:12:49",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_MultiLimiter_$13138",
+                        "typeIdentifier": "t_contract$_MultiLimiter_$13157",
                         "typeString": "contract MultiLimiter"
                       }
                     },
@@ -2507,42 +2507,42 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 11007,
+                      "id": 11026,
                       "name": "_multiLimiter",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10993,
+                      "referencedDeclaration": 11012,
                       "src": "721:13:49",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_MultiLimiter_$13138",
+                        "typeIdentifier": "t_contract$_MultiLimiter_$13157",
                         "typeString": "contract MultiLimiter"
                       }
                     },
                     "src": "706:28:49",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_MultiLimiter_$13138",
+                      "typeIdentifier": "t_contract$_MultiLimiter_$13157",
                       "typeString": "contract MultiLimiter"
                     }
                   },
-                  "id": 11009,
+                  "id": 11028,
                   "nodeType": "ExpressionStatement",
                   "src": "706:28:49"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 11012,
+                    "id": 11031,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 11010,
+                      "id": 11029,
                       "name": "bytecode",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10981,
+                      "referencedDeclaration": 11000,
                       "src": "744:8:49",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes_storage",
@@ -2553,11 +2553,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 11011,
+                      "id": 11030,
                       "name": "_bytecode",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10995,
+                      "referencedDeclaration": 11014,
                       "src": "755:9:49",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes_memory_ptr",
@@ -2570,45 +2570,45 @@
                       "typeString": "bytes storage ref"
                     }
                   },
-                  "id": 11013,
+                  "id": 11032,
                   "nodeType": "ExpressionStatement",
                   "src": "744:20:49"
                 }
               ]
             },
             "documentation": null,
-            "id": 11015,
+            "id": 11034,
             "implemented": true,
             "kind": "constructor",
             "modifiers": [],
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 10996,
+              "id": 11015,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10989,
+                  "id": 11008,
                   "name": "_modules",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11015,
+                  "scope": 11034,
                   "src": "489:23:49",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_LimitedModules_$14547",
+                    "typeIdentifier": "t_contract$_LimitedModules_$14566",
                     "typeString": "contract LimitedModules"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 10988,
+                    "id": 11007,
                     "name": "LimitedModules",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 14547,
+                    "referencedDeclaration": 14566,
                     "src": "489:14:49",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_LimitedModules_$14547",
+                      "typeIdentifier": "t_contract$_LimitedModules_$14566",
                       "typeString": "contract LimitedModules"
                     }
                   },
@@ -2617,26 +2617,26 @@
                 },
                 {
                   "constant": false,
-                  "id": 10991,
+                  "id": 11010,
                   "name": "_delegates",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11015,
+                  "scope": 11034,
                   "src": "522:20:49",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_Delegates_$12090",
+                    "typeIdentifier": "t_contract$_Delegates_$12109",
                     "typeString": "contract Delegates"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 10990,
+                    "id": 11009,
                     "name": "Delegates",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 12090,
+                    "referencedDeclaration": 12109,
                     "src": "522:9:49",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_Delegates_$12090",
+                      "typeIdentifier": "t_contract$_Delegates_$12109",
                       "typeString": "contract Delegates"
                     }
                   },
@@ -2645,26 +2645,26 @@
                 },
                 {
                   "constant": false,
-                  "id": 10993,
+                  "id": 11012,
                   "name": "_multiLimiter",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11015,
+                  "scope": 11034,
                   "src": "552:26:49",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_MultiLimiter_$13138",
+                    "typeIdentifier": "t_contract$_MultiLimiter_$13157",
                     "typeString": "contract MultiLimiter"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 10992,
+                    "id": 11011,
                     "name": "MultiLimiter",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 13138,
+                    "referencedDeclaration": 13157,
                     "src": "552:12:49",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_MultiLimiter_$13138",
+                      "typeIdentifier": "t_contract$_MultiLimiter_$13157",
                       "typeString": "contract MultiLimiter"
                     }
                   },
@@ -2673,10 +2673,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 10995,
+                  "id": 11014,
                   "name": "_bytecode",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11015,
+                  "scope": 11034,
                   "src": "588:22:49",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -2685,7 +2685,7 @@
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 10994,
+                    "id": 11013,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
                     "src": "588:5:49",
@@ -2701,12 +2701,12 @@
               "src": "479:137:49"
             },
             "returnParameters": {
-              "id": 10997,
+              "id": 11016,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "636:0:49"
             },
-            "scope": 11101,
+            "scope": 11120,
             "src": "468:303:49",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -2714,7 +2714,7 @@
           },
           {
             "body": {
-              "id": 11099,
+              "id": 11118,
               "nodeType": "Block",
               "src": "1010:749:49",
               "statements": [
@@ -2728,18 +2728,18 @@
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
-                        "id": 11033,
+                        "id": 11052,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
                           "argumentTypes": null,
-                          "id": 11029,
+                          "id": 11048,
                           "name": "_owner",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11017,
+                          "referencedDeclaration": 11036,
                           "src": "1028:6:49",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -2754,7 +2754,7 @@
                             {
                               "argumentTypes": null,
                               "hexValue": "30",
-                              "id": 11031,
+                              "id": 11050,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -2777,7 +2777,7 @@
                                 "typeString": "int_const 0"
                               }
                             ],
-                            "id": 11030,
+                            "id": 11049,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -2790,7 +2790,7 @@
                             },
                             "typeName": "address"
                           },
-                          "id": 11032,
+                          "id": 11051,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -2813,7 +2813,7 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "6f776e6572206d757374206e6f74206265206e756c6c",
-                        "id": 11034,
+                        "id": 11053,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -2840,21 +2840,21 @@
                           "typeString": "literal_string \"owner must not be null\""
                         }
                       ],
-                      "id": 11028,
+                      "id": 11047,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "1020:7:49",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11035,
+                    "id": 11054,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2868,21 +2868,21 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11036,
+                  "id": 11055,
                   "nodeType": "ExpressionStatement",
                   "src": "1020:55:49"
                 },
                 {
                   "assignments": [
-                    11038
+                    11057
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 11038,
+                      "id": 11057,
                       "name": "salt",
                       "nodeType": "VariableDeclaration",
-                      "scope": 11099,
+                      "scope": 11118,
                       "src": "1085:12:49",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -2891,7 +2891,7 @@
                         "typeString": "bytes32"
                       },
                       "typeName": {
-                        "id": 11037,
+                        "id": 11056,
                         "name": "bytes32",
                         "nodeType": "ElementaryTypeName",
                         "src": "1085:7:49",
@@ -2904,7 +2904,7 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 11050,
+                  "id": 11069,
                   "initialValue": {
                     "argumentTypes": null,
                     "arguments": [
@@ -2915,18 +2915,18 @@
                             "argumentTypes": null,
                             "expression": {
                               "argumentTypes": null,
-                              "id": 11042,
+                              "id": 11061,
                               "name": "msg",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 19385,
+                              "referencedDeclaration": 19404,
                               "src": "1127:3:49",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_magic_message",
                                 "typeString": "msg"
                               }
                             },
-                            "id": 11043,
+                            "id": 11062,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -2942,11 +2942,11 @@
                           },
                           {
                             "argumentTypes": null,
-                            "id": 11044,
+                            "id": 11063,
                             "name": "_owner",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 11017,
+                            "referencedDeclaration": 11036,
                             "src": "1139:6:49",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
@@ -2958,14 +2958,14 @@
                             "arguments": [
                               {
                                 "argumentTypes": null,
-                                "id": 11046,
+                                "id": 11065,
                                 "name": "this",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 19565,
+                                "referencedDeclaration": 19584,
                                 "src": "1155:4:49",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_contract$_Factory_$11101",
+                                  "typeIdentifier": "t_contract$_Factory_$11120",
                                   "typeString": "contract Factory"
                                 }
                               }
@@ -2973,11 +2973,11 @@
                             "expression": {
                               "argumentTypes": [
                                 {
-                                  "typeIdentifier": "t_contract$_Factory_$11101",
+                                  "typeIdentifier": "t_contract$_Factory_$11120",
                                   "typeString": "contract Factory"
                                 }
                               ],
-                              "id": 11045,
+                              "id": 11064,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -2990,7 +2990,7 @@
                               },
                               "typeName": "address"
                             },
-                            "id": 11047,
+                            "id": 11066,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -3022,18 +3022,18 @@
                           ],
                           "expression": {
                             "argumentTypes": null,
-                            "id": 11040,
+                            "id": 11059,
                             "name": "abi",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 19372,
+                            "referencedDeclaration": 19391,
                             "src": "1110:3:49",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_abi",
                               "typeString": "abi"
                             }
                           },
-                          "id": 11041,
+                          "id": 11060,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -3047,7 +3047,7 @@
                             "typeString": "function () pure returns (bytes memory)"
                           }
                         },
-                        "id": 11048,
+                        "id": 11067,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -3069,18 +3069,18 @@
                           "typeString": "bytes memory"
                         }
                       ],
-                      "id": 11039,
+                      "id": 11058,
                       "name": "keccak256",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 19379,
+                      "referencedDeclaration": 19398,
                       "src": "1100:9:49",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_keccak256_pure$_t_bytes_memory_ptr_$returns$_t_bytes32_$",
                         "typeString": "function (bytes memory) pure returns (bytes32)"
                       }
                     },
-                    "id": 11049,
+                    "id": 11068,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3099,15 +3099,15 @@
                 },
                 {
                   "assignments": [
-                    11052
+                    11071
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 11052,
+                      "id": 11071,
                       "name": "_code",
                       "nodeType": "VariableDeclaration",
-                      "scope": 11099,
+                      "scope": 11118,
                       "src": "1172:18:49",
                       "stateVariable": false,
                       "storageLocation": "memory",
@@ -3116,7 +3116,7 @@
                         "typeString": "bytes"
                       },
                       "typeName": {
-                        "id": 11051,
+                        "id": 11070,
                         "name": "bytes",
                         "nodeType": "ElementaryTypeName",
                         "src": "1172:5:49",
@@ -3129,14 +3129,14 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 11054,
+                  "id": 11073,
                   "initialValue": {
                     "argumentTypes": null,
-                    "id": 11053,
+                    "id": 11072,
                     "name": "bytecode",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 10981,
+                    "referencedDeclaration": 11000,
                     "src": "1193:8:49",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bytes_storage",
@@ -3150,7 +3150,7 @@
                   "externalReferences": [
                     {
                       "proxy": {
-                        "declaration": 11026,
+                        "declaration": 11045,
                         "isOffset": false,
                         "isSlot": false,
                         "src": "1299:5:49",
@@ -3159,7 +3159,7 @@
                     },
                     {
                       "_code": {
-                        "declaration": 11052,
+                        "declaration": 11071,
                         "isOffset": false,
                         "isSlot": false,
                         "src": "1343:5:49",
@@ -3168,7 +3168,7 @@
                     },
                     {
                       "_code": {
-                        "declaration": 11052,
+                        "declaration": 11071,
                         "isOffset": false,
                         "isSlot": false,
                         "src": "1323:5:49",
@@ -3177,7 +3177,7 @@
                     },
                     {
                       "salt": {
-                        "declaration": 11038,
+                        "declaration": 11057,
                         "isOffset": false,
                         "isSlot": false,
                         "src": "1351:4:49",
@@ -3186,7 +3186,7 @@
                     },
                     {
                       "proxy": {
-                        "declaration": 11026,
+                        "declaration": 11045,
                         "isOffset": false,
                         "isSlot": false,
                         "src": "1391:5:49",
@@ -3194,38 +3194,38 @@
                       }
                     }
                   ],
-                  "id": 11055,
+                  "id": 11074,
                   "nodeType": "InlineAssembly",
                   "operations": "{\n    proxy := create2(0, add(_code, 0x20), mload(_code), salt)\n    if iszero(extcodesize(proxy)) { revert(0, 0) }\n}",
                   "src": "1276:177:49"
                 },
                 {
                   "assignments": [
-                    11057
+                    11076
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 11057,
+                      "id": 11076,
                       "name": "wallet",
                       "nodeType": "VariableDeclaration",
-                      "scope": 11099,
+                      "scope": 11118,
                       "src": "1463:13:49",
                       "stateVariable": false,
                       "storageLocation": "default",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Wallet_$11495",
+                        "typeIdentifier": "t_contract$_Wallet_$11514",
                         "typeString": "contract Wallet"
                       },
                       "typeName": {
                         "contractScope": null,
-                        "id": 11056,
+                        "id": 11075,
                         "name": "Wallet",
                         "nodeType": "UserDefinedTypeName",
-                        "referencedDeclaration": 11495,
+                        "referencedDeclaration": 11514,
                         "src": "1463:6:49",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_Wallet_$11495",
+                          "typeIdentifier": "t_contract$_Wallet_$11514",
                           "typeString": "contract Wallet"
                         }
                       },
@@ -3233,17 +3233,17 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 11061,
+                  "id": 11080,
                   "initialValue": {
                     "argumentTypes": null,
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 11059,
+                        "id": 11078,
                         "name": "proxy",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11026,
+                        "referencedDeclaration": 11045,
                         "src": "1486:5:49",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address_payable",
@@ -3258,18 +3258,18 @@
                           "typeString": "address payable"
                         }
                       ],
-                      "id": 11058,
+                      "id": 11077,
                       "name": "Wallet",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11495,
+                      "referencedDeclaration": 11514,
                       "src": "1479:6:49",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_type$_t_contract$_Wallet_$11495_$",
+                        "typeIdentifier": "t_type$_t_contract$_Wallet_$11514_$",
                         "typeString": "type(contract Wallet)"
                       }
                     },
-                    "id": 11060,
+                    "id": 11079,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3279,7 +3279,7 @@
                     "nodeType": "FunctionCall",
                     "src": "1479:13:49",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_Wallet_$11495",
+                      "typeIdentifier": "t_contract$_Wallet_$11514",
                       "typeString": "contract Wallet"
                     }
                   },
@@ -3292,11 +3292,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 11065,
+                        "id": 11084,
                         "name": "_owner",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11017,
+                        "referencedDeclaration": 11036,
                         "src": "1515:6:49",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -3305,27 +3305,27 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 11066,
+                        "id": 11085,
                         "name": "delegates",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10977,
+                        "referencedDeclaration": 10996,
                         "src": "1523:9:49",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_Delegates_$12090",
+                          "typeIdentifier": "t_contract$_Delegates_$12109",
                           "typeString": "contract Delegates"
                         }
                       },
                       {
                         "argumentTypes": null,
-                        "id": 11067,
+                        "id": 11086,
                         "name": "modules",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10975,
+                        "referencedDeclaration": 10994,
                         "src": "1534:7:49",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_LimitedModules_$14547",
+                          "typeIdentifier": "t_contract$_LimitedModules_$14566",
                           "typeString": "contract LimitedModules"
                         }
                       }
@@ -3337,42 +3337,42 @@
                           "typeString": "address"
                         },
                         {
-                          "typeIdentifier": "t_contract$_Delegates_$12090",
+                          "typeIdentifier": "t_contract$_Delegates_$12109",
                           "typeString": "contract Delegates"
                         },
                         {
-                          "typeIdentifier": "t_contract$_LimitedModules_$14547",
+                          "typeIdentifier": "t_contract$_LimitedModules_$14566",
                           "typeString": "contract LimitedModules"
                         }
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 11062,
+                        "id": 11081,
                         "name": "wallet",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11057,
+                        "referencedDeclaration": 11076,
                         "src": "1503:6:49",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_Wallet_$11495",
+                          "typeIdentifier": "t_contract$_Wallet_$11514",
                           "typeString": "contract Wallet"
                         }
                       },
-                      "id": 11064,
+                      "id": 11083,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "init",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 11389,
+                      "referencedDeclaration": 11408,
                       "src": "1503:11:49",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_contract$_Delegates_$12090_$_t_contract$_Modules_$15035_$returns$__$",
+                        "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_contract$_Delegates_$12109_$_t_contract$_Modules_$15054_$returns$__$",
                         "typeString": "function (address,contract Delegates,contract Modules) external"
                       }
                     },
-                    "id": 11068,
+                    "id": 11087,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3386,7 +3386,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11069,
+                  "id": 11088,
                   "nodeType": "ExpressionStatement",
                   "src": "1503:39:49"
                 },
@@ -3396,24 +3396,24 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 11073,
+                        "id": 11092,
                         "name": "wallet",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11057,
+                        "referencedDeclaration": 11076,
                         "src": "1565:6:49",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_Wallet_$11495",
+                          "typeIdentifier": "t_contract$_Wallet_$11514",
                           "typeString": "contract Wallet"
                         }
                       },
                       {
                         "argumentTypes": null,
-                        "id": 11074,
+                        "id": 11093,
                         "name": "_modules",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11020,
+                        "referencedDeclaration": 11039,
                         "src": "1573:8:49",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
@@ -3422,14 +3422,14 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 11075,
+                        "id": 11094,
                         "name": "multiLimiter",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10979,
+                        "referencedDeclaration": 10998,
                         "src": "1583:12:49",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_MultiLimiter_$13138",
+                          "typeIdentifier": "t_contract$_MultiLimiter_$13157",
                           "typeString": "contract MultiLimiter"
                         }
                       }
@@ -3437,7 +3437,7 @@
                     "expression": {
                       "argumentTypes": [
                         {
-                          "typeIdentifier": "t_contract$_Wallet_$11495",
+                          "typeIdentifier": "t_contract$_Wallet_$11514",
                           "typeString": "contract Wallet"
                         },
                         {
@@ -3445,38 +3445,38 @@
                           "typeString": "address[] memory"
                         },
                         {
-                          "typeIdentifier": "t_contract$_MultiLimiter_$13138",
+                          "typeIdentifier": "t_contract$_MultiLimiter_$13157",
                           "typeString": "contract MultiLimiter"
                         }
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 11070,
+                        "id": 11089,
                         "name": "modules",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10975,
+                        "referencedDeclaration": 10994,
                         "src": "1552:7:49",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_LimitedModules_$14547",
+                          "typeIdentifier": "t_contract$_LimitedModules_$14566",
                           "typeString": "contract LimitedModules"
                         }
                       },
-                      "id": 11072,
+                      "id": 11091,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "init",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 14364,
+                      "referencedDeclaration": 14383,
                       "src": "1552:12:49",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_external_nonpayable$_t_contract$_Wallet_$11495_$_t_array$_t_address_$dyn_memory_ptr_$_t_contract$_Limiter_$12279_$returns$__$",
+                        "typeIdentifier": "t_function_external_nonpayable$_t_contract$_Wallet_$11514_$_t_array$_t_address_$dyn_memory_ptr_$_t_contract$_Limiter_$12298_$returns$__$",
                         "typeString": "function (contract Wallet,address[] memory,contract Limiter) external"
                       }
                     },
-                    "id": 11076,
+                    "id": 11095,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3490,7 +3490,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11077,
+                  "id": 11096,
                   "nodeType": "ExpressionStatement",
                   "src": "1552:44:49"
                 },
@@ -3500,27 +3500,27 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 11081,
+                        "id": 11100,
                         "name": "wallet",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11057,
+                        "referencedDeclaration": 11076,
                         "src": "1624:6:49",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_Wallet_$11495",
+                          "typeIdentifier": "t_contract$_Wallet_$11514",
                           "typeString": "contract Wallet"
                         }
                       },
                       {
                         "argumentTypes": null,
-                        "id": 11082,
+                        "id": 11101,
                         "name": "_limiters",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11023,
+                        "referencedDeclaration": 11042,
                         "src": "1632:9:49",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_array$_t_contract$_Limiter_$12279_$dyn_memory_ptr",
+                          "typeIdentifier": "t_array$_t_contract$_Limiter_$12298_$dyn_memory_ptr",
                           "typeString": "contract Limiter[] memory"
                         }
                       }
@@ -3528,42 +3528,42 @@
                     "expression": {
                       "argumentTypes": [
                         {
-                          "typeIdentifier": "t_contract$_Wallet_$11495",
+                          "typeIdentifier": "t_contract$_Wallet_$11514",
                           "typeString": "contract Wallet"
                         },
                         {
-                          "typeIdentifier": "t_array$_t_contract$_Limiter_$12279_$dyn_memory_ptr",
+                          "typeIdentifier": "t_array$_t_contract$_Limiter_$12298_$dyn_memory_ptr",
                           "typeString": "contract Limiter[] memory"
                         }
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 11078,
+                        "id": 11097,
                         "name": "multiLimiter",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10979,
+                        "referencedDeclaration": 10998,
                         "src": "1606:12:49",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_MultiLimiter_$13138",
+                          "typeIdentifier": "t_contract$_MultiLimiter_$13157",
                           "typeString": "contract MultiLimiter"
                         }
                       },
-                      "id": 11080,
+                      "id": 11099,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "init",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 12861,
+                      "referencedDeclaration": 12880,
                       "src": "1606:17:49",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_external_nonpayable$_t_contract$_Wallet_$11495_$_t_array$_t_contract$_Limiter_$12279_$dyn_memory_ptr_$returns$__$",
+                        "typeIdentifier": "t_function_external_nonpayable$_t_contract$_Wallet_$11514_$_t_array$_t_contract$_Limiter_$12298_$dyn_memory_ptr_$returns$__$",
                         "typeString": "function (contract Wallet,contract Limiter[] memory) external"
                       }
                     },
-                    "id": 11083,
+                    "id": 11102,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3577,7 +3577,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11084,
+                  "id": 11103,
                   "nodeType": "ExpressionStatement",
                   "src": "1606:36:49"
                 },
@@ -3587,11 +3587,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 11086,
+                        "id": 11105,
                         "name": "proxy",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11026,
+                        "referencedDeclaration": 11045,
                         "src": "1672:5:49",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address_payable",
@@ -3600,11 +3600,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 11087,
+                        "id": 11106,
                         "name": "_owner",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11017,
+                        "referencedDeclaration": 11036,
                         "src": "1679:6:49",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -3623,18 +3623,18 @@
                           "typeString": "address"
                         }
                       ],
-                      "id": 11085,
+                      "id": 11104,
                       "name": "WalletCreated",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10987,
+                      "referencedDeclaration": 11006,
                       "src": "1658:13:49",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_address_$returns$__$",
                         "typeString": "function (address,address)"
                       }
                     },
-                    "id": 11088,
+                    "id": 11107,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3648,7 +3648,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11089,
+                  "id": 11108,
                   "nodeType": "EmitStatement",
                   "src": "1653:33:49"
                 },
@@ -3662,7 +3662,7 @@
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
-                        "id": 11095,
+                        "id": 11114,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -3674,32 +3674,32 @@
                             "argumentTypes": [],
                             "expression": {
                               "argumentTypes": null,
-                              "id": 11091,
+                              "id": 11110,
                               "name": "wallet",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 11057,
+                              "referencedDeclaration": 11076,
                               "src": "1704:6:49",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_contract$_Wallet_$11495",
+                                "typeIdentifier": "t_contract$_Wallet_$11514",
                                 "typeString": "contract Wallet"
                               }
                             },
-                            "id": 11092,
+                            "id": 11111,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
                             "lValueRequested": false,
                             "memberName": "owner",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 11181,
+                            "referencedDeclaration": 11200,
                             "src": "1704:12:49",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_external_view$__$returns$_t_address_$",
                               "typeString": "function () view external returns (address)"
                             }
                           },
-                          "id": 11093,
+                          "id": 11112,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -3717,11 +3717,11 @@
                         "operator": "==",
                         "rightExpression": {
                           "argumentTypes": null,
-                          "id": 11094,
+                          "id": 11113,
                           "name": "_owner",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11017,
+                          "referencedDeclaration": 11036,
                           "src": "1722:6:49",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -3737,7 +3737,7 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "77726f6e672077616c6c6574206f776e6572",
-                        "id": 11096,
+                        "id": 11115,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -3764,21 +3764,21 @@
                           "typeString": "literal_string \"wrong wallet owner\""
                         }
                       ],
-                      "id": 11090,
+                      "id": 11109,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        19388,
-                        19389
+                        19407,
+                        19408
                       ],
-                      "referencedDeclaration": 19389,
+                      "referencedDeclaration": 19408,
                       "src": "1696:7:49",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11097,
+                    "id": 11116,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3792,29 +3792,29 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11098,
+                  "id": 11117,
                   "nodeType": "ExpressionStatement",
                   "src": "1696:55:49"
                 }
               ]
             },
             "documentation": null,
-            "id": 11100,
+            "id": 11119,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "createProxyWallet",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11024,
+              "id": 11043,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11017,
+                  "id": 11036,
                   "name": "_owner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11100,
+                  "scope": 11119,
                   "src": "859:14:49",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3823,7 +3823,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11016,
+                    "id": 11035,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "859:7:49",
@@ -3838,10 +3838,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 11020,
+                  "id": 11039,
                   "name": "_modules",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11100,
+                  "scope": 11119,
                   "src": "883:25:49",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -3851,7 +3851,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 11018,
+                      "id": 11037,
                       "name": "address",
                       "nodeType": "ElementaryTypeName",
                       "src": "883:7:49",
@@ -3861,7 +3861,7 @@
                         "typeString": "address"
                       }
                     },
-                    "id": 11019,
+                    "id": 11038,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "883:9:49",
@@ -3875,36 +3875,36 @@
                 },
                 {
                   "constant": false,
-                  "id": 11023,
+                  "id": 11042,
                   "name": "_limiters",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11100,
+                  "scope": 11119,
                   "src": "918:26:49",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_array$_t_contract$_Limiter_$12279_$dyn_memory_ptr",
+                    "typeIdentifier": "t_array$_t_contract$_Limiter_$12298_$dyn_memory_ptr",
                     "typeString": "contract Limiter[]"
                   },
                   "typeName": {
                     "baseType": {
                       "contractScope": null,
-                      "id": 11021,
+                      "id": 11040,
                       "name": "Limiter",
                       "nodeType": "UserDefinedTypeName",
-                      "referencedDeclaration": 12279,
+                      "referencedDeclaration": 12298,
                       "src": "918:7:49",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Limiter_$12279",
+                        "typeIdentifier": "t_contract$_Limiter_$12298",
                         "typeString": "contract Limiter"
                       }
                     },
-                    "id": 11022,
+                    "id": 11041,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "918:9:49",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_array$_t_contract$_Limiter_$12279_$dyn_storage_ptr",
+                      "typeIdentifier": "t_array$_t_contract$_Limiter_$12298_$dyn_storage_ptr",
                       "typeString": "contract Limiter[]"
                     }
                   },
@@ -3915,15 +3915,15 @@
               "src": "849:101:49"
             },
             "returnParameters": {
-              "id": 11027,
+              "id": 11046,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11026,
+                  "id": 11045,
                   "name": "proxy",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11100,
+                  "scope": 11119,
                   "src": "983:21:49",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3932,7 +3932,7 @@
                     "typeString": "address payable"
                   },
                   "typeName": {
-                    "id": 11025,
+                    "id": 11044,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "983:15:49",
@@ -3948,14 +3948,14 @@
               ],
               "src": "982:23:49"
             },
-            "scope": 11101,
+            "scope": 11120,
             "src": "823:936:49",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 11102,
+        "scope": 11121,
         "src": "205:1556:49"
       }
     ],
@@ -3967,7 +3967,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.16",
-  "updatedAt": "2019-11-08T05:02:33.504Z",
+  "updatedAt": "2019-11-11T00:47:34.694Z",
   "devdoc": {
     "methods": {
       "isOwner()": {

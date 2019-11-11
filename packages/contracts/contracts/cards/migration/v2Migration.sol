@@ -25,13 +25,14 @@ contract v2Migration is BaseMigration {
     }
 
     mapping (address => bool) public canMigrate;
-    mapping (address => mapping (uint => uint)) v2Migrated;
+    mapping (address => mapping (uint => bool)) public v2Migrated;
 
     event Migrated(
         address indexed user,
         uint id,
         uint start,
-        uint end
+        uint end,
+        uint startID
     );
 
     // PackFive = pack factory which creates packs and cards
@@ -41,7 +42,6 @@ contract v2Migration is BaseMigration {
         uint id
     )
         public
-        returns (uint start, uint end)
     {
         require(
             canMigrate[address(pack)],
@@ -56,12 +56,6 @@ contract v2Migration is BaseMigration {
             "V2: must have no cards activated"
         );
 
-         // Check if purchase can be activated
-        require(
-            pack.canActivatePurchase(id),
-            "V2: can't activate purchase"
-        );
-
         // Check if randomness set
         require(
             randomness != 0,
@@ -69,48 +63,41 @@ contract v2Migration is BaseMigration {
         );
 
         uint size = count * 5;
-        // If the size is greater than the limit, bound it.
-        // Don't want to throw as we don't know what packs will be large
-        // but also resuming won't be possible.
-        if (size > limit) {
-            size = limit;
-        }
+        // If the size is greater than the limit, throw (need a split v2 later, hoping to avoid)
+        require(size <= limit, "must be less than limit");
 
         // If no cards activated, then we just create all of the cards (count * 5)
         require(
-            v2Migrated[address(pack)][id] < size,
+            !v2Migrated[address(pack)][id],
             "V2: must not have been migrated previously"
         );
 
         uint16[] memory protos;
         uint16[] memory purities;
-        uint8[] memory qualities;
+        uint8[] memory qualities = new uint8[](size);
 
         (protos, purities) = pack.predictPacks(id);
 
-        uint loopStart = v2Migrated[address(pack)][id];
-
         // For each element, get the old card and make the appropriate conversion
         // + check not activated
-        for (uint i = loopStart; i < size; i++) {
+        for (uint i = 0; i < size; i++) {
             protos[i] = convertProto(protos[i]);
             qualities[i] = convertPurity(purities[i]);
         }
 
         // Mint cards (details passed as function args)
-        cards.mintCards(user, protos, qualities);
+        uint startID = cards.mintCards(user, protos, qualities);
 
-        v2Migrated[address(pack)][id] += size;
+        v2Migrated[address(pack)][id] = true;
 
-        uint loopEnd = loopStart + size;
-        emit Migrated(user, id, loopStart, loopEnd);
+        emit Migrated(user, id, 0, size, startID);
     }
 
     function noCardsActivated(
         uint[] memory state
     )
         public
-        view
+        pure
         returns (bool)
     {
         for (uint i = 0; i < state.length; i++) {

@@ -57,5 +57,6 @@ async function copyFiles() {
 
 copyFiles();
 
+
 var mainReadme = mustache.render(fs.readFileSync('../../readme.mustache').toString(), fs.readJSONSync(ADDRESSES_PATH + 'outputs' + '.json'));
 fs.writeFileSync('../../README.md', mainReadme);

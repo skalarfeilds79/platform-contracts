@@ -64,11 +64,11 @@ contract Forwarder is LibOrder {
             );
         }
 
-        // uint remainingBalance = token.balanceOf(address(this));
-        // token.withdraw(remainingBalance);
+        uint remainingBalance = token.balanceOf(address(this));
+        token.withdraw(remainingBalance);
 
-        // address(msg.sender).transfer(remainingBalance);
-        // require(address(this).balance == 0);
+        address(msg.sender).transfer(remainingBalance);
+        require(address(this).balance == 0);
 
     }
 

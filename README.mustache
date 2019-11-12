@@ -40,8 +40,21 @@ We get it, you're just here to find the contract addresses. Luckily for you, the
 | Contract Name | Address |
 | ------------- | ------- |
 {{#3-staging.addresses}}
-| {{name}} | {{address}} |
+| Cards | {{Cards}} |
+| OpenMinter | {{OpenMinter}} |
+| Forwarder | {{Forwarder}} |
 {{/3-staging.addresses}}
+
+### Dependencies (Ropsten)
+
+| Contract Name | Address |
+| ------------- | ------- |
+{{#3-staging.dependencies}}
+| Wrapped Ether | {{WETH}} |
+| 0x Exchange | {{ZERO_EX_EXCHANGE}} |
+| 0x ERC20 Proxy | {{ZERO_EX_ERC20_PROXY}} |
+| 0x ERC721 Proxy | {{ZERO_EX_ERC721_PROXY}} |
+{{/3-staging.dependencies}}
 
 
 ## Contributing :raising_hand_woman:

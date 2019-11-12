@@ -7,7 +7,7 @@ export const outputs =
     "addresses": {
       "Cards": "0xADC559D1afbCBBf427728577F40E7358D96F1209",
       "OpenMinter": "0x36F26280B80e609e347c843E2AE5351Ee4b5f7eD",
-      "Forwarder": "0x193E07e59eaC4AcEA0d1d005327D275964cdDAF4"
+      "Forwarder": "0x8Ba1dB696cE77A87c24976C2C9e5FF2178F4425f"
     },
     "dependencies": {
       "WETH": "0xc778417e063141139fce010982780140aa0cd5ab",

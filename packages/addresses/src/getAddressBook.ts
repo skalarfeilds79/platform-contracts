@@ -1,11 +1,10 @@
 import { AddressBook, DeploymentNetwork, DeploymentEnvironment } from '@immutable/types';
 
-import { outputs } from './outputs';
-
 export function getAddressBook(
   network: DeploymentNetwork,
   environment: DeploymentEnvironment,
 ): AddressBook {
+  const outputs = require('./outputs');
   const config = outputs[`${network}-${environment}`];
   const addresses = config['addresses'];
   const dependencies = config['dependencies'];

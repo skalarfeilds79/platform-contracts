@@ -11,9 +11,7 @@
     "lint:ts": "tslint -t verbose '__tests__/**/*.ts'",
     "lint": "yarn lint:ts && yarn lint:sol",
     "generate-typings": "node scripts/generate-typings.js",
-    "generate-artifacts": "node scripts/copy-artifacts.js",
-    "verify-contracts": "node scripts/verify-contracts.js",
-    "compile": "yarn lint:sol && yarn truffle compile --all && yarn generate-artifacts",
+    "compile": "yarn lint:sol && yarn truffle compile --all && yarn generate-typings",
     "setup": "yarn clean && yarn compile && yarn generate-typings",
     "test-legacy": "yarn etherlime test --solcVersion=0.5.11 --output=none --timeout=10000 --runs=200",
     "test": "yarn setup && yarn reset-test-evm && yarn jest __tests__/core --runInBand",
@@ -34,7 +32,6 @@
     "openzeppelin-solidity": "^2.3.0",
     "recursive-readdir": "^2.2.2",
     "truffle-flattener": "^1.4.2",
-    "truffle-plugin-verify": "^0.3.5",
     "typescript": "^3.6.4"
   },
   "devDependencies": {

@@ -18,6 +18,7 @@
   "dependencies": {
       "concurrently": "^4.1.2",
       "node-fetch": "^2.6.0",
-      "lerna": "^3.4.3"
+      "lerna": "^3.4.3",
+      "dotenv": "^8.2.0"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "@immutable/monorepo",
+  "name": "@imtbl/monorepo",
   "version": "1.0.0",
   "description": "Monorepo of all Immutable contracts and supporting packages",
   "scripts": {

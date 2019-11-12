@@ -1,4 +1,4 @@
-import { AddressBook, DeploymentNetwork, DeploymentEnvironment } from '@immutable/types';
+import { AddressBook, DeploymentNetwork, DeploymentEnvironment } from '@imtbl/types';
 
 export function getAddressBook(
   network: DeploymentNetwork,

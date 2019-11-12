@@ -72,11 +72,6 @@ export const Forwarder = [
         "type": "address"
       },
       {
-        "internalType": "address",
-        "name": "cards",
-        "type": "address"
-      },
-      {
         "internalType": "address payable",
         "name": "etherToken",
         "type": "address"

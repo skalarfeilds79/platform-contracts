@@ -1,4 +1,4 @@
-import { generatedWallets, Blockchain } from '@immutable/test-utils';
+import { generatedWallets, Blockchain } from '@imtbl/test-utils';
 import { ethers, Wallet } from 'ethers';
 
 import {
@@ -7,7 +7,7 @@ import {
   Address,
   ProtoFactory,
   ProtoFactoryFactory
-} from '@immutable/types'
+} from '@imtbl/types'
 import { expectRevert } from './expectRevert';
 
 const provider = new ethers.providers.JsonRpcProvider();

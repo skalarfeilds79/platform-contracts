@@ -1,4 +1,4 @@
-import { WalletFactory, RegistryFactory, LockLimiterFactory, BackupModuleFactory, RecoveryModuleFactory, TransferModuleFactory, LimitedModulesFactory, SimpleDelegateFactory, MultiLimiterFactory, ProxyFactory, FactoryFactory} from '@immutable/types';
+import { WalletFactory, RegistryFactory, LockLimiterFactory, BackupModuleFactory, RecoveryModuleFactory, TransferModuleFactory, LimitedModulesFactory, SimpleDelegateFactory, MultiLimiterFactory, ProxyFactory, FactoryFactory} from '@imtbl/types';
 import { ethers } from 'ethers';
 import { getNetworkId, writeContractToOutputs } from './utils/outputHelpers';
 

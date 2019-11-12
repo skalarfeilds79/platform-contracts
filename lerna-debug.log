@@ -2,9 +2,9 @@
 0 silly argv   globs: [ 'packages/deployment' ],
 0 silly argv   lernaVersion: '3.18.3',
 0 silly argv   '$0': '/usr/local/bin/lerna',
-0 silly argv   pkg: '@immutable/fs-extra' }
+0 silly argv   pkg: '@imtbl/fs-extra' }
 1 notice cli v3.18.3
 2 verbose rootPath /Users/kerman/immutable/gods-unchained-contracts
 3 info versioning independent
-4 error Error: 404 Not Found - GET https://registry.npmjs.org/@immutable%2ffs-extra - Not found
+4 error Error: 404 Not Found - GET https://registry.npmjs.org/@imtbl%2ffs-extra - Not found
 4 error     at res.buffer.catch.then.body (/usr/local/lib/node_modules/lerna/node_modules/@evocateur/npm-registry-fetch/check-response.js:104:15)

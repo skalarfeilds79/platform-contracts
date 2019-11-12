@@ -26,7 +26,6 @@ contract Forwarder is LibOrder {
     constructor(
         address zeroExExchange,
         address zeroExProxy,
-        address cards,
         address payable etherToken
     )
         public

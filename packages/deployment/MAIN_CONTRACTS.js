@@ -1,6 +1,6 @@
 /**
  * These contracts are primary contracts that will:
- *      - Have ABIs exported to @immutable/artifacts
+ *      - Have ABIs exported to @imtbl/artifacts
  *      - Verified on Etherscan
  *
  */

@@ -1,12 +1,12 @@
 {
-  "name": "@immutable/deployment",
+  "name": "@imtbl/deployment",
   "version": "1.0.0",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "dependencies": {
-    "@immutable/addresses": "^1.0.0",
-    "@immutable/types": "^1.0.0",
+    "@imtbl/addresses": "^1.0.0",
+    "@imtbl/types": "^1.0.0",
     "dotenv": "^8.2.0",
     "ethers": "^4.0.39",
     "fs-extra": "^8.1.0",

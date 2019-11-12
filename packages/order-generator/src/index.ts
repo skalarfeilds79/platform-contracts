@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 import { ethers } from 'ethers';
-import { OpenMinterFactory, ERC721Factory } from '@immutable/types';
-import { getAddressBook } from '@immutable/addresses';
+import { OpenMinterFactory, ERC721Factory } from '@imtbl/types';
+import { getAddressBook } from '@imtbl/addresses';
 
 import {
   assetDataUtils,

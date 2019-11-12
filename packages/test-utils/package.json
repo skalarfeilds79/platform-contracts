@@ -1,5 +1,5 @@
 {
-  "name": "@immutable/test-utils",
+  "name": "@imtbl/test-utils",
   "version": "1.0.0",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -16,7 +16,7 @@
     "@types/bignumber.js": "^5.0.0",
     "@types/lodash": "^4.14.137",
     "@types/node": "^12.7.2",
-    "@immutable/types": "^1.0.0",
+    "@imtbl/types": "^1.0.0",
     "bignumber.js": "^9.0.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",

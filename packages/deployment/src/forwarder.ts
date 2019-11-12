@@ -1,4 +1,4 @@
-import { ForwarderFactory } from '@immutable/types';
+import { ForwarderFactory } from '@imtbl/types';
 import { ethers } from 'ethers';
 import { findDependency, getContractAddress, writeContractToOutputs } from './utils/outputHelpers';
 
@@ -14,7 +14,6 @@ async function deploy() {
     const forwarder = await new ForwarderFactory(wallet).deploy(
         await findDependency('ZERO_EX_EXCHANGE'),
         await findDependency('ZERO_EX_ERC20_PROXY'),
-        await getContractAddress('Cards'),
         await findDependency('WETH')
     );
 

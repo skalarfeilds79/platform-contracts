@@ -1,9 +1,9 @@
 {
-  "name": "@immutable/addresses",
+  "name": "@imtbl/addresses",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@immutable/types": "^1.0.0"
+    "@imtbl/types": "^1.0.0"
   }
 }

@@ -1,4 +1,4 @@
-import { CardsFactory, OpenMinterFactory} from '@immutable/types';
+import { CardsFactory, OpenMinterFactory} from '@imtbl/types';
 import { ethers } from 'ethers';
 import { writeContractToOutputs, writeStateToOutputs } from './utils/outputHelpers';
 

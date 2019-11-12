@@ -3,7 +3,7 @@
 
 ## Bug Bounty
 
-We will pay a bug bounty for bugs found in the following contracts, scaled based on severity. To report bugs, please DM ```@ender``` on Gods Unchained Discord or email ```alex@immutable.com```.
+We will pay a bug bounty for bugs found in the following contracts, scaled based on severity. To report bugs, please DM ```@ender``` on Gods Unchained Discord or email ```alex@imtbl.com```.
 
 ```
 Cards.sol

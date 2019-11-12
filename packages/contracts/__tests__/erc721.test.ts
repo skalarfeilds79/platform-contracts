@@ -1,10 +1,10 @@
-import { generatedWallets } from '@immutable/test-utils';
+import { generatedWallets } from '@imtbl/test-utils';
 import { ethers, } from 'ethers';
 
 import {
     CardsFactory,
     Cards
-} from '@immutable/types'
+} from '@imtbl/types'
 
 const provider = new ethers.providers.JsonRpcProvider();
 

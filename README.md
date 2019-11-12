@@ -39,7 +39,18 @@ We get it, you're just here to find the contract addresses. Luckily for you, the
 
 | Contract Name | Address |
 | ------------- | ------- |
-|  |  |
+| Cards | 0xADC559D1afbCBBf427728577F40E7358D96F1209 |
+| OpenMinter | 0x36F26280B80e609e347c843E2AE5351Ee4b5f7eD |
+| Forwarder | 0x193E07e59eaC4AcEA0d1d005327D275964cdDAF4 |
+
+### Dependencies (Ropsten)
+
+| Contract Name | Address |
+| ------------- | ------- |
+| Wrapped Ether | 0xc778417e063141139fce010982780140aa0cd5ab |
+| 0x Exchange | 0xbff9493f92a3df4b0429b6d00743b3cfb4c85831 |
+| 0x ERC20 Proxy | 0xb1408f4c245a23c31b98d2c626777d4c0d766caa |
+| 0x ERC721 Proxy | 0xe654aac058bfbf9f83fcaee7793311dd82f6ddb4 |
 
 
 ## Contributing :raising_hand_woman:

@@ -86,6 +86,8 @@ async function send(ids: number[]): Promise<any> {
       wallet.address,
     );
 
+    await timeout(60000);
+
     const signedOrder = { ...order, signature };
     const postResult = await axios.post(config.API_ENDPOINT, signedOrder);
     console.log(`Result for token ${tokenId}: ${postResult.statusText}`);
@@ -97,6 +99,10 @@ async function create() {
   console.log(`Creating orders for:\n\n${ids}`);
   await send(ids);
   return `*** Finished deploying ${config.MINT_AMOUNT} cards! ***`
+}
+
+function timeout(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 create().then(result => {

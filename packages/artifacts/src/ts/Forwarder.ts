@@ -60,21 +60,6 @@ export const Forwarder = [
     "type": "function"
   },
   {
-    "constant": true,
-    "inputs": [],
-    "name": "CARDS_TOKEN",
-    "outputs": [
-      {
-        "internalType": "contract IERC721",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",
@@ -87,19 +72,24 @@ export const Forwarder = [
         "type": "address"
       },
       {
-        "internalType": "address payable",
-        "name": "etherToken",
+        "internalType": "address",
+        "name": "cards",
         "type": "address"
       },
       {
-        "internalType": "address",
-        "name": "cardsToken",
+        "internalType": "address payable",
+        "name": "etherToken",
         "type": "address"
       }
     ],
     "payable": false,
     "stateMutability": "nonpayable",
     "type": "constructor"
+  },
+  {
+    "payable": true,
+    "stateMutability": "payable",
+    "type": "fallback"
   },
   {
     "constant": false,
@@ -180,11 +170,6 @@ export const Forwarder = [
         "internalType": "bytes[]",
         "name": "signatures",
         "type": "bytes[]"
-      },
-      {
-        "internalType": "uint256[]",
-        "name": "tokenIDs",
-        "type": "uint256[]"
       }
     ],
     "name": "fillOrders",

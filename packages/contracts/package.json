@@ -1,6 +1,6 @@
 {
   "name": "@imtbl/contracts",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Solidity smart contracts for Gods Unchained.",
   "main": "index.js",
   "scripts": {
@@ -22,8 +22,8 @@
   "license": "MIT",
   "dependencies": {
     "@0x/contracts-exchange-libs": "^3.0.8",
-    "@imtbl/test-utils": "^1.0.0",
-    "@imtbl/types": "^1.0.0",
+    "@imtbl/test-utils": "^1.0.1",
+    "@imtbl/types": "^1.0.1",
     "@openzeppelin/contracts": "^2.3.0",
     "dotenv": "^8.2.0",
     "ethers": "^4.0.39",

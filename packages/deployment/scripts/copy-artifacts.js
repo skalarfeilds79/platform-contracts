@@ -5,8 +5,7 @@ const mustache = require('mustache');
 
 const CONTRACT_NAMES = require('../MAIN_CONTRACTS');
 
-const TYPES_PATH = './build/Contracts';
-const CONTRACTS_PATH = './contracts/';
+const TYPES_PATH = '../contracts/build/Contracts';
 const TS_PATH = '../artifacts/src/ts/';
 const JSON_PATH = '../artifacts/src/json/';
 const ADDRESSES_PATH = '../addresses/src/';

@@ -1,5 +1,6 @@
-const addresses = require('../../addresses/src/outputs');
 const fs = require('fs');
+
+const addresses = require('../../addresses/src/outputs');
 const { execSync } = require('child_process');
 
 const dotenv = require('dotenv');
@@ -14,7 +15,7 @@ CONTRACT_NAMES.forEach((item) => {
         return;
     }
 
-    const buildPath = `./build/Contracts/${item}.json`;
+    const buildPath = `../contracts/build/Contracts/${item}.json`;
 
     let file = JSON.parse(fs.readFileSync(buildPath));
     file.networks[config.DEPLOYMENT_NETWORK_ID] = {'address': address};

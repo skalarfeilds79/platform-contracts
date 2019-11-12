@@ -10,15 +10,21 @@
     "dotenv": "^8.2.0",
     "ethers": "^4.0.39",
     "fs-extra": "^8.1.0",
+    "mustache": "^3.1.0",
+    "truffle": "^5.0.44",
     "ts-node": "^8.4.1",
-    "typescript": "^3.6.4"
+    "typescript": "^3.6.4",
+    "truffle-plugin-verify": "^0.3.5"
   },
   "scripts": {
     "lint": "tslint --project . -t verbose 'src/**/*.{tsx,ts}'",
     "generate-outputs": "bash scripts/generate-outputs.sh",
-    "deploy-cards": "yarn ts-node src/cards && yarn generate-outputs",
-    "deploy-forwarder": "yarn ts-node src/forwarder && yarn generate-outputs",
-    "deploy-wallet": "yarn ts-node src/wallet && yarn generate-outputs"
+    "generate-artifacts": "node scripts/copy-artifacts.js",
+    "verify-contracts": "node scripts/verify-contracts.js",
+    "finish-deployment": "yarn generate-outputs && yarn generate-artifacts && yarn verify-contracts",
+    "deploy-cards": "yarn ts-node src/cards && yarn finish-deployment",
+    "deploy-forwarder": "yarn ts-node src/forwarder && yarn finish-deployment",
+    "deploy-wallet": "yarn ts-node src/wallet && yarn finish-deployment"
   },
   "devDependencies": {
     "@0xproject/types": "^1.1.4",

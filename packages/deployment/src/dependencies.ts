@@ -29,4 +29,4 @@ export default {
     ZERO_EX_ERC721_PROXY: {
         3: "0xe654aac058bfbf9f83fcaee7793311dd82f6ddb4"
     }
-  };
+};

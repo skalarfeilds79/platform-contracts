@@ -2,5 +2,6 @@
   "name": "@imtbl/artifacts",
   "version": "1.0.1",
   "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "gitHead": "afa4e8eb2984bde5707d635faa88c9670006d017"
 }

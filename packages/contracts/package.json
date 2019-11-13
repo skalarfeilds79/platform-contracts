@@ -3,6 +3,7 @@
   "version": "1.0.4",
   "description": "Solidity smart contracts for Gods Unchained.",
   "main": "index.js",
+  "private": true,
   "scripts": {
     "clean": "rm -rf build; rm -rf transpiled; rm -rf ../types/src/generated; rm -rf ../artifacts/src",
     "chain": "ganache-cli --networkId 50 --accounts 20 -l 19000000 -e 10000000000 -m 'concert load couple harbor equip island argue ramp clarify fence smart topic'",
@@ -50,5 +51,5 @@
     "ts-node": "^8.4.1",
     "typechain": "^0.3.19"
   },
-  "gitHead": "a230b80ff996e530d55941b62dc35a2e147d7ad6"
+  "gitHead": "ab80247209c924e520e06ae0b79a08d7e1d6b469"
 }

@@ -40,5 +40,6 @@
     "tslint": "^5.19.0",
     "tslint-config-airbnb": "^5.11.1",
     "tslint-no-focused-test": "^0.5.0"
-  }
+  },
+  "gitHead": "afa4e8eb2984bde5707d635faa88c9670006d017"
 }

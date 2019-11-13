@@ -49,5 +49,6 @@
     "ts-jest": "^24.1.0",
     "ts-node": "^8.4.1",
     "typechain": "^0.3.19"
-  }
+  },
+  "gitHead": "afa4e8eb2984bde5707d635faa88c9670006d017"
 }

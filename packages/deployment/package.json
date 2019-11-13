@@ -4,6 +4,7 @@
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
+  "private": true,
   "dependencies": {
     "@imtbl/addresses": "^1.0.4",
     "@imtbl/types": "^1.0.4",
@@ -41,5 +42,5 @@
     "tslint-config-airbnb": "^5.11.1",
     "tslint-no-focused-test": "^0.5.0"
   },
-  "gitHead": "a230b80ff996e530d55941b62dc35a2e147d7ad6"
+  "gitHead": "ab80247209c924e520e06ae0b79a08d7e1d6b469"
 }

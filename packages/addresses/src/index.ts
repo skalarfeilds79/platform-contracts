@@ -1,2 +1,2 @@
 export * from './outputs';
-export * from './getAddressBook';
+export * from './util/getAddressBook';

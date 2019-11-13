@@ -4,7 +4,6 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "license": "MIT",
-  "private": true,
   "dependencies": {
     "typescript": "^3.5.3"
   },

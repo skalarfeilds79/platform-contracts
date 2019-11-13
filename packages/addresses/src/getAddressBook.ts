@@ -5,9 +5,11 @@ export function getAddressBook(
   environment: DeploymentEnvironment,
 ): AddressBook {
   const outputs = require('./outputs');
+
   const config = outputs[`${network}-${environment}`];
   const addresses = config['addresses'];
   const dependencies = config['dependencies'];
+
   return {
     cardsAddress: addresses['Cards'],
     openMinterAddress: addresses['OpenMinter'],

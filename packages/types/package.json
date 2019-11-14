@@ -8,6 +8,8 @@
     "typescript": "^3.5.3"
   },
   "scripts": {
+    "clean": "rm -rf dist",
+    "build": "yarn clean && yarn tsc",
     "lint": "tslint --project . -t verbose 'src/**/*.{tsx,ts}'"
   },
   "devDependencies": {

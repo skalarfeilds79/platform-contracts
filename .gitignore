@@ -6,3 +6,4 @@ old
 secrets.json
 generated
 .env
+dist

@@ -13,6 +13,7 @@ export function getAddressBook(
   return {
     cardsAddress: addresses['Cards'],
     openMinterAddress: addresses['OpenMinter'],
+    forwarderAddress: addresses['Forwarder'],
     wethAddress: dependencies['WETH'],
     zeroExExchangeAddress: dependencies['ZERO_EX_EXCHANGE'],
     zeroExERC20ProxyAddress: dependencies['ZERO_EX_ERC20_PROXY'],

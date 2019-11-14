@@ -9,8 +9,9 @@
   },
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "yarn clean && yarn tsc",
-    "lint": "tslint --project . -t verbose 'src/**/*.{tsx,ts}'"
+    "build": "yarn tsc",
+    "lint": "tslint --project . -t verbose 'src/**/*.{tsx,ts}'",
+    "prepublish": "yarn clean && yarn build"
   },
   "devDependencies": {
     "@0xproject/types": "^1.1.4",

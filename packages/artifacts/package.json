@@ -6,7 +6,8 @@
   "typings": "dist/index.d.ts",
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "yarn clean && yarn tsc"
+    "build": "yarn tsc",
+    "prepublish": "yarn clean && yarn build"
   },
   "gitHead": "ab80247209c924e520e06ae0b79a08d7e1d6b469",
   "dependencies": {

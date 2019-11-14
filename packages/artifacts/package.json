@@ -7,7 +7,8 @@
   "scripts": {
     "clean": "rm -rf dist",
     "build": "yarn tsc",
-    "prepublish": "yarn clean && yarn build"
+    "prepublish": "yarn clean && yarn build",
+    "quick-fix": "npm version patch && npm publish"
   },
   "gitHead": "ab80247209c924e520e06ae0b79a08d7e1d6b469",
   "dependencies": {

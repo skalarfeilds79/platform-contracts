@@ -1,13 +1,14 @@
 {
   "name": "@imtbl/addresses",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
     "clean": "rm -rf dist",
     "build": "yarn tsc",
-    "prepublish": "yarn clean && yarn build"
+    "prepublish": "yarn clean && yarn build",
+    "quick-fix": "npm version patch && npm publish"
   },
   "dependencies": {
     "@0xproject/types": "^1.1.4",

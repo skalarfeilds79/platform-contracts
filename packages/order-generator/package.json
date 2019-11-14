@@ -1,6 +1,6 @@
 {
 	"name": "@imtbl/order-generator",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"main": "dist/index.js",
 	"typings": "dist/index.d.ts",
 	"license": "MIT",
@@ -10,9 +10,9 @@
 	},
 	"dependencies": {
 		"0x.js": "^7.0.2",
-		"@imtbl/addresses": "^1.0.4",
-		"@imtbl/test-utils": "^1.0.4",
-		"@imtbl/types": "^1.0.4",
+		"@imtbl/addresses": "^1.0.5",
+		"@imtbl/test-utils": "^1.0.5",
+		"@imtbl/types": "^1.0.5",
 		"axios": "^0.19.0",
 		"dotenv": "^8.2.0",
 		"ethers": "^4.0.39",

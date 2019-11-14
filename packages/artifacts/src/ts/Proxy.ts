@@ -71,4 +71,4 @@ export const Proxy = [
     "name": "Received",
     "type": "event"
   }
-];
+]

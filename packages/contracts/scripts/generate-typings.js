@@ -38,15 +38,21 @@ const walkSync = (dir, filelist = []) => {
           path: path.join(dir, file)
       })
   });
-
   return filelist.filter((item) => item.name != 'index');
 }
 
 async function replaceTypingsWithInterfaces() {
-  const files = walkSync(TYPES_PATH);
+  const files = walkSync(TYPES_PATH)
+
+  files.push({
+    file: `index.d.ts`,
+    name: `index`,
+    path: `${TYPES_PATH}/index.d.ts`
+  });
+
   console.log(files);
-  files
-  .filter(item => item.file.includes('.d.ts'))
+
+  files.filter(item => item.file.includes('.d.ts'))
   .forEach((file) => {
     const data = fs.readFileSync(file.path, 'utf8');
     const newPath = file.path.replace('.d.ts', '.ts');
@@ -57,6 +63,8 @@ async function replaceTypingsWithInterfaces() {
       to: 'export interface'
     })
   });
+
+  fs.writeFileSync(`${TYPES_PATH}/index.d.ts`, `${TYPES_PATH}/index.ts`);
 }
 
 async function generateIndexFile() {

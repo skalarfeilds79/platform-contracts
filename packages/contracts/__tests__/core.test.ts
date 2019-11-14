@@ -362,8 +362,10 @@ describe('Core', () => {
 
         await cards.functions.startSeason('Genesis', 1, 377);
         await cards.functions.startSeason("Etherbots", 380, 396);
-	      await cards.functions.startSeason("Promo", 400, 500);
+        await cards.functions.startSeason("Promo", 400, 500);
+
         await cards.functions.addFactory(ownerWallet.address, 1);
+
         await cards.functions.approveForMythic(ownerWallet.address, 65000);
         await cards.functions.approveForMythic(ownerWallet.address, 65001);
       });

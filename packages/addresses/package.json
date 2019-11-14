@@ -1,6 +1,6 @@
 {
   "name": "@imtbl/addresses",
-  "version": "1.0.8",
+  "version": "1.0.10",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",

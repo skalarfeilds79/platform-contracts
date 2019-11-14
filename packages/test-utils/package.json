@@ -11,7 +11,8 @@
     "clean": "rm -rf dist",
     "build": "yarn tsc",
     "lint": "tslint --project . -t verbose 'src/**/*.{tsx,ts}'",
-    "prepublish": "yarn clean && yarn build"
+    "prepublish": "yarn clean && yarn build",
+    "quick-fix": "npm version patch && npm publish"
   },
   "devDependencies": {
     "@0xproject/types": "^1.1.4",

@@ -4,7 +4,7 @@ export function getAddressBook(
   network: DeploymentNetwork,
   environment: DeploymentEnvironment,
 ): AddressBook {
-  const outputs = require('./outputs');
+  const outputs = require('../outputs');
 
   const config = outputs[`${network}-${environment}`];
   const addresses = config['addresses'];

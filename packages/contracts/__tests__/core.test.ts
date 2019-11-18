@@ -410,6 +410,12 @@ describe('Core', () => {
         await expectRevert(subject());
       });
 
+      it('should not be able to mint with a proto of 0', async () => {
+        callerProtos = [0];
+        callerQualities = [10];
+        await expectRevert(subject());
+      });
+
       it('should be able to batch mint exactly the limit', async () => {
         await subject();
         const supply = await cards.functions.totalSupply();

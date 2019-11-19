@@ -11,7 +11,7 @@ contract Forge {
         cards = _cards;
     }
 
-    function forge(uint[] memory _ids, bytes memory _sig) public {
+    function forge(uint[] memory _ids) public {
         require(
             _ids.length == 5,
             "Forge: must forge 5 at a time"
@@ -45,6 +45,7 @@ contract Forge {
 
             cards.burn(_ids[i]);
         }
+
         cards.setQuality(_ids[0], quality - 1);
     }
 

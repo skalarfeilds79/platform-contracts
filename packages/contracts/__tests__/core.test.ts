@@ -6,6 +6,7 @@ import {
     Cards,
     Address
 } from '@imtbl/types'
+
 import { expectRevert } from './expectRevert';
 
 const provider = new ethers.providers.JsonRpcProvider();
@@ -407,6 +408,12 @@ describe('Core', () => {
 
       it('should not be able to mint beyond the limit', async () => {
         callerSize = BATCH_SIZE + 1;
+        await expectRevert(subject());
+      });
+
+      it('should not be able to mint with a proto of 0', async () => {
+        callerProtos = [0];
+        callerQualities = [10];
         await expectRevert(subject());
       });
 

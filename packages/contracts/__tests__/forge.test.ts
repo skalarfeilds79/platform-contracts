@@ -34,9 +34,11 @@ describe('Forge', () => {
     let forge: Forge;
 
     let callerIds: number[];
+    let caller: Wallet;
 
     beforeEach(async () => {
       callerIds = [];
+      caller = minterWallet;
 
       cards = await new CardsFactory(ownerWallet).deploy(BATCH_SIZE, 'Test', 'TEST');
       forge = await new ForgeFactory(ownerWallet).deploy(cards.address);
@@ -55,70 +57,101 @@ describe('Forge', () => {
     });
 
     async function createCards(count: number, proto: number, quality: number) {
-        let protos = [];
-        let qualities = [];
-        let ids = [];
+      let protos = [];
+      let qualities = [];
+      let ids = [];
 
-        for (var i = 0; i < count; i++) {
-            protos.push(proto);
-            qualities.push(quality);
-            ids.push(i);
-        }
+      for (var i = 0; i < count; i++) {
+        protos.push(proto);
+        qualities.push(quality);
+        ids.push(i);
+      }
 
-        const tx = await cards.functions.mintCards(ownerWallet.address, protos, qualities);
-        await tx.wait();
+      const tx = await cards.functions.mintCards(minterWallet.address, protos, qualities);
+      await tx.wait();
 
-        return ids;
+      return ids;
     }
 
     async function subject(approve: boolean = true): Promise<any> {
-        for (var i = 0; i < callerIds.length; i++) {
-            if (approve) {
-                await cards.functions.approve(forge.address, callerIds[i]);
-            }
+      for (var i = 0; i < callerIds.length; i++) {
+        if (approve) {
+         await new CardsFactory(caller).attach(cards.address).functions.approve(forge.address, callerIds[i]);
         }
+      }
 
-        const tx = await forge.functions.forge(callerIds);
-        return await tx.wait();
+      const tx = await new ForgeFactory(caller).attach(forge.address).functions.forge(callerIds);
+      return await tx.wait();
     }
 
     it('should not be able to forge 0 cards', async () => {
-        await expectRevert(subject());
+      await expectRevert(subject());
     });
 
     it('should not be able to forge more than 5 cards', async () => {
-        callerIds = await createCards(6, 1, 4);
-        await expectRevert(subject());
+      callerIds = await createCards(6, 1, 4);
+      await expectRevert(subject());
     });
 
     it('should not be able to forge exactly 5 diamond cards', async () => {
-        callerIds = await createCards(5, 1, 1);
-        await expectRevert(subject());
+      callerIds = await createCards(5, 1, 1);
+      await expectRevert(subject());
     });
 
     it('should not be able to forge cards with different protos', async () => {
-        const tx = await cards.functions.mintCards(ownerWallet.address, [1, 1, 1, 1, 2], [4, 4, 4, 4, 4]);
-        await tx.wait();
-        callerIds = [0, 1, 2, 3, 4];
-        await expectRevert(subject());
+      const tx = await cards.functions.mintCards(ownerWallet.address, [1, 1, 1, 1, 2], [4, 4, 4, 4, 4]);
+      await tx.wait();
+      callerIds = [0, 1, 2, 3, 4];
+      await expectRevert(subject());
     });
 
     it('should not be able to forge cards with different qualities', async () => {
-        const tx = await cards.functions.mintCards(ownerWallet.address, [1, 1, 1, 1, 1], [4, 4, 4, 4, 3]);
-        await tx.wait();
-        callerIds = [0, 1, 2, 3, 4];
-        await expectRevert(subject());
+      const tx = await cards.functions.mintCards(ownerWallet.address, [1, 1, 1, 1, 1], [4, 4, 4, 4, 3]);
+      await tx.wait();
+      callerIds = [0, 1, 2, 3, 4];
+      await expectRevert(subject());
+    });
+
+    it('should not be able to forge cards as an unauthorised user', async () => {
+      callerIds = await createCards(5, 1, 2);
+      caller = userWallet;
+      await expectRevert(subject());
+    });
+
+    it('should not be able to forge cards if the contract is locked', async () => {
+      callerIds = await createCards(5, 1, 2);
+      await forge.functions.setLock(true);
+      await expectRevert(subject());
+    });
+
+    it('should be able to forge on behalf of someone else', async () => {
+      callerIds = await createCards(5, 1, 2);
+      caller = userWallet;
+      await new CardsFactory(minterWallet).attach(cards.address).functions.setApprovalForAll(userWallet.address, true);
+
+      const beforeSupply = await cards.functions.totalSupply();
+      expect(beforeSupply.toNumber()).toEqual(5);
+
+      await subject();
+
+      const details = await cards.functions.getDetails(0);
+      expect(details.quality).toBe(1);
+      const supply = await cards.functions.totalSupply();
+      expect(supply.toNumber()).toEqual(1);
     });
 
     it('should be able to forge exactly 5 cards', async () => {
-        callerIds = await createCards(5, 1, 2);
-        const beforeSupply = await cards.functions.totalSupply();
-        expect(beforeSupply.toNumber()).toEqual(5);
-        await subject();
-        const details = await cards.functions.getDetails(0);
-        expect(details.quality).toBe(1);
-        const supply = await cards.functions.totalSupply();
-        expect(supply.toNumber()).toEqual(1);
+      callerIds = await createCards(5, 1, 2);
+
+      const beforeSupply = await cards.functions.totalSupply();
+      expect(beforeSupply.toNumber()).toEqual(5);
+
+      await subject();
+
+      const details = await cards.functions.getDetails(0);
+      expect(details.quality).toBe(1);
+      const supply = await cards.functions.totalSupply();
+      expect(supply.toNumber()).toEqual(1);
     });
 
   });

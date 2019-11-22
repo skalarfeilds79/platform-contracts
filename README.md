@@ -40,7 +40,7 @@ We get it, you're just here to find the contract addresses. Luckily for you, the
 | Contract Name | Address |
 | ------------- | ------- |
 | Cards | 0x0e3a2a1f2146d86a604adc220b4967a898d7fe07 |
-| Forwarder | 0x8fbB22E413C90B89c7Ee9FC0f86a1B513140c71f |
+| Forwarder | 0xb04239b53806ab31141e6cd47c63fb3480cac908 |
 
 ### Dependencies  (Main Net)
 

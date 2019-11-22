@@ -1,6 +1,6 @@
 {
   "name": "@imtbl/contracts",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Solidity smart contracts for Gods Unchained.",
   "main": "index.js",
   "private": true,

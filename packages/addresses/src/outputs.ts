@@ -31,5 +31,15 @@ export const outputs =
     "state": {
       "network_id": 1
     }
+  },
+  "1-production": {
+    "human_friendly_name": "main-net-production",
+    "addresses": {
+      "Forwarder": "0x8fbB22E413C90B89c7Ee9FC0f86a1B513140c71f"
+    },
+    "dependencies": {},
+    "state": {
+      "network_id": 1
+    }
   }
 }

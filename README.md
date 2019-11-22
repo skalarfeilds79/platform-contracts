@@ -39,11 +39,17 @@ We get it, you're just here to find the contract addresses. Luckily for you, the
 
 | Contract Name | Address |
 | ------------- | ------- |
+| Cards | 0x0e3a2a1f2146d86a604adc220b4967a898d7fe07 |
+| Forwarder | 0x8fbB22E413C90B89c7Ee9FC0f86a1B513140c71f |
 
 ### Dependencies  (Main Net)
 
 | Contract Name | Address |
 | ------------- | ------- |
+| Wrapped Ether | 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 |
+| 0x Exchange | 0x080bf510fcbf18b91105470639e9561022937712 |
+| 0x ERC20 Proxy | 0x95e6f48254609a6ee006f7d493c8e5fb97094cef |
+| 0x ERC721 Proxy | 0xefc70a1b18c432bdc64b596838b4d138f6bc6cad |
 
 ### Contracts (Ropsten)
 

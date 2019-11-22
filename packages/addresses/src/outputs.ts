@@ -16,11 +16,11 @@ export const outputs =
       "ZERO_EX_ERC721_PROXY": "0xe654aac058bfbf9f83fcaee7793311dd82f6ddb4"
     }
   },
-  "1-main-net": {
-    "human_friendly_name": "main-net-main-net",
+  "1-production": {
+    "human_friendly_name": "main-net-production",
     "addresses": {
-      "Forwarder": "0x91db0FF6239496E69Aa97BEB448578B063204884",
-      "Cards": "0x0e3a2a1f2146d86a604adc220b4967a898d7fe07"
+      "Cards": "0x0e3a2a1f2146d86a604adc220b4967a898d7fe07",
+      "Forwarder": "0x8fbB22E413C90B89c7Ee9FC0f86a1B513140c71f"
     },
     "dependencies": {
       "WETH": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
@@ -28,16 +28,6 @@ export const outputs =
       "ZERO_EX_ERC20_PROXY": "0x95e6f48254609a6ee006f7d493c8e5fb97094cef",
       "ZERO_EX_ERC721_PROXY": "0xefc70a1b18c432bdc64b596838b4d138f6bc6cad"
     },
-    "state": {
-      "network_id": 1
-    }
-  },
-  "1-production": {
-    "human_friendly_name": "main-net-production",
-    "addresses": {
-      "Forwarder": "0x8fbB22E413C90B89c7Ee9FC0f86a1B513140c71f"
-    },
-    "dependencies": {},
     "state": {
       "network_id": 1
     }

@@ -1,5 +1,7 @@
 pragma solidity 0.5.11;
 
+// solium-disable security/no-inline-assembly
+
 pragma experimental ABIEncoderV2;
 
 import "@0x/contracts-exchange-libs/contracts/src/LibFillResults.sol";
@@ -11,12 +13,7 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "./interfaces/IExchange.sol";
 import "./interfaces/IEtherToken.sol";
 
-import "./util/LibBytes.sol";
-import "./util/LibRichErrors.sol";
-
 contract Forwarder is LibOrder {
-
-    using LibBytes for bytes;
 
     address public ZERO_EX_EXCHANGE;
     address public ZERO_EX_TOKEN_PROXY;
@@ -63,7 +60,8 @@ contract Forwarder is LibOrder {
 
             // Some 0x inline assembly magic to avoid passing tokenIDs as an argument
             (address cardToken, uint256 tokenId) = abi.decode(
-                orders[i].makerAssetData.sliceDestructive(
+                sliceDestructive(
+                    orders[i].makerAssetData,
                     4,
                     orders[i].makerAssetData.length
                 ),
@@ -98,6 +96,23 @@ contract Forwarder is LibOrder {
             msg.sender == address(ETHER_TOKEN),
             "Forwarder: will not accept ETH from only ether token address"
         );
+    }
+
+    function sliceDestructive(
+        bytes memory b,
+        uint256 from,
+        uint256 to
+    )
+        internal
+        pure
+        returns (bytes memory result)
+    {
+        // Create a new bytes structure around [from, to) in-place.
+        assembly {
+            result := add(b, from)
+            mstore(result, sub(to, from))
+        }
+        return result;
     }
 
 }

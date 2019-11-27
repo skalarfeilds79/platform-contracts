@@ -17,7 +17,7 @@
     "types": ["node", "jest"]
   },
   "include": [
-    "src", "../contracts/__tests__/expectRevert.ts"
+    "src"
   ],
   "compileOnSave": true
 }

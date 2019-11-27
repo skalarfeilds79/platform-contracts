@@ -9,7 +9,7 @@
       "delete:build": "find . -name \"build\" -exec rm -rf '{}' +",
       "delete:node_modules": "find . -name \"node_modules\" -exec rm -rf '{}' +",
       "delete:yarn.lock": "find . -name \"yarn.lock\" -exec rm -rf '{}' +",
-      "chain": "yarn --cwd packages/contracts chain",
+      "chain": "yarn --cwd contracts/gods-unchained chain",
       "lint": "yarn lerna run lint",
       "setup": "yarn --cwd packages/contracts build && yarn --cwd packages/deployment generate-artifacts",
       "build": "tsc & yarn lerna run build",

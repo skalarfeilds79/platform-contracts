@@ -1,5 +1,5 @@
 {
-  "name": "@imtbl/types",
+  "name": "@imtbl/common-types",
   "version": "1.0.10",
   "license": "MIT",
   "main": "dist/index.js",

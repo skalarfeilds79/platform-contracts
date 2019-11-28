@@ -12,7 +12,7 @@
     "preserveSymlinks": true,
     "typeRoots": [
       "node_modules/@types",
-      "node_modules/@imtbl/types"
+      "node_modules/@imtbl/common-types"
     ],
     "types": ["node", "jest"]
   },

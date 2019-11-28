@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { ethers } from 'ethers';
-import { OpenMinterFactory, ERC721Factory } from '@imtbl/types';
+import { OpenMinterFactory, ERC721Factory } from '@imtbl/gods-unchained';
 import { getAddressBook } from '@imtbl/addresses';
 
 import {
@@ -21,7 +21,7 @@ const dotenv = require('dotenv');
 const config = dotenv.config({path: '../../.env'}).parsed;
 const addressBook = getAddressBook(config.DEPLOYMENT_NETWORK_ID, config.DEPLOYMENT_ENVIRONMENT);
 
-const provider = new ethers.providers.JsonRpcProvider(config.RPC_ENDPOINT, 3);
+const provider = new ethers.providers.JsonRpcProvider(config.RPC_ENDPOINT, config.DEPLOYMENT_ENVIRONMENT);
 const wallet = new ethers.Wallet(config.PRIVATE_KEY, provider)
 
 let protos: number[] = [];

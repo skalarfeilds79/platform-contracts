@@ -1,4 +1,4 @@
-import { CardsFactory, OpenMinterFactory} from '@imtbl/types';
+import { CardsFactory, OpenMinterFactory} from '@imtbl/gods-unchained';
 import { ethers } from 'ethers';
 import { writeContractToOutputs, writeStateToOutputs } from './utils/outputHelpers';
 
@@ -7,7 +7,7 @@ const BATCH_SIZE = 1251;
 const dotenv = require('dotenv');
 const config = dotenv.config({path: '../../.env'}).parsed;
 
-const provider = new ethers.providers.JsonRpcProvider(config.RPC_ENDPOINT, 3);
+const provider = new ethers.providers.JsonRpcProvider(config.RPC_ENDPOINT, config.DEPLOYMENT_NETWORK_ID);
 const wallet = new ethers.Wallet(config.PRIVATE_KEY, provider);
 
 async function deploy() {

@@ -10,9 +10,9 @@
         "delete:node_modules": "find . -name \"node_modules\" -exec rm -rf '{}' +",
         "delete:dist": "find . -name \"dist\" -exec rm -rf '{}' +",
         "delete:yarn.lock": "find . -name \"yarn.lock\" -exec rm -rf '{}' +",
-        "chain": "yarn ganache-cli --networkId 50 --accounts 20 -l 19000000 -e 10000000000 -m 'concert load couple harbor equip island argue ramp clarify fence smart topic' --db 0x_testrpc_snapshot/",
+        "chain": "ganache-cli --networkId 50 --accounts 20 -l 19000000 -e 10000000000 -m 'concert load couple harbor equip island argue ramp clarify fence smart topic' --db 0x_testrpc_snapshot/",
         "lint": "yarn lerna run lint",
-        "setup": "yarn --cwd packages/contracts build && yarn --cwd packages/deployment generate-artifacts",
+        "setup": "yarn --cwd packages/contracts build && yarn --cwd packages/deployment deploy-all:dev && yarn lerna bootstrap",
         "build": "tsc & yarn lerna run build",
         "test": "yarn lerna run test",
         "generate-cards": "yarn --cwd packages/order-generator create"

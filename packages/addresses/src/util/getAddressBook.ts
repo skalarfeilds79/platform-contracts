@@ -1,4 +1,4 @@
-import { AddressBook, DeploymentNetwork, DeploymentEnvironment } from '@imtbl/types';
+import { AddressBook, DeploymentNetwork, DeploymentEnvironment } from '@imtbl/common-types';
 
 export function getAddressBook(
   network: DeploymentNetwork,

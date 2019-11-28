@@ -1,4 +1,4 @@
-import { WalletFactory, RegistryFactory, LockLimiterFactory, BackupModuleFactory, RecoveryModuleFactory, TransferModuleFactory, LimitedModulesFactory, SimpleDelegateFactory, MultiLimiterFactory, ProxyFactory, FactoryFactory} from '@imtbl/types';
+import { WalletFactory, RegistryFactory, LockLimiterFactory, BackupModuleFactory, RecoveryModuleFactory, TransferModuleFactory, LimitedModulesFactory, SimpleDelegateFactory, MultiLimiterFactory, ProxyFactory, FactoryFactory} from '@imtbl/immutable-wallet';
 import { ethers } from 'ethers';
 import { getNetworkId, writeContractToOutputs } from './utils/outputHelpers';
 
@@ -18,7 +18,7 @@ async function deploy() {
 
   const walletFactory = await new WalletFactory(wallet).deploy();
   await writeContractToOutputs('Wallet', walletFactory.address);
-
+ 
   const registry = await new RegistryFactory(wallet).deploy(DELAY);
   await writeContractToOutputs('Registry', registry.address);
 

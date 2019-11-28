@@ -1,4 +1,4 @@
-import { ForwarderFactory } from '@imtbl/types';
+import { ForwarderFactory } from '@imtbl/gods-unchained';
 import { ethers } from 'ethers';
 import { findDependency, getContractAddress, writeContractToOutputs } from './utils/outputHelpers';
 

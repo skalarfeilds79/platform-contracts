@@ -4,7 +4,7 @@ import { ethers, } from 'ethers';
 import {
     CardsFactory,
     Cards
-} from '@imtbl/types'
+} from '../src';
 
 const provider = new ethers.providers.JsonRpcProvider();
 

@@ -14,7 +14,8 @@
       },
       "typeRoots": [
         "node_modules/@types",
-        "node_modules/@imtbl/types"
+        "node_modules/@imtbl/common-types",
+        "node_modules/@imtbl/gods-unchained"
       ],
       "types": ["node"]
     },

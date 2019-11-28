@@ -4,12 +4,14 @@ import { ethers, Wallet } from 'ethers';
 import {
   CardsFactory,
   Cards,
-  Address,
   ProtoFactory,
   ProtoFactoryFactory,
   ForgeFactory,
   Forge
-} from '@imtbl/types'
+} from '../src';
+
+import { Address } from '@imtbl/common-types';
+
 import { expectRevert } from './expectRevert';
 
 const provider = new ethers.providers.JsonRpcProvider();

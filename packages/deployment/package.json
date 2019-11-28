@@ -9,6 +9,7 @@
     "@imtbl/addresses": "^1.1.1",
     "@imtbl/common-types": "^1.0.10",
     "@imtbl/gods-unchained": "^1.0.10",
+    "@imtbl/test-utils": "^1.0.9",
     "@imtbl/immutable-wallet": "^1.0.10",
     "dotenv": "^8.2.0",
     "ethers": "^4.0.39",
@@ -24,10 +25,11 @@
     "generate-outputs": "bash scripts/generate-outputs.sh",
     "generate-artifacts": "node scripts/copy-artifacts.js",
     "verify-contracts": "node scripts/verify-contracts.js",
-    "finish-deployment": "yarn generate-outputs && yarn generate-artifacts && yarn verify-contracts",
+    "finish-deployment": "yarn generate-outputs && yarn generate-artifacts && yarn verify-contracts && yarn tsc",
     "deploy-cards": "yarn ts-node src/cards && yarn finish-deployment",
     "deploy-forwarder": "yarn ts-node src/forwarder && yarn finish-deployment",
-    "deploy-wallet": "yarn ts-node src/wallet && yarn finish-deployment"
+    "deploy-wallet": "yarn ts-node src/wallet && yarn finish-deployment",
+    "deploy-all:dev": "yarn ts-node src/cards && yarn ts-node src/forwarder && yarn ts-node src/wallet && yarn generate-outputs && yarn tsc"
   },
   "devDependencies": {
     "@0xproject/types": "^1.1.4",

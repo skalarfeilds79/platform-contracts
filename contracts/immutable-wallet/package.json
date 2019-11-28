@@ -2,7 +2,8 @@
   "name": "@imtbl/immutable-wallet",
   "version": "1.0.10",
   "description": "Solidity smart contracts for Gods Unchained.",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "files" : [
     "contracts/**/**.sol",
     "dist"

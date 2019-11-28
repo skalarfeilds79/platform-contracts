@@ -28,5 +28,32 @@
     "state": {
       "network_id": 1
     }
+  },
+  "50-development": {
+    "human_friendly_name": "test-rpc-development",
+    "addresses": {
+      "Cards": "0x7245C578E9a948253c6201Dc3D1a67D8F70d6aa8",
+      "OpenMinter": "0xcd95207B2F4D22b126B97d87D8625Ea425665e50",
+      "Forwarder": "0xDff33AFFd86B4203F8B533D2fD3FE04f933DED09",
+      "Registry": "0xC71A764d32aC16D38c67ABA9ba66d24A82361A96",
+      "LockLimiter": "0xD6E934AE3CEa5CE60c5c220947FE790d12C15fFB",
+      "BackupModule": "0x57f285C8E8ecBAFcC176020d8d595886b9e6B9C5",
+      "PurchaseModule": "0x453f5D403406e3DD50ac6442873f89cD2Ec8500b",
+      "RecoveryModule": "0xF32A67Fd7FD228EeE416c2f0c82dfAD76BC7c8C3",
+      "TransferModule": "0xB2F85527940EEd610a4bC9edf7C6064E7aDB08C8",
+      "LimitedModule": "0xcAb22Eda4dA9ba72a1E12eC4Cd7fa5820a78F932",
+      "SimpleDelegate": "0x3Ed02E77B4Dcc2E9e82D630608fba67E35d7F2eF",
+      "MultiLimiter": "0x96A6340689e6a67B875940B5EA6CaF196Bb932C8",
+      "WalletFactory": "0xAD275FbFD25bF1BA12fCF8fb8D4179c1231bfB67"
+    },
+    "dependencies": {
+      "ZERO_EX_EXCHANGE": "0x48bacb9266a570d521063ef5dd96e61686dbe788",
+      "ZERO_EX_ERC20_PROXY": "0x1dc4c1cefef38a777b15aa20260a54e584b16c48",
+      "ZERO_EX_ERC721_PROXY": "0x1d7022f5b17d2f8b695918fb48fa1089c9f85401",
+      "WETH": "0x0b1ba0af832d7c05fd64161e0db78e85978e8082"
+    },
+    "state": {
+      "network_id": 50
+    }
   }
 }

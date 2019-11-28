@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { ethers } from 'ethers';
-import { OpenMinterFactory, ERC721Factory } from '@imtbl/gods-unchained';
+import { OpenMinterFactory, ERC721Factory, CardsFactory } from '@imtbl/gods-unchained';
 import { getAddressBook } from '@imtbl/addresses';
 
 import {
@@ -21,7 +21,15 @@ const dotenv = require('dotenv');
 const config = dotenv.config({path: '../../.env'}).parsed;
 const addressBook = getAddressBook(config.DEPLOYMENT_NETWORK_ID, config.DEPLOYMENT_ENVIRONMENT);
 
-const provider = new ethers.providers.JsonRpcProvider(config.RPC_ENDPOINT, config.DEPLOYMENT_ENVIRONMENT);
+const networkId = config.DEPLOYMENT_NETWORK_ID;
+
+let provider;
+if (networkId == 50) {
+  provider = new ethers.providers.JsonRpcProvider(config.RPC_ENDPOINT);
+} else {
+  provider = new ethers.providers.JsonRpcProvider(config.RPC_ENDPOINT, networkId);
+}
+
 const wallet = new ethers.Wallet(config.PRIVATE_KEY, provider)
 
 let protos: number[] = [];
@@ -39,7 +47,7 @@ engine.start();
 
 async function mint(): Promise<number[]> {
   const openMinter = await new OpenMinterFactory(wallet).attach(addressBook.openMinterAddress);
-  const tx = await openMinter.functions.mintCards(wallet.address, protos, qualities);
+  const tx = await openMinter.functions.mintCards(wallet.address, protos, qualities, {gasLimit: 5000000});
   const receipt = await tx.wait();
   const ids = receipt.events.map(item => parseInt(item.topics[3]));
   return ids;
@@ -47,6 +55,8 @@ async function mint(): Promise<number[]> {
 
 async function send(ids: number[]): Promise<any> {
   const erc721Contract = new ERC721Factory(wallet).attach(addressBook.cardsAddress);
+  console.log(wallet.address);
+  console.log(addressBook.zeroExERC721ProxyAddress);
   const isApproved = await erc721Contract.functions.isApprovedForAll(wallet.address, addressBook.zeroExERC721ProxyAddress)
 
   if (!isApproved) {

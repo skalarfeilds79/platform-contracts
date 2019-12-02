@@ -1,6 +1,6 @@
 {
   "name": "@imtbl/addresses",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@0xproject/types": "^1.1.4",
-    "@imtbl/common-types": "^1.0.10",
+    "@imtbl/common-types": "^1.0.11",
     "@types/bignumber.js": "^5.0.0",
     "@types/lodash": "^4.14.137",
     "@types/node": "^12.12.7",

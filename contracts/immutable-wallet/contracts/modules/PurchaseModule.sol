@@ -39,28 +39,20 @@ contract PurchaseModule is BaseModule, MetaTxEnabled {
         onlyWalletOwner(_wallet)
     {
 
-        // uint256[] storage tokenIds = uint256[];
-        // for (uint i = 0; i < _orders.length; i++) {
-        //     (, uint256 tokenId) = abi.decode(
-        //         sliceDestructive(
-        //             _orders[i].makerAssetData,
-        //             4,
-        //             _orders[i].makerAssetData.length
-        //         ),
-        //         (address, uint256)
-        //     );
+        uint256 valueToSend = 0;
+        for (uint256 i = 0; i < _takerAssetFillAmounts.length; i++) {
+            valueToSend += _takerAssetFillAmounts[i];
+        }
 
-        //     tokenIds.push(tokenId);
-        // }
-
-        _wallet.execute(
+        _wallet.executeValue(
             forwarderAddress,
             abi.encodeWithSignature(
                 "fillOrders((address,address,address,address,uint256,uint256,uint256,uint256,uint256,uint256,bytes,bytes)[],uint256[],bytes[])",
                 _orders,
                 _takerAssetFillAmounts,
                 _signatures
-            )
+            ),
+            valueToSend
         );
 
         emit AttemptedPurchases();

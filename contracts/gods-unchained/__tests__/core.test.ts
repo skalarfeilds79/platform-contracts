@@ -9,7 +9,7 @@ import {
 
 import { Address } from '@imtbl/common-types';
 
-import { expectRevert } from './expectRevert';
+import { expectRevert } from '@imtbl/test-utils';
 
 const provider = new ethers.providers.EtherscanProvider(3)
 const blockchain = new Blockchain();

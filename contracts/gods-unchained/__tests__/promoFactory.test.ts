@@ -1,4 +1,4 @@
-import { generatedWallets, Blockchain } from '@imtbl/test-utils';
+import { generatedWallets, Blockchain, expectRevert } from '@imtbl/test-utils';
 import { ethers, Wallet } from 'ethers';
 
 import {
@@ -9,8 +9,6 @@ import {
 } from '../src';
 
 import { Address } from '@imtbl/common-types';
-
-import { expectRevert } from './expectRevert';
 
 const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();

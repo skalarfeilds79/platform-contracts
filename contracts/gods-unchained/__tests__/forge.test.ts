@@ -12,7 +12,7 @@ import {
 
 import { Address } from '@imtbl/common-types';
 
-import { expectRevert } from './expectRevert';
+import { expectRevert } from '@imtbl/test-utils';
 
 const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();

@@ -1,4 +1,5 @@
 import { ethers, Wallet } from 'ethers';
+import Web3 from 'web3';
 
 import {
   assetDataUtils,
@@ -7,7 +8,8 @@ import {
   signatureUtils,
   orderHashUtils,
   Order,
-  Web3ProviderEngine
+  Web3ProviderEngine,
+  MetamaskSubprovider
 } from '0x.js';
 
 import * as ethUtil from 'ethereumjs-util';
@@ -16,6 +18,15 @@ import { ERC721Factory } from '..';
 import { ECSignature, SignatureType } from '@0xproject/types';
 import { sign } from 'crypto';
 import { SigningKey } from 'ethers/utils';
+import { IExchangeFactory } from '../generated/IExchangeFactory';
+
+import { SignerSubprovider } from '@0x/subproviders'
+
+type SignedOrder = {
+  order: Order,
+  takerAssetAmount: BigNumber,
+  signature: string
+};
 
 export class ZeroExWrapper {
 
@@ -29,19 +40,19 @@ export class ZeroExWrapper {
     tokenId: number,
     price: number,
     cardsAddress: string,
-    zeroExERC721ProxyAddress,
-    wethAddress: string,
-    zeroExExchangeAddress: string
+    zeroExExchangeAddress: string,
+    zeroExERC721ProxyAddress: string,
+    wethAddress: string
   ) {
-    // const erc721Contract = new ERC721Factory(this.wallet).attach(cardsAddress);
-    // const isApproved = await erc721Contract.functions.isApprovedForAll(
-    //   this.wallet.address,
-    //   zeroExERC721ProxyAddress
-    // );
-    //
-    // if (!isApproved) {
-    //   // TODO:
-    // }
+    const erc721Contract = new ERC721Factory(this.wallet).attach(cardsAddress);
+    const isApproved = await erc721Contract.functions.isApprovedForAll(
+      this.wallet.address,
+      zeroExERC721ProxyAddress
+    );
+    
+    if (!isApproved) {
+      throw ('ERC721 approval not set!');
+    }
 
     const makerAssetData = assetDataUtils.encodeERC721AssetData(
       cardsAddress,
@@ -68,34 +79,35 @@ export class ZeroExWrapper {
       takerFee: new BigNumber(0),
     };
 
-    const orderHashBuffer = orderHashUtils.getOrderHashBuffer(order);
-    const orderHashHex = `0x${orderHashBuffer.toString('hex')}`;
-    const signature = await this.ecSignHashAsync(this.wallet.address, orderHashHex);
-    console.log(signature);
-  }
+    const signature = await this.signMessageAsync(order);
+    
+    return {
+      order,
+      takerAssetAmount: order.takerAssetAmount,
+      signature
+    } as SignedOrder
+  } 
 
-  async ecSignHashAsync(signerAddress: string, msgHash: string) {
-    const signerSigningKey = new SigningKey(this.wallet.privateKey)
-    const eip712sig = signerSigningKey.signDigest(msgHash);
-    console.log(eip712sig);
+  async signMessageAsync(order: Order) {
+    const sig = await this.wallet.signMessage(orderHashUtils.getOrderHashBuffer(order));
+    const rpcSig = ethUtil.fromRpcSig(sig);
 
-    const normalizedSignerAddress = signerAddress.toLowerCase();
-    const signedMessage = await this.wallet.signMessage(ethers.utils.arrayify(msgHash));
-    const rpcSig = ethers.utils.splitSignature(signedMessage);
-    const signature = Buffer.concat([
-      ethUtil.toBuffer(rpcSig.v),
-      ethUtil.toBuffer(rpcSig.r),
-      ethUtil.toBuffer(rpcSig.s),
-      ethUtil.toBuffer(SignatureType.EthSign),
+    const signedBytes = Buffer.concat([
+          ethUtil.toBuffer(rpcSig.v),
+          rpcSig.r,
+          rpcSig.s,
+          ethUtil.toBuffer(0x03),
     ]);
 
-    const x = `0x${signature.toString('hex')}`;
+    return `0x${Buffer.from(signedBytes).toString('hex')}`;
+  }
 
-    expect(x.length).toBe(65);
-
-    console.log(msgHash);
-    console.log(this.wallet.address);
-    console.log(x);
+  async giveApproval(
+    cardsAddress: string,
+    zeroExERC721ProxyAddress: string,
+  ) {
+    const erc721Contract = new ERC721Factory(this.wallet).attach(cardsAddress);
+    return await erc721Contract.functions.setApprovalForAll(zeroExERC721ProxyAddress, true);
   }
 
 }

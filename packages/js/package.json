@@ -1,5 +1,5 @@
 {
-  "name": "@imtbl/immutable-wallet",
+  "name": "@imtbl/js",
   "version": "1.0.11",
   "description": "Solidity smart contracts for Gods Unchained.",
   "main": "dist/index.js",

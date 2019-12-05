@@ -152,4 +152,13 @@ contract IExchange {
         public
         view
         returns (LibOrder.OrderInfo[] memory);
+
+    function isValidSignature(
+        bytes32 hash,
+        address signerAddress,
+        bytes memory signature
+    )
+        public
+        view
+        returns (bool isValid);
 }

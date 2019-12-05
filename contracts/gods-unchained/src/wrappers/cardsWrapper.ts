@@ -71,7 +71,6 @@ export class CardsWrapper {
     const logs = parseLogs(receipt.logs, new CardsFactory().interface.abi)
 
     const results = logs.filter(item => item.name === 'CardsMinted').map((item) => {
-      console.log(item);
       let ids = [];
       for (let i = item.values.start; i < parseInt(item.values.start) + item.values.protos.length; i++) {
         ids.push(i);

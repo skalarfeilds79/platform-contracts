@@ -37,21 +37,18 @@ export const outputs =
     "addresses": {
       "Cards": "0x7245C578E9a948253c6201Dc3D1a67D8F70d6aa8",
       "OpenMinter": "0xcd95207B2F4D22b126B97d87D8625Ea425665e50",
-      "Forwarder": "0xDff33AFFd86B4203F8B533D2fD3FE04f933DED09",
-      "Registry": "0xC71A764d32aC16D38c67ABA9ba66d24A82361A96",
-      "LockLimiter": "0xD6E934AE3CEa5CE60c5c220947FE790d12C15fFB",
-      "BackupModule": "0x57f285C8E8ecBAFcC176020d8d595886b9e6B9C5",
-      "PurchaseModule": "0x453f5D403406e3DD50ac6442873f89cD2Ec8500b",
-      "RecoveryModule": "0xF32A67Fd7FD228EeE416c2f0c82dfAD76BC7c8C3",
-      "TransferModule": "0xB2F85527940EEd610a4bC9edf7C6064E7aDB08C8",
-      "LimitedModule": "0xcAb22Eda4dA9ba72a1E12eC4Cd7fa5820a78F932",
-      "SimpleDelegate": "0x3Ed02E77B4Dcc2E9e82D630608fba67E35d7F2eF",
-      "MultiLimiter": "0x96A6340689e6a67B875940B5EA6CaF196Bb932C8",
-      "WalletFactory": "0xAD275FbFD25bF1BA12fCF8fb8D4179c1231bfB67",
-      "ZERO_EX_EXCHANGE": "0x48bacb9266a570d521063ef5dd96e61686dbe788",
-      "ZERO_EX_ERC20_PROXY": "0x1dc4c1cefef38a777b15aa20260a54e584b16c48",
-      "ZERO_EX_ERC721_PROXY": "0x1d7022f5b17d2f8b695918fb48fa1089c9f85401",
-      "WETH": "0x0b1ba0af832d7c05fd64161e0db78e85978e8082"
+      "Forwarder": "0xAdfF0F58df8A97aECaA9CCE119ab9EfC944207De",
+      "Registry": "0xbC9a810fC033E449C7f9d78c96543320D1490f00",
+      "LockLimiter": "0xadC7A20E2f1186D918648E64e41023d19493b545",
+      "BackupModule": "0x8F155300fA9F2eC7C6B0ee2dad7F2AbCda77F580",
+      "PurchaseModule": "0xCC14cCB5F5a97CEa8Cf48D6EbB7AA86f4C9A4EE0",
+      "RecoveryModule": "0xd11ab8c2Ef292860EDD1e2471eD7B3e97F0dd6D6",
+      "TransferModule": "0x360eE37076FaBf6151A4054360F94D67e35467cD",
+      "LimitedModule": "0xC034906E670839696C659429d7c14f312F258782",
+      "SimpleDelegate": "0x7DdBA46c76b3383c25409d0630525a0dAC3Da0Cb",
+      "MultiLimiter": "0x5da711227708f00CCbCfA065Fed44F6cceefF804",
+      "WalletFactory": "0xC6EaFFDAed6314f4D4f3dAB5C4bFD72b3d96e263",
+      "TestWallet": "0x7a545dcef97F72591BA186afFCABF8d657AC277C"
     },
     "dependencies": {
       "ZERO_EX_EXCHANGE": "0x48bacb9266a570d521063ef5dd96e61686dbe788",
@@ -61,6 +58,20 @@ export const outputs =
     },
     "state": {
       "network_id": 50
+    }
+  },
+  "3-development": {
+    "human_friendly_name": "ropsten-development",
+    "addresses": {
+      "Cards": "0x7D637F5Bfa8E65d5A50316245867994Af586451d",
+      "OpenMinter": "0x331e1b1c9ae7234027eE9908280F5901162d41d0",
+      "Registry": "0xD3FFeaCEd9F568944f08c04040B72B14A4d7d498",
+      "LockLimiter": "0xfc73c616DF2cd14fa4662A4D99C81b10F35DB355",
+      "BackupModule": "0x18d01f7cDd8E736a3b83D6fFE92C733C636aB83d"
+    },
+    "dependencies": {},
+    "state": {
+      "network_id": 3
     }
   }
 }

@@ -64,4 +64,26 @@ contract Factory is Ownable {
         require(wallet.owner() == _owner, "wrong wallet owner");
 
     }
+
+    function computeProxyWalletAddress(
+        address _owner
+    )
+        public
+        view
+        returns (address proxy)
+    {
+        bytes32 salt = keccak256(abi.encodePacked(msg.sender, _owner, address(this)));
+        bytes memory code = bytecode;
+
+        bytes32 _data = keccak256(
+            abi.encodePacked(
+                bytes1(0xff),
+                address(this),
+                salt,
+                code
+            )
+        );
+
+        proxy = address(bytes20(_data << 96));
+    }
 }

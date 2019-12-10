@@ -462,13 +462,6 @@
     reflect-metadata "^0.1.12"
     tslib "^1.8.1"
 
-"@imtbl/types@^1.0.10":
-  version "1.0.10"
-  resolved "https://registry.yarnpkg.com/@imtbl/types/-/types-1.0.10.tgz#f27f932370aa94658224e2753ddfd77b89638e6d"
-  integrity sha512-j9pz5XrXdcfYysWNBJp5FVutCQfUD8OXwdpQsqs5+K8PLf9z3LjSB1/jQe6ljMKB5IEwjVqFeP29fO0DPwqQHA==
-  dependencies:
-    typescript "^3.5.3"
-
 "@jest/console@^24.7.1", "@jest/console@^24.9.0":
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/@jest/console/-/console-24.9.0.tgz#79b1bc06fb74a8cfb01cbdedf945584b1b9707f0"
@@ -10733,11 +10726,6 @@ typescript@^3.5.1, typescript@^3.6.4:
   version "3.6.4"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.6.4.tgz#b18752bb3792bc1a0281335f7f6ebf1bbfc5b91d"
   integrity sha512-unoCll1+l+YK4i4F8f22TaNVPRHcD9PA3yCuZ8g5e0qGqlVlJ/8FSateOLLSagn+Yg5+ZwuPkL8LFUc0Jcvksg==
-
-typescript@^3.5.3:
-  version "3.7.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.7.2.tgz#27e489b95fa5909445e9fef5ee48d81697ad18fb"
-  integrity sha512-ml7V7JfiN2Xwvcer+XAf2csGO1bPBdRbFCkYBczNZggrBZ9c7G3riSUeJmqEU5uOtXNPMhE3n+R4FA/3YOAWOQ==
 
 typewise-core@^1.2, typewise-core@^1.2.0:
   version "1.2.0"

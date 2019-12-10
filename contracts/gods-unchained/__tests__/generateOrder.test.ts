@@ -2,31 +2,38 @@ import { ZeroExWrapper } from '../src/wrappers/zeroExWrapper';
 import { generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
 import { IExchangeFactory, CardsWrapper } from '../src';
-import { orderHashUtils } from '0x.js';
+import { orderHashUtils } from '@0x/order-utils';
 import { getAddressBook } from '@imtbl/addresses';
-import { DeploymentNetwork } from '@imtbl/common-types';
-import { DeploymentEnvironment } from '@imtbl/common-types';
+import { DeploymentNetwork, DeploymentEnvironment } from '@imtbl/common-types';
 
 const provider = new ethers.providers.JsonRpcProvider();
 
 describe('Order Generator', () => {
-  const [deployerWallet] = generatedWallets(provider);
+  const [makerWallet, takerWallet] = generatedWallets(provider);
   const addressBook = getAddressBook(DeploymentNetwork.TestRPC, DeploymentEnvironment.Development);
 
-  const zeroExWrapper = new ZeroExWrapper(deployerWallet);
-  const cardsWrapper = new CardsWrapper(deployerWallet);
+  const zeroExWrapper = new ZeroExWrapper(makerWallet);
+  const cardsWrapper = new CardsWrapper(makerWallet);
 
   it('should be able to generate an order', async () => {
-    const cards = await cardsWrapper.deploy(100, [{
-      name: 'Test',
-      low: 1,
-      high: 100
-    }],[{
-      minter: deployerWallet.address,
-      season: 1
-    }]);
+    const cards = await cardsWrapper.deploy(
+      100,
+      [
+        {
+          name: 'Test',
+          low: 1,
+          high: 100,
+        },
+      ],
+      [
+        {
+          minter: makerWallet.address,
+          season: 1,
+        },
+      ],
+    );
 
-    const ids = await cardsWrapper.mint(deployerWallet.address, 1, 1);
+    const ids = await cardsWrapper.mint(makerWallet.address, 1, 1);
 
     await zeroExWrapper.giveApproval(cards.address, addressBook.zeroExERC721ProxyAddress);
 
@@ -39,14 +46,14 @@ describe('Order Generator', () => {
       addressBook.wethAddress,
     );
 
-    const exchange = await IExchangeFactory.connect(addressBook.zeroExExchangeAddress, deployerWallet);
+    const exchange = await IExchangeFactory.connect(addressBook.zeroExExchangeAddress, makerWallet);
+
     const isValidSignature = await exchange.functions.isValidSignature(
-      orderHashUtils.getOrderHashBuffer(newOrder.order), 
-      deployerWallet.address, 
-      newOrder.signature
+      orderHashUtils.getOrderHashBuffer(zeroExWrapper.convertEthersOrderTo0xOrder(newOrder.order)),
+      makerWallet.address,
+      newOrder.signature,
     );
 
     expect(isValidSignature).toBeTruthy();
   });
-
 });

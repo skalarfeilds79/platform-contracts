@@ -5,10 +5,12 @@ import { CardsWrapper, Cards } from '../src';
 import { ContractReceipt } from 'ethers/contract';
 import { parseLogs } from '@imtbl/utils';
 
-const provider = new ethers.providers.EtherscanProvider(3);
+const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();
 
-describe('Core', () => {
+jest.setTimeout(10000);
+
+describe('Fusing', () => {
   const [ownerWallet, minterWallet, userWallet, unauthorisedWallet] = generatedWallets(provider);
 
   beforeEach(async () => {
@@ -51,7 +53,7 @@ describe('Core', () => {
 
       await cards.functions.addFactory(fusingAddress, 1);
 
-      callerWallet = minterWallet;
+      callerWallet = ownerWallet;
       callerMinterAddress = minterWallet.address;
     });
 
@@ -64,11 +66,6 @@ describe('Core', () => {
 
     it('should not be called by an unauthorised user', async () => {
       callerWallet = unauthorisedWallet;
-      await expectRevert(subject());
-    });
-
-    it('should not add duplicate minters', async () => {
-      await subject();
       await expectRevert(subject());
     });
 
@@ -119,15 +116,12 @@ describe('Core', () => {
       await expectRevert(subject());
     });
 
-    it('should not remove non-existent minters', async () => {
-      await subject();
-      await expectRevert(subject());
-    });
-
-    it('should be able to add a minter with the event emitted', async () => {
+    it('should be able to remove a minter with the event emitted', async () => {
       const receipt = await subject();
+      console.log(receipt);
       const parsed = parseLogs(receipt.logs, new FusingFactory().interface.abi);
 
+      console.log(parsed);
       const returnedMinter = parsed[0].values.minter;
       expect(returnedMinter).toBe(minterWallet.address);
     });
@@ -151,8 +145,9 @@ describe('Core', () => {
       fusingAddress = fusingContract.address;
 
       await cards.functions.addFactory(fusingAddress, 1);
+      await fusingContract.functions.addMinter(minterWallet.address);
 
-      callerWallet = ownerWallet;
+      callerWallet = minterWallet;
       callerProto = 1;
       callerQuality = 1;
       callerDestination = userWallet.address;
@@ -177,6 +172,11 @@ describe('Core', () => {
       await expectRevert(subject());
     });
 
+    it('should not be able to be called by the owner', async () => {
+      callerWallet = ownerWallet;
+      await expectRevert(subject());
+    });
+
     it('should not be able to mint outside of the core season range', async () => {
       callerProto = 101;
       await expectRevert(subject());
@@ -194,19 +194,20 @@ describe('Core', () => {
 
     it('should emit the event correctly', async () => {
       const receipt = await subject();
-      const parsed = parseLogs(receipt.logs, new FusingFactory().interface.abi);
 
+      const parsed = parseLogs(receipt.logs, new FusingFactory().interface.abi);
+      console.log(parsed);
       const returnedOwner = parsed[0].values.owner;
       expect(returnedOwner).toBe(callerDestination);
 
-      const returnedTokenAddress = parsed[0].values.tokenAdress;
+      const returnedTokenAddress = parsed[0].values.tokenAddress;
       expect(returnedTokenAddress).toBe(cards.address);
 
       const returnedTokenId = parsed[0].values.tokenId;
-      expect(returnedTokenId).toBe(1);
+      expect(returnedTokenId.toNumber()).toBe(0);
 
       const returnedReferences = parsed[0].values.references;
-      expect(returnedReferences).toBe([1, 2]);
+      expect(returnedReferences.length).toBe(2);
     });
   });
 });

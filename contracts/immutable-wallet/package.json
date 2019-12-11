@@ -10,7 +10,6 @@
   ],
   "scripts": {
     "clean": "rm -rf build; rm -rf dist; rm -rf generated; rm -rf ../artifacts/src",
-    "chain": "ganache-cli --networkId 50 --accounts 20 -l 19000000 -e 10000000000 -m 'concert load couple harbor equip island argue ramp clarify fence smart topic'",
     "chain-legacy": "yarn etherlime ganache --gasLimit=15000000",
     "lint:sol": "yarn solhint \"contracts/**/*.sol\" --config solhint.json",
     "lint:ts": "tslint -t verbose '__tests__/**/*.ts'",

@@ -16,23 +16,7 @@ describe('Order Generator', () => {
   const cardsWrapper = new CardsWrapper(makerWallet);
 
   it('should be able to generate an order', async () => {
-    const cards = await cardsWrapper.deploy(
-      100,
-      [
-        {
-          name: 'Test',
-          low: 1,
-          high: 100,
-        },
-      ],
-      [
-        {
-          minter: makerWallet.address,
-          season: 1,
-        },
-      ],
-    );
-
+    const cards = await cardsWrapper.deployTest(makerWallet.address);
     const ids = await cardsWrapper.mint(makerWallet.address, 1, 1);
 
     await zeroExWrapper.giveApproval(cards.address, addressBook.zeroExERC721ProxyAddress);

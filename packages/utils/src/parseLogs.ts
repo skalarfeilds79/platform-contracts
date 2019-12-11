@@ -16,7 +16,7 @@ export function parseLogs(logs: ethers.providers.Log[], abi: any): any[] {
       const values = Object.values(item.values);
       const start = item.values.length;
 
-      for (let i = start; i < start * 2 - 1; i++) {
+      for (let i = start; i <= start * 2 - 1; i++) {
         result.values[keys[i]] = values[i];
       }
 

@@ -9,34 +9,38 @@ contract Fusing is Ownable {
     ICards public cards;
 
     address[] public minters;
+    mapping (address => bool) approvedMinters;
 
     event MinterAdded(
-        address minter
+        indexed address minter
     );
 
     event MinterRemoved(
-        address minter
+        indexed address minter
     );
 
     event CardFused(
         address owner,
         address tokenAddress,
-        uint tokenId,
-        uint[] references
+        indexed uint tokenId,
+        indexed uint[] references
     );
 
     /**
      * @dev Check if the address is a valid minter
-     * 
+     *
      * @param _minter is the address to check against
      */
-    modifier validMinter(address _minter) {
+    modifier onlyMinter(address _minter) {
+        require(
+            approvedMinters[_minter] == true,
+            "Fusing: invalid minter"
+        );
         _;
-        // Add logic to validate the minter is correct
     }
 
-    constructor(ICards cards) public {
-
+    constructor(ICards _cards) public {
+        cards = ICards(_cards);
     }
 
     /**
@@ -48,8 +52,11 @@ contract Fusing is Ownable {
         address _minter
     )
         public
+        onlyOwner
     {
+        approvedMinters[_minter] = true;
 
+        emit MinterAdded(_minter);
     }
 
     /**
@@ -61,8 +68,12 @@ contract Fusing is Ownable {
         address _minter
     )
         public
+        onlyOwner
     {
+        approvedMinters[_minter] = false;
+        delete approvedMinters[_minter];
 
+        emit MinterRemoved(_minter);
     }
 
     /**
@@ -74,23 +85,22 @@ contract Fusing is Ownable {
      * @param _references is a list of card id references off-chain to be burned
      */
     function fuse(
-        uint _proto,
-        uint _quality,
+        uint16 _proto,
+        uint8 _quality,
         address _to,
         uint[] memory _references
     )
         public
-        validMinter(msg.sender)
+        onlyMinter(msg.sender)
         returns (uint tokenId)
     {
 
-        // Proto should be of core cards (GET THIS FROM ALEX)
-        // Valid to address is valid
+        require(_to != address(0), "Fusing: to address cannot be 0");
+        require(_references.length > 0);
 
-        // Mint a token with quality and proto
+        tokenId = cards.mintCard(_to, _proto, _quality);
 
-        // Emit an event
-
+        emit CardFused(_to, address(cards), tokenId, _references);
     }
 
 }

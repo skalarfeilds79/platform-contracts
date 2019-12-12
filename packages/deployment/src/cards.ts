@@ -1,46 +1,87 @@
-import { CardsFactory, OpenMinterFactory} from '@imtbl/types';
+import { CardsFactory, OpenMinterFactory, CardsWrapper, OpenMinter } from '@imtbl/gods-unchained';
 import { ethers } from 'ethers';
-import { writeContractToOutputs, writeStateToOutputs } from './utils/outputHelpers';
+import { writeContractToOutputs, writeStateToOutputs, getNetworkId } from './utils/outputHelpers';
 
 const BATCH_SIZE = 1251;
 
 const dotenv = require('dotenv');
-const config = dotenv.config({path: '../../.env'}).parsed;
+const config = dotenv.config({ path: '../../.env' }).parsed;
 
-const provider = new ethers.providers.JsonRpcProvider(config.RPC_ENDPOINT, 3);
+const networkId = getNetworkId();
+
+let provider = new ethers.providers.JsonRpcProvider(config.RPC_ENDPOINT, networkId);
+if (networkId == 50) {
+  provider = new ethers.providers.JsonRpcProvider(config.RPC_ENDPOINT);
+}
+
 const wallet = new ethers.Wallet(config.PRIVATE_KEY, provider);
 
 async function deploy() {
-    console.log('Deploying Cards...')
-    const cards = await new CardsFactory(wallet).deploy(
-        BATCH_SIZE,
-        "Gods Unchained Cards",
-        "CARD"
-    );
+  await wallet.getTransactionCount();
 
-    console.log('Starting Seasons...')
-    await cards.functions.startSeason("Genesis", 1, 377, {gasLimit: 1000000});
-	await cards.functions.startSeason("Etherbots", 380, 396, {gasLimit: 1000000});
-    await cards.functions.startSeason("Promo", 400, 500, {gasLimit: 1000000});
+  const cardWrapper = new CardsWrapper(wallet);
 
-    console.log('Deploying OpenMinter...')
-    const minter = await new OpenMinterFactory(wallet).deploy(cards.address);
+  console.log('** Deploying Cards Contract **');
 
-    console.log('Adding Factory...')
-    await cards.functions.addFactory(minter.address, 1);
+  const cards = await cardWrapper.deploy(
+    BATCH_SIZE,
+    [
+      {
+        name: 'Genesis',
+        low: 1,
+        high: 377,
+      },
+      {
+        name: 'Etherbots',
+        low: 380,
+        high: 396,
+      },
+      {
+        name: 'Promo',
+        low: 400,
+        high: 500,
+      },
+      {
+        name: 'Core',
+        low: 501,
+        high: 999,
+      },
+    ],
+    [],
+  );
 
-    console.log('Unlocking Trading...')
-    await cards.functions.unlockTrading(1);
+  console.log('** Deploying Open Minter **');
+  const openMinter = await cardWrapper.deployOpenMinter(cards.address);
 
-    await writeContractToOutputs('Cards', cards.address);
-    await writeContractToOutputs('OpenMinter', cards.address);
+  console.log('** Deploying Fusing **');
+  const fusing = await cardWrapper.deployFusing(cards.address);
 
-    return `Cards: ${cards.address}\nMinter: ${minter.address}`;
+  console.log('** Authorising Factories **');
+  await cardWrapper.addFactories([
+    {
+      minter: openMinter.address,
+      season: 1,
+    },
+    {
+      minter: fusing.address,
+      season: 4,
+    },
+  ]);
 
+  console.log('Unlocking Trading...');
+  await cardWrapper.unlockTrading([1, 4]);
+
+  await writeContractToOutputs('Cards', cards.address);
+  await writeContractToOutputs('OpenMinter', openMinter.address);
+  await writeContractToOutputs('Fusing', fusing.address);
+
+  return `Cards: ${cards.address}\nMinter: ${openMinter.address}\nFusing: ${fusing.address}`;
 }
 
-deploy().then(result => {
+deploy()
+  .then((result) => {
     console.log(result);
-}).catch(error => {
+  })
+  .catch((error) => {
     console.log(error);
-});
+  });

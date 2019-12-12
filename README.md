@@ -13,6 +13,13 @@
 
 ## Packages :package:
 
+### Contracts
+
+|                            Package                             |                                                                Version                                                                |                           Description                           |
+| -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| [`@imtbl/gods-unchained`](/contracts/gods-unchained)                                     | [![npm](https://img.shields.io/npm/v/@imtbl/gods-unchained.svg)](https://www.npmjs.com/package/@imtbl/gods-unchained)                                                 | Gods Unchained smart contracts and typings       |
+| [`@imtbl/immutable-wallet`](/contracts/immutable-wallet)                                   | [![npm](https://img.shields.io/npm/v/@imtbl/immutable-wallet.svg)](https://www.npmjs.com/package/@imtbl/immutable-wallet)                                               | Immutable Smart Contract Wallet contracts and typings                    |
+
 ### Published
 
 |                            Package                             |                                                                Version                                                                |                           Description                           |
@@ -20,13 +27,13 @@
 | [`@imtbl/addresses`](/packages/addresses)                                     | [![npm](https://img.shields.io/npm/v/@imtbl/addresses.svg)](https://www.npmjs.com/package/@imtbl/addresses)                                                 | Public addresses of deloyed contracts       |
 | [`@imtbl/artifacts`](/packages/artifacts)                                   | [![npm](https://img.shields.io/npm/v/@imtbl/artifacts.svg)](https://www.npmjs.com/package/@imtbl/artifacts)                                               | ABIs of all the main contracts needed for development                    |
 | [`@imtbl/tests-utils`](/packages/test-utils)                 | [![npm](https://img.shields.io/npm/v/@imtbl/test-utils.svg)](https://www.npmjs.com/package/@imtbl/test-utils)                 | Developer utilities                                             |
+| [`@imtbl/utils`](/packages/utils)                 | [![npm](https://img.shields.io/npm/v/@imtbl/utils.svg)](https://www.npmjs.com/package/@imtbl/test-utils)                 | Utilities while developing with our contracts                                             |
 | [`@imtbl/types`](/packages/types)                         | [![npm](https://img.shields.io/npm/v/@imtbl/types.svg)](https://www.npmjs.com/package/@imtbl/types)                         | Shared type declarations                                        |
 
 ### Private
 
 |                       Package                        |              Description              |
 | ---------------------------------------------------- | ------------------------------------- |
-| [`@imtbl/contracts`](/packages/contracts)       | Immutable smart contracts & tests   |
 | [`@imtbl/deployment`](/packages/deployment)       | Immutable contract deployment scripts   |
 | [`@imtbl/order-generator`](/packages/order-generator)                 | Order generator used for testing |
 
@@ -57,7 +64,7 @@ We get it, you're just here to find the contract addresses. Luckily for you, the
 | ------------- | ------- |
 | Cards | 0xADC559D1afbCBBf427728577F40E7358D96F1209 |
 | OpenMinter | 0x36F26280B80e609e347c843E2AE5351Ee4b5f7eD |
-| Forwarder | 0x78798915cb0fE78354454aFe9C0d224af495B505 |
+| Forwarder | 0xc79C9c624ea8A3dEdfae0dbf9295Bfb159eE5F3b |
 
 ### Dependencies (Ropsten)
 

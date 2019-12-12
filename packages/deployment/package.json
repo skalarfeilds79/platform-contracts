@@ -1,13 +1,17 @@
 {
   "name": "@imtbl/deployment",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "private": true,
   "dependencies": {
     "@imtbl/addresses": "^1.1.1",
-    "@imtbl/types": "^1.0.10",
+    "@imtbl/common-types": "^1.0.11",
+    "@imtbl/gods-unchained": "^1.0.11",
+    "@imtbl/immutable-wallet": "^1.0.11",
+    "@imtbl/test-utils": "^1.0.10",
+    "@imtbl/utils": "^1.0.10",
     "dotenv": "^8.2.0",
     "ethers": "^4.0.39",
     "fs-extra": "^8.1.0",
@@ -20,12 +24,11 @@
   "scripts": {
     "lint": "tslint --project . -t verbose 'src/**/*.{tsx,ts}'",
     "generate-outputs": "bash scripts/generate-outputs.sh",
-    "generate-artifacts": "node scripts/copy-artifacts.js",
-    "verify-contracts": "node scripts/verify-contracts.js",
-    "finish-deployment": "yarn generate-outputs && yarn generate-artifacts && yarn verify-contracts",
+    "finish-deployment": "yarn generate-outputs && yarn tsc",
     "deploy-cards": "yarn ts-node src/cards && yarn finish-deployment",
     "deploy-forwarder": "yarn ts-node src/forwarder && yarn finish-deployment",
-    "deploy-wallet": "yarn ts-node src/wallet && yarn finish-deployment"
+    "deploy-wallet": "yarn ts-node src/wallet && yarn finish-deployment",
+    "deploy-all:dev": "yarn ts-node src/cards && yarn ts-node src/forwarder && yarn ts-node src/wallet && yarn generate-outputs && yarn tsc"
   },
   "devDependencies": {
     "@0xproject/types": "^1.1.4",

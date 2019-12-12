@@ -7,7 +7,8 @@ export const outputs =
     "addresses": {
       "Cards": "0xADC559D1afbCBBf427728577F40E7358D96F1209",
       "OpenMinter": "0x36F26280B80e609e347c843E2AE5351Ee4b5f7eD",
-      "Forwarder": "0x78798915cb0fE78354454aFe9C0d224af495B505"
+      "Forwarder": "0xc79C9c624ea8A3dEdfae0dbf9295Bfb159eE5F3b",
+      "Fusing": "0x82a92540aB10F484Bf11fB3bEd95CE35c370846E"
     },
     "dependencies": {
       "WETH": "0xc778417e063141139fce010982780140aa0cd5ab",
@@ -30,6 +31,56 @@ export const outputs =
     },
     "state": {
       "network_id": 1
+    }
+  },
+  "50-development": {
+    "human_friendly_name": "test-rpc-development",
+    "addresses": {
+      "Cards": "0x7245C578E9a948253c6201Dc3D1a67D8F70d6aa8",
+      "OpenMinter": "0xcd95207B2F4D22b126B97d87D8625Ea425665e50",
+      "Forwarder": "0xAdfF0F58df8A97aECaA9CCE119ab9EfC944207De",
+      "Registry": "0xbC9a810fC033E449C7f9d78c96543320D1490f00",
+      "LockLimiter": "0xadC7A20E2f1186D918648E64e41023d19493b545",
+      "BackupModule": "0x8F155300fA9F2eC7C6B0ee2dad7F2AbCda77F580",
+      "PurchaseModule": "0xCC14cCB5F5a97CEa8Cf48D6EbB7AA86f4C9A4EE0",
+      "RecoveryModule": "0xd11ab8c2Ef292860EDD1e2471eD7B3e97F0dd6D6",
+      "TransferModule": "0x360eE37076FaBf6151A4054360F94D67e35467cD",
+      "LimitedModule": "0xC034906E670839696C659429d7c14f312F258782",
+      "SimpleDelegate": "0x7DdBA46c76b3383c25409d0630525a0dAC3Da0Cb",
+      "MultiLimiter": "0x5da711227708f00CCbCfA065Fed44F6cceefF804",
+      "WalletFactory": "0xC6EaFFDAed6314f4D4f3dAB5C4bFD72b3d96e263",
+      "TestWallet": "0x7a545dcef97F72591BA186afFCABF8d657AC277C"
+    },
+    "dependencies": {
+      "ZERO_EX_EXCHANGE": "0x48bacb9266a570d521063ef5dd96e61686dbe788",
+      "ZERO_EX_ERC20_PROXY": "0x1dc4c1cefef38a777b15aa20260a54e584b16c48",
+      "ZERO_EX_ERC721_PROXY": "0x1d7022f5b17d2f8b695918fb48fa1089c9f85401",
+      "WETH": "0x0b1ba0af832d7c05fd64161e0db78e85978e8082"
+    },
+    "state": {
+      "network_id": 50
+    }
+  },
+  "3-development": {
+    "human_friendly_name": "ropsten-development",
+    "addresses": {
+      "Forwarder": "0x802726E7703A4E5364F53862cca750DBfdF2C017",
+      "WalletImplementation": "0x9Adf77B452c918600ac5B31D55B5C542F5044586",
+      "Registry": "0x6ea8a4A12BB02BdC9320156c518b3F4f9f3313B8",
+      "PurchaseModule": "0xF9DC7D63916998a8396d6E66BD0F411f5Ca9388e",
+      "LimitedModules": "0x7BB0e8435A0862b8770A66b3Fcd466A09359cDfD",
+      "SimpleDelegate": "0xD06F79f13C4AE87cAb917693b7Aa6e17c1a98D3F",
+      "MultiLimiter": "0x59fBABCBC1F3A93b8f43883039d3e5ce7d77bd78",
+      "WalletFactory": "0xC0Ff95FC9f1DCa0351A628DCfC2E56fE953Dab1d"
+    },
+    "dependencies": {
+      "ZERO_EX_EXCHANGE": "0xbff9493f92a3df4b0429b6d00743b3cfb4c85831",
+      "ZERO_EX_ERC20_PROXY": "0xb1408f4c245a23c31b98d2c626777d4c0d766caa",
+      "ZERO_EX_ERC721_PROXY": "0xe654aac058bfbf9f83fcaee7793311dd82f6ddb4",
+      "WETH": "0xc778417e063141139fce010982780140aa0cd5ab"
+    },
+    "state": {
+      "network_id": 3
     }
   }
 }

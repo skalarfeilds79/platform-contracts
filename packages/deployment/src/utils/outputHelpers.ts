@@ -3,7 +3,7 @@ import * as fs from 'fs-extra';
 import dependencies from '../dependencies';
 
 const dotenv = require('dotenv');
-const config = dotenv.config({path: '../../.env'}).parsed;
+const config = dotenv.config({ path: '../../.env' }).parsed;
 
 const OUTPUTS_PATH = '../addresses/src/outputs.json';
 
@@ -68,7 +68,11 @@ export async function getContractCode(name: string, provider: Provider): Promise
   return await provider.getCode(vaultAddress);
 }
 
-export async function writeContractToOutputs(name: string, value: string, dependency: boolean = false) {
+export async function writeContractToOutputs(
+  name: string,
+  value: string,
+  dependency: boolean = false,
+) {
   const outputs: any = await returnOutputs();
   const deploymentKey = getDeploymentNetworkKey();
 

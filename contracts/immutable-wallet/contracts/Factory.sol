@@ -12,7 +12,12 @@ contract Factory is Ownable {
     LimitedModules public modules;
     Delegates public delegates;
     MultiLimiter public multiLimiter;
-    bytes public bytecode;
+
+    // The hash of the wallet contract
+    bytes32 public contractCodeHash;
+
+    // The code of the wallet contract
+    bytes private contractCode;
 
     event WalletCreated(
         address indexed wallet,
@@ -22,15 +27,16 @@ contract Factory is Ownable {
     constructor(
         LimitedModules _modules,
         Delegates _delegates,
-        MultiLimiter _multiLimiter,
-        bytes memory _bytecode
+        MultiLimiter _multiLimiter
     )
         public
     {
         modules = _modules;
         delegates = _delegates;
         multiLimiter = _multiLimiter;
-        bytecode = _bytecode;
+
+        contractCode = type(Wallet).creationCode;
+        contractCodeHash = keccak256(contractCode);
     }
 
     // TODO: limit who can call this function
@@ -43,16 +49,9 @@ contract Factory is Ownable {
         returns (address payable proxy)
     {
         require(_owner != address(0), "owner must not be null");
-        bytes32 salt = keccak256(abi.encodePacked(msg.sender, _owner, address(this)));
-        bytes memory _code = bytecode;
 
-        // solium-disable-next-line security/no-inline-assembly
-        assembly {
-            proxy := create2(0, add(_code, 0x20), mload(_code), salt)
-            if iszero(extcodesize(proxy)) {
-                revert(0, 0)
-            }
-        }
+        bytes32 salt = keccak256(abi.encodePacked(msg.sender, _owner, address(this)));
+        proxy = createContract(salt);
 
         Wallet wallet = Wallet(proxy);
 
@@ -65,25 +64,37 @@ contract Factory is Ownable {
 
     }
 
-    function computeProxyWalletAddress(
-        address _owner
-    )
+    function createContract(bytes32 _salt)
+        internal
+        returns (address payable _contract)
+    {
+        bytes memory _contractCode = contractCode;
+
+        // solium-disable-next-line security/no-inline-assembly
+        assembly {
+            let p := add(_contractCode, 0x20)
+            let n := mload(_contractCode)
+            _contract := create2(0, p, n, _salt)
+            if iszero(extcodesize(_contract)) {revert(0, 0)}
+        }
+    }
+
+    function computeContractAddress(address _owner)
         public
         view
-        returns (address proxy)
+        returns (address _contractAddress)
     {
         bytes32 salt = keccak256(abi.encodePacked(msg.sender, _owner, address(this)));
-        bytes memory code = bytecode;
 
         bytes32 _data = keccak256(
             abi.encodePacked(
                 bytes1(0xff),
                 address(this),
                 salt,
-                code
+                contractCodeHash
             )
         );
 
-        proxy = address(bytes20(_data << 96));
+        _contractAddress = address(bytes20(_data << 96));
     }
 }

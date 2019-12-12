@@ -6,10 +6,12 @@
  */
 
 module.exports = [
-    'Cards',
-    'Forwarder',
-    'Wallet',
-    'Factory',
-    'Proxy',
-    'OpenMinter'
+  'Cards',
+  'Forwarder',
+  'Wallet',
+  'Factory',
+  'Proxy',
+  'OpenMinter',
+  'Fusing',
+  'Factory',
 ];

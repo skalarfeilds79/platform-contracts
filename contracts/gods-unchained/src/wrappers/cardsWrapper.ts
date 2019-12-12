@@ -2,6 +2,10 @@ import { Address } from '@imtbl/common-types';
 import { Cards, CardsFactory } from '..';
 import { Wallet } from 'ethers';
 import { asyncForEach, parseLogs } from '@imtbl/utils';
+import { OpenMinter } from '../generated/OpenMinter';
+import { OpenMinterFactory } from '../generated/OpenMinterFactory';
+import { Fusing } from '../generated/Fusing';
+import { FusingFactory } from '../generated/FusingFactory';
 
 type Season = {
   name: string;
@@ -42,20 +46,41 @@ export class CardsWrapper {
     );
   }
 
-  async deploy(batchSize: number, seasons: Season[], factories: Factory[]): Promise<Cards> {
-    this.instance = await new CardsFactory(this.wallet).deploy(batchSize, 'Cards', 'CARD');
+  async deploy(
+    batchSize: number,
+    seasons: Season[] = [],
+    factories: Factory[] = [],
+  ): Promise<Cards> {
+    const unsignedTx = await new CardsFactory(this.wallet).getDeployTransaction(
+      batchSize,
+      'Cards',
+      'CARD',
+    );
 
+    unsignedTx.nonce = await this.wallet.getTransactionCount();
+
+    const signedTx = await this.wallet.sendTransaction(unsignedTx);
+    const receipt = await signedTx.wait();
+    this.instance = await new CardsFactory(this.wallet).attach(receipt.contractAddress);
+
+    await this.addSeasons(seasons);
+    await this.addFactories(factories);
+
+    return this.instance;
+  }
+
+  async addSeasons(seasons: Season[]) {
     await asyncForEach(seasons, async (season) => {
       const tx = await this.instance.functions.startSeason(season.name, season.low, season.high);
       await tx.wait();
     });
+  }
 
+  async addFactories(factories: Factory[]) {
     await asyncForEach(factories, async (factory) => {
       const tx = await this.instance.functions.addFactory(factory.minter, factory.season);
       await tx.wait();
     });
-
-    return this.instance;
   }
 
   async mint(to: Address, proto: number, quality: number, quantity: number = 1): Promise<number[]> {
@@ -88,7 +113,23 @@ export class CardsWrapper {
     return Array.prototype.concat.apply([], results);
   }
 
-  async unlockTrading(seasons: [number]): Promise<boolean> {
+  async deployOpenMinter(cards: string): Promise<OpenMinter> {
+    const unsignedTx = await new OpenMinterFactory(this.wallet).getDeployTransaction(cards);
+    unsignedTx.nonce = await this.wallet.getTransactionCount();
+    const signedTx = await this.wallet.sendTransaction(unsignedTx);
+    const receipt = await signedTx.wait();
+    return await new OpenMinterFactory(this.wallet).attach(receipt.contractAddress);
+  }
+
+  async deployFusing(cards: string): Promise<Fusing> {
+    const unsignedTx = await new FusingFactory(this.wallet).getDeployTransaction(cards);
+    unsignedTx.nonce = await this.wallet.getTransactionCount();
+    const signedTx = await this.wallet.sendTransaction(unsignedTx);
+    const receipt = await signedTx.wait();
+    return new FusingFactory(this.wallet).attach(receipt.contractAddress);
+  }
+
+  async unlockTrading(seasons: number[]): Promise<boolean> {
     try {
       await asyncForEach(seasons, async (season) => {
         const tx = await this.instance.functions.unlockTrading(season);

@@ -42,6 +42,7 @@ contract Factory is Ownable {
     // TODO: limit who can call this function
     function createProxyWallet(
         address _owner,
+        bytes32 _salt,
         address[] memory _modules,
         Limiter[] memory _limiters
     )
@@ -50,8 +51,7 @@ contract Factory is Ownable {
     {
         require(_owner != address(0), "owner must not be null");
 
-        bytes32 salt = keccak256(abi.encodePacked(msg.sender, _owner, address(this)));
-        proxy = createContract(salt);
+        proxy = createContract(_salt);
 
         Wallet wallet = Wallet(proxy);
 
@@ -79,18 +79,18 @@ contract Factory is Ownable {
         }
     }
 
-    function computeContractAddress(address _owner)
+    function computeContractAddress(bytes32 _salt)
         public
         view
         returns (address _contractAddress)
     {
-        bytes32 salt = keccak256(abi.encodePacked(msg.sender, _owner, address(this)));
+        // bytes32 salt = keccak256(abi.encodePacked(msg.sender, _owner, address(this)));
 
         bytes32 _data = keccak256(
             abi.encodePacked(
                 bytes1(0xff),
                 address(this),
-                salt,
+                _salt,
                 contractCodeHash
             )
         );

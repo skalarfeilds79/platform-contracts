@@ -188,10 +188,18 @@ contract BackupModule is BaseModule, MetaTxEnabled {
     bytes4 constant internal CONFIRM_REMOVE_PREFIX = bytes4(keccak256("confirmBackupRemoval(address,address)"));
 
     function validateSignatures(
-        Wallet _wallet, bytes memory _data, uint,
-        bytes memory _sigs, uint, uint,
+        Wallet _wallet, 
+        bytes memory _data, 
+        uint,
+        bytes memory _sigs, 
+        uint, 
+        uint,
         bytes32 _signHash
-    ) internal view returns (bool) {
+    ) 
+        public 
+        view 
+        returns (bool)
+    {
         bytes4 methodID = getPrefix(_data);
         // can be called by anyone
         if (methodID == CONFIRM_ADD_PREFIX || methodID == CONFIRM_REMOVE_PREFIX) {

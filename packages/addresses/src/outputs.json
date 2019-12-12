@@ -4,7 +4,8 @@
     "addresses": {
       "Cards": "0xADC559D1afbCBBf427728577F40E7358D96F1209",
       "OpenMinter": "0x36F26280B80e609e347c843E2AE5351Ee4b5f7eD",
-      "Forwarder": "0x78798915cb0fE78354454aFe9C0d224af495B505"
+      "Forwarder": "0xc79C9c624ea8A3dEdfae0dbf9295Bfb159eE5F3b",
+      "Fusing": "0x82a92540aB10F484Bf11fB3bEd95CE35c370846E"
     },
     "dependencies": {
       "WETH": "0xc778417e063141139fce010982780140aa0cd5ab",
@@ -60,13 +61,21 @@
   "3-development": {
     "human_friendly_name": "ropsten-development",
     "addresses": {
-      "Cards": "0x4f110d020DB6CdE3b970b86545f1e6BcF79F6807",
-      "OpenMinter": "0x7beE426cc8e113d790D854F32B55A17119482EE8",
-      "Registry": "0x00d9e6a1144c26f41336ae7c5Bc8f9aE35Cd98EF",
-      "LockLimiter": "0xD119550f59135E1F1D4A8B52b0B7a939D3a5342c",
-      "BackupModule": "0xBEDc5fDfDCf13A2b17386Fd3B7c015006D392951"
+      "Forwarder": "0x802726E7703A4E5364F53862cca750DBfdF2C017",
+      "WalletImplementation": "0x9Adf77B452c918600ac5B31D55B5C542F5044586",
+      "Registry": "0x6ea8a4A12BB02BdC9320156c518b3F4f9f3313B8",
+      "PurchaseModule": "0xF9DC7D63916998a8396d6E66BD0F411f5Ca9388e",
+      "LimitedModules": "0x7BB0e8435A0862b8770A66b3Fcd466A09359cDfD",
+      "SimpleDelegate": "0xD06F79f13C4AE87cAb917693b7Aa6e17c1a98D3F",
+      "MultiLimiter": "0x59fBABCBC1F3A93b8f43883039d3e5ce7d77bd78",
+      "WalletFactory": "0xC0Ff95FC9f1DCa0351A628DCfC2E56fE953Dab1d"
     },
-    "dependencies": {},
+    "dependencies": {
+      "ZERO_EX_EXCHANGE": "0xbff9493f92a3df4b0429b6d00743b3cfb4c85831",
+      "ZERO_EX_ERC20_PROXY": "0xb1408f4c245a23c31b98d2c626777d4c0d766caa",
+      "ZERO_EX_ERC721_PROXY": "0xe654aac058bfbf9f83fcaee7793311dd82f6ddb4",
+      "WETH": "0xc778417e063141139fce010982780140aa0cd5ab"
+    },
     "state": {
       "network_id": 3
     }

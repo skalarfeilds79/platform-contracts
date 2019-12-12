@@ -8,10 +8,14 @@ import { ProxyFactory } from '../generated/ProxyFactory';
 import { WalletFactory } from '../generated/WalletFactory';
 import { Wallet as WalletImplementation } from '../generated/Wallet';
 import { FactoryFactory } from '../generated/FactoryFactory';
-import { LockLimiterFactory } from '../generated/LockLimiterFactory';
 import { LimitedModulesFactory } from '../generated/LimitedModulesFactory';
 import { SimpleDelegateFactory } from '../generated/SimpleDelegateFactory';
 import { MultiLimiterFactory } from '../generated/MultiLimiterFactory';
+import { LimitedModules } from '../generated/LimitedModules';
+import { SimpleDelegate } from '../generated/SimpleDelegate';
+import { MultiLimiter } from '../generated/MultiLimiter';
+import { PurchaseModule } from '../generated/PurchaseModule';
+import { PurchaseModuleFactory } from '../generated/PurchaseModuleFactory';
 
 type Module = {
   name: string;
@@ -25,15 +29,24 @@ export class DeploymentWrapper {
     this.wallet = wallet;
   }
 
+  async deployRegistry(delay: number): Promise<Registry> {
+    const factory = new RegistryFactory(this.wallet);
+    const unsignedTx = await factory.getDeployTransaction(delay);
+    unsignedTx.nonce = await this.wallet.getTransactionCount();
+    const deployTx = await this.wallet.sendTransaction(unsignedTx);
+    const receipt = await deployTx.wait();
+    return await factory.attach(receipt.contractAddress);
+  }
+
   async deployCore(delay: number = 0, modules: Module[]) {
     const walletImplementation = await this.deployWalletImplementation();
-    const registry = await new RegistryFactory(this.wallet).deploy(delay);
 
+    const registry = await this.deployRegistry(delay);
     await this.registerModules(registry, modules);
 
-    const limitedModule = await new LimitedModulesFactory(this.wallet).deploy(registry.address);
-    const delegate = await new SimpleDelegateFactory(this.wallet).deploy();
-    const limiter = await new MultiLimiterFactory(this.wallet).deploy();
+    const limitedModule = await this.deployLimitedModules(registry.address);
+    const delegate = await this.deploySimpleDelegate();
+    const limiter = await this.deployMultiLimiter();
 
     return await this.deployFactory(
       walletImplementation.address,
@@ -55,11 +68,11 @@ export class DeploymentWrapper {
   }
 
   async deployWalletImplementation(): Promise<WalletImplementation> {
-    return await new WalletFactory(this.wallet).deploy();
-  }
-
-  async deployRegistry(delay: number = 0): Promise<Registry> {
-    return await new RegistryFactory(this.wallet).deploy(delay);
+    const unsignedTx = await new WalletFactory(this.wallet).getDeployTransaction();
+    unsignedTx.nonce = await this.wallet.getTransactionCount();
+    const signedTx = await this.wallet.sendTransaction(unsignedTx);
+    const receipt = await signedTx.wait();
+    return await new WalletFactory(this.wallet).attach(receipt.contractAddress);
   }
 
   async registerModules(registry: Registry, modules: Module[]) {
@@ -79,10 +92,48 @@ export class DeploymentWrapper {
     delegate: string,
     limiter: string,
   ): Promise<Factory> {
-    const bytecode = `${new ProxyFactory().bytecode}${ethers.utils.defaultAbiCoder
-      .encode(['address'], [walletImplementation])
-      .slice(2)}`;
+    const factoryFactory = new FactoryFactory(this.wallet);
+    const unsignedTx = await factoryFactory.getDeployTransaction(limitedModule, delegate, limiter);
 
-    return await new FactoryFactory(this.wallet).deploy(limitedModule, delegate, limiter, bytecode);
+    const signedTx = await this.wallet.sendTransaction(unsignedTx);
+    const receipt = await signedTx.wait();
+
+    return factoryFactory.attach(receipt.contractAddress);
+  }
+
+  async deployLimitedModules(registry: string): Promise<LimitedModules> {
+    const factory = new LimitedModulesFactory(this.wallet);
+    const unsignedTx = await factory.getDeployTransaction(registry);
+    unsignedTx.nonce = await this.wallet.getTransactionCount();
+    const deployTx = await this.wallet.sendTransaction(unsignedTx);
+    const receipt = await deployTx.wait();
+    return await factory.attach(receipt.contractAddress);
+  }
+
+  async deploySimpleDelegate(): Promise<SimpleDelegate> {
+    const factory = new SimpleDelegateFactory(this.wallet);
+    const unsignedTx = await factory.getDeployTransaction();
+    unsignedTx.nonce = await this.wallet.getTransactionCount();
+    const deployTx = await this.wallet.sendTransaction(unsignedTx);
+    const receipt = await deployTx.wait();
+    return await factory.attach(receipt.contractAddress);
+  }
+
+  async deployMultiLimiter(): Promise<MultiLimiter> {
+    const factory = new MultiLimiterFactory(this.wallet);
+    const unsignedTx = await factory.getDeployTransaction();
+    unsignedTx.nonce = await this.wallet.getTransactionCount();
+    const deployTx = await this.wallet.sendTransaction(unsignedTx);
+    const receipt = await deployTx.wait();
+    return await factory.attach(receipt.contractAddress);
+  }
+
+  async deployPurchaseModule(forwarder: string): Promise<PurchaseModule> {
+    const factory = new PurchaseModuleFactory(this.wallet);
+    const unsignedTx = await factory.getDeployTransaction(forwarder);
+    unsignedTx.nonce = await this.wallet.getTransactionCount();
+    const deployTx = await this.wallet.sendTransaction(unsignedTx);
+    const receipt = await deployTx.wait();
+    return await factory.attach(receipt.contractAddress);
   }
 }

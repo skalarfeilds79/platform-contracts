@@ -1,5 +1,5 @@
 Arguments: 
-  /Users/kerman/.nvm/versions/node/v11.15.0/bin/node /usr/local/Cellar/yarn/1.19.1/libexec/bin/yarn.js add @imtbl/test-utils
+  /Users/kerman/.nvm/versions/node/v11.15.0/bin/node /usr/local/Cellar/yarn/1.19.1/libexec/bin/yarn.js install
 
 PATH: 
   /Users/kerman/.nvm/versions/node/v11.15.0/bin:/Users/kerman/.cargo/bin:/Library/Frameworks/Python.framework/Versions/3.8/bin:/Users/kerman/.cargo/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/Users/kerman/.cargo/bin:/Library/Frameworks/Python.framework/Versions/3.8/bin:/Users/kerman/go:/usr/local/opt/go/libexec/bin:/Users/kerman/go:/usr/local/opt/go/libexec/bin
@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@imtbl%2fcommon-types: Not found
+  Error: https://registry.yarnpkg.com/@imtbl%2fgods-unchained: Not found
       at Request.params.callback [as _callback] (/usr/local/Cellar/yarn/1.19.1/libexec/lib/cli.js:66926:18)
       at Request.self.callback (/usr/local/Cellar/yarn/1.19.1/libexec/lib/cli.js:140564:22)
       at Request.emit (events.js:193:13)
@@ -29,16 +29,18 @@ Trace:
 npm manifest: 
   {
     "name": "@imtbl/deployment",
-    "version": "1.0.12",
+    "version": "1.0.13",
     "license": "MIT",
     "main": "dist/index.js",
     "typings": "dist/index.d.ts",
     "private": true,
     "dependencies": {
       "@imtbl/addresses": "^1.1.1",
-      "@imtbl/common-types": "^1.0.10",
-      "@imtbl/gods-unchained": "^1.0.10",
-      "@imtbl/immutable-wallet": "^1.0.10",
+      "@imtbl/common-types": "^1.0.11",
+      "@imtbl/gods-unchained": "^1.0.11",
+      "@imtbl/immutable-wallet": "^1.0.11",
+      "@imtbl/test-utils": "^1.0.10",
+      "@imtbl/utils": "^1.0.10",
       "dotenv": "^8.2.0",
       "ethers": "^4.0.39",
       "fs-extra": "^8.1.0",
@@ -51,13 +53,11 @@ npm manifest:
     "scripts": {
       "lint": "tslint --project . -t verbose 'src/**/*.{tsx,ts}'",
       "generate-outputs": "bash scripts/generate-outputs.sh",
-      "generate-artifacts": "node scripts/copy-artifacts.js",
-      "verify-contracts": "node scripts/verify-contracts.js",
-      "finish-deployment": "yarn generate-outputs && yarn generate-artifacts && yarn verify-contracts",
+      "finish-deployment": "yarn generate-outputs && yarn tsc",
       "deploy-cards": "yarn ts-node src/cards && yarn finish-deployment",
       "deploy-forwarder": "yarn ts-node src/forwarder && yarn finish-deployment",
       "deploy-wallet": "yarn ts-node src/wallet && yarn finish-deployment",
-      "deploy-all:dev": "yarn ts-node src/cards && yarn ts-node src/forwarder && yarn ts-node src/wallet"
+      "deploy-all:dev": "yarn ts-node src/cards && yarn ts-node src/forwarder && yarn ts-node src/wallet && yarn generate-outputs && yarn tsc"
     },
     "devDependencies": {
       "@0xproject/types": "^1.1.4",
@@ -128,13 +128,6 @@ Lockfile:
       inversify "^5.0.0"
       reflect-metadata "^0.1.12"
       tslib "^1.8.1"
-  
-  "@imtbl/types@^1.0.10":
-    version "1.0.10"
-    resolved "https://registry.yarnpkg.com/@imtbl/types/-/types-1.0.10.tgz#f27f932370aa94658224e2753ddfd77b89638e6d"
-    integrity sha512-j9pz5XrXdcfYysWNBJp5FVutCQfUD8OXwdpQsqs5+K8PLf9z3LjSB1/jQe6ljMKB5IEwjVqFeP29fO0DPwqQHA==
-    dependencies:
-      typescript "^3.5.3"
   
   "@types/bignumber.js@^5.0.0":
     version "5.0.0"
@@ -1829,7 +1822,7 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/type/-/type-2.0.0.tgz#5f16ff6ef2eb44f260494dae271033b29c09a9c3"
     integrity sha512-KBt58xCHry4Cejnc2ISQAF7QY+ORngsWfxezO68+12hKV6lQY8P/psIkcbjeHWn7MqcgciWJyCCevFMJdIXpow==
   
-  typescript@^3.5.3, typescript@^3.6.4:
+  typescript@^3.6.4:
     version "3.7.2"
     resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.7.2.tgz#27e489b95fa5909445e9fef5ee48d81697ad18fb"
     integrity sha512-ml7V7JfiN2Xwvcer+XAf2csGO1bPBdRbFCkYBczNZggrBZ9c7G3riSUeJmqEU5uOtXNPMhE3n+R4FA/3YOAWOQ==

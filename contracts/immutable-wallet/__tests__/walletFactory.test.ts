@@ -21,12 +21,12 @@ describe('Purchase Module', () => {
   });
 
   it('should compute the correct address', async () => {
-    const computed = await factory.functions.computeProxyWalletAddress(testWallet.address);
-    console.log(computed);
-    console.log(transferModule.address);
-    const wallet = await deploymentWrapper.deployWallet(factory.address, testWallet.address, [
-      transferModule.address,
-    ]);
-    console.log(wallet);
+    const computed = await factory.functions.computeContractAddress(testWallet.address);
+    const walletAddress = await deploymentWrapper.deployWallet(
+      factory.address,
+      testWallet.address,
+      [transferModule.address],
+    );
+    expect(computed).toBe(walletAddress);
   });
 });

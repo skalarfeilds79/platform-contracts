@@ -8,7 +8,7 @@ contract SimpleMeta is MetaTxEnabled {
         Wallet, bytes memory, uint,
         bytes memory, uint, uint,
         bytes32
-    ) internal view returns (bool) {
+    ) public view returns (bool) {
         return true;
     }
 

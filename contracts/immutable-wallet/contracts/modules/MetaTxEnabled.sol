@@ -17,11 +17,16 @@ contract MetaTxEnabled {
 
     // Must be implemented by extending contract: allows completely
     // custom validation logic
+    // TODO: Determine whether to keep this public or not
     function validateSignatures(
-        Wallet _wallet, bytes memory _data, uint _nonce,
-        bytes memory _sigs, uint  _gasPrice, uint _gasLimit,
+        Wallet _wallet, 
+        bytes memory _data,
+        uint _nonce,
+        bytes memory _sigs, 
+        uint  _gasPrice, 
+        uint _gasLimit,
         bytes32 signHash
-    ) internal view returns (bool);
+    ) public view returns (bool);
 
     function relay(
         Wallet _wallet,
@@ -50,10 +55,18 @@ contract MetaTxEnabled {
     }
 
     function getSignHash(
-        address _from, address _to, uint256 _value,
-        bytes memory _data, uint256 _nonce,
-        uint256 _gasPrice, uint256 _gasLimit
-    ) internal pure returns (bytes32) {
+        address _from, 
+        address _to, 
+        uint256 _value,
+        bytes memory _data, 
+        uint256 _nonce,
+        uint256 _gasPrice, 
+        uint256 _gasLimit
+    ) 
+        public 
+        pure 
+        returns (bytes32)
+    {
         return keccak256(
             abi.encodePacked(
                 "\x19Ethereum Signed Message:\n32",
@@ -64,7 +77,14 @@ contract MetaTxEnabled {
         ));
     }
 
-    function splitSignature(bytes memory _sigs, uint _index) internal pure returns (uint8 v, bytes32 r, bytes32 s) {
+    function splitSignature(
+        bytes memory _sigs, 
+        uint _index
+    ) 
+        public 
+        pure 
+        returns (uint8 v, bytes32 r, bytes32 s) 
+    {
         // r: jump 32 (0x20) as the first slot contains the length
         // s: jump 65 (0x41) per signature
         // v: load 32 bytes ending with v (the first 31 come from s) then mask
@@ -81,12 +101,27 @@ contract MetaTxEnabled {
         require(v == 27 || v == 28, "incorrect v value");
     }
 
-    function recoverSigner(bytes32 _signedHash, bytes memory _sigs, uint _index) internal pure returns (address) {
+    function recoverSigner(
+        bytes32 _signedHash, 
+        bytes memory _sigs, 
+        uint _index
+    ) 
+        public 
+        pure 
+        returns (address) 
+    {
         (uint8 v, bytes32 r, bytes32 s) = splitSignature(_sigs, _index);
         return ecrecover(_signedHash, v, r, s);
     }
 
-    function validateNonce(Wallet _wallet, uint _nonce, bytes32 _signHash) internal returns (bool) {
+    function validateNonce(
+        Wallet _wallet, 
+        uint _nonce, 
+        bytes32 _signHash
+    ) 
+        public 
+        returns (bool) 
+    {
         address wallet = address(_wallet);
         if (_nonce == 0) {
             require(!hashes[wallet][_signHash], "must be unique");
@@ -98,7 +133,13 @@ contract MetaTxEnabled {
         return true;
     }
 
-    function validateData(Wallet _wallet, bytes memory _data) private pure returns (bool) {
+    function validateData(
+        Wallet _wallet, 
+        bytes memory _data
+    ) 
+        public 
+        pure returns (bool) 
+    {
         return extractWallet(_data) == address(_wallet);
     }
 

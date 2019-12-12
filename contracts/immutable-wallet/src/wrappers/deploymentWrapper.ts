@@ -57,9 +57,10 @@ export class DeploymentWrapper {
   }
 
   async deployWallet(factory: string, user: string, modules: string[]): Promise<string> {
+    const salt = ethers.utils.solidityKeccak256(['string', 'address'], ['FACTORY_V1', user]);
     const x = await new FactoryFactory(this.wallet)
       .attach(factory)
-      .functions.createProxyWallet(user, modules, [], {
+      .functions.createProxyWallet(user, salt, modules, [], {
         gasLimit: 2000000,
       });
     const receipt = await x.wait();

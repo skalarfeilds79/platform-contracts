@@ -212,7 +212,7 @@ contract RecoveryModule is BaseModule, MetaTxEnabled {
         uint,
         uint,
         bytes32 _signHash
-    ) internal view returns (bool) {
+    ) public view returns (bool) {
         bytes4 methodID = getPrefix(_data);
         // can be called by anyone
         if (methodID == FINALIZE_PREFIX) {

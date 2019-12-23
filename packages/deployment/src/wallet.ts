@@ -39,11 +39,14 @@ const LOCK_PERIOD = 100;
 const networkId = getNetworkId();
 
 let provider = new ethers.providers.JsonRpcProvider(config.RPC_ENDPOINT, networkId);
+let wallet;
+
 if (networkId == 50) {
   provider = new ethers.providers.JsonRpcProvider(config.RPC_ENDPOINT);
+  wallet = provider.getSigner();
+} else {
+  wallet = new ethers.Wallet(config.PRIVATE_KEY, provider);
 }
-
-let wallet = new ethers.Wallet(config.PRIVATE_KEY, provider);
 
 async function deploy() {
   await wallet.getTransactionCount();

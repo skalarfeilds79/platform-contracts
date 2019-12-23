@@ -63,16 +63,7 @@ export const outputs =
   },
   "3-development": {
     "human_friendly_name": "ropsten-development",
-    "addresses": {
-      "Forwarder": "0x802726E7703A4E5364F53862cca750DBfdF2C017",
-      "WalletImplementation": "0x9Adf77B452c918600ac5B31D55B5C542F5044586",
-      "Registry": "0x6ea8a4A12BB02BdC9320156c518b3F4f9f3313B8",
-      "PurchaseModule": "0xF9DC7D63916998a8396d6E66BD0F411f5Ca9388e",
-      "LimitedModules": "0x7BB0e8435A0862b8770A66b3Fcd466A09359cDfD",
-      "SimpleDelegate": "0xD06F79f13C4AE87cAb917693b7Aa6e17c1a98D3F",
-      "MultiLimiter": "0x59fBABCBC1F3A93b8f43883039d3e5ce7d77bd78",
-      "WalletFactory": "0xC0Ff95FC9f1DCa0351A628DCfC2E56fE953Dab1d"
-    },
+    "addresses": {},
     "dependencies": {
       "ZERO_EX_EXCHANGE": "0xbff9493f92a3df4b0429b6d00743b3cfb4c85831",
       "ZERO_EX_ERC20_PROXY": "0xb1408f4c245a23c31b98d2c626777d4c0d766caa",
@@ -81,6 +72,20 @@ export const outputs =
     },
     "state": {
       "network_id": 3
+    }
+  },
+  "50-staging": {
+    "human_friendly_name": "test-rpc-staging",
+    "addresses": {
+      "Cards": "0xb125995F5a4766C451cD8C34C4F5CAC89b724571",
+      "OpenMinter": "0x99356167eDba8FBdC36959E3F5D0C43d1BA9c6DB",
+      "Fusing": "0x45B3A72221E571017C0f0ec42189E11d149D0ACE",
+      "WalletImplementation": "0xfD946D47d3dB1e06126d16281Fb3E222A1bA8179",
+      "Registry": "0x96EccEa4E124322a6aA0a004da1b91d9a3024C73"
+    },
+    "dependencies": {},
+    "state": {
+      "network_id": 50
     }
   }
 }

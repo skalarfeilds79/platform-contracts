@@ -12,18 +12,18 @@ contract Fusing is Ownable {
     mapping (address => bool) approvedMinters;
 
     event MinterAdded(
-        indexed address minter
+        address indexed minter
     );
 
     event MinterRemoved(
-        indexed address minter
+        address indexed minter
     );
 
     event CardFused(
         address owner,
         address tokenAddress,
-        indexed uint tokenId,
-        indexed uint[] references
+        uint indexed tokenId,
+        uint[] indexed references
     );
 
     /**

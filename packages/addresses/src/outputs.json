@@ -60,8 +60,7 @@
   },
   "3-development": {
     "human_friendly_name": "ropsten-development",
-    "addresses": {
-    },
+    "addresses": {},
     "dependencies": {
       "ZERO_EX_EXCHANGE": "0xbff9493f92a3df4b0429b6d00743b3cfb4c85831",
       "ZERO_EX_ERC20_PROXY": "0xb1408f4c245a23c31b98d2c626777d4c0d766caa",
@@ -70,6 +69,20 @@
     },
     "state": {
       "network_id": 3
+    }
+  },
+  "50-staging": {
+    "human_friendly_name": "test-rpc-staging",
+    "addresses": {
+      "Cards": "0xb125995F5a4766C451cD8C34C4F5CAC89b724571",
+      "OpenMinter": "0x99356167eDba8FBdC36959E3F5D0C43d1BA9c6DB",
+      "Fusing": "0x45B3A72221E571017C0f0ec42189E11d149D0ACE",
+      "WalletImplementation": "0xfD946D47d3dB1e06126d16281Fb3E222A1bA8179",
+      "Registry": "0x96EccEa4E124322a6aA0a004da1b91d9a3024C73"
+    },
+    "dependencies": {},
+    "state": {
+      "network_id": 50
     }
   }
 }

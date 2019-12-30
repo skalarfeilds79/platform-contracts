@@ -35,7 +35,6 @@
     "dotenv": "^8.2.0",
     "ethers": "^4.0.39",
     "save": "^2.4.0",
-    "solidity-docgen": "^0.3.13",
     "typescript": "^3.6.4"
   },
   "devDependencies": {

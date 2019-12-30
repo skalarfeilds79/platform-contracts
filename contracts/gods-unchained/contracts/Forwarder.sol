@@ -13,6 +13,12 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "./interfaces/IExchange.sol";
 import "./interfaces/IEtherToken.sol";
 
+/**
+ * @title Immutable's 0x Forwarder Contract,
+ * @notice Simplifies buying a card by wrapping, setting approvals and
+ * filling multiple orders in one transaction. Failed orders do not throw.
+ * @author Immutable
+ */
 contract Forwarder is LibOrder {
 
     address public ZERO_EX_EXCHANGE;
@@ -35,6 +41,15 @@ contract Forwarder is LibOrder {
         IEtherToken(ETHER_TOKEN).approve(ZERO_EX_TOKEN_PROXY, (2**256)-1);
     }
 
+    /**
+     * @dev Fill multiple 0x orders without having to wrap and approve wETH.
+     * Failing to fill any orders will throw silently. This is done to ensure
+     * two people filling multiple orders don't lose filling their other orders.
+     *
+     * @param orders The orders you'd like to fill
+     * @param takerAssetFillAmounts The fill amounts you'd like to execute on
+     * @param signatures The maker signatures for the specified orders
+     */
     function fillOrders(
         LibOrder.Order[] memory orders,
         uint256[] memory takerAssetFillAmounts,

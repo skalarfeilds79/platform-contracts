@@ -13,6 +13,11 @@ import "./interfaces/ICards.sol";
 
 import "./util/StorageWrite.sol";
 
+/**
+ * @title Immutable's Gods Unchained Contracts.
+ * @notice The core ERC721 contract that holds all cards.
+ * @author Immutable
+ */
 contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, InscribableToken {
 
     uint16 private constant MAX_UINT16 = 2**16 - 1;
@@ -104,16 +109,14 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         propertyManager = msg.sender;
     }
 
-    function getDetails(
-        uint256 tokenId
-    )
-        public
-        view
-        returns (uint16 proto, uint8 quality)
-    {
-        return (cardProtos[tokenId], cardQualities[tokenId]);
-    }
-
+    /**
+     * @dev Mint a card with an owner, proto and quality.
+     * Can only be called from the proto's season minter(s)
+     *
+     * @param to Address where newly minted card will be sent to
+     * @param _proto Specified proto of new card (caller must be valid factory in season)
+     * @param _quality Specified quality of new card (no validation)
+     */
     function mintCard(
         address to,
         uint16 _proto,
@@ -137,6 +140,15 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         return id;
     }
 
+    /**
+     * @dev Mint cards with an owner, proto and quality.
+     * Can only be called from the protos' season minter(s).
+     *
+     *
+     * @param to Address where newly minted card will be sent to
+     * @param _proto Array of specified protos of new cards (caller must be valid factory in season)
+     * @param _quality Array of specified qualities of new cards (no validation)
+     */
     function mintCards(
         address to,
         uint16[] calldata _protos,
@@ -163,6 +175,14 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         return start;
     }
 
+    /**
+     * @dev Add a valid factory to a season. Factories are able to mint cards.
+     * Factories cannot mind a card if the season is already tradeable.
+     * Can only be called by owner().
+     * 
+     * @param _factory The address of the season's factory
+     * @param _season The season to add the minter to
+     */
     function addFactory(
         address _factory,
         uint256 _season
@@ -213,6 +233,12 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         mythicApproved[_mythic][_factory] = true;
     }
 
+    /**
+     * @dev Enable trading for a certan mythic.
+     * Can only be called by owner().
+     *
+     * @param _mythic The proto of the mythic to enable trading for.
+     */
     function makeMythicTradable(
         uint16 _mythic
     )
@@ -232,6 +258,12 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         mythicTradable[_mythic] = true;
     }
 
+    /**
+     * @dev Unlock trading for an entire season of cards.
+     * Can only be called by owner().
+     * 
+     * @param _season The season to enable trading for.
+     */
     function unlockTrading(
         uint256 _season
     )
@@ -251,6 +283,14 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         seasonTradable[_season] = true;
     }
 
+    /**
+     * @dev Transfer cards to another address. Trading must be unlocked to transfer.
+     * Can be called by the owner or an approved spender.
+     * 
+     * @param from The owner of the card
+     * @param to The recipient of the card to send to
+     * @param tokenId The id of the card you'd like to transfer
+     */
     function transferFrom(
         address from,
         address to,
@@ -266,6 +306,12 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         super.transferFrom(from, to, tokenId);
     }
 
+    /**
+     * @dev Burn a card forever.
+     * Can only be called IF the card is not tradeable and from owner().
+     * 
+     * @param _tokenId The id of the card to burn
+     */
     function burn(uint256 _tokenId) public {
         require(
             isTradable(_tokenId),
@@ -275,12 +321,42 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         super.burn(_tokenId);
     }
 
+    /**
+     * @dev Burn multiple cards forever.
+     * Can only be called IF the card is not tradeable and from owner().
+     * 
+     * @param _tokenIDs The id sof the cards to burn
+     */
     function burnAll(uint256[] memory tokenIDs) public {
         for (uint256 i = 0; i < tokenIDs.length; i++) {
             burn(tokenIDs[i]);
         }
     }
 
+    /**
+     * @dev Retrieve the proto and quality for a particular card represented by it's token id
+     *
+     * @param tokenId the id of the card you'd like to retrieve details for
+     * @return proto The proto of the specified card
+     * @return quality The quality of the specified card
+     */
+    function getDetails(
+        uint256 tokenId
+    )
+        public
+        view
+        returns (uint16 proto, uint8 quality)
+    {
+        return (cardProtos[tokenId], cardQualities[tokenId]);
+    }
+
+    /**
+     * @dev Check if the card is tradeable or not.
+     * Once it's tradeable it cannot be burned, revoked or further minted.
+     * 
+     * @param _tokenId The id of the card to check against
+     * @return A boolean of the status (true/false)
+     */
     function isTradable(uint256 _tokenId) public view returns (bool) {
         uint16 proto = cardProtos[_tokenId];
         if (proto >= MYTHIC_THRESHOLD) {
@@ -289,6 +365,15 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         return seasonTradable[protoToSeason[proto]];
     }
 
+    /**
+     * @dev Create a new season with a range of protos.
+     * Cannot overlap with other seasons or start at 0.
+     * 
+     * @param name The name of the season
+     * @param low The starting proto range of the season
+     * @param high The ending proto range of the season
+     * @return An integer of the season's id
+     */
     function startSeason(
         string memory name,
         uint16 low,
@@ -330,6 +415,19 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         return id;
     }
 
+    /**
+     * @dev Update the properties of a proto.
+     * Can only be called if proto unlocked and by owner().
+     *
+     * @param _ids An array of the ids to update
+     * @param _gods An array of the corresponding gods to update
+     * @param _cardTypes An array of the corresponding card types to update
+     * @param _rarities An array of the corresponding rarities to update
+     * @param _manas An array of the corresponding manas to update
+     * @param _attacks An array of the corresponding attacks to update
+     * @param _healths An array of the corresponding healths to update
+     * @param _tribes An array of the corresponding tribes to update    
+     */
     function updateProtos(
         uint16[] memory _ids,
         uint8[] memory _gods,
@@ -369,29 +467,36 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         }
     }
 
+    /**
+     * @dev Lock a proto forever.
+     * Once this occurs the properties of a card cannot be changed.
+     * Can only be called by owner().
+     *
+     * @param _ids The ids of the protos to lock
+     */
     function lockProtos(uint16[] memory _ids) public onlyOwner {
         require(
             _ids.length > 0,
-            "must lock some"
+            "Cards: must lock some"
         );
 
         for (uint256 i = 0; i < _ids.length; i++) {
             uint16 id = _ids[i];
             require(
                 id > 0,
-                "proto must not be zero"
+                "Cards: proto must not be zero"
             );
 
             Proto storage proto = protos[id];
 
             require(
                 !proto.locked,
-                "proto is locked"
+                "Cards: proto is locked"
             );
 
             require(
                 proto.exists,
-                "proto must exist"
+                "Cards: proto must exist"
             );
 
             proto.locked = true;
@@ -399,7 +504,71 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         }
     }
 
-    function _validateAndSaveDetails(
+    /**
+     * @dev Set/update the quality of a card.
+     * Can only be called by the factory minter of a season.
+     *
+     * @param _tokenId The id of the token to update
+     * @param _quality The quality of token to update
+     */
+    function setQuality(
+        uint256 _tokenId,
+        uint8 _quality
+    )
+        public
+    {
+        uint16 proto = cardProtos[_tokenId];
+        // wont' be able to change mythic season
+        uint256 season = protoToSeason[proto];
+
+        require(
+            factoryApproved[msg.sender][season],
+            "Core: factory can't change quality of this season"
+        );
+
+        cardQualities[_tokenId] = _quality;
+        emit QualityChanged(_tokenId, _quality, msg.sender);
+    }
+
+    function setPropertyManager(
+        address _manager
+    )
+        public 
+        onlyOwner 
+    {
+        propertyManager = _manager;
+    }
+
+    function setProperty(
+        uint256 _id, 
+        bytes32 _key, 
+        bytes32 _value
+    ) 
+        public 
+    {
+        require(
+            msg.sender == propertyManager,
+            "Core: must be property manager"
+        );
+
+        _setProperty(_id, _key, _value);
+    }
+
+    function setClassProperty(
+        bytes32 _key, 
+        bytes32 _value
+    ) 
+        public 
+    {
+        require(
+            msg.sender == propertyManager,
+            "Core: must be property manager"
+        );
+
+        _setClassProperty(_key, _value);
+    }
+
+      function _validateAndSaveDetails(
         uint256 start,
         uint16[] memory _protos,
         uint8[] memory _qualities
@@ -435,7 +604,11 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         }
     }
 
-    function _validateProtos(uint16[] memory _protos) internal {
+    function _validateProtos(
+        uint16[] memory _protos
+    )
+        internal 
+    {
         uint16 maxProto = 0;
         uint16 minProto = MAX_UINT16;
         for (uint256 i = 0; i < _protos.length; i++) {
@@ -473,7 +646,6 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
     }
 
     function _checkCanCreateMythic(uint16 proto) internal {
-
         require(
             mythicApproved[proto][msg.sender],
             "Core: not approved to create this mythic"
@@ -485,47 +657,6 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         );
 
         mythicCreated[proto] = true;
-    }
-
-    function setQuality(
-        uint256 _tokenId,
-        uint8 _quality
-    )
-        public
-    {
-        uint16 proto = cardProtos[_tokenId];
-        // wont' be able to change mythic season
-        uint256 season = protoToSeason[proto];
-
-        require(
-            factoryApproved[msg.sender][season],
-            "Core: factory can't change quality of this season"
-        );
-
-        cardQualities[_tokenId] = _quality;
-        emit QualityChanged(_tokenId, _quality, msg.sender);
-    }
-
-    function setPropertyManager(address _manager) public onlyOwner {
-        propertyManager = _manager;
-    }
-
-    function setProperty(uint256 _id, bytes32 _key, bytes32 _value) public {
-        require(
-            msg.sender == propertyManager,
-            "Core: must be property manager"
-        );
-
-        _setProperty(_id, _key, _value);
-    }
-
-    function setClassProperty(bytes32 _key, bytes32 _value) public {
-        require(
-            msg.sender == propertyManager,
-            "Core: must be property manager"
-        );
-
-        _setClassProperty(_key, _value);
     }
 
 }

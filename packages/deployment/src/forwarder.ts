@@ -22,6 +22,8 @@ if (networkId == 50) {
 const wallet = new ethers.Wallet(config.PRIVATE_KEY, provider);
 
 export async function deploy() {
+  await wallet.getTransactionCount();
+
   const exchange = await findDependency('ZERO_EX_EXCHANGE');
   const erc20Proxy = await findDependency('ZERO_EX_ERC20_PROXY');
   const erc721Proxy = await findDependency('ZERO_EX_ERC721_PROXY');

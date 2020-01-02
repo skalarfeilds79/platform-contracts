@@ -146,8 +146,8 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
      *
      *
      * @param to Address where newly minted card will be sent to
-     * @param _proto Array of specified protos of new cards (caller must be valid factory in season)
-     * @param _quality Array of specified qualities of new cards (no validation)
+     * @param _protos Array of specified protos of new cards (caller must be valid factory in season)
+     * @param _qualities Array of specified qualities of new cards (no validation)
      */
     function mintCards(
         address to,
@@ -325,7 +325,7 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
      * @dev Burn multiple cards forever.
      * Can only be called IF the card is not tradeable and from owner().
      * 
-     * @param _tokenIDs The id sof the cards to burn
+     * @param tokenIDs The id sof the cards to burn
      */
     function burnAll(uint256[] memory tokenIDs) public {
         for (uint256 i = 0; i < tokenIDs.length; i++) {
@@ -568,7 +568,7 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
         _setClassProperty(_key, _value);
     }
 
-      function _validateAndSaveDetails(
+    function _validateAndSaveDetails(
         uint256 start,
         uint16[] memory _protos,
         uint8[] memory _qualities

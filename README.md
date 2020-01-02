@@ -46,66 +46,106 @@ We get it, you're just here to find the contract addresses. Luckily for you, the
 
 | Contract Name | Address |
 | ------------- | ------- |
-| Cards | 0x0e3a2a1f2146d86a604adc220b4967a898d7fe07 |
-| Forwarder | 0xb04239b53806ab31141e6cd47c63fb3480cac908 |
+| `Cards` | [0x0e3a2a1f2146d86a604adc220b4967a898d7fe07](https://etherscan.io/address/0x0e3a2a1f2146d86a604adc220b4967a898d7fe07) |
+| `Forwarder` | [0xb04239b53806ab31141e6cd47c63fb3480cac908](https://etherscan.io/address/0xb04239b53806ab31141e6cd47c63fb3480cac908) |
 
 ### Dependencies  (Main Net)
 
 | Contract Name | Address |
 | ------------- | ------- |
-| Wrapped Ether | 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 |
-| 0x Exchange | 0x080bf510fcbf18b91105470639e9561022937712 |
-| 0x ERC20 Proxy | 0x95e6f48254609a6ee006f7d493c8e5fb97094cef |
-| 0x ERC721 Proxy | 0xefc70a1b18c432bdc64b596838b4d138f6bc6cad |
+| `Wrapped Ether` | [0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2](https://etherscan.io/address/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2) |
+| `0x Exchange` | [0x080bf510fcbf18b91105470639e9561022937712](https://etherscan.io/address/0x080bf510fcbf18b91105470639e9561022937712) |
+| `0x ERC20 Proxy` | [0x95e6f48254609a6ee006f7d493c8e5fb97094cef](https://etherscan.io/address/0x95e6f48254609a6ee006f7d493c8e5fb97094cef) |
+| `0x ERC721 Proxy` | [0xefc70a1b18c432bdc64b596838b4d138f6bc6cad](https://etherscan.io/address/0xefc70a1b18c432bdc64b596838b4d138f6bc6cad) |
 
 ### Contracts (Ropsten)
 
 | Contract Name | Address |
 | ------------- | ------- |
-| Cards | 0xADC559D1afbCBBf427728577F40E7358D96F1209 |
-| OpenMinter | 0x36F26280B80e609e347c843E2AE5351Ee4b5f7eD |
-| Forwarder | 0xc79C9c624ea8A3dEdfae0dbf9295Bfb159eE5F3b |
+| `Cards` | [0xADC559D1afbCBBf427728577F40E7358D96F1209](https://ropsten.etherscan.io/address/0xADC559D1afbCBBf427728577F40E7358D96F1209) |
+| `OpenMinter` | [0x36F26280B80e609e347c843E2AE5351Ee4b5f7eD](https://ropsten.etherscan.io/address/0x36F26280B80e609e347c843E2AE5351Ee4b5f7eD) |
+| `Forwarder` | [0xc79C9c624ea8A3dEdfae0dbf9295Bfb159eE5F3b](https://ropsten.etherscan.io/address/0xc79C9c624ea8A3dEdfae0dbf9295Bfb159eE5F3b) |
+| `Fusing` | [0x82a92540aB10F484Bf11fB3bEd95CE35c370846E](https://ropsten.etherscan.io/address/0x82a92540aB10F484Bf11fB3bEd95CE35c370846E) |
 
 ### Dependencies (Ropsten)
 
 | Contract Name | Address |
 | ------------- | ------- |
-| Wrapped Ether | 0xc778417e063141139fce010982780140aa0cd5ab |
-| 0x Exchange | 0xbff9493f92a3df4b0429b6d00743b3cfb4c85831 |
-| 0x ERC20 Proxy | 0xb1408f4c245a23c31b98d2c626777d4c0d766caa |
-| 0x ERC721 Proxy | 0xe654aac058bfbf9f83fcaee7793311dd82f6ddb4 |
+| `Wrapped Ether` | [0xc778417e063141139fce010982780140aa0cd5ab](https://ropsten.etherscan.io/address/0xc778417e063141139fce010982780140aa0cd5ab) |
+| `0x Exchange` | [0xbff9493f92a3df4b0429b6d00743b3cfb4c85831](https://ropsten.etherscan.io/address/0xbff9493f92a3df4b0429b6d00743b3cfb4c85831) |
+| `0x ERC20 Proxy`| [0xb1408f4c245a23c31b98d2c626777d4c0d766caa](https://ropsten.etherscan.io/address/0xb1408f4c245a23c31b98d2c626777d4c0d766caa) |
+| `0x ERC721 Proxy` | [0xe654aac058bfbf9f83fcaee7793311dd82f6ddb4](https://ropsten.etherscan.io/address/0xe654aac058bfbf9f83fcaee7793311dd82f6ddb4) |
 
 
-## Contributing :raising_hand_woman:
-We appreciate your desire to contribute to the 8x Protocol. We strive to maintain
-a high standard over code quality and the security of our contracts. Please read over
-this contributor guide before starting.
+### Repo Guide
 
-### How to Contribute
-If you would like to contribute please fork the repo, create a new branch, fix the problem, commit the work with a clear message about what was accomplished, and submit a pull request.
+While we've done our best to simplify the repo setup as much as possible, there's some steps we require.
 
-### Code Quality
-- When adding functionality, please also add tests and make sure they pass
-- When adding a new function, make sure to add comments that adhere to the format seen throughout the project
-- When fixing conflicts please use `rebase`
-- When updating your working branch with `upstream master` changes, please `rebase`
-- Make sure there are no linter `warnings` or `errors`
+##### Step 0:
 
-##### Requirements
-- Lerna
+Ensure you're using Node `v11.15.0`. Unfortunately a few low-level libraries such as scrypt and node-gyp fail to compile on Node 12.
+For this reason we recommend using v11.15.0 to ensure everything can install correctly.
 
-##### Pre Requisites
+```
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.32.1/install.sh | bash
+nvm install v11.15.0
+nvm use v11.15.0
+```
+
+If you use ZSH:
+```
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
+```
+
+##### Step 1:
+
+Install required global dependencies
+
 ```
 npm install -g lerna
 npm install -g typescript@2.6.2
 ```
 
-##### Compiling All Packages
+##### Step 2:
+
+Install all the required local dependencies. Lerna will ensure all local dependenices are setup correctly.
+
 ```
-lerna run build
+lerna bootstrap
 ```
 
-##### Running All Tests
+##### Step 3
+
+Run a local blockchain instance on your localhost. We recommend opening this in a new terminal window/tab.
+
 ```
-lerna run test
+yarn chain
 ```
+
+##### Step 4
+
+Compile all packages. This will compile all the contracts and generate all the relevant Typescript bindings for other repos to work. 
+Tests will run to ensure everything works as expected.
+
+```
+yarn setup && yarn yarn test
+```
+
+### Creating Test Cards
+
+In order to generate test cards on your local blockchain or testnet deployment, follow these steps.
+
+##### Step 1
+
+Create a copy of `.env.defaults` and rename it to `.env`
+
+##### Step 2
+Fill out all the required variables inside the .env file. You don't need `ETHERSCAN_KEY` unless you want verified contracts on Etherscan.
+
+> Make sure to set DEPLOYMENT_NETWORK_ID for 50 if testing locally.
+
+##### Step 3
+
+Run `yarn deploy-cards` - that's it!
+Your newly deployed cards will be on your specified chain and you'll be able to see them in the specified DB!

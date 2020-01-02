@@ -47,8 +47,8 @@ We get it, you're just here to find the contract addresses. Luckily for you, the
 | Contract Name | Address |
 | ------------- | ------- |
 {{#1-production.addresses}}
-| Cards | {{Cards}} |
-| Forwarder | {{Forwarder}} |
+| `Cards` | [{{Cards}}](https://etherscan.io/address/{{Cards}}) |
+| `Forwarder` | [{{Forwarder}}](https://etherscan.io/address/{{Forwarder}}) |
 {{/1-production.addresses}}
 
 ### Dependencies  (Main Net)
@@ -56,10 +56,10 @@ We get it, you're just here to find the contract addresses. Luckily for you, the
 | Contract Name | Address |
 | ------------- | ------- |
 {{#1-production.dependencies}}
-| Wrapped Ether | {{WETH}} |
-| 0x Exchange | {{ZERO_EX_EXCHANGE}} |
-| 0x ERC20 Proxy | {{ZERO_EX_ERC20_PROXY}} |
-| 0x ERC721 Proxy | {{ZERO_EX_ERC721_PROXY}} |
+| `Wrapped Ether` | [{{WETH}}](https://etherscan.io/address/{{WETH}}) |
+| `0x Exchange` | [{{ZERO_EX_EXCHANGE}}](https://etherscan.io/address/{{ZERO_EX_EXCHANGE}}) |
+| `0x ERC20 Proxy` | [{{ZERO_EX_ERC20_PROXY}}](https://etherscan.io/address/{{ZERO_EX_ERC20_PROXY}}) |
+| `0x ERC721 Proxy` | [{{ZERO_EX_ERC721_PROXY}}](https://etherscan.io/address/{{ZERO_EX_ERC721_PROXY}}) |
 {{/1-production.dependencies}}
 
 ### Contracts (Ropsten)
@@ -67,9 +67,10 @@ We get it, you're just here to find the contract addresses. Luckily for you, the
 | Contract Name | Address |
 | ------------- | ------- |
 {{#3-staging.addresses}}
-| Cards | {{Cards}} |
-| OpenMinter | {{OpenMinter}} |
-| Forwarder | {{Forwarder}} |
+| `Cards` | [{{Cards}}](https://ropsten.etherscan.io/address/{{Cards}}) |
+| `OpenMinter` | [{{OpenMinter}}](https://ropsten.etherscan.io/address/{{OpenMinter}}) |
+| `Forwarder` | [{{Forwarder}}](https://ropsten.etherscan.io/address/{{Forwarder}}) |
+| `Fusing` | [{{Fusing}}](https://ropsten.etherscan.io/address/{{Fusing}}) |
 {{/3-staging.addresses}}
 
 ### Dependencies (Ropsten)
@@ -77,43 +78,82 @@ We get it, you're just here to find the contract addresses. Luckily for you, the
 | Contract Name | Address |
 | ------------- | ------- |
 {{#3-staging.dependencies}}
-| Wrapped Ether | {{WETH}} |
-| 0x Exchange | {{ZERO_EX_EXCHANGE}} |
-| 0x ERC20 Proxy | {{ZERO_EX_ERC20_PROXY}} |
-| 0x ERC721 Proxy | {{ZERO_EX_ERC721_PROXY}} |
+| `Wrapped Ether` | [{{WETH}}](https://ropsten.etherscan.io/address/{{WETH}}) |
+| `0x Exchange` | [{{ZERO_EX_EXCHANGE}}](https://ropsten.etherscan.io/address/{{ZERO_EX_EXCHANGE}}) |
+| `0x ERC20 Proxy`| [{{ZERO_EX_ERC20_PROXY}}](https://ropsten.etherscan.io/address/{{ZERO_EX_ERC20_PROXY}}) |
+| `0x ERC721 Proxy` | [{{ZERO_EX_ERC721_PROXY}}](https://ropsten.etherscan.io/address/{{ZERO_EX_ERC721_PROXY}}) |
 {{/3-staging.dependencies}}
 
 
-## Contributing :raising_hand_woman:
-We appreciate your desire to contribute to the 8x Protocol. We strive to maintain
-a high standard over code quality and the security of our contracts. Please read over
-this contributor guide before starting.
+### Repo Guide
 
-### How to Contribute
-If you would like to contribute please fork the repo, create a new branch, fix the problem, commit the work with a clear message about what was accomplished, and submit a pull request.
+While we've done our best to simplify the repo setup as much as possible, there's some steps we require.
 
-### Code Quality
-- When adding functionality, please also add tests and make sure they pass
-- When adding a new function, make sure to add comments that adhere to the format seen throughout the project
-- When fixing conflicts please use `rebase`
-- When updating your working branch with `upstream master` changes, please `rebase`
-- Make sure there are no linter `warnings` or `errors`
+##### Step 0:
 
-##### Requirements
-- Lerna
+Ensure you're using Node `v11.15.0`. Unfortunately a few low-level libraries such as scrypt and node-gyp fail to compile on Node 12.
+For this reason we recommend using v11.15.0 to ensure everything can install correctly.
 
-##### Pre Requisites
+```
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.32.1/install.sh | bash
+nvm install v11.15.0
+nvm use v11.15.0
+```
+
+If you use ZSH:
+```
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
+```
+
+##### Step 1:
+
+Install required global dependencies
+
 ```
 npm install -g lerna
 npm install -g typescript@2.6.2
 ```
 
-##### Compiling All Packages
+##### Step 2:
+
+Install all the required local dependencies. Lerna will ensure all local dependenices are setup correctly.
+
 ```
-lerna run build
+lerna bootstrap
 ```
 
-##### Running All Tests
+##### Step 3
+
+Run a local blockchain instance on your localhost. We recommend opening this in a new terminal window/tab.
+
 ```
-lerna run test
+yarn chain
 ```
+
+##### Step 4
+
+Compile all packages. This will compile all the contracts and generate all the relevant Typescript bindings for other repos to work. 
+Tests will run to ensure everything works as expected.
+
+```
+yarn setup && yarn yarn test
+```
+
+### Creating Test Cards
+
+In order to generate test cards on your local blockchain or testnet deployment, follow these steps.
+
+##### Step 1
+
+Create a copy of `.env.defaults` and rename it to `.env`
+
+##### Step 2
+Fill out all the required variables inside the .env file. You don't need `ETHERSCAN_KEY` unless you want verified contracts on Etherscan.
+
+> Make sure to set DEPLOYMENT_NETWORK_ID for 50 if testing locally.
+
+##### Step 3
+
+Run `yarn deploy-cards` - that's it!
+Your newly deployed cards will be on your specified chain and you'll be able to see them in the specified DB!

@@ -1,19 +1,9 @@
 pragma solidity 0.5.11;
 
 library Strings {
-
-    // via https://github.com/oraclize/ethereum-api/blob/master/oraclizeAPI_0.5.sol
-    function strConcat(
-        string memory _a,
-        string memory _b,
-        string memory _c,
-        string memory _d,
-        string memory _e
-    )
-        internal
-        pure
-        returns (string memory)
-    {
+    
+  // via https://github.com/oraclize/ethereum-api/blob/master/oraclizeAPI_0.5.sol
+    function strConcat(string memory _a, string memory _b, string memory _c, string memory _d, string memory _e) internal pure returns (string memory) {
         bytes memory _ba = bytes(_a);
         bytes memory _bb = bytes(_b);
         bytes memory _bc = bytes(_c);
@@ -31,48 +21,19 @@ library Strings {
         return string(babcde);
     }
 
-    function strConcat(
-        string memory _a,
-        string memory _b,
-        string memory _c,
-        string memory _d
-    )
-        internal
-        pure returns (string memory)
-    {
+    function strConcat(string memory _a, string memory _b, string memory _c, string memory _d) internal pure returns (string memory) {
         return strConcat(_a, _b, _c, _d, "");
     }
 
-    function strConcat(
-        string memory _a,
-        string memory _b,
-        string memory _c
-    )
-        internal
-        pure
-        returns (string memory)
-    {
+    function strConcat(string memory _a, string memory _b, string memory _c) internal pure returns (string memory) {
         return strConcat(_a, _b, _c, "", "");
     }
 
-    function strConcat(
-        string memory _a,
-        string memory _b
-    )
-        internal
-        pure
-        returns (string memory)
-    {
+    function strConcat(string memory _a, string memory _b) internal pure returns (string memory) {
         return strConcat(_a, _b, "", "", "");
     }
 
-    function uint2str(
-        uint i
-    )
-        internal
-        pure
-        returns (string memory)
-    {
+    function uint2str(uint i) internal pure returns (string memory) {
         if (i == 0) return "0";
         uint j = i;
         uint len;

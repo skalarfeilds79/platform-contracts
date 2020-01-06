@@ -4,12 +4,15 @@
  *
 */
 
+export { BaseMigrationFactory } from './generated/BaseMigrationFactory';
 export { BatchTokenFactory } from './generated/BatchTokenFactory';
 export { CardsFactory } from './generated/CardsFactory';
+export { ChimeraMigrationFactory } from './generated/ChimeraMigrationFactory';
 export { ContextFactory } from './generated/ContextFactory';
 export { ERC165Factory } from './generated/ERC165Factory';
 export { ERC721Factory } from './generated/ERC721Factory';
 export { ERC721MetadataFactory } from './generated/ERC721MetadataFactory';
+export { EtherbotsMigrationFactory } from './generated/EtherbotsMigrationFactory';
 export { ForgeFactory } from './generated/ForgeFactory';
 export { ForwarderFactory } from './generated/ForwarderFactory';
 export { FusingFactory } from './generated/FusingFactory';
@@ -32,12 +35,15 @@ export { ProtoFactory } from './generated/ProtoFactory';
 export { ProtoFactoryFactory } from './generated/ProtoFactoryFactory';
 export { WETH9Factory } from './generated/WETH9Factory';
 
+export { BaseMigration } from './generated/BaseMigration';
 export { BatchToken } from './generated/BatchToken';
 export { Cards } from './generated/Cards';
+export { ChimeraMigration } from './generated/ChimeraMigration';
 export { Context } from './generated/Context';
 export { ERC165 } from './generated/ERC165';
 export { ERC721 } from './generated/ERC721';
 export { ERC721Metadata } from './generated/ERC721Metadata';
+export { EtherbotsMigration } from './generated/EtherbotsMigration';
 export { Forge } from './generated/Forge';
 export { Forwarder } from './generated/Forwarder';
 export { Fusing } from './generated/Fusing';

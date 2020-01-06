@@ -1,7 +1,7 @@
 {
-  "name": "@imtbl/gods-unchained",
+  "name": "@imtbl/legacy-gods-unchained",
   "version": "1.0.11",
-  "description": "Solidity smart contracts for Gods Unchained.",
+  "description": "Solidity smart contracts for v1 Gods Unchained.",
   "main": "dist/src/index.js",
   "typings": "dist/src/index.d.ts",
   "files": [
@@ -9,7 +9,7 @@
     "dist"
   ],
   "scripts": {
-    "clean": "rm -rf build; rm -rf dist; rm -rf ../types/src/generated; rm -rf ../artifacts/src",
+    "clean": "rm -rf build; rm -rf dist; rm -rf generated; rm -rf ../artifacts/src",
     "lint:sol": "yarn solhint \"contracts/**/*.sol\" --config solhint.json",
     "lint:ts": "tslint -t verbose '__tests__/**/*.ts'",
     "lint": "yarn lint:ts && yarn lint:sol",
@@ -22,20 +22,18 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@0x/contracts-exchange-libs": "^3.0.8",
-    "@0x/order-utils": "^8.4.0",
+    "@imtbl/addresses": "^1.0.10",
     "@imtbl/common-types": "^1.0.11",
-    "@imtbl/types": "^1.0.10",
+    "@imtbl/gods-unchained": "^1.0.10",
     "@imtbl/utils": "^1.0.10",
     "@openzeppelin/contracts": "^2.3.0",
+    "dotenv": "^8.2.0",
     "ethers": "^4.0.39",
-    "save": "^2.4.0",
     "typescript": "^3.6.4"
   },
   "devDependencies": {
-    "dotenv": "^8.2.0",
-    "@imtbl/addresses": "^1.0.11",
     "@imtbl/test-utils": "^1.0.10",
+    "@0xproject/types": "^1.1.4",
     "@types/jest": "^24.0.21",
     "@types/node": "^12.12.3",
     "fs-readdir-recursive": "^1.1.0",
@@ -45,8 +43,6 @@
     "replace-in-file": "^4.2.0",
     "solhint": "^2.3.0",
     "truffle": "^5.0.42",
-    "truffle-flattener": "^1.4.2",
-    "truffle-plugin-verify": "^0.3.5",
     "ts-generator": "^0.0.8",
     "ts-jest": "^24.1.0",
     "ts-node": "^8.4.1",

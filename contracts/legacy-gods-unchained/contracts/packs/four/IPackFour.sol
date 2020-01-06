@@ -18,21 +18,6 @@ contract IPackFour {
         uint64 commit
     );
 
-    function getCardDetails(
-        uint16 packIndex,
-        uint8 cardIndex,
-        uint result
-    )
-        public
-        view
-        returns (uint16 proto, uint16 purity);
-
-    function predictPacks(uint id)
-        public
-        view
-        returns (
-            uint16[] memory protos,
-            uint16[] memory purities
-        );
+    function predictPacks(uint id) public view returns (uint16[] memory protos, uint16[] memory purities);
 
 }

@@ -3,23 +3,15 @@ pragma solidity 0.5.11;
 import "./PresalePackFour.sol";
 
 contract RarePackFour is PresalePackFour {
-
+    
     function basePrice() public returns (uint) {
-        return 1;
+        return 12 finney;
     }
 
     constructor(MigrationInterface _core, address payable vault) public PresalePackFour(_core, vault) {
     }
 
-    function getCardDetails(
-        uint16 packIndex,
-        uint8 cardIndex,
-        uint result
-    )
-        public
-        view
-        returns (uint16 proto, uint16 purity)
-    {
+    function getCardDetails(uint16 packIndex, uint8 cardIndex, uint result) public view returns (uint16 proto, uint16 purity) {
         uint random;
         uint32 rarityRandom;
         uint16 protoRandom;

@@ -1,13 +1,13 @@
 pragma solidity 0.5.11;
 
-import "../../cards/LegacyICards.sol";
+import "../../cards/ICards.sol";
 import "./Pack.sol";
 
 contract RarityProvider {
 
-    LegacyICards cards;
+    ICards cards;
 
-    constructor(LegacyICards _cards) public {
+    constructor(ICards _cards) public {
         cards = _cards;
     }
 
@@ -52,10 +52,10 @@ contract RarityProvider {
     }
 
     function _getShinyCardDetails(uint cardIndex, uint result) internal view returns (uint16 proto, uint16 purity) {
+        
+        RandomnessComponents memory rc = getComponents(cardIndex, result); 
 
-        RandomnessComponents memory rc = getComponents(cardIndex, result);
-
-        LegacyICards.Rarity rarity;
+        ICards.Rarity rarity;
 
         if (cardIndex % 5 == 0) {
             rarity = _getLegendaryPlusRarity(rc.rarity);
@@ -72,10 +72,10 @@ contract RarityProvider {
     }
 
     function _getLegendaryCardDetails(uint cardIndex, uint result) internal view returns (uint16 proto, uint16 purity) {
-
+        
         RandomnessComponents memory rc = getComponents(cardIndex, result);
 
-        LegacyICards.Rarity rarity;
+        ICards.Rarity rarity;
 
         if (cardIndex % 5 == 0) {
             rarity = _getLegendaryPlusRarity(rc.rarity);
@@ -86,7 +86,7 @@ contract RarityProvider {
         }
 
         purity = _getPurityBase(rc.quality) + rc.purity;
-
+    
         proto = cards.getRandomCard(rarity, rc.proto);
 
         return (proto, purity);
@@ -94,10 +94,10 @@ contract RarityProvider {
 
 
     function _getEpicCardDetails(uint cardIndex, uint result) internal view returns (uint16 proto, uint16 purity) {
-
+        
         RandomnessComponents memory rc = getComponents(cardIndex, result);
 
-        LegacyICards.Rarity rarity;
+        ICards.Rarity rarity;
 
         if (cardIndex % 5 == 0) {
             rarity = _getEpicPlusRarity(rc.rarity);
@@ -106,17 +106,17 @@ contract RarityProvider {
         }
 
         purity = _getPurityBase(rc.quality) + rc.purity;
-
+    
         proto = cards.getRandomCard(rarity, rc.proto);
 
         return (proto, purity);
-    }
+    } 
 
     function _getRareCardDetails(uint cardIndex, uint result) internal view returns (uint16 proto, uint16 purity) {
 
         RandomnessComponents memory rc = getComponents(cardIndex, result);
 
-        LegacyICards.Rarity rarity;
+        ICards.Rarity rarity;
 
         if (cardIndex % 5 == 0) {
             rarity = _getRarePlusRarity(rc.rarity);
@@ -125,54 +125,54 @@ contract RarityProvider {
         }
 
         purity = _getPurityBase(rc.quality) + rc.purity;
-
+    
         proto = cards.getRandomCard(rarity, rc.proto);
         return (proto, purity);
-    }
+    }  
 
 
-    function _getCommonPlusRarity(uint32 rand) internal pure returns (LegacyICards.Rarity) {
+    function _getCommonPlusRarity(uint32 rand) internal pure returns (ICards.Rarity) {
         if (rand == 999999) {
-            return LegacyICards.Rarity.Mythic;
+            return ICards.Rarity.Mythic;
         } else if (rand >= 998345) {
-            return LegacyICards.Rarity.Legendary;
+            return ICards.Rarity.Legendary;
         } else if (rand >= 986765) {
-            return LegacyICards.Rarity.Epic;
+            return ICards.Rarity.Epic;
         } else if (rand >= 924890) {
-            return LegacyICards.Rarity.Rare;
+            return ICards.Rarity.Rare;
         } else {
-            return LegacyICards.Rarity.Common;
+            return ICards.Rarity.Common;
         }
     }
 
-    function _getRarePlusRarity(uint32 rand) internal pure returns (LegacyICards.Rarity) {
+    function _getRarePlusRarity(uint32 rand) internal pure returns (ICards.Rarity) {
         if (rand == 999999) {
-            return LegacyICards.Rarity.Mythic;
+            return ICards.Rarity.Mythic;
         } else if (rand >= 981615) {
-            return LegacyICards.Rarity.Legendary;
+            return ICards.Rarity.Legendary;
         } else if (rand >= 852940) {
-            return LegacyICards.Rarity.Epic;
+            return ICards.Rarity.Epic;
         } else {
-            return LegacyICards.Rarity.Rare;
-        }
+            return ICards.Rarity.Rare;
+        } 
     }
 
-    function _getEpicPlusRarity(uint32 rand) internal pure returns (LegacyICards.Rarity) {
+    function _getEpicPlusRarity(uint32 rand) internal pure returns (ICards.Rarity) {
         if (rand == 999999) {
-            return LegacyICards.Rarity.Mythic;
+            return ICards.Rarity.Mythic;
         } else if (rand >= 981615) {
-            return LegacyICards.Rarity.Legendary;
+            return ICards.Rarity.Legendary;
         } else {
-            return LegacyICards.Rarity.Epic;
+            return ICards.Rarity.Epic;
         }
     }
 
-    function _getLegendaryPlusRarity(uint32 rand) internal pure returns (LegacyICards.Rarity) {
+    function _getLegendaryPlusRarity(uint32 rand) internal pure returns (ICards.Rarity) {
         if (rand == 999999) {
-            return LegacyICards.Rarity.Mythic;
+            return ICards.Rarity.Mythic;
         } else {
-            return LegacyICards.Rarity.Legendary;
-        }
+            return ICards.Rarity.Legendary;
+        } 
     }
 
     // store purity and shine as one number to save users gas

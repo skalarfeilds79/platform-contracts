@@ -3,13 +3,6 @@ pragma solidity 0.5.11;
 import "./CardPackFour.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";
 
-/**
- * WARNING!
- * This is an abstract contract and will fail to deploy.
- * Deploy RarePackFour instead!
- * basePrice() is not defined.
- */
-
 contract PresalePackFour is CardPackFour, Ownable {
 
     address payable public vault;
@@ -37,27 +30,14 @@ contract PresalePackFour is CardPackFour, Ownable {
         vault = _vault;
     }
 
-    function basePrice()
-        public
-        returns (uint);
-
-    function getCardDetails(
-        uint16 packIndex,
-        uint8 cardIndex,
-        uint result
-    )
-        public
-        view
-        returns (uint16 proto, uint16 purity);
-
-    function packSize()
-        public
-        pure returns (uint8)
-    {
+    function basePrice() public returns (uint);
+    function getCardDetails(uint16 packIndex, uint8 cardIndex, uint result) public view returns (uint16 proto, uint16 purity);
+    
+    function packSize() public view returns (uint8) {
         return 5;
     }
 
-    uint16 public perClaim = 10;
+    uint16 public perClaim = 15;
 
     function setPacksPerClaim(uint16 _perClaim) public onlyOwner {
         perClaim = _perClaim;
@@ -106,6 +86,7 @@ contract PresalePackFour is CardPackFour, Ownable {
             price -= commission;
             emit Referral(referrer, commission, user);
         }
+        
         address(vault).transfer(price);
     }
 
@@ -133,13 +114,13 @@ contract PresalePackFour is CardPackFour, Ownable {
 
         Purchase storage p = purchases[id];
 
-        require(p.randomness == 0, "randomness already set");
+        require(p.randomness == 0);
 
         // must be within last 256 blocks, otherwise recommit
-        require(block.number - 256 < p.commit, "longer than 256");
+        require(block.number - 256 < p.commit);
 
         // can't callback on the original block
-        require(uint64(block.number) != p.commit, "same block");
+        require(uint64(block.number) != p.commit);
 
         bytes32 bhash = blockhash(p.commit);
         // will get the same on every block
@@ -154,7 +135,7 @@ contract PresalePackFour is CardPackFour, Ownable {
     }
 
     function claim(uint id) public {
-
+        
         Purchase storage p = purchases[id];
 
         require(canClaim);

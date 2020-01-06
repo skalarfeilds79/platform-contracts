@@ -14,27 +14,10 @@ contract Processor is Ownable {
     uint public count;
     mapping(address => bool) public approvedSellers;
 
-    event PaymentProcessed(
-        uint id,
-        address user,
-        uint cost,
-        uint items,
-        address referrer,
-        uint toVault,
-        uint toReferrer
-    );
+    event PaymentProcessed(uint id, address user, uint cost, uint items, address referrer, uint toVault, uint toReferrer);
+    event SellerApprovalChanged(address seller, bool approved);
 
-    event SellerApprovalChanged(
-        address seller,
-        bool approved
-    );
-
-    constructor(
-        address payable _vault,
-        IReferrals _referrals
-    )
-        public
-    {
+    constructor(address payable _vault, IReferrals _referrals) public {
         referrals = _referrals;
         vault = _vault;
     }
@@ -44,15 +27,7 @@ contract Processor is Ownable {
         emit SellerApprovalChanged(seller, approved);
     }
 
-    function processPayment(
-        address payable user,
-        uint cost, uint items,
-        address payable referrer
-    )
-        public
-        payable
-        returns (uint)
-    {
+    function processPayment(address payable user, uint cost, uint items, address payable referrer) public payable returns (uint) {
 
         require(approvedSellers[msg.sender]);
         require(user != referrer, "can't refer yourself");
@@ -64,7 +39,7 @@ contract Processor is Ownable {
 
         uint toVault;
         uint toReferrer;
-
+        
         (toVault, toReferrer) = getAllocations(cost, items, referrer);
 
         uint total = toVault.add(toReferrer);
@@ -92,15 +67,7 @@ contract Processor is Ownable {
 
     // get the amount of the purchase which will be allocated to
     // the vault and to the referrer
-    function getAllocations(
-        uint cost,
-        uint items,
-        address referrer
-    )
-        public
-        view
-        returns (uint toVault, uint toReferrer)
-    {
+    function getAllocations(uint cost, uint items, address referrer) public view returns (uint toVault, uint toReferrer) {
         uint8 discount;
         uint8 refer;
         (discount, refer) = referrals.getSplit(referrer);
@@ -116,14 +83,7 @@ contract Processor is Ownable {
     }
 
     // returns the price (including discount) which must be paid by the user
-    function getPrice(
-        uint cost,
-        uint items,
-        address referrer
-    )
-        public
-        view returns (uint)
-    {
+    function getPrice(uint cost, uint items, address referrer) public view returns (uint) {
 
         uint8 discount;
         (discount, ) = referrals.getSplit(referrer);
@@ -132,11 +92,11 @@ contract Processor is Ownable {
     }
 
     function getPercentage(uint amount, uint8 percentage) public pure returns (uint) {
-
+        
         // TODO: are these necessary for the percentage logic?
         require(amount >= 100, "items must cost at least 100 wei");
         require(amount % 100 == 0, "costs must be multiples of 100 wei");
-
+    
         return amount.mul(percentage).div(100);
     }
 

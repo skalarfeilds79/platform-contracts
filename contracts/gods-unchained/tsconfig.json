@@ -20,7 +20,7 @@
     },
     "include": [
       "src",
-      "__tests__", "../legacy-gods-unchained/__tests__/chimeraMigration.test.ts", "../legacy-gods-unchained/__tests__/etherbotsMigration.test.ts",
+      "__tests__",
     ],
     "compileOnSave": true
   }

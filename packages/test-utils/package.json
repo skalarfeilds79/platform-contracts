@@ -5,7 +5,8 @@
   "typings": "dist/index.d.ts",
   "license": "MIT",
   "dependencies": {
-    
+    "typescript": "^3.5.3",
+    "ethers": "^4.0.39"
   },
   "scripts": {
     "clean": "rm -rf dist",
@@ -32,8 +33,7 @@
     "tslint-no-focused-test": "^0.5.0"
   },
   "peerDependencies": {
-    "typescript": "^3.5.3",
-    "ethers": "^4.0.39"
+    
   },
   "gitHead": "9e32f674f909b02f9e177ca4319f06de8664b157"
 }

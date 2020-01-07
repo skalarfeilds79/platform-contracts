@@ -171,6 +171,15 @@
     ethers "~4.0.4"
     lodash "^4.17.11"
 
+"@0xproject/types@^1.1.4":
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/@0xproject/types/-/types-1.1.4.tgz#3ffd65e670d6a21dab19ee0ffd5fad0056291b8e"
+  integrity sha512-kPVXvVDDoHhi/q3PSe3F5NbBFiIT8FfPG73J2WrLrXptf54vTSffbK3D+NMpwb12tk/q0KgdEPwNz6nhY1+xmw==
+  dependencies:
+    "@types/node" "*"
+    bignumber.js "~4.1.0"
+    ethereum-types "^1.0.11"
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.5.5":
   version "7.5.5"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.5.5.tgz#bc0782f6d69f7b7d49531219699b988f669a8f9d"
@@ -326,10 +335,42 @@
     reflect-metadata "^0.1.12"
     tslib "^1.8.1"
 
+"@imtbl/addresses@^1.0.11":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@imtbl/addresses/-/addresses-1.1.3.tgz#415efec2fb5baad7e47278b308f0f9102d49d427"
+  integrity sha512-254aW4zGemTvbONguAtGkZ9HtATZSqyEZIQmn4wlrRsLMKRxrqE9OCtX3M1vME6ebU2eUHY29jO9idHKs7x65g==
+  dependencies:
+    "@0xproject/types" "^1.1.4"
+    "@imtbl/common-types" "^1.0.11"
+    "@types/lodash" "^4.14.137"
+    "@types/node" "^12.12.7"
+    typescript "^3.5.3"
+
+"@imtbl/common-types@^1.0.11":
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/@imtbl/common-types/-/common-types-1.0.11.tgz#210a75afeae879d945b66a4c741fb7e1576834e2"
+  integrity sha512-CYvFUzjMaMbayXsy5sqPzrg/6ulgMfkIvpyMVGZ3+lMMYgNodW7ivRXeWHn5k1AdNeDU6wv7qNJJEAcZmsmK1Q==
+  dependencies:
+    typescript "^3.5.3"
+
+"@imtbl/test-utils@^1.0.10":
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/@imtbl/test-utils/-/test-utils-1.0.10.tgz#3c0652cf9bd500145f281a94f36fae89156e9d19"
+  integrity sha512-r8EaaBB50OpZ6D3WNUKnb/CfQomO8K5U7sLb3rJLu/pzeklzFzos5Jv4A+7aCHdtDRDhX3dJGnwp28a+woFn+w==
+  dependencies:
+    typescript "^3.5.3"
+
 "@imtbl/types@^1.0.10":
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/@imtbl/types/-/types-1.0.10.tgz#f27f932370aa94658224e2753ddfd77b89638e6d"
   integrity sha512-j9pz5XrXdcfYysWNBJp5FVutCQfUD8OXwdpQsqs5+K8PLf9z3LjSB1/jQe6ljMKB5IEwjVqFeP29fO0DPwqQHA==
+  dependencies:
+    typescript "^3.5.3"
+
+"@imtbl/utils@^1.0.10":
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/@imtbl/utils/-/utils-1.0.10.tgz#67d436adaf48bdd92ba3140740bbed4ab6116a1b"
+  integrity sha512-AmZDU7I6AZPr3HYrZ3YP9RRuCh3dH8XR4lgktmYF5tcJ1VQm5ZWsYFPP/go4UswGFm0nNqEtisDTrVauVWJlBw==
   dependencies:
     typescript "^3.5.3"
 
@@ -592,6 +633,11 @@
   dependencies:
     "@types/jest-diff" "*"
 
+"@types/lodash@^4.14.137":
+  version "4.14.149"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.149.tgz#1342d63d948c6062838fbf961012f74d4e638440"
+  integrity sha512-ijGqzZt/b7BfzcK9vTrS6MFljQRPn5BFWOx8oE0GYxribu6uV+aA9zZuXI1zc/etK9E8nrgdoF2+LgUw7+9tJQ==
+
 "@types/mkdirp@^0.5.2":
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/@types/mkdirp/-/mkdirp-0.5.2.tgz#503aacfe5cc2703d5484326b1b27efa67a339c1f"
@@ -608,6 +654,11 @@
   version "10.17.2"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.17.2.tgz#41b5afbcde1a5a805302a4da3cf399499f1bbf64"
   integrity sha512-sAh60KDol+MpwOr1RTK0+HgBEYejKsxdpmrOS1Wts5bI03dLzq8F7T0sRXDKeaEK8iWDlGfdzxrzg6vx/c5pNA==
+
+"@types/node@^12.12.7":
+  version "12.12.24"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.12.24.tgz#d4606afd8cf6c609036b854360367d1b2c78931f"
+  integrity sha512-1Ciqv9pqwVtW6FsIUKSZNB82E5Cu1I2bBTj1xuIHXLe/1zYLl3956Nbhg2MzSYHVfl9/rmanjbQIb7LibfCnug==
 
 "@types/prettier@^1.13.2":
   version "1.18.3"
@@ -975,6 +1026,11 @@ bcrypt-pbkdf@^1.0.0:
   integrity sha1-pDAdOJtqQ/m2f/PKEaP2Y342Dp4=
   dependencies:
     tweetnacl "^0.14.3"
+
+bignumber.js@~4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-4.1.0.tgz#db6f14067c140bd46624815a7916c92d9b6c24b1"
+  integrity sha512-eJzYkFYy9L4JzXsbymsFn3p54D+llV27oTQ+ziJG7WFRheJcNZilgVXMG0LoZtlQSKBsJdWtLFqOD0u+U0jZKA==
 
 bignumber.js@~8.0.2:
   version "8.0.2"
@@ -1617,6 +1673,19 @@ elliptic@6.3.3:
     hash.js "^1.0.0"
     inherits "^2.0.1"
 
+elliptic@6.5.2:
+  version "6.5.2"
+  resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-6.5.2.tgz#05c5678d7173c049d8ca433552224a495d0e3762"
+  integrity sha512-f4x70okzZbIQl/NSRLkI/+tteV/9WqL98zx+SQ69KbXxmVrmjwsNUPn/gYJJ0sHvEak24cZgHIPegRePAtA/xw==
+  dependencies:
+    bn.js "^4.4.0"
+    brorand "^1.0.1"
+    hash.js "^1.0.0"
+    hmac-drbg "^1.0.0"
+    inherits "^2.0.1"
+    minimalistic-assert "^1.0.0"
+    minimalistic-crypto-utils "^1.0.0"
+
 elliptic@^6.4.1:
   version "6.5.1"
   resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-6.5.1.tgz#c380f5f909bf1b9b4428d028cd18d3b0efd6b52b"
@@ -1886,6 +1955,14 @@ ethereum-common@^0.0.18:
   resolved "https://registry.yarnpkg.com/ethereum-common/-/ethereum-common-0.0.18.tgz#2fdc3576f232903358976eb39da783213ff9523f"
   integrity sha1-L9w1dvIykDNYl26znaeDIT/5Uj8=
 
+ethereum-types@^1.0.11:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/ethereum-types/-/ethereum-types-1.1.6.tgz#14437dbf401de361e70dac6358e5f2915ad3c35d"
+  integrity sha512-/1ixUyyg0f3Gor+U+3Kc3o9AvS8V5hNVHS9qeNXlooqVee+FIpv5kq+SOgMpKSNSVKp4wBJSjrzp0ShjbKo3bA==
+  dependencies:
+    "@types/node" "*"
+    bignumber.js "~4.1.0"
+
 ethereum-types@^2.1.6:
   version "2.1.6"
   resolved "https://registry.yarnpkg.com/ethereum-types/-/ethereum-types-2.1.6.tgz#57d9d515fad86ab987c0f6962c4203be37da8579"
@@ -2031,7 +2108,22 @@ ethereumjs-vm@^4.0.0:
     safe-buffer "^5.1.1"
     util.promisify "^1.0.0"
 
-ethers@^4.0.39, ethers@~4.0.4:
+ethers@^4.0.39:
+  version "4.0.42"
+  resolved "https://registry.yarnpkg.com/ethers/-/ethers-4.0.42.tgz#7def83a1f770b84d44cf1c2dfc58b7fd29d1d45d"
+  integrity sha512-2gmmt5x683Xz4QwGDBVJhrdXevVAEr5fnXPGDPou2AKB+zklrirGpl0w1SHBn7Wa9hbL2z6MvP3n7k8Yss2MFg==
+  dependencies:
+    aes-js "3.0.0"
+    bn.js "^4.4.0"
+    elliptic "6.5.2"
+    hash.js "1.1.3"
+    js-sha3 "0.5.7"
+    scrypt-js "2.0.4"
+    setimmediate "1.0.4"
+    uuid "2.0.1"
+    xmlhttprequest "1.8.0"
+
+ethers@~4.0.4:
   version "4.0.39"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-4.0.39.tgz#5ce9dfffedb03936415743f63b37d96280886a47"
   integrity sha512-QVtC8TTUgTrnlQjQvdFJ7fkSWKwp8HVTbKRmrdbVryrPzJHMTf3WSeRNvLF2enGyAFtyHJyFNnjN0fSshcEr9w==

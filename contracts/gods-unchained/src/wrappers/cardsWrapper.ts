@@ -71,6 +71,10 @@ export class CardsWrapper {
 
   async addSeasons(seasons: Season[]) {
     await asyncForEach(seasons, async (season) => {
+      if (season <= 0) {
+        throw 'Season must be greater than 0';
+      }
+
       const tx = await this.instance.functions.startSeason(season.name, season.low, season.high);
       await tx.wait();
     });

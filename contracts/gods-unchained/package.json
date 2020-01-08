@@ -22,7 +22,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "ethers": "^4.0.39",
+    "ethers": "^4.0.42",
     "@0x/contracts-exchange-libs": "^3.0.8",
     "@0x/order-utils": "^8.4.0",
     "@imtbl/common-types": "^1.0.11",

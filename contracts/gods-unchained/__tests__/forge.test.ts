@@ -1,16 +1,7 @@
 import { generatedWallets, Blockchain } from '@imtbl/test-utils';
 import { ethers, Wallet } from 'ethers';
 
-import {
-  CardsFactory,
-  Cards,
-  ProtoFactory,
-  ProtoFactoryFactory,
-  ForgeFactory,
-  Forge
-} from '../src';
-
-import { Address } from '@imtbl/common-types';
+import { CardsFactory, Cards, ForgeFactory, Forge } from '../src';
 
 import { expectRevert } from '@imtbl/test-utils';
 
@@ -31,7 +22,6 @@ describe('Forge', () => {
   });
 
   describe('#forge', () => {
-
     let cards: Cards;
     let forge: Forge;
 
@@ -78,7 +68,9 @@ describe('Forge', () => {
     async function subject(approve: boolean = true): Promise<any> {
       for (var i = 0; i < callerIds.length; i++) {
         if (approve) {
-         await new CardsFactory(caller).attach(cards.address).functions.approve(forge.address, callerIds[i]);
+          await new CardsFactory(caller)
+            .attach(cards.address)
+            .functions.approve(forge.address, callerIds[i]);
         }
       }
 
@@ -101,14 +93,22 @@ describe('Forge', () => {
     });
 
     it('should not be able to forge cards with different protos', async () => {
-      const tx = await cards.functions.mintCards(ownerWallet.address, [1, 1, 1, 1, 2], [4, 4, 4, 4, 4]);
+      const tx = await cards.functions.mintCards(
+        ownerWallet.address,
+        [1, 1, 1, 1, 2],
+        [4, 4, 4, 4, 4],
+      );
       await tx.wait();
       callerIds = [0, 1, 2, 3, 4];
       await expectRevert(subject());
     });
 
     it('should not be able to forge cards with different qualities', async () => {
-      const tx = await cards.functions.mintCards(ownerWallet.address, [1, 1, 1, 1, 1], [4, 4, 4, 4, 3]);
+      const tx = await cards.functions.mintCards(
+        ownerWallet.address,
+        [1, 1, 1, 1, 1],
+        [4, 4, 4, 4, 3],
+      );
       await tx.wait();
       callerIds = [0, 1, 2, 3, 4];
       await expectRevert(subject());
@@ -129,7 +129,9 @@ describe('Forge', () => {
     it('should be able to forge on behalf of someone else', async () => {
       callerIds = await createCards(5, 1, 2);
       caller = userWallet;
-      await new CardsFactory(minterWallet).attach(cards.address).functions.setApprovalForAll(userWallet.address, true);
+      await new CardsFactory(minterWallet)
+        .attach(cards.address)
+        .functions.setApprovalForAll(userWallet.address, true);
 
       const beforeSupply = await cards.functions.totalSupply();
       expect(beforeSupply.toNumber()).toEqual(5);
@@ -155,7 +157,5 @@ describe('Forge', () => {
       const supply = await cards.functions.totalSupply();
       expect(supply.toNumber()).toEqual(1);
     });
-
   });
-
 });

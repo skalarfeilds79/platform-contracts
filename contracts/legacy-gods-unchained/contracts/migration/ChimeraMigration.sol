@@ -1,16 +1,18 @@
 pragma solidity 0.5.11;
 
-import "./BaseMigration.sol";
+import "@imtbl/gods-unchained/contracts/factories/PromoFactory.sol";
+
 import "../cards/CardIntegrationTwo.sol";
 import "../cards/CardBase.sol";
-import "@imtbl/gods-unchained/contracts/factories/PromoFactory.sol";
+
+import "./BaseMigration.sol";
 
 contract ChimeraMigration is BaseMigration {
 
     // The old cards contract
     CardIntegrationTwo public oldCards;
 
-    // The new cards contract to migrate to
+    // The promo factory that ChimeraMigration can create new cards from
     PromoFactory public promoFactory;
 
     // The cut off point at which before cards will NOT be migrated.
@@ -19,7 +21,7 @@ contract ChimeraMigration is BaseMigration {
     // Keep track of migrated and claimed chimeras
     mapping (uint => bool) public hasMigrated;
 
-    event ChimeraMigrated(
+    event Migrated(
         uint tokenId,
         address owner,
         uint16 proto,
@@ -67,6 +69,6 @@ contract ChimeraMigration is BaseMigration {
         hasMigrated[_tokenId] = true;
         promoFactory.mintSingle(msg.sender, convertedProto, convertedQuality);
 
-        emit ChimeraMigrated(_tokenId, msg.sender, convertedProto, convertedQuality);
+        emit Migrated(_tokenId, msg.sender, convertedProto, convertedQuality);
     }
 }

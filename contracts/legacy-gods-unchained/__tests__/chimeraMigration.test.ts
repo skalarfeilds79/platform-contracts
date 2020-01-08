@@ -9,8 +9,7 @@ import {
   CardIntegrationTwoFactory,
   ChimeraMigrationFactory,
 } from '../src/contracts';
-import { Cards, CardsWrapper, CardsFactory } from '@imtbl/gods-unchained';
-import { PromoFactoryFactory } from '../src/generated/PromoFactoryFactory';
+import { Cards, CardsWrapper, CardsFactory, PromoFactoryFactory } from '@imtbl/gods-unchained';
 
 const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();
@@ -50,50 +49,45 @@ describe('Core', () => {
     let caller;
 
     beforeEach(async () => {
-      try {
-        callerTokenId = 3;
-        caller = userWallet;
+      callerTokenId = 3;
+      caller = userWallet;
 
-        chimeraMigrationAddress = '';
-        oldCardsAddress = '';
-        newCardsAddress = '';
+      chimeraMigrationAddress = '';
+      oldCardsAddress = '';
+      newCardsAddress = '';
 
-        const oldCards = await new CardIntegrationTwoFactory(ownerWallet).deploy();
-        await oldCards.functions.addProto(394, 1, 1, 1, 1, 1, 1, 1, false);
-        await oldCards.functions.ownerOf;
+      const oldCards = await new CardIntegrationTwoFactory(ownerWallet).deploy();
+      await oldCards.functions.addProto(394, 1, 1, 1, 1, 1, 1, 1, false);
 
-        // Create 4 cards to test with
-        await asyncForEach([0, 1, 2, 3], async (item) => {
-          const tx = await oldCards.functions.createCard(userWallet.address, 394, 1);
-          await tx.wait();
-        });
+      // Create 4 cards to test with
+      await asyncForEach([0, 1, 2, 3], async (item) => {
+        const tx = await oldCards.functions.createCard(userWallet.address, 394, 1);
+        await tx.wait();
+      });
 
-        const newCards = await new CardsWrapper(ownerWallet).deploy(BATCH_SIZE, [
-          { name: 'Promo', low: 400, high: 500 },
-        ]);
+      const newCards = await new CardsWrapper(ownerWallet).deploy(BATCH_SIZE, [
+        { name: 'Promo', low: 400, high: 500 },
+      ]);
 
-        const promoFactory = await new PromoFactoryFactory(ownerWallet).deploy(
-          newCards.address,
-          400,
-          500,
-        );
+      const promoFactory = await new PromoFactoryFactory(ownerWallet).deploy(
+        newCards.address,
+        400,
+        500,
+      );
 
-        // Deploy the Chimera Migration contract with one card as the cutoff limit
-        const chimeraMigration = await new ChimeraMigrationFactory(ownerWallet).deploy(
-          oldCards.address,
-          promoFactory.address,
-          CUT_OFF,
-        );
+      // Deploy the Chimera Migration contract with one card as the cutoff limit
+      const chimeraMigration = await new ChimeraMigrationFactory(ownerWallet).deploy(
+        oldCards.address,
+        promoFactory.address,
+        CUT_OFF,
+      );
 
-        await promoFactory.functions.assignPromoMinter(chimeraMigration.address, 402);
-        await newCards.functions.addFactory(promoFactory.address, 1);
+      await promoFactory.functions.assignPromoMinter(chimeraMigration.address, 402);
+      await newCards.functions.addFactory(promoFactory.address, 1);
 
-        oldCardsAddress = oldCards.address;
-        newCardsAddress = newCards.address;
-        chimeraMigrationAddress = chimeraMigration.address;
-      } catch (e) {
-        console.log('ERROR!!!! ' + e);
-      }
+      oldCardsAddress = oldCards.address;
+      newCardsAddress = newCards.address;
+      chimeraMigrationAddress = chimeraMigration.address;
     }, 10000);
 
     async function subject() {

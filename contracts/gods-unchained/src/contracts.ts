@@ -28,8 +28,8 @@ export { LibOrderFactory } from './generated/LibOrderFactory';
 export { MultiTransferFactory } from './generated/MultiTransferFactory';
 export { OpenMinterFactory } from './generated/OpenMinterFactory';
 export { OwnableFactory } from './generated/OwnableFactory';
-export { ProtoFactory } from './generated/ProtoFactory';
-export { ProtoFactoryFactory } from './generated/ProtoFactoryFactory';
+export { PromoFactory } from './generated/PromoFactory';
+export { PromoFactoryFactory } from './generated/PromoFactoryFactory';
 export { WETH9Factory } from './generated/WETH9Factory';
 
 export { BatchToken } from './generated/BatchToken';

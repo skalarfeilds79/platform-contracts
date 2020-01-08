@@ -5,8 +5,8 @@
 */
 
 export { Cards } from './ts/Cards';
-export { Factory } from './ts/Factory';
+export { Forge } from './ts/Forge';
 export { Forwarder } from './ts/Forwarder';
+export { Fusing } from './ts/Fusing';
 export { OpenMinter } from './ts/OpenMinter';
-export { Proxy } from './ts/Proxy';
-export { Wallet } from './ts/Wallet';
+export { PromoFactory } from './ts/PromoFactory';

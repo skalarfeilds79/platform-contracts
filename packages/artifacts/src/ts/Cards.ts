@@ -1280,32 +1280,6 @@ export const Cards = [
     "type": "event"
   },
   {
-    "constant": true,
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "getDetails",
-    "outputs": [
-      {
-        "internalType": "uint16",
-        "name": "proto",
-        "type": "uint16"
-      },
-      {
-        "internalType": "uint8",
-        "name": "quality",
-        "type": "uint8"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "constant": false,
     "inputs": [
       {
@@ -1490,6 +1464,32 @@ export const Cards = [
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getDetails",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "proto",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint8",
+        "name": "quality",
+        "type": "uint8"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
     "type": "function"
   },
   {

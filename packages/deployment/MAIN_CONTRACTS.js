@@ -14,4 +14,6 @@ module.exports = [
   'OpenMinter',
   'Fusing',
   'Factory',
+  'Forge',
+  'PromoFactory',
 ];

@@ -103,7 +103,7 @@ describe('Core', () => {
 
     it('should be able to migrate if it does not have ownership', async () => {
       caller = unauthorisedWallet;
-      await expectRevert(subject());
+      await subject();
     });
 
     it('should be able to migrate as the migrator', async () => {

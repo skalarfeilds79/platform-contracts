@@ -77,14 +77,14 @@ describe('Core', () => {
       return await tx.wait();
     }
 
-    it('should not be able to migrate if it does not have ownership', async () => {
-      caller = immutableWallet;
-      await expectRevert(subject());
-    });
-
     it('should not be able to migrate the same card twice', async () => {
       await subject();
       await expectRevert(subject());
+    });
+
+    it('should be able to migrate if it does not have ownership', async () => {
+      caller = immutableWallet;
+      await subject();
     });
 
     it('should be able to migrate the card with the correct proto', async () => {

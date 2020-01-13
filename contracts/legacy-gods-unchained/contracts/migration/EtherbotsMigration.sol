@@ -38,10 +38,8 @@ contract EtherbotsMigration is BaseMigration {
     function migrate(
         uint _tokenId
     ) public {
-        require(
-            oldCards.ownerOf(_tokenId) == msg.sender,
-            "Etherbots Migration: must be the owner of the Etherbot"
-        );
+
+        address originalOwner = oldCards.ownerOf(_tokenId);
 
         require(
             hasMigrated[_tokenId] == false,
@@ -55,8 +53,8 @@ contract EtherbotsMigration is BaseMigration {
 
         hasMigrated[_tokenId] = true;
 
-        newCards.mintCard(msg.sender, convertedProto, convertedQuality);
+        newCards.mintCard(originalOwner, convertedProto, convertedQuality);
 
-        emit Migrated(_tokenId, msg.sender, convertedProto, convertedQuality);
+        emit Migrated(_tokenId, originalOwner, convertedProto, convertedQuality);
     }
 }

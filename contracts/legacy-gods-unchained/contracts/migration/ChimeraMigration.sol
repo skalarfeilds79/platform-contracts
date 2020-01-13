@@ -51,10 +51,7 @@ contract ChimeraMigration is BaseMigration {
             "Chimera Migration: must be greater than the cut off"
         );
 
-        require(
-            oldCards.ownerOf(_tokenId) == msg.sender,
-            "Chimera Migration: must be the owner of the Chimera"
-        );
+        address originalOwner = oldCards.ownerOf(_tokenId);
 
         require(
             hasMigrated[_tokenId] == false,
@@ -67,8 +64,8 @@ contract ChimeraMigration is BaseMigration {
         uint8 convertedQuality = convertPurity(purity);
 
         hasMigrated[_tokenId] = true;
-        promoFactory.mintSingle(msg.sender, convertedProto, convertedQuality);
+        promoFactory.mintSingle(originalOwner, convertedProto, convertedQuality);
 
-        emit Migrated(_tokenId, msg.sender, convertedProto, convertedQuality);
+        emit Migrated(_tokenId, originalOwner, convertedProto, convertedQuality);
     }
 }

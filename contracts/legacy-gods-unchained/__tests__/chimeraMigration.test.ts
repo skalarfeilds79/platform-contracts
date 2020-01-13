@@ -96,14 +96,23 @@ describe('Core', () => {
       return await tx.wait();
     }
 
-    it('should not be able to migrate if it does not have ownership', async () => {
+    it('should not be able to migrate if the token id is less than CUT_OFF', async () => {
+      callerTokenId = 1;
+      await expectRevert(subject());
+    });
+
+    it('should be able to migrate if it does not have ownership', async () => {
       caller = unauthorisedWallet;
       await expectRevert(subject());
     });
 
-    it('should not be able to migrate if the token id is less than CUT_OFF', async () => {
-      callerTokenId = 1;
-      await expectRevert(subject());
+    it('should be able to migrate as the migrator', async () => {
+      caller = immutableWallet;
+      await subject();
+      const newCards = await new CardsFactory(immutableWallet).attach(newCardsAddress);
+      const card = await newCards.functions.getDetails(0);
+      console.log(card);
+      expect(card.proto).toBe(402);
     });
 
     it('should be able to migrate if the token id is on the CUT_OFF', async () => {

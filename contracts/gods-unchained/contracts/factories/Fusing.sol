@@ -22,8 +22,9 @@ contract Fusing is Ownable {
     event CardFused(
         address owner,
         address tokenAddress,
+        uint[] references,
         uint indexed tokenId,
-        uint[] indexed references
+        uint indexed lowestReference
     );
 
     /**
@@ -100,7 +101,14 @@ contract Fusing is Ownable {
 
         tokenId = cards.mintCard(_to, _proto, _quality);
 
-        emit CardFused(_to, address(cards), tokenId, _references);
+        uint lowestReference = _references[0];
+        for (uint i = 0; i < _references.length; i++) {
+            if (_references[i] > lowestReference) {
+                lowestReference = _references[i];
+            }
+        }
+
+        emit CardFused(_to, address(cards), _references, tokenId, lowestReference);
     }
 
 }

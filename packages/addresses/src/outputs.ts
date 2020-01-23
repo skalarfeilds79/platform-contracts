@@ -8,7 +8,7 @@ export const outputs =
       "Cards": "0xADC559D1afbCBBf427728577F40E7358D96F1209",
       "OpenMinter": "0x36F26280B80e609e347c843E2AE5351Ee4b5f7eD",
       "Forwarder": "0xc79C9c624ea8A3dEdfae0dbf9295Bfb159eE5F3b",
-      "Fusing": "0x82a92540aB10F484Bf11fB3bEd95CE35c370846E"
+      "Fusing": "0xFfFB48F70Dd10a468957cDD099047e046AdE8670"
     },
     "dependencies": {
       "WETH": "0xc778417e063141139fce010982780140aa0cd5ab",

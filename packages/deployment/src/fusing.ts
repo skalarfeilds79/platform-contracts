@@ -20,7 +20,7 @@ let wallet = new ethers.Wallet('', provider);
 async function deploy() {
   //   let cardWrapper = new CardsWrapper(wallet);
   //   cardWrapper.instance = await new CardsFactory(wallet).attach(
-  //     '0xADC559D1afbCBBf427728577F40E7358D96F1209',
+  //     '',
   //   );
   //   const fusing = await cardWrapper.deployFusing(cardWrapper.instance.address);
   //   await cardWrapper.addFactories([
@@ -34,7 +34,7 @@ async function deploy() {
 
 async function addMinter() {
   // const fusing = await new FusingFactory(wallet).attach(
-  //     '0x82a92540aB10F484Bf11fB3bEd95CE35c370846E',
+  //     '',
   //   );
   //   const tx = await fusing.functions.addMinter('0xA80E99f59cd0474F76754Ed5498F2Ef6D6f09951');
   //   await tx.wait();

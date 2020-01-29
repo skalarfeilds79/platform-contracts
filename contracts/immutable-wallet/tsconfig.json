@@ -20,7 +20,8 @@
     },
     "include": [
       "src",
-      "__tests__"
+      "__tests__",
+      "deployment"
     ],
     "compileOnSave": true
   }

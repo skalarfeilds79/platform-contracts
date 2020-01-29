@@ -7,25 +7,14 @@ const config = dotenv.config({ path: '../../.env' }).parsed;
 
 const OUTPUTS_PATH = '../addresses/src/outputs.json';
 
-const privateKey: string = process.env.DEPLOYMENT_PRIVATE_KEY;
-
-const deploymentEnvironment: string = process.env.DEPLOYMENT_ENVIRONMENT;
-const deploymentNetworkId: number = parseInt(process.env.DEPLOYMENT_NETWORK_ID);
-
-export function getDeploymentNetworkKey(): string {
-  return `${deploymentNetworkId}-${deploymentEnvironment}`;
-}
+export const PRIVATE_KEY: string = process.env.DEPLOYMENT_PRIVATE_KEY;
+export const DEPLOYMENT_ENVIRONMENT: string = process.env.DEPLOYMENT_ENVIRONMENT;
+export const DEPLOYMENT_NETWORK_ID: number = parseInt(process.env.DEPLOYMENT_NETWORK_ID);
+export const DEPLOYMENT_NETWORK_KEY: string = `${DEPLOYMENT_NETWORK_ID}-${DEPLOYMENT_ENVIRONMENT}`;
+export const RPC_URL: string = process.env.RPC_ENDPOINT;
 
 export async function returnOutputs(): Promise<any> {
   return fs.readJson(OUTPUTS_PATH, { throws: false }) || {};
-}
-
-export function getNetworkId(): number {
-  return deploymentNetworkId;
-}
-
-export function getPrivateKey(): string {
-  return privateKey;
 }
 
 export async function sortOutputs() {
@@ -42,7 +31,7 @@ export async function sortOutputs() {
 }
 
 export async function findDependency(name: string) {
-  const dependencyValue = dependencies[name][getNetworkId()];
+  const dependencyValue = dependencies[name][DEPLOYMENT_NETWORK_ID];
 
   if (dependencyValue) {
     return dependencyValue;
@@ -53,7 +42,7 @@ export async function findDependency(name: string) {
 
 export async function getContractAddress(name: string, dependency: boolean = false) {
   const outputs: any = await returnOutputs();
-  const deploymentKey = getDeploymentNetworkKey();
+  const deploymentKey = DEPLOYMENT_NETWORK_ID;
 
   if (!outputs[deploymentKey]) {
     return undefined;
@@ -74,7 +63,7 @@ export async function writeContractToOutputs(
   dependency: boolean = false,
 ) {
   const outputs: any = await returnOutputs();
-  const deploymentKey = getDeploymentNetworkKey();
+  const deploymentKey = DEPLOYMENT_ENVIRONMENT;
 
   if (!outputs[deploymentKey]) {
     outputs[deploymentKey] = returnEmptyNetworkValue();
@@ -94,7 +83,7 @@ export async function removeNetwork(name: string) {
 
 export async function writeStateToOutputs(parameter: string, value: any) {
   const outputs: any = await returnOutputs();
-  const deploymentKey = getDeploymentNetworkKey();
+  const deploymentKey = DEPLOYMENT_ENVIRONMENT;
 
   if (!outputs[deploymentKey]) {
     outputs[deploymentKey] = returnEmptyNetworkValue();
@@ -105,14 +94,14 @@ export async function writeStateToOutputs(parameter: string, value: any) {
 }
 
 function returnEmptyNetworkValue(): any {
-  const networkName = dependencies['HUMAN_FRIENDLY_NAMES'][deploymentNetworkId];
-  const humanFriendlyName = `${networkName}-${deploymentEnvironment}`;
+  const networkName = dependencies['HUMAN_FRIENDLY_NAMES'][DEPLOYMENT_NETWORK_ID];
+  const humanFriendlyName = `${networkName}-${DEPLOYMENT_ENVIRONMENT}`;
   return {
     human_friendly_name: humanFriendlyName,
     addresses: {},
     dependencies: {},
     state: {
-      network_id: deploymentNetworkId,
+      network_id: DEPLOYMENT_NETWORK_ID,
     },
   };
 }
@@ -120,7 +109,7 @@ function returnEmptyNetworkValue(): any {
 export async function getLastDeploymentStage(): Promise<number> {
   try {
     const output = await returnOutputs();
-    const networkKey = await getDeploymentNetworkKey();
+    const networkKey = await DEPLOYMENT_ENVIRONMENT;
 
     return output[networkKey]['state']['last_deployment_stage'] || 0;
   } catch {
@@ -131,15 +120,15 @@ export async function getLastDeploymentStage(): Promise<number> {
 export async function isCorrectNetworkId(): Promise<boolean> {
   try {
     const output = await returnOutputs();
-    const networkKey = await getDeploymentNetworkKey();
+    const networkKey = DEPLOYMENT_ENVIRONMENT;
     const existingId = output[networkKey]['state']['network_id'];
 
     if (!existingId) {
-      await writeStateToOutputs('network_id', deploymentNetworkId);
+      await writeStateToOutputs('network_id', DEPLOYMENT_NETWORK_ID);
       return true;
     }
 
-    return existingId === deploymentNetworkId;
+    return existingId === DEPLOYMENT_NETWORK_ID;
   } catch {
     return true;
   }

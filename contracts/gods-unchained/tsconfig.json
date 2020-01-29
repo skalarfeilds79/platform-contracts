@@ -21,6 +21,7 @@
     "include": [
       "src",
       "__tests__",
+      "deployment"
     ],
     "compileOnSave": true
   }

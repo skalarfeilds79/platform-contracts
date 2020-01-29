@@ -1,5 +1,5 @@
 {
-  "name": "@imtbl/deployment",
+  "name": "@imtbl/deployment-utils",
   "version": "1.0.13",
   "license": "MIT",
   "main": "dist/index.js",
@@ -8,8 +8,6 @@
   "dependencies": {
     "@imtbl/addresses": "^1.1.1",
     "@imtbl/common-types": "^1.0.11",
-    "@imtbl/gods-unchained": "^1.0.11",
-    "@imtbl/immutable-wallet": "^1.0.11",
     "@imtbl/test-utils": "^1.0.10",
     "@imtbl/utils": "^1.0.10",
     "dotenv": "^8.2.0",
@@ -23,12 +21,7 @@
   },
   "scripts": {
     "lint": "tslint --project . -t verbose 'src/**/*.{tsx,ts}'",
-    "generate-outputs": "bash scripts/generate-outputs.sh",
-    "finish-deployment": "yarn generate-outputs && yarn tsc",
-    "deploy-cards": "yarn ts-node src/cards && yarn finish-deployment",
-    "deploy-forwarder": "yarn ts-node src/forwarder && yarn finish-deployment",
-    "deploy-wallet": "yarn ts-node src/wallet && yarn finish-deployment",
-    "deploy-all:dev": "yarn ts-node src/cards && yarn ts-node src/forwarder && yarn ts-node src/wallet && yarn generate-outputs && yarn tsc"
+    "generate-outputs": "bash scripts/generate-outputs.sh"
   },
   "devDependencies": {
     "@0xproject/types": "^1.1.4",

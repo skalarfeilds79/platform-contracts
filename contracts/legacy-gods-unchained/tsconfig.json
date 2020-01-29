@@ -23,7 +23,8 @@
       "__tests__"
     ],
     "exclude": [
-      "node_modules"
+      "node_modules",
+      "gods-unchained"
     ],
     "compileOnSave": true
   }

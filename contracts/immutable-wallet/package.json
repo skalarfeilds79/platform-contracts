@@ -25,8 +25,9 @@
   "license": "MIT",
   "dependencies": {
     "@0x/contracts-exchange-libs": "^3.0.8",
-    "@imtbl/common-types": "^1.0.11",
     "@imtbl/addresses": "^1.0.10",
+    "@imtbl/common-types": "^1.0.11",
+    "@imtbl/deployment-utils": "^1.0.13",
     "@imtbl/gods-unchained": "^1.0.10",
     "@imtbl/utils": "^1.0.10",
     "@openzeppelin/contracts": "^2.3.0",
@@ -36,7 +37,6 @@
   },
   "devDependencies": {
     "@0xproject/types": "^1.1.4",
-    "truffle-plugin-verify": "^0.3.5",
     "@imtbl/test-utils": "^1.0.10",
     "@types/jest": "^24.0.21",
     "@types/node": "^12.12.3",
@@ -50,6 +50,7 @@
     "solhint": "^2.3.0",
     "truffle": "^5.0.42",
     "truffle-flattener": "^1.4.2",
+    "truffle-plugin-verify": "^0.3.5",
     "ts-generator": "^0.0.8",
     "ts-jest": "^24.1.0",
     "ts-node": "^8.4.1",

@@ -1,8 +1,9 @@
-import { generatedWallets, Blockchain, expectRevert } from '@imtbl/test-utils';
-import { ethers, Wallet } from 'ethers';
-import { FusingFactory } from '../src/generated/FusingFactory';
-import { CardsWrapper, Cards } from '../src';
+import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
+import { Cards, CardsWrapper } from '../src';
+import { Wallet, ethers } from 'ethers';
+
 import { ContractReceipt } from 'ethers/contract';
+import { FusingFactory } from '../src/generated/FusingFactory';
 import { parseLogs } from '@imtbl/utils';
 
 const provider = new ethers.providers.JsonRpcProvider();
@@ -26,7 +27,7 @@ describe('Fusing', () => {
     const cardsWrapper = new CardsWrapper(ownerWallet);
 
     it('should be able to deploy correctly', async () => {
-      let cards = await cardsWrapper.deployTest(ownerWallet.address);
+      const cards = await cardsWrapper.deployTest(ownerWallet.address);
       const fusing = await new FusingFactory(ownerWallet).deploy(cards.address);
 
       const returnedCardsAddress = await fusing.functions.cards();

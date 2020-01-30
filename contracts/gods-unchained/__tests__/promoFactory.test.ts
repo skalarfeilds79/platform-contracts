@@ -1,7 +1,6 @@
-import { generatedWallets, Blockchain, expectRevert } from '@imtbl/test-utils';
-import { ethers, Wallet } from 'ethers';
-
-import { CardsFactory, Cards, PromoFactory, PromoFactoryFactory } from '../src';
+import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
+import { Cards, CardsFactory, PromoFactory, PromoFactoryFactory } from '../src';
+import { Wallet, ethers } from 'ethers';
 
 import { Address } from '@imtbl/common-types';
 
@@ -114,7 +113,6 @@ describe('Core', () => {
 
     let caller: Wallet;
 
-    let callerTo: Address;
     let callerProtos: number[];
     let callerQualities: number[];
 

@@ -1,4 +1,4 @@
-import { fail } from "assert";
+import { fail } from 'assert';
 
 export async function expectException(promise, expectedError) {
   try {
@@ -17,10 +17,10 @@ export async function expectException(promise, expectedError) {
   fail('Expected an exception but none was received');
 }
 
-export const expectRevert = async function (promise) {
+export const expectRevert = async (promise) => {
   await expectException(promise, 'revert');
 };
 
-expectRevert.assertion = promise => expectException(promise, 'invalid opcode');
-expectRevert.outOfGas = promise => expectException(promise, 'out of gas');
-expectRevert.unspecified = promise => expectException(promise, 'revert');
+expectRevert.assertion = (promise) => expectException(promise, 'invalid opcode');
+expectRevert.outOfGas = (promise) => expectException(promise, 'out of gas');
+expectRevert.unspecified = (promise) => expectException(promise, 'revert');

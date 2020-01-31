@@ -1,20 +1,21 @@
-import { Provider } from 'ethers/providers';
 import * as fs from 'fs-extra';
+
+import { Provider } from 'ethers/providers';
 import dependencies from '../dependencies';
 
 const dotenv = require('dotenv');
 const config = dotenv.config({ path: '../../.env' }).parsed;
 
-const OUTPUTS_PATH = '../addresses/src/outputs.json';
+const OUTPUTS_PATH = '../../packages/addresses/src/outputs.json';
 
-export const PRIVATE_KEY: string = process.env.DEPLOYMENT_PRIVATE_KEY;
+export const PRIVATE_KEY: string = process.env.PRIVATE_KEY;
 export const DEPLOYMENT_ENVIRONMENT: string = process.env.DEPLOYMENT_ENVIRONMENT;
 export const DEPLOYMENT_NETWORK_ID: number = parseInt(process.env.DEPLOYMENT_NETWORK_ID);
 export const DEPLOYMENT_NETWORK_KEY: string = `${DEPLOYMENT_NETWORK_ID}-${DEPLOYMENT_ENVIRONMENT}`;
 export const RPC_URL: string = process.env.RPC_ENDPOINT;
 
 export async function returnOutputs(): Promise<any> {
-  return fs.readJson(OUTPUTS_PATH, { throws: false }) || {};
+  return (await fs.readJson(OUTPUTS_PATH, { throws: false })) || {};
 }
 
 export async function sortOutputs() {
@@ -31,13 +32,17 @@ export async function sortOutputs() {
 }
 
 export async function findDependency(name: string) {
-  const dependencyValue = dependencies[name][DEPLOYMENT_NETWORK_ID];
+  let dependencyValue = dependencies[name];
+
+  if (dependencyValue) {
+    dependencyValue = dependencyValue[DEPLOYMENT_NETWORK_ID];
+  }
 
   if (dependencyValue) {
     return dependencyValue;
   }
 
-  return await getContractAddress(name, true);
+  return getContractAddress(name, true);
 }
 
 export async function getContractAddress(name: string, dependency: boolean = false) {
@@ -63,7 +68,7 @@ export async function writeContractToOutputs(
   dependency: boolean = false,
 ) {
   const outputs: any = await returnOutputs();
-  const deploymentKey = DEPLOYMENT_ENVIRONMENT;
+  const deploymentKey = DEPLOYMENT_NETWORK_KEY;
 
   if (!outputs[deploymentKey]) {
     outputs[deploymentKey] = returnEmptyNetworkValue();
@@ -72,7 +77,7 @@ export async function writeContractToOutputs(
   const key = dependency ? 'dependencies' : 'addresses';
   outputs[deploymentKey][key][name] = value;
 
-  await fs.outputFile(OUTPUTS_PATH, JSON.stringify(outputs, undefined, 2));
+  await fs.outputFile(OUTPUTS_PATH, JSON.stringify(outputs, null, 2));
 }
 
 export async function removeNetwork(name: string) {
@@ -83,7 +88,7 @@ export async function removeNetwork(name: string) {
 
 export async function writeStateToOutputs(parameter: string, value: any) {
   const outputs: any = await returnOutputs();
-  const deploymentKey = DEPLOYMENT_ENVIRONMENT;
+  const deploymentKey = DEPLOYMENT_NETWORK_KEY;
 
   if (!outputs[deploymentKey]) {
     outputs[deploymentKey] = returnEmptyNetworkValue();

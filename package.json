@@ -20,12 +20,13 @@
     "dependencies": {
         "concurrently": "^4.1.2",
         "dotenv": "^8.2.0",
-        "lerna": "^3.4.3"
+        "lerna": "^3.4.3",
+        "typescript": "2.6.2"
     },
     "devDependencies": {
         "ganache-cli": "^6.7.0"
     },
     "engines": {
-        "node" : "^11.15.0"
+        "node": "^11.15.0"
     }
 }

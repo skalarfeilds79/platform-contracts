@@ -1,6 +1,7 @@
-import { ForwarderFactory } from '../src/generated/ForwarderFactory';
+import { Wallet, ethers } from 'ethers';
+
 import { DeploymentStage } from '@imtbl/deployment-utils';
-import { ethers, Wallet } from 'ethers';
+import { ForwarderFactory } from '../src/generated/ForwarderFactory';
 
 export class ForwarderStage implements DeploymentStage {
   private wallet: Wallet;
@@ -10,7 +11,7 @@ export class ForwarderStage implements DeploymentStage {
   }
 
   async deploy(
-    findInstance: (name: string) => string,
+    findInstance: (name: string) => Promise<string>,
     onDeployment: (name: string, address: string, dependency: boolean) => void,
     transferOwnership: (addresses: string[]) => void,
   ) {

@@ -1,11 +1,12 @@
-import { Address } from '@imtbl/common-types';
 import { Cards, CardsFactory } from '..';
-import { Wallet } from 'ethers';
 import { asyncForEach, parseLogs } from '@imtbl/utils';
-import { OpenMinter } from '../generated/OpenMinter';
-import { OpenMinterFactory } from '../generated/OpenMinterFactory';
+
+import { Address } from '@imtbl/common-types';
 import { Fusing } from '../generated/Fusing';
 import { FusingFactory } from '../generated/FusingFactory';
+import { OpenMinter } from '../generated/OpenMinter';
+import { OpenMinterFactory } from '../generated/OpenMinterFactory';
+import { Wallet } from 'ethers';
 
 type Season = {
   name: string;
@@ -23,8 +24,9 @@ export class CardsWrapper {
 
   public instance: Cards;
 
-  constructor(wallet: Wallet) {
+  constructor(wallet: Wallet, instance?: Cards) {
     this.wallet = wallet;
+    this.instance = instance;
   }
 
   async deployTest(minter: string): Promise<Cards> {

@@ -10,7 +10,8 @@
       "declaration": true,
       "outDir": "dist",
       "esModuleInterop": true,
-      "preserveSymlinks": true      
+      "preserveSymlinks": true,
+      "typeRoots": ["node_modules/@0x/typescript-typings/types", "node_modules/@types"]
     },
     "include": [
       "src"

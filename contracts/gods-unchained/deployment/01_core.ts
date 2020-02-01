@@ -1,8 +1,10 @@
-import { FusingFactory } from './../src/generated/FusingFactory';
-import { asyncForEach } from '@imtbl/utils';
+import { Wallet, ethers } from 'ethers';
+
+import { CardsFactory } from '../src';
 import { CardsWrapper } from './../src/wrappers/cardsWrapper';
 import { DeploymentStage } from '@imtbl/deployment-utils';
-import { ethers, Wallet } from 'ethers';
+import { FusingFactory } from './../src/generated/FusingFactory';
+import { asyncForEach } from '@imtbl/utils';
 
 export class CoreStage implements DeploymentStage {
   private wallet: Wallet;
@@ -12,7 +14,7 @@ export class CoreStage implements DeploymentStage {
   }
 
   async deploy(
-    findInstance: (name: string) => string,
+    findInstance: (name: string) => Promise<string>,
     onDeployment: (name: string, address: string, dependency: boolean) => void,
     transferOwnership: (addresses: string[]) => void,
   ) {
@@ -20,19 +22,21 @@ export class CoreStage implements DeploymentStage {
 
     const cardWrapper = new CardsWrapper(this.wallet);
 
-    const cards = findInstance('Cards') || (await this.deployCards(cardWrapper));
-    onDeployment('Cards', cards, false);
+    const cards = (await findInstance('Cards')) || (await this.deployCards(cardWrapper));
+    await onDeployment('Cards', cards, false);
+
+    cardWrapper.instance = await new CardsFactory(this.wallet).attach(cards);
 
     const openMinter =
-      findInstance('OpenMinter') || (await this.deployOpenMinter(cardWrapper, cards));
-    onDeployment('OpenMinter', openMinter, false);
+      (await findInstance('OpenMinter')) || (await this.deployOpenMinter(cardWrapper, cards));
+    await onDeployment('OpenMinter', openMinter, false);
 
-    const fusing = findInstance('Fusing') || (await this.deployFusing(cardWrapper, cards));
-    onDeployment('Fusing', fusing, false);
+    const fusing = (await findInstance('Fusing')) || (await this.deployFusing(cardWrapper, cards));
+    await onDeployment('Fusing', fusing, false);
 
     await this.authoriseFactories(cardWrapper, openMinter, fusing);
     await this.unlockTradingFor(cardWrapper, [1, 4]);
-    await this.addFusingMinter(fusing, findInstance('FUSING_MINTER'));
+    await this.addFusingMinter(fusing, await findInstance('FUSING_MINTER'));
 
     transferOwnership([cards, openMinter, fusing]);
   }
@@ -120,9 +124,6 @@ export class CoreStage implements DeploymentStage {
     console.log('Adding Fusing Minter..');
 
     const fusingContract = await new FusingFactory(this.wallet).attach(fusing);
-    const minterExists = await fusingContract.functions.minters(minter);
-    if (!minterExists) {
-      await fusingContract.functions.addMinter(minter);
-    }
+    await fusingContract.functions.addMinter(minter);
   }
 }

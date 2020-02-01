@@ -1,15 +1,10 @@
-import { generatedWallets, Blockchain, expectRevert } from '@imtbl/test-utils';
-import { asyncForEach } from '@imtbl/utils';
+import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
+import { CardIntegrationTwoFactory, ChimeraMigrationFactory } from '../src/contracts';
+import { CardsFactory, CardsWrapper, PromoFactoryFactory } from '@imtbl/gods-unchained';
 
 import { Address } from '@imtbl/common-types';
+import { asyncForEach } from '@imtbl/utils';
 import { ethers } from 'ethers';
-import {
-  CardIntegrationTwo,
-  ChimeraMigration,
-  CardIntegrationTwoFactory,
-  ChimeraMigrationFactory,
-} from '../src/contracts';
-import { Cards, CardsWrapper, CardsFactory, PromoFactoryFactory } from '@imtbl/gods-unchained';
 
 const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();
@@ -88,6 +83,7 @@ describe('Core', () => {
       oldCardsAddress = oldCards.address;
       newCardsAddress = newCards.address;
       chimeraMigrationAddress = chimeraMigration.address;
+      /* tslint:disable-next-line:align */
     }, 10000);
 
     async function subject() {

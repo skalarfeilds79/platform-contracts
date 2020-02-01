@@ -1,15 +1,16 @@
-import { generatedWallets } from '@imtbl/test-utils';
-import { ethers } from 'ethers';
 import {
   CardsWrapper,
-  ZeroExWrapper,
-  SignedOrder,
   Forwarder,
   ForwarderFactory,
+  SignedOrder,
+  ZeroExWrapper,
 } from '@imtbl/gods-unchained';
-import { getAddressBook } from '@imtbl/addresses';
 import { DeploymentEnvironment, DeploymentNetwork } from '@imtbl/common-types';
 import { DeploymentWrapper, PurchaseModule, PurchaseModuleFactory } from '../src';
+
+import { ethers } from 'ethers';
+import { generatedWallets } from '@imtbl/test-utils';
+import { getAddressBook } from '@imtbl/addresses';
 
 const provider = new ethers.providers.JsonRpcProvider();
 
@@ -139,6 +140,7 @@ describe('Wallet Factory', () => {
   });
 
   it('should be able to execute the signed order as a relayer', async () => {
+    /* tslint:disable-next-line:max-line-length */
     // const purchaseModule = new PurchaseModuleFactory(relayerWallet).attach(purchaseModuleAddress);
     // const tx = await purchaseModule.functions.relay(
     //   walletAddress,

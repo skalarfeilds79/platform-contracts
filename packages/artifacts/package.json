@@ -12,7 +12,7 @@
   },
   "gitHead": "a7ba81c589988a4ae3e3636d4aa319bc24763e20",
   "dependencies": {
-    "@types/node": "^12.12.7",
-    "typescript": "^3.5.3"
+    "@types/node": "^12.12.3",
+    "typescript": "3.6.4"
   }
 }

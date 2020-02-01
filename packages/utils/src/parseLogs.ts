@@ -1,12 +1,12 @@
 import { ethers } from 'ethers';
 
 export function parseLogs(logs: ethers.providers.Log[], abi: any): any[] {
-  let iface = new ethers.utils.Interface(abi);
+  const iface = new ethers.utils.Interface(abi);
   return logs
     .map((log) => iface.parseLog(log))
     .filter((item) => item != null)
     .map((item) => {
-      let result = {
+      const result = {
         name: item.name,
         signature: item.signature,
         values: {},

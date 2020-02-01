@@ -5,6 +5,7 @@ import { IExchangeFactory, CardsWrapper } from '../src';
 import { orderHashUtils } from '@0x/order-utils';
 import { getAddressBook } from '@imtbl/addresses';
 import { DeploymentNetwork, DeploymentEnvironment } from '@imtbl/common-types';
+import "jest";
 
 const provider = new ethers.providers.JsonRpcProvider();
 

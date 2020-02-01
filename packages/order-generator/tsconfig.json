@@ -9,18 +9,14 @@
       "noUnusedLocals": false,
       "declaration": true,
       "outDir": "dist",
-      "preserveSymlinks": true,
-      "paths": {
-      },
-      "typeRoots": [
-        "node_modules/@types",
-        "node_modules/@imtbl/common-types",
-        "node_modules/@imtbl/gods-unchained"
-      ],
-      "types": ["node"]
+      "esModuleInterop": true,
+      "preserveSymlinks": true      
     },
     "include": [
       "src"
+    ],
+    "exclude": [
+      "node_modules"
     ],
     "compileOnSave": true
   }

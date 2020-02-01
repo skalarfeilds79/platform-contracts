@@ -10,14 +10,14 @@ export class ChimeraMigrationStage implements DeploymentStage {
   }
 
   async deploy(
-    findInstance: (name: string) => string,
+    findInstance: (name: string) => Promise<string>, // TODO: [AN >> KK]  findInstance must be a promise to comply with DeploymentStage
     onDeployment: (name: string, address: string, dependency: boolean) => void,
     transferOwnership: (addresses: string[]) => void,
   ) {
     const oldCardsAddress = await findInstance('LegacyCards');
     const newCardsAddress = await findInstance('Cards');
     const etherbots =
-      findInstance('ChimeraMigration') ||
+      await findInstance('ChimeraMigration') ||  // TODO: [AN >> KK] must await findInstance
       (await this.deployChimeraMigration(oldCardsAddress, newCardsAddress));
     onDeployment('ChimeraMigration', etherbots, false);
   }

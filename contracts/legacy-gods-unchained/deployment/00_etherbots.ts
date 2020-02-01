@@ -10,14 +10,14 @@ export class EtherBotsMigrationStage implements DeploymentStage {
   }
 
   async deploy(
-    findInstance: (name: string) => string,
+    findInstance: (name: string) => Promise<string>, // TODO: [AN >> KK] findInstance must return a promise to comply with DeploymentStage
     onDeployment: (name: string, address: string, dependency: boolean) => void,
     transferOwnership: (addresses: string[]) => void,
   ) {
     const oldCardsAddress = await findInstance('LegacyCards');
     const newCardsAddress = await findInstance('Cards');
     const etherbots =
-      findInstance('EtherbotsMigration') ||
+      await findInstance('EtherbotsMigration') || // TODO: [AN >> KK] must await findInstance
       (await this.deployEtherbots(oldCardsAddress, newCardsAddress));
     onDeployment('EtherbotsMigration', etherbots, false);
   }

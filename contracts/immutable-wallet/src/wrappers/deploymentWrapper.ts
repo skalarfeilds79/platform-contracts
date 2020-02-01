@@ -35,7 +35,7 @@ export class DeploymentWrapper {
     unsignedTx.nonce = await this.wallet.getTransactionCount();
     const deployTx = await this.wallet.sendTransaction(unsignedTx);
     const receipt = await deployTx.wait();
-    return await factory.attach(receipt.contractAddress);
+    return await factory.attach(receipt.contractAddress || ""); // TODO: [AN >> KK] tsc rejected prior version of this file because contractAddress could be undefined.... Think about how to handle that case
   }
 
   async deployCore(delay: number = 0, modules: Module[]) {

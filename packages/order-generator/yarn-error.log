@@ -38,7 +38,7 @@ npm manifest:
   		"@addresses/artifacts": "^1.0.0",
   		"axios": "^0.19.0",
   		"dotenv": "^8.2.0",
-  		"ethers": "^4.0.42",
+  		"ethers": "4.0.42",
   		"ts-node": "^8.4.1",
   		"typescript": "3.6.4"
   	},
@@ -46,7 +46,7 @@ npm manifest:
   		"@0xproject/types": "^1.1.4",
   		"@types/bignumber.js": "^5.0.0",
   		"@types/lodash": "^4.14.137",
-  		"@types/node": "^12.7.2",
+  		"@types/node": "^12.12.3",
   		"bignumber.js": "^9.0.0",
   		"eslint": "^5.16.0",
   		"eslint-config-airbnb-base": "^13.1.0",

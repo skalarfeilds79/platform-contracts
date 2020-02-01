@@ -12,7 +12,10 @@
         "delete:yarn.lock": "find . -name \"yarn.lock\" -exec rm -rf '{}' +",
         "chain": "ganache-cli --networkId 50 --accounts 20 -l 19000000 -e 10000000000 -m 'concert load couple harbor equip island argue ramp clarify fence smart topic' --db snapshots/0x/",
         "lint": "yarn lerna run lint",
-        "setup": "yarn --cwd contracts/gods-unchained build && yarn --cwd contracts/immutable-wallet build && yarn --cwd packages/deployment deploy-all:dev && yarn lerna bootstrap",
+        "build:gods-unchained": "yarn --cwd contracts/gods-unchained build",
+        "build:legacy-gods-unchained": "yarn --cwd contracts/legacy-gods-unchained build",
+        "build:immutable-wallet": "yarn --cwd contracts/immutable-wallet build",
+        "setup": "yarn build:gods-unchained && yarn build:legacy-gods-unchained && yarn build:immutable-wallet && yarn --cwd packages/deployment deploy-all:dev && yarn lerna bootstrap",
         "build": "tsc & yarn lerna run build",
         "test": "yarn lerna run test",
         "generate-cards": "yarn --cwd packages/order-generator create"

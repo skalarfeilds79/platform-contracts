@@ -1,11 +1,8 @@
-import { generatedWallets, Blockchain } from '@imtbl/test-utils';
-import { ethers, Wallet } from 'ethers';
-
-import { CardsFactory, Cards, ForwarderFactory } from '../src';
+import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
+import { Cards, CardsFactory } from '../src';
+import { Wallet, ethers } from 'ethers';
 
 import { Address } from '@imtbl/common-types';
-
-import { expectRevert } from '@imtbl/test-utils';
 
 const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();
@@ -29,7 +26,7 @@ describe('Core', () => {
     }
 
     it('should be able to deploy', async () => {
-      let cards = await subject();
+      const cards = await subject();
       const manager = await cards.functions.propertyManager();
       expect(manager).toEqual(ownerWallet.address);
     });
@@ -124,6 +121,7 @@ describe('Core', () => {
       await expectRevert(subject());
     });
 
+    /* tslint:disable-next-line:max-line-length */
     it('should not be able to start a season greater than the number of seasons existing', async () => {
       callerSeason = 2;
       await expectRevert(subject());
@@ -203,7 +201,7 @@ describe('Core', () => {
     });
 
     async function subject(): Promise<any> {
-      let newCards = await new CardsFactory(caller).attach(cards.address);
+      const newCards = await new CardsFactory(caller).attach(cards.address);
       return newCards.functions.makeMythicTradable(callerMythic);
     }
 
@@ -244,7 +242,7 @@ describe('Core', () => {
     });
 
     async function subject(): Promise<any> {
-      let newCards = await new CardsFactory(caller).attach(cards.address);
+      const newCards = await new CardsFactory(caller).attach(cards.address);
       return newCards.functions.unlockTrading(callerSeason);
     }
 
@@ -355,8 +353,8 @@ describe('Core', () => {
     });
 
     async function subject(): Promise<any> {
-      callerProtos = callerProtos || new Array(callerSize).fill(1);
-      callerQualities = callerQualities || new Array(callerSize).fill(1);
+      callerProtos = callerProtos || Array(callerSize).fill(1);
+      callerQualities = callerQualities || Array(callerSize).fill(1);
       return await cards.functions.mintCards(ownerWallet.address, callerProtos, callerQualities);
     }
 
@@ -367,7 +365,7 @@ describe('Core', () => {
     });
 
     it('should not be able to mint with different proto and qualities size', async () => {
-      callerProtos = new Array(callerSize - 1).fill(1);
+      callerProtos = Array(callerSize - 1).fill(1);
       await expectRevert(subject());
     });
 

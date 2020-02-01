@@ -1,24 +1,23 @@
-import { asyncForEach } from '@imtbl/utils';
-import { Wallet, ethers, utils } from 'ethers';
-import { DeploymentStage } from './DeploymentStage';
-import dependencies from './dependencies';
-
 import {
   DEPLOYMENT_ENVIRONMENT,
-  DEPLOYMENT_NETWORK_KEY,
-  writeStateToOutputs,
-  removeNetwork,
-  getContractCode,
-  PRIVATE_KEY,
-  isCorrectNetworkId,
-  getLastDeploymentStage,
-  sortOutputs,
   DEPLOYMENT_NETWORK_ID,
-  findDependency,
-  writeContractToOutputs,
-  returnOutputs,
+  DEPLOYMENT_NETWORK_KEY,
+  PRIVATE_KEY,
   RPC_URL,
+  findDependency,
+  getContractCode,
+  getLastDeploymentStage,
+  isCorrectNetworkId,
+  removeNetwork,
+  sortOutputs,
+  writeContractToOutputs,
+  writeStateToOutputs,
 } from './utils/outputHelpers';
+import { Wallet, ethers, utils } from 'ethers';
+
+import { DeploymentStage } from './DeploymentStage';
+import { asyncForEach } from '@imtbl/utils';
+import dependencies from './dependencies';
 
 export class Manager {
   private _networkId: number;
@@ -43,10 +42,11 @@ export class Manager {
       const currentStage = this._stages[stage];
 
       await currentStage.deploy(
-        (name) => {
+        async (name) => {
           return this.contractExists(name);
         },
         async (name, address) => {
+          console.log(`${address}\n`);
           await writeContractToOutputs(name, address, false);
         },
         async (addresses) => {},
@@ -98,9 +98,8 @@ export class Manager {
       );
     }
 
-    if (privateKey.substring(0, 2) !== '0x') {
-      console.log(privateKey.substring(0, 2));
-      throw Error('Please make sure the private key is appended with 0x');
+    if (!privateKey) {
+      throw Error('Please make sure the private key exists');
     }
 
     if ((!rpcURL || rpcURL.length === 0) && networkId !== 50) {
@@ -135,10 +134,12 @@ export class Manager {
     await removeNetwork(key);
   }
 
-  contractExists(name: string) {
-    const outputs = returnOutputs();
-    const path = outputs[DEPLOYMENT_NETWORK_KEY];
-    const addresses: string[] = Object.keys(path.addresses);
-    return addresses[name] || findDependency(name) || '';
+  async contractExists(name: string) {
+    try {
+      const dep = await findDependency(name);
+      return dep || '';
+    } catch {
+      return '';
+    }
   }
 }

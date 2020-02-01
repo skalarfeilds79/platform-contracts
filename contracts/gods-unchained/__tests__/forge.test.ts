@@ -1,9 +1,6 @@
-import { generatedWallets, Blockchain } from '@imtbl/test-utils';
-import { ethers, Wallet } from 'ethers';
-
-import { CardsFactory, Cards, ForgeFactory, Forge } from '../src';
-
-import { expectRevert } from '@imtbl/test-utils';
+import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
+import { Cards, CardsFactory, Forge, ForgeFactory } from '../src';
+import { Wallet, ethers } from 'ethers';
 
 const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();
@@ -49,11 +46,11 @@ describe('Forge', () => {
     });
 
     async function createCards(count: number, proto: number, quality: number) {
-      let protos = [];
-      let qualities = [];
-      let ids = [];
+      const protos = [];
+      const qualities = [];
+      const ids = [];
 
-      for (var i = 0; i < count; i++) {
+      for (let i = 0; i < count; i++) {
         protos.push(proto);
         qualities.push(quality);
         ids.push(i);
@@ -66,7 +63,7 @@ describe('Forge', () => {
     }
 
     async function subject(approve: boolean = true): Promise<any> {
-      for (var i = 0; i < callerIds.length; i++) {
+      for (let i = 0; i < callerIds.length; i++) {
         if (approve) {
           await new CardsFactory(caller)
             .attach(cards.address)

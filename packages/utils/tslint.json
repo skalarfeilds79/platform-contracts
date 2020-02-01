@@ -6,6 +6,8 @@
   "rules": {
     "import-name": false,
     "trailing-comma": false,
+    "ter-arrow-parens": false,
+    "no-increment-decrement": false,
     "variable-name": [
       true,
       "allow-pascal-case",

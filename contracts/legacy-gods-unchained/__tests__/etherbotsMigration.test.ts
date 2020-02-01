@@ -1,11 +1,11 @@
-import { CardsFactory } from '@imtbl/gods-unchained';
-import { asyncForEach } from '@imtbl/utils';
-import { CardsWrapper } from './../../gods-unchained/src/wrappers/cardsWrapper';
+import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
+
 import { CardIntegrationTwoFactory } from './../src/generated/CardIntegrationTwoFactory';
+import { CardsFactory } from '@imtbl/gods-unchained';
+import { CardsWrapper } from './../../gods-unchained/src/wrappers/cardsWrapper';
 import { EtherbotsMigrationFactory } from './../src/generated/EtherbotsMigrationFactory';
-import { generatedWallets, Blockchain, expectRevert } from '@imtbl/test-utils';
+import { asyncForEach } from '@imtbl/utils';
 import { ethers } from 'ethers';
-import { Address } from '@imtbl/common-types';
 
 const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();
@@ -67,6 +67,7 @@ describe('Core', () => {
       etherbotsMigrationAddress = etherbots.address;
       oldCardsAddress = oldCards.address;
       newCardsAddress = newCards.address;
+      /* tslint:disable-next-line:align */
     }, 10000);
 
     async function subject() {

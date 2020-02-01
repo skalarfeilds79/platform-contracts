@@ -8,3 +8,5 @@ generated
 .env
 dist
 snapshots
+*.test.js
+yarn-error.log

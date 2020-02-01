@@ -9,7 +9,7 @@
 		"create": "yarn ts-node src/index.ts"
 	},
 	"dependencies": {
-		"0x.js": "^7.0.2",
+		"0x.js": "7.0.2",
 		"@imtbl/addresses": "link:../addresses",
 		"@imtbl/common-types": "link:../common-types",
 		"@imtbl/gods-unchained": "link:../../contracts/gods-unchained",
@@ -21,7 +21,6 @@
 		"typescript": "3.6.4"
 	},
 	"devDependencies": {
-		"@0xproject/types": "^1.1.4",
 		"@types/bignumber.js": "^5.0.0",
 		"@types/lodash": "^4.14.137",
 		"@types/node": "^12.12.3",

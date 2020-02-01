@@ -9,7 +9,7 @@
     "declaration": true,
     "outDir": "dist",
     "preserveSymlinks": true,
-    "esModuleInterop": true,    
-  },
+    "esModuleInterop": true
+  },  
   "compileOnSave": true
 }

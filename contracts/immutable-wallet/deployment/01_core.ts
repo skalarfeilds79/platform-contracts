@@ -19,7 +19,7 @@ export class CoreStage implements DeploymentStage {
   }
 
   async deploy(
-    findInstance: (name: string) => string,
+    findInstance: (name: string) => Promise<string>, // TODO: [AN >> KK] This needs to be a promise to comply with parent definition of same function
     onDeployment: (name: string, address: string, dependency: boolean) => void,
     transferOwnership: (addresses: string[]) => void,
   ) {
@@ -35,17 +35,17 @@ export class CoreStage implements DeploymentStage {
 
     console.log('** Deploying Wallet Implementation **');
     const walletImplementation =
-      findInstance('WalletImplementation') || (await wrapper.deployWalletImplementation()).address;
+      (await findInstance('WalletImplementation')) || (await wrapper.deployWalletImplementation()).address; // TODO: [AN >> KK] need to await findInstance
 
     await onDeployment('WalletImplementation', walletImplementation, false);
 
     console.log('** Deploying Registry **');
-    const registry = findInstance('Registry') || (await wrapper.deployRegistry(0)).address;
+    const registry = await findInstance('Registry') || (await wrapper.deployRegistry(0)).address; // TODO: [AN >> KK] Need to await findInstance
     await onDeployment('Registry', registry, false);
 
     console.log('** Deploying Purchase Module **');
     const purchaseModule =
-      findInstance('PurchaseModule') ||
+      await findInstance('PurchaseModule') ||
       (await wrapper.deployPurchaseModule(forwarderAddress)).address;
     await onDeployment('PurchaseModule', purchaseModule, false);
 
@@ -58,21 +58,21 @@ export class CoreStage implements DeploymentStage {
 
     console.log('** Deploying Limited Modules **');
     const limitedModule =
-      findInstance('LimitedModules') || (await wrapper.deployLimitedModules(registry)).address;
+      await findInstance('LimitedModules') || (await wrapper.deployLimitedModules(registry)).address; // TODO: [AN >> KK] Need to await findInstance
     await onDeployment('LimitedModules', limitedModule, false);
 
     console.log('** Deploying Simple Delegate **');
     const delegate =
-      findInstance('SimpleDelegate') || (await wrapper.deploySimpleDelegate()).address;
+      await findInstance('SimpleDelegate') || (await wrapper.deploySimpleDelegate()).address; // TODO: [AN >> KK] Need to await findInstance
     await onDeployment('SimpleDelegate', delegate, false);
 
     console.log('** Deploying Multi Limiter **');
-    const limiter = findInstance('MultiLimiter') || (await wrapper.deployMultiLimiter()).address;
+    const limiter = await findInstance('MultiLimiter') || (await wrapper.deployMultiLimiter()).address;  // TODO: [AN >> KK] Need to await findInstance
     await onDeployment('MultiLimiter', limiter, false);
 
     console.log('** Deploying Factory **');
     const factory =
-      findInstance('WalletFactory') ||
+      await findInstance('WalletFactory') ||  // TODO: [AN >> KK] Need to await findInstance
       (await wrapper.deployFactory(walletImplementation, limitedModule, delegate, limiter)).address;
     await onDeployment('WalletFactory', factory, false);
 

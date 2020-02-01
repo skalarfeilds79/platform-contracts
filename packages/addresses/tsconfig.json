@@ -10,6 +10,7 @@
     "declaration": true,
     "outDir": "dist",
     "preserveSymlinks": true,
+    "esModuleInterop": true,
     "typeRoots": [
       "node_modules/@types",
     ],

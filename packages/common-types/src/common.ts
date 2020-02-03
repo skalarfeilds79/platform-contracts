@@ -1,4 +1,5 @@
-import { BigNumber, Arrayish, Interface } from 'ethers/utils';
+import { Arrayish, BigNumber, Interface } from 'ethers/utils';
+
 import { Wallet } from 'ethers';
 
 export type Address = string;
@@ -11,23 +12,24 @@ export enum DeploymentNetwork {
   Mainnet = 1,
   Ropsten = 3,
   Kovan = 42,
-  TestRPC = 50
-};
+  TestRPC = 50,
+}
 
 export enum DeploymentEnvironment {
   Development = 'development',
   Staging = 'staging',
-  Production = 'production'
-};
+  Production = 'production',
+}
 
 export type AddressBook = {
   cardsAddress?: string;
   openMinterAddress?: string;
   forwarderAddress?: string;
+  fusingAddress?: string;
   walletAddress?: string;
   walletDeployerAddress?: string;
   wethAddress?: string;
   zeroExExchangeAddress?: string;
   zeroExERC20ProxyAddress?: string;
   zeroExERC721ProxyAddress?: string;
-}
+};

@@ -1,5 +1,5 @@
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
-import { Cards, CardsFactory, Forge, ForgeFactory } from '../src';
+import { Cards, CardsFactory, Forge, ForgeFactory } from '../../src';
 import { Wallet, ethers } from 'ethers';
 
 const provider = new ethers.providers.JsonRpcProvider();

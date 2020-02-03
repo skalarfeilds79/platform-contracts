@@ -1,9 +1,9 @@
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
-import { Cards, CardsWrapper } from '../src';
+import { Cards, CardsWrapper } from '../../src';
 import { Wallet, ethers } from 'ethers';
 
 import { ContractReceipt } from 'ethers/contract';
-import { FusingFactory } from '../src/generated/FusingFactory';
+import { FusingFactory } from '../../src/generated/FusingFactory';
 import { parseLogs } from '@imtbl/utils';
 
 const provider = new ethers.providers.JsonRpcProvider();
@@ -119,10 +119,8 @@ describe('Fusing', () => {
 
     it('should be able to remove a minter with the event emitted', async () => {
       const receipt = await subject();
-      console.log(receipt);
       const parsed = parseLogs(receipt.logs, new FusingFactory().interface.abi);
 
-      console.log(parsed);
       const returnedMinter = parsed[0].values.minter;
       expect(returnedMinter).toBe(minterWallet.address);
     });
@@ -194,6 +192,7 @@ describe('Fusing', () => {
     });
 
     it('should emit the event correctly', async () => {
+      callerReferences = [3, 2, 1];
       const receipt = await subject();
 
       const parsed = parseLogs(receipt.logs, new FusingFactory().interface.abi);
@@ -207,8 +206,11 @@ describe('Fusing', () => {
       const returnedTokenId = parsed[0].values.tokenId;
       expect(returnedTokenId.toNumber()).toBe(0);
 
+      const returnedLowestReference = parsed[0].values.lowestReference;
+      expect(returnedLowestReference.toNumber()).toBe(1);
+
       const returnedReferences = parsed[0].values.references;
-      expect(returnedReferences.length).toBe(2);
+      expect(returnedReferences.length).toBe(3);
     });
   });
 });

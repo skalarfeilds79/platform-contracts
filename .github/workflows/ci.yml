@@ -33,5 +33,11 @@ jobs:
     - name: Install dependencies
       run: yarn install
 
-    - name: Clear development addresses
-      run: yarn ci:clear-addresses
+    - name: Setup repos
+      run: yarn setup
+
+    - name: Run linter
+      run: yarn lint
+
+    - name: Run tests
+      run: yarn test

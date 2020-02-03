@@ -23,7 +23,8 @@
         "setup": "yarn build:all && yarn deploy:all && yarn lerna bootstrap",
         "build": "tsc & yarn lerna run build",
         "test": "yarn lerna run test",
-        "generate-cards": "yarn --cwd packages/order-generator create"
+        "generate-cards": "yarn --cwd packages/order-generator create",
+        "ci:clear-addresses": "node scripts/clearDevAddresses"
     },
     "dependencies": {
         "concurrently": "^4.1.2",

@@ -27,7 +27,6 @@ async function start() {
 
   const newManager = new Manager(stages);
 
-  console.log(stages);
   try {
     await newManager.deploy();
   } catch (error) {

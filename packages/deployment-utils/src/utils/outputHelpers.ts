@@ -29,6 +29,18 @@ export async function sortOutputs() {
     });
 
   await fs.outputFile(OUTPUTS_PATH, JSON.stringify(orderedOutputs, undefined, 2));
+
+  return orderedOutputs;
+}
+
+export async function writeTypescriptOutputs() {
+  const outputs = await returnOutputs();
+  const typescriptFile = `/* tslint:disable */\n\nexport const outputs = ${JSON.stringify(
+    outputs,
+    null,
+    2,
+  )}`;
+  await fs.outputFile(OUTPUTS_PATH.replace('.json', '.ts'), typescriptFile);
 }
 
 export async function findDependency(name: string) {
@@ -47,14 +59,13 @@ export async function findDependency(name: string) {
 
 export async function getContractAddress(name: string, dependency: boolean = false) {
   const outputs: any = await returnOutputs();
-  const deploymentKey = DEPLOYMENT_NETWORK_ID;
 
-  if (!outputs[deploymentKey]) {
+  if (!outputs[DEPLOYMENT_NETWORK_KEY]) {
     return undefined;
   }
 
   const key = dependency ? 'dependencies' : 'addresses';
-  return outputs[deploymentKey][key][name] || '';
+  return outputs[DEPLOYMENT_NETWORK_KEY][key][name] || '';
 }
 
 export async function getContractCode(name: string, provider: Provider): Promise<string> {
@@ -83,6 +94,15 @@ export async function writeContractToOutputs(
 export async function removeNetwork(name: string) {
   const outputs: any = await returnOutputs();
   outputs[name] = undefined;
+  await fs.outputFile(OUTPUTS_PATH, JSON.stringify(outputs, undefined, 2));
+}
+
+export async function removeContractAddress(name: string, dependency: boolean = false) {
+  const outputs: any = await returnOutputs();
+
+  const key = dependency ? 'dependencies' : 'addresses';
+  outputs[DEPLOYMENT_NETWORK_KEY][key][name] = undefined;
+
   await fs.outputFile(OUTPUTS_PATH, JSON.stringify(outputs, undefined, 2));
 }
 

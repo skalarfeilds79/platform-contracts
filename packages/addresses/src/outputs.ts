@@ -50,19 +50,18 @@ export const outputs = {
     "addresses": {
       "Cards": "0x4F355ab7426120caf9Df0e23Aa9b7174afF82ff3",
       "OpenMinter": "0xf26861e5Ad499e04744Cca24fE0e280aBDF2DeBC",
-      "Fusing": "0xffCe3807aC47060e900cE3FB9CDAd3597c25425d"
+      "Fusing": "0xffCe3807aC47060e900cE3FB9CDAd3597c25425d",
+      "Forwarder": "0xc0ca612F2f1056f7fF1182d3aa8ca829e0F3446f"
     },
     "dependencies": {
       "ZERO_EX_EXCHANGE": "0x48bacb9266a570d521063ef5dd96e61686dbe788",
       "ZERO_EX_ERC20_PROXY": "0x1dc4c1cefef38a777b15aa20260a54e584b16c48",
       "ZERO_EX_ERC721_PROXY": "0x1d7022f5b17d2f8b695918fb48fa1089c9f85401",
-      "WETH": "0x0b1ba0af832d7c05fd64161e0db78e85978e8082",
-      "HUMAN_FRIENDLY_NAMES": "test-rpc",
-      "FUSING_MINTER": "0x6Ecbe1DB9EF729CBe972C83Fb886247691Fb6beb"
+      "WETH": "0x0b1ba0af832d7c05fd64161e0db78e85978e8082"
     },
     "state": {
       "network_id": 50,
-      "last_deployment_stage": 1
+      "last_deployment_stage": null
     }
   },
   "50-staging": {

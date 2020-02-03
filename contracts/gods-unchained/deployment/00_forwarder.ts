@@ -16,7 +16,6 @@ export class ForwarderStage implements DeploymentStage {
     transferOwnership: (addresses: string[]) => void,
   ) {
     await this.wallet.getTransactionCount();
-
     const exchange = await findInstance('ZERO_EX_EXCHANGE');
     const erc20Proxy = await findInstance('ZERO_EX_ERC20_PROXY');
     const erc721Proxy = await findInstance('ZERO_EX_ERC721_PROXY');
@@ -29,7 +28,7 @@ export class ForwarderStage implements DeploymentStage {
       weth,
     );
 
-    unsignedTx.nonce = (await this.wallet.getTransactionCount()) + 1;
+    unsignedTx.nonce = await this.wallet.getTransactionCount();
     const signedTx = await this.wallet.sendTransaction(unsignedTx);
     const receipt = await signedTx.wait();
 

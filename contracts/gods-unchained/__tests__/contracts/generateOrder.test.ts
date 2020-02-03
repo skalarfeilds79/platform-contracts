@@ -1,10 +1,11 @@
-import { ZeroExWrapper } from '../src/wrappers/zeroExWrapper';
-import { generatedWallets } from '@imtbl/test-utils';
+import { CardsWrapper, IExchangeFactory } from '../../src';
+import { DeploymentEnvironment, DeploymentNetwork } from '@imtbl/common-types';
+
+import { ZeroExWrapper } from '../../src/wrappers/zeroExWrapper';
 import { ethers } from 'ethers';
-import { IExchangeFactory, CardsWrapper } from '../src';
-import { orderHashUtils } from '@0x/order-utils';
+import { generatedWallets } from '@imtbl/test-utils';
 import { getAddressBook } from '@imtbl/addresses';
-import { DeploymentNetwork, DeploymentEnvironment } from '@imtbl/common-types';
+import { orderHashUtils } from '@0x/order-utils';
 
 const provider = new ethers.providers.JsonRpcProvider();
 

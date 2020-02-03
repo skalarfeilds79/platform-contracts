@@ -1,4 +1,4 @@
-import { AddressBook, DeploymentNetwork, DeploymentEnvironment } from '@imtbl/common-types';
+import { AddressBook, DeploymentEnvironment, DeploymentNetwork } from '@imtbl/common-types';
 
 export function getAddressBook(
   network: DeploymentNetwork,
@@ -14,9 +14,10 @@ export function getAddressBook(
     cardsAddress: addresses['Cards'],
     openMinterAddress: addresses['OpenMinter'],
     forwarderAddress: addresses['Forwarder'],
+    fusingAddress: addresses['Fusing'],
     wethAddress: dependencies['WETH'],
     zeroExExchangeAddress: dependencies['ZERO_EX_EXCHANGE'],
     zeroExERC20ProxyAddress: dependencies['ZERO_EX_ERC20_PROXY'],
-    zeroExERC721ProxyAddress: dependencies['ZERO_EX_ERC721_PROXY']
+    zeroExERC721ProxyAddress: dependencies['ZERO_EX_ERC721_PROXY'],
   };
 }

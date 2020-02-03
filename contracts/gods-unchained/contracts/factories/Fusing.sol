@@ -8,7 +8,6 @@ contract Fusing is Ownable {
 
     ICards public cards;
 
-    address[] public minters;
     mapping (address => bool) approvedMinters;
 
     event MinterAdded(
@@ -96,19 +95,41 @@ contract Fusing is Ownable {
         returns (uint tokenId)
     {
 
-        require(_to != address(0), "Fusing: to address cannot be 0");
-        require(_references.length > 0);
+        require(
+            _to != address(0),
+            "Fusing: to address cannot be 0"
+        );
+
+        require(
+            _references.length > 0,
+            "Fusing must have more than one reference"
+        );
 
         tokenId = cards.mintCard(_to, _proto, _quality);
 
         uint lowestReference = _references[0];
         for (uint i = 0; i < _references.length; i++) {
-            if (_references[i] > lowestReference) {
+            if (_references[i] < lowestReference) {
                 lowestReference = _references[i];
             }
         }
 
         emit CardFused(_to, address(cards), _references, tokenId, lowestReference);
+    }
+
+    /**
+     * @dev Check if there is an approved minter
+     *
+     * @param _minter The address of the minter to check against
+     */
+    function isApprovedMinter(
+        address _minter
+    )
+        public
+        returns
+        (bool)
+    {
+        return approvedMinters[_minter];
     }
 
 }

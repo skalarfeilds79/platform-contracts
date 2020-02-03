@@ -28,7 +28,7 @@ export class Manager {
   private _networkId: number;
   private _wallet: Wallet;
 
-  private _stages: { [id: number]: DeploymentStage } = [];
+  private _stages: DeploymentStage[] = [];
 
   constructor(stages: DeploymentStage[]) {
     this._networkId = DEPLOYMENT_NETWORK_ID;
@@ -40,20 +40,16 @@ export class Manager {
     try {
       await this.checkInputParameters();
 
-      const toDeploy = await this.getDeploymentStages();
+      await asyncForEach(this._stages, async (stage, index) => {
+        console.log(`Stage: ${index}/${Object.keys(this._stages).length}`);
 
-      await asyncForEach(toDeploy, async (stage) => {
-        console.log(`Stage: ${stage}/${Object.keys(this._stages).length}`);
-
-        const currentStage = this._stages[stage];
-
-        await currentStage.deploy(
+        await stage.deploy(
           async (name) => {
             return this.contractExists(name);
           },
-          async (name, address) => {
+          async (name, address, dependency) => {
             console.log(`${address}\n`);
-            await writeContractToOutputs(name, address, false);
+            await writeContractToOutputs(name, address, dependency);
           },
           async (addresses) => {},
         );
@@ -61,22 +57,10 @@ export class Manager {
         await writeStateToOutputs('last_deployment_stage', parseInt(stage));
       });
 
-      await asyncForEach(Object.keys(dependencies), async (key) => {
-        const value = dependencies[key];
-        const dependencyValue = value[this._networkId];
-        if (typeof dependencyValue !== 'string') {
-          return;
-        }
-
-        const existingValue = await findDependency(key);
-        if (existingValue == dependencyValue) {
-          await writeContractToOutputs(key, dependencyValue, true);
-        }
-      });
-
       await sortOutputs();
       await writeTypescriptOutputs();
-    } catch {
+    } catch (error) {
+      console.log(error);
       await writeTypescriptOutputs();
     }
   }
@@ -116,12 +100,6 @@ export class Manager {
       console.log(networkId);
       throw Error('.env variable RPC_URL is missing');
     }
-  }
-
-  async getDeploymentStages() {
-    const lastStage = await getLastDeploymentStage();
-    const stageKeys = Object.keys(this._stages);
-    return stageKeys.filter((value) => parseInt(value) > lastStage).sort();
   }
 
   async configureIfDevelopment() {

@@ -1,6 +1,7 @@
-import { EtherbotsMigrationFactory } from './../src/generated/EtherbotsMigrationFactory';
+import { Wallet, ethers } from 'ethers';
+
 import { DeploymentStage } from '@imtbl/deployment-utils';
-import { ethers, Wallet } from 'ethers';
+import { EtherbotsMigrationFactory } from './../src/generated/EtherbotsMigrationFactory';
 
 export class EtherBotsMigrationStage implements DeploymentStage {
   private wallet: Wallet;
@@ -10,14 +11,14 @@ export class EtherBotsMigrationStage implements DeploymentStage {
   }
 
   async deploy(
-    findInstance: (name: string) => string,
+    findInstance: (name: string) => Promise<string>,
     onDeployment: (name: string, address: string, dependency: boolean) => void,
     transferOwnership: (addresses: string[]) => void,
   ) {
     const oldCardsAddress = await findInstance('LegacyCards');
     const newCardsAddress = await findInstance('Cards');
     const etherbots =
-      findInstance('EtherbotsMigration') ||
+      (await findInstance('EtherbotsMigration')) ||
       (await this.deployEtherbots(oldCardsAddress, newCardsAddress));
     onDeployment('EtherbotsMigration', etherbots, false);
   }

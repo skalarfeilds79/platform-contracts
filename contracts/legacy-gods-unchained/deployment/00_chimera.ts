@@ -1,6 +1,7 @@
+import { Wallet, ethers } from 'ethers';
+
 import { ChimeraMigrationFactory } from './../src/generated/ChimeraMigrationFactory';
 import { DeploymentStage } from '@imtbl/deployment-utils';
-import { ethers, Wallet } from 'ethers';
 
 export class ChimeraMigrationStage implements DeploymentStage {
   private wallet: Wallet;
@@ -10,14 +11,14 @@ export class ChimeraMigrationStage implements DeploymentStage {
   }
 
   async deploy(
-    findInstance: (name: string) => string,
+    findInstance: (name: string) => Promise<string>,
     onDeployment: (name: string, address: string, dependency: boolean) => void,
     transferOwnership: (addresses: string[]) => void,
   ) {
     const oldCardsAddress = await findInstance('LegacyCards');
     const newCardsAddress = await findInstance('Cards');
     const etherbots =
-      findInstance('ChimeraMigration') ||
+      (await findInstance('ChimeraMigration')) ||
       (await this.deployChimeraMigration(oldCardsAddress, newCardsAddress));
     onDeployment('ChimeraMigration', etherbots, false);
   }

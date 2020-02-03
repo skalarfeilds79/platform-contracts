@@ -34,4 +34,4 @@ jobs:
       run: yarn install
 
     - name: Clear development addresses
-      run: node ./scripts/clearDevAddresses.js
+      run: yarn ci:clear-addresses

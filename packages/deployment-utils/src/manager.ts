@@ -5,19 +5,24 @@ import {
   PRIVATE_KEY,
   RPC_URL,
   findDependency,
+  getContractAddress,
   getContractCode,
   getLastDeploymentStage,
   isCorrectNetworkId,
+  removeContractAddress,
   removeNetwork,
+  returnOutputs,
   sortOutputs,
   writeContractToOutputs,
   writeStateToOutputs,
+  writeTypescriptOutputs,
 } from './utils/outputHelpers';
 import { Wallet, ethers, utils } from 'ethers';
 
 import { DeploymentStage } from './DeploymentStage';
 import { asyncForEach } from '@imtbl/utils';
 import dependencies from './dependencies';
+import fs from 'fs-extra';
 
 export class Manager {
   private _networkId: number;
@@ -32,43 +37,48 @@ export class Manager {
   }
 
   async deploy() {
-    await this.checkInputParameters();
+    try {
+      await this.checkInputParameters();
 
-    const toDeploy = await this.getDeploymentStages();
+      const toDeploy = await this.getDeploymentStages();
 
-    await asyncForEach(toDeploy, async (stage) => {
-      console.log(`Stage: ${stage}/${Object.keys(this._stages).length}`);
+      await asyncForEach(toDeploy, async (stage) => {
+        console.log(`Stage: ${stage}/${Object.keys(this._stages).length}`);
 
-      const currentStage = this._stages[stage];
+        const currentStage = this._stages[stage];
 
-      await currentStage.deploy(
-        async (name) => {
-          return this.contractExists(name);
-        },
-        async (name, address) => {
-          console.log(`${address}\n`);
-          await writeContractToOutputs(name, address, false);
-        },
-        async (addresses) => {},
-      );
+        await currentStage.deploy(
+          async (name) => {
+            return this.contractExists(name);
+          },
+          async (name, address) => {
+            console.log(`${address}\n`);
+            await writeContractToOutputs(name, address, false);
+          },
+          async (addresses) => {},
+        );
 
-      await writeStateToOutputs('last_deployment_stage', parseInt(stage));
-    });
+        await writeStateToOutputs('last_deployment_stage', parseInt(stage));
+      });
 
-    await asyncForEach(Object.keys(dependencies), async (key) => {
-      const value = dependencies[key];
-      const dependencyValue = value[this._networkId];
-      if (typeof dependencyValue !== 'string') {
-        return;
-      }
+      await asyncForEach(Object.keys(dependencies), async (key) => {
+        const value = dependencies[key];
+        const dependencyValue = value[this._networkId];
+        if (typeof dependencyValue !== 'string') {
+          return;
+        }
 
-      const existingValue = await findDependency(key);
-      if (existingValue == dependencyValue) {
-        await writeContractToOutputs(key, dependencyValue, true);
-      }
-    });
+        const existingValue = await findDependency(key);
+        if (existingValue == dependencyValue) {
+          await writeContractToOutputs(key, dependencyValue, true);
+        }
+      });
 
-    await sortOutputs();
+      await sortOutputs();
+      await writeTypescriptOutputs();
+    } catch {
+      await writeTypescriptOutputs();
+    }
   }
 
   async checkInputParameters() {
@@ -115,17 +125,16 @@ export class Manager {
   }
 
   async configureIfDevelopment() {
-    try {
-      const code = await getContractCode('Deployer', this._wallet.provider);
-      if (this._networkId === 50) {
-        this.clearAdddresses('Development environment');
+    const currentOutputs = await returnOutputs();
+    const allKeys = Object.keys(currentOutputs[DEPLOYMENT_NETWORK_KEY]['addresses']);
+
+    await asyncForEach(allKeys, async (name) => {
+      const code = await getContractCode(name, this._wallet.provider);
+      if (code.length < 3) {
+        console.log(`*** Removing ${name} as no instnace found ***`);
+        await removeContractAddress(name, false);
       }
-      if (code.length <= 3) {
-        this.clearAdddresses('No code exists');
-      }
-    } catch (error) {
-      console.log(`\n*** An unknown error occured. Reason: ${error} ***\n`);
-    }
+    });
   }
 
   async clearAdddresses(reason: string) {
@@ -136,8 +145,9 @@ export class Manager {
 
   async contractExists(name: string) {
     try {
-      const dep = await findDependency(name);
-      return dep || '';
+      const address = (await findDependency(name)) || (await getContractAddress(name, false));
+      console.log(`Found ${name}`);
+      return address || '';
     } catch {
       return '';
     }

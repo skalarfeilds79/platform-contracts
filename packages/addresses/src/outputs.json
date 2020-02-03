@@ -46,9 +46,9 @@
   "50-development": {
     "human_friendly_name": "test-rpc-development",
     "addresses": {
-      "Cards": "0x54a582397Ace3F9a6F5A28cE6Dc50473E4A9d375",
-      "OpenMinter": "0x068a90B711F5af62c24f0f695e2f84849Fbd28C3",
-      "Fusing": "0xE8593eFb73423D86e5F337A46B3450eEec1027c6"
+      "Cards": "0x4F355ab7426120caf9Df0e23Aa9b7174afF82ff3",
+      "OpenMinter": "0xf26861e5Ad499e04744Cca24fE0e280aBDF2DeBC",
+      "Fusing": "0xffCe3807aC47060e900cE3FB9CDAd3597c25425d"
     },
     "dependencies": {
       "ZERO_EX_EXCHANGE": "0x48bacb9266a570d521063ef5dd96e61686dbe788",

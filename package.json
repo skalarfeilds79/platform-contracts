@@ -15,7 +15,12 @@
         "build:gods-unchained": "yarn --cwd contracts/gods-unchained build",
         "build:legacy-gods-unchained": "yarn --cwd contracts/legacy-gods-unchained build",
         "build:immutable-wallet": "yarn --cwd contracts/immutable-wallet build",
-        "setup": "yarn build:gods-unchained && yarn build:legacy-gods-unchained && yarn build:immutable-wallet && yarn --cwd packages/deployment deploy-all:dev && yarn lerna bootstrap",
+        "build:all" : "yarn build:gods-unchained && yarn build:legacy-gods-unchained && yarn build:immutable-wallet",
+        "deploy:gods-unchained": "yarn --cwd contracts/gods-unchained deploy --all",
+        "deploy:immutable-wallet": "yarn --cwd contracts/immutable-wallet deploy --all",
+        "deploy:legacy-gods-unchained": "yarn --cwd contracts/legacy-gods-unchained deploy --all",
+        "deploy:all": "yarn deploy:gods-unchained && yarn deploy:immutable-wallet && yarn deploy:legacy-gods-unchained",
+        "setup": "yarn build:all && yarn deploy:all && yarn lerna bootstrap",
         "build": "tsc & yarn lerna run build",
         "test": "yarn lerna run test",
         "generate-cards": "yarn --cwd packages/order-generator create"

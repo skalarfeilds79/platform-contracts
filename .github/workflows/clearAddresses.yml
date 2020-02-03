@@ -8,5 +8,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Setup node 11
+        uses: actions/setup-node@v1
+        with:
+          node-version: 11.15.0
+
+    - name: Install dependencies
+      run: yarn install
+
     - name: Clear development addresses
       run: node scripts/clearDevAddresses.js

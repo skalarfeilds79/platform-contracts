@@ -15,7 +15,7 @@
         "build:gods-unchained": "yarn --cwd contracts/gods-unchained build",
         "build:legacy-gods-unchained": "yarn --cwd contracts/legacy-gods-unchained build",
         "build:immutable-wallet": "yarn --cwd contracts/immutable-wallet build",
-        "build:all" : "yarn build:gods-unchained && yarn build:legacy-gods-unchained && yarn build:immutable-wallet",
+        "build:all": "yarn build:gods-unchained && yarn build:legacy-gods-unchained && yarn build:immutable-wallet",
         "deploy:gods-unchained": "yarn --cwd contracts/gods-unchained deploy --all",
         "deploy:immutable-wallet": "yarn --cwd contracts/immutable-wallet deploy --all",
         "deploy:legacy-gods-unchained": "yarn --cwd contracts/legacy-gods-unchained deploy --all",
@@ -28,6 +28,7 @@
     "dependencies": {
         "concurrently": "^4.1.2",
         "dotenv": "^8.2.0",
+        "fs": "^0.0.1-security",
         "lerna": "^3.4.3"
     },
     "devDependencies": {

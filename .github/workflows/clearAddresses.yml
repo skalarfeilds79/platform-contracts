@@ -8,6 +8,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Setup node
+    - uses: actions/checkout@v1
+    
     - name: Setup node 11
       uses: actions/setup-node@v1
       with:

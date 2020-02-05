@@ -49,6 +49,7 @@ contract PackFive is Ownable, RarityProvider {
 
     Purchase[] public purchases;
     IProcessor public processor;
+    
     mapping(uint => PackInstance) public packs;
     mapping(address => bool) public canLockup;
     mapping(address => bool) public canRevoke;

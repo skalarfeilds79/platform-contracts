@@ -53,7 +53,7 @@ contract Escrow {
 
     }
 
-    function release(uint _id) public {
+    function release(uint _id, address _to) public {
         
     }
 

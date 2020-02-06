@@ -1,4 +1,4 @@
-describe('SeasonOneChest', () => {
+describe('SeasonChest', () => {
   describe('#purchaseChest', () => {
     it('should not be able to purchase 0 chests');
     it('should not be able to purchase with an invalid pack type');

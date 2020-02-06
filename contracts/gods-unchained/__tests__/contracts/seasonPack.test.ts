@@ -1,4 +1,4 @@
-describe('SeasonOnePack', () => {
+describe('SeasonPack', () => {
   describe('#constructor', () => {
     it('should set the correct variables');
   });

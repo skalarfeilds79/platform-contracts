@@ -1,11 +1,11 @@
 pragma solidity ^0.5.11;
 
-import "./SeasonOneCore.sol";
+import "./SeasonCore.sol";
 
 contract SeasonOne {
 
     // Access to core functions
-    SeasonOneCore private core;
+    SeasonCore private core;
 
     // Limit how many cards can be sold
     uint256 public SALE_CAP;

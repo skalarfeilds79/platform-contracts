@@ -1,4 +1,4 @@
-describe('SeasonOneCore', () => {
+describe('SeasonCore', () => {
   describe('#createPack', () => {
     it('should not be able to create with price set as zero');
     it('should not be able to create with an invalid chest token');

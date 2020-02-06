@@ -7,35 +7,32 @@ contract Escrow {
     // Emitted when a range of tokens is locked 
     event RangeEscrowed(uint id);
     // Emitted when a list of tokens is locked
-    event ListEscrowed();
+    event ListEscrowed(uint id);
 
     // Emitted when a range of tokens is released
-    event RangeReleased();
+    event RangeReleased(uint id);
     // Emitted when a list of tokens is released
-    event ListReleased();
+    event ListReleased(uint id);
 
     // Emitted when a range of tokens is rescinded
-    event RangeRescinded();
+    event RangeRescinded(uint id);
     // Emitted when a list of tokens is rescinded
-    event ListRescinded();
+    event ListRescinded(uint id);
 
     struct Account {
-        // The 
+        
+        // the address which will own these assets during escrow
+        address owner;
+        // the address authorised to release these assets from escrow
+        address releaser;
+
+        // The contract address of the asset 
         Asset asset;
         // the high and low of the range
         uint high;
         uint low;
-        // the list of the . If the length of this array is 0, the 
+        // the list of the token ids in escrow. If the length of this array is 0, a range has been escrowed
         uint[] ids;
-
-        // the address which will be able to 'own' this item in games
-        address owner;
-        // the end of the escrow period
-        uint256 endBlock;
-        // the address this vault will be released to after the escrow period
-        address releaseTo;
-        // the address authorised to destroy these assets during the escrow period
-        address rescinder;
     }
 
     // All escrow accounts 
@@ -43,21 +40,17 @@ contract Escrow {
     Account[] public Account;
 
     function escrowRange(
-        Asset _asset, uint low, uint high,
-        address owner, uint duration, uint releaseTo, uint rescinder
+        Asset _asset, uint _low, uint _high,
+        address _owner, address _releaser
     ) public returns (uint) {
 
     }
 
     function escrowList(
-        Asset _asset, uint[] ids,
-        address owner, uint duration, uint releaseTo, uint rescinder
+        Asset _asset, uint[] _ids,
+        address _owner, address _releaser
     ) public returns (uint) {
 
-    }
-
-    function rescind(uint _id) public {
-        
     }
 
     function release(uint _id) public {

@@ -3,7 +3,7 @@ pragma solidity ^0.5.11;
 contract SeasonCore {
 
     enum Status {
-        Revoked,
+        Purchased,
         Claimed
     }
 
@@ -27,6 +27,7 @@ contract SeasonCore {
 
     struct PackInstance {
         string name;
+        bytes32 sku;
         uint256 price;
         uint256 chestSize;
         address chestAddress;
@@ -76,24 +77,6 @@ contract SeasonCore {
         uint256 _chestSize,
         address _chestAddress,
         address _packAddress
-    ) public {}
-
-    /**
-     * @dev Process a payment made and handle referrals as well
-     * Important to note that not all payments equal to redemptions.
-     *
-     * @param _user The user who owns the cards
-     * @param _cost How much was paid per item
-     * @param _itemsCount How many items were purchased
-     * @param _affiliateAddresses Who were the affiliates
-     * @param _affiliateAmounts How much is each affiliate to recieve
-     */
-    function processPayment(
-        address payable _user,
-        uint256 _cost,
-        uint8 _itemsCount,
-        address[] payable _affiliateAddresses
-        uint256[] _affiliateAmounts
     ) public {}
 
     /**

@@ -2,6 +2,11 @@ pragma solidity ^0.6.1;
 
 import "../Asset.sol";
 
+/**
+ * @title Immutable Escrow
+ * @notice The contract recognised by the Immutable platform as storing assets in escrow.
+ * @author Immutable
+ */
 contract Escrow {
 
     // Emitted when a range of tokens is escrowed 
@@ -65,6 +70,29 @@ contract Escrow {
         address _releaser
     ) public returns (uint) {
 
+        require(address(_asset) != address(0), "asset address must not be null");
+        require(_ids.length > 0, "must be at least one asset");
+        require(_owner != address(0), "owner address must not be null");
+        require(_releaser != address(0), "releaser address must not be null");
+        require(high > low, "high must be higher than low");
+
+        // TODO: update from address
+        _asset.transferAllFrom(address(0), address(this), _buildList(_low, _high));
+
+        uint id = counter++;
+
+        accounts[id] = Account({
+            owner: _owner, 
+            releaser: _releaser,
+            asset: _asset,
+            low: _low,
+            high: _high,
+            ids: uint[](0)
+        });
+
+        emit RangeEscrowed(id, _owner, _asset, _low, _high, _releaser);
+
+        return id;
     }
 
     /**
@@ -81,7 +109,29 @@ contract Escrow {
         address _owner, 
         address _releaser
     ) public returns (uint) {
+
+        require(address(_asset) != address(0), "asset address must not be null");
+        require(_ids.length > 0, "must be at least one asset");
+        require(_owner != address(0), "owner address must not be null");
+        require(_releaser != address(0), "releaser address must not be null");
+
+        // TODO: update from address
+        _asset.transferAllFrom(address(0), address(this), _ids);
+
+        uint id = counter++;
+
+        accounts[id] = Account({
+            owner: _owner, 
+            releaser: _releaser,
+            asset: _asset,
+            low: 0,
+            high: 0,
+            ids: _ids
+        });
+
+        emit ListEscrowed(id, _owner, _asset, _ids, _releaser);
         
+        return id;
     }
 
     /**
@@ -94,6 +144,23 @@ contract Escrow {
         uint _id, 
         address _to
     ) public {
+
+        Account memory a = accounts[id];
+
+        require(a.releaser == msg.sender, "must be the releaser");
+        require(a.releaser != address(0), "must not have already been cleared");
+
+        if (a.ids.length == 0) {
+            // TODO: update from address
+            _asset.transferAllFrom(address(0), address(this), _buildList(a.low, a.high));
+        } else {
+            // TODO: update from address
+            _asset.transferAllFrom(address(0), address(this), a.ids);
+        }
+
+        delete accounts[id];
+
+        emit Released(id);
         
     }
 

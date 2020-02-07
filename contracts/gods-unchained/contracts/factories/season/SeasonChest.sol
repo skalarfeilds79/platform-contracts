@@ -26,6 +26,19 @@ contract SeasonChest {
     ) public {}
 
     /**
+     * @dev Purchase a chest of packs on behalf of someone else.
+     * 
+     * @param _user The user to purchase it for
+     * @param _count The number of chests to purchase
+     * @param _affiliate The affiliate to give a cut to
+     */
+    function purchaseChestFor(
+        address _user,
+        uint256 _count,
+        address _affiliate
+    ) public {}
+
+    /**
      * @dev // TODO: Purchase a chest via a signed receipt.
      */
     function purchaseChestViaReceipt() public {}
@@ -37,7 +50,7 @@ contract SeasonChest {
      */
     function openChest(
         uint256 _count
-    ) public {};
+    ) public {}
 
     /**
      * @dev Open a chest on behalf of another user
@@ -48,7 +61,7 @@ contract SeasonChest {
     function openChestFor(
         address _user,
         uint256 _count
-    ) public {};
+    ) public {}
 
     /**
      * @dev Unlock trading of chests between users.

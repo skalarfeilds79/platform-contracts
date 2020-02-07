@@ -10,7 +10,6 @@ contract SeasonCore {
     struct Season {
         uint256 totalProtos;
         uint256 startProto;
-        mapping (bytes32 => PackInstance) packs;
     }
 
     struct Purchase {
@@ -25,27 +24,42 @@ contract SeasonCore {
         address user;
     }
 
-    struct PackInstance {
+    struct Pack {
         string name;
+        bool active;
         bytes32 sku;
-        uint256 price;
         uint256 chestSize;
         address chestAddress;
         address packAddress;
     }
 
-    mapping (uint8 => Season) seasons;
-    mapping (uint256 => Purchase) purchases;
+    mapping (uint8 => Season) public seasons;
+    mapping (uint256 => Purchase) public purchases;
+    mapping (bytes32 => Pack) public packs;
 
-    event SeasonCreated();
+    event SeasonCreated(
+        bytes32 id,
+        uint256 totalProtos,
+        uint256 startProto
+    );
 
-    event PackCreated();
+    event PackCreated(
+        string name,
+        bool active,
+        bytes32 sku,
+        uint256 price,
+        uint256 chestSize,
+        address chestAddress,
+        address packAddress
+    );
 
-    event SellerApproved();
-
-    event PaymentProcessed();
-
-    event PurchaseRecorded();
+    event PackRedeemed(
+        uint8 season,
+        bytes32 packId,
+        uint256 itemCount,
+        uint64 lockUp,
+        address user
+    );
 
     event PackRandomnessCommitted();
 
@@ -57,7 +71,7 @@ contract SeasonCore {
     */
     function createSeason(
         uint256 _totalProtos,
-        uint256 _startProtos,
+        uint256 _startProtos
     ) public {}
 
     /**
@@ -65,15 +79,13 @@ contract SeasonCore {
      *
      * @param _season The season number to create 
      * @param _name Human readable name of this pack
-     * @param _price Price of the pack (no specific currency)
      * @param _chestSize Number of packs in a chest
      * @param _chestAddress Address of the chest implementation
      * @param _packAddress Address of the pack implementation
      */
     function createPack(
         uint8 _season,
-        string _name,
-        uint256 _price,
+        string memory _name,
         uint256 _chestSize,
         address _chestAddress,
         address _packAddress
@@ -120,7 +132,7 @@ contract SeasonCore {
      * @dev Predict the details of a card using the randomness seed
      *
      * @param _season Which season is the pack in
-     * @param _purchaseId The id of the purchase to get randomness from
+     * @param _randomSeed The randomness seed itself
      */
     function predictCardDetails(
         uint8 _season,

@@ -16,7 +16,7 @@ contract Escrow {
 
     // Emitted when a list of tokens is escrowed
     event ListEscrowed(
-        uint id
+        uint indexed id
         address indexed owner,
         address indexed asset, 
         uint[] ids,
@@ -25,7 +25,7 @@ contract Escrow {
 
     // Emitted when an account is released
     event Released(
-        uint id
+        uint indexed id
     );
 
     struct Account {

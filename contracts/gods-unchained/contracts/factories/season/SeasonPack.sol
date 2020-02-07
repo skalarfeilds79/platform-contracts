@@ -14,10 +14,25 @@ contract SeasonOne {
 
     function constructor() public {}
 
-    // Purchase the pack via some currency
+    /**
+     * @dev Purchase a pack of cards.
+     *
+     * @param _count Number of packs to purchase
+     * @param _affiliate Address to earn a cut from sale
+     */
     function purchasePack() public {}
 
-    // Purchase the pack via some signed receipt
+    /**
+     * @dev Purchase a pack of cards on behalf of another user.
+     *
+     * @param _user User to purchase the pack of cards on behalf of.
+     * @param _count Number of packs to purchase
+     * @param _affiliate Address to earn a cut from the sale
+     */
+
+    /**
+     * @dev // TODO: Purchase a pack via a signed receipt.
+     */
     function purchasePackViaReceipt() public {}
 
 }

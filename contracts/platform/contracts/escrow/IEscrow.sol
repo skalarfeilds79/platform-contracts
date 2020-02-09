@@ -1,4 +1,6 @@
-pragma solidity ^0.6.1;
+pragma solidity ^0.5.11;
+
+import "../Asset.sol";
 
 contract IEscrow {
 
@@ -8,7 +10,7 @@ contract IEscrow {
         uint _high,
         address _owner,
         address _releaser
-    ) public returns (uint);
+    ) external returns (uint);
 
     /**
      * @dev Escrow a list of assets
@@ -20,9 +22,14 @@ contract IEscrow {
      */
     function escrowList(
         Asset _asset,
-        uint[] _ids,
+        uint[] calldata _ids,
         address _owner,
         address _releaser
-    ) public returns (uint);
+    ) external returns (uint);
+
+    function release(
+        uint _id, 
+        address _to
+    ) external;
 
 }

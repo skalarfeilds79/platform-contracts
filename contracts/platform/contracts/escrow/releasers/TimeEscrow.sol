@@ -1,4 +1,7 @@
-pragma solidity ^0.6.1;
+pragma solidity ^0.5.11;
+
+import "../../Asset.sol";
+import "../IEscrow.sol";
 
 /**
  * @title TimeEscrow
@@ -60,7 +63,7 @@ contract TimeEscrow {
         address _owner,
         uint64 _duration,
         address _releaseTo
-    ) public returns (uint) {
+    ) external returns (uint) {
 
         // escrow the assets with this contract as the releaser
         uint id = escrow.escrowRange(_asset, _low, _high, _owner, address(this));
@@ -79,14 +82,14 @@ contract TimeEscrow {
      */
     function escrowList(
         Asset _asset,
-        uint[] _ids,
+        uint[] calldata _ids,
         address _owner,
         uint64 _duration,
         address _releaseTo
-    ) public returns (uint) {
+    ) external returns (uint) {
 
         // escrow the assets with this contract as the releaser
-        uint id = escrow.escrowRange(_asset, _low, _high, _owner, address(this));
+        uint id = escrow.escrowList(_asset, _ids, _owner, address(this));
 
         _lock(id, _duration, _releaseTo);
     }
@@ -101,10 +104,11 @@ contract TimeEscrow {
         require(_releaseTo != address(0), "cannot release to the zero address");
 
         locks[_id] = Lock({
-            endBlock: block.number + _duration
+            endBlock: uint64(block.number) + _duration,
+            releaseTo: _releaseTo
         });
 
-        emit Locked(_id, _duration);
+        emit Escrowed(_id, _duration);
     }
 
 }

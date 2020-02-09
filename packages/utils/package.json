@@ -5,7 +5,7 @@
   "typings": "dist/index.d.ts",
   "license": "MIT",
   "dependencies": {
-    "typescript": "^3.6.4"
+    "typescript": "^3.7.5"
   },
   "scripts": {
     "clean": "rm -rf dist",

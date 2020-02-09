@@ -13,7 +13,8 @@ export class DeployedContracts {
 
   public async init(addressBook: AddressBook): Promise<DeployedContracts> {
     if (addressBook.cardsAddress) {
-      this.cards = await new CardsFactory(this.wallet).init(addressBook.cardsAddress);
+      //@ts-ignore
+      this.cards = await new CardsFactory(this.wallet).init(addressBook.cardsAddress); // TODO: [AN >> KK] The generated declaration for CardsFactory does NOT contain an init method
     }
 
     return this;

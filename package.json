@@ -30,9 +30,12 @@
         "concurrently": "^4.1.2",
         "dotenv": "^8.2.0",
         "fs": "^0.0.1-security",
-        "lerna": "^3.4.3"
+        "lerna": "^3.4.3",
+        "typescript": "3.6.4"
     },
     "devDependencies": {
+        "@types/jest": "^25.1.1",
+        "@types/node": "11.15.0",
         "ganache-cli": "^6.7.0"
     },
     "engines": {

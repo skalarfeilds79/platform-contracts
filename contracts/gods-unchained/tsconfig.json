@@ -1,7 +1,6 @@
 {
     "compilerOptions": {
-      "target": "es5",
-      "baseUrl": "../js/src",
+      "target": "es5",      
       "module": "commonjs",
       "lib": ["es2015", "es2016", "es2017", "dom"],
       "strict": false,
@@ -10,13 +9,7 @@
       "declaration": true,
       "outDir": "dist",
       "preserveSymlinks": true,
-      "paths": {
-      },
-      "typeRoots": [
-        "node_modules/@types",
-        "node_modules/@imtbl/common-types"
-      ],
-      "types": ["node", "jest"]
+      "esModuleInterop": true
     },
     "include": [
       "src",

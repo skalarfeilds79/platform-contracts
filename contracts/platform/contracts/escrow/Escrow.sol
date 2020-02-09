@@ -29,9 +29,7 @@ contract Escrow {
     );
 
     // Emitted when an account is released
-    event Released(
-        uint indexed id
-    );
+    event Released(uint indexed id);
 
     struct Account {
         // the address which will own these assets during escrow
@@ -71,7 +69,6 @@ contract Escrow {
     ) public returns (uint) {
 
         require(address(_asset) != address(0), "asset address must not be null");
-        require(_ids.length > 0, "must be at least one asset");
         require(_owner != address(0), "owner address must not be null");
         require(_releaser != address(0), "releaser address must not be null");
         require(high > low, "high must be higher than low");
@@ -99,7 +96,7 @@ contract Escrow {
      * @dev Escrow a list of assets
      *
      * @param _asset NFT contract address of the assets to be escrowed
-     * @param _ids Token IDs of the cards to be escrowed
+     * @param _ids IDs of the tokens to be escrowed
      * @param _owner Address which will own these assets during escrow
      * @param _releaser Address which can release these assets from escrow
      */
@@ -135,10 +132,10 @@ contract Escrow {
     }
 
     /**
-     * @dev Release cards from escrow. Can only be called by the account's releaser. 
+     * @dev Release tokens from escrow. Can only be called by the account's releaser. 
      *
      * @param _id ID of the escrow account
-     * @param _to Address to which the cards should be transferred
+     * @param _to Address to which the tokens should be transferred
      */
     function release(
         uint _id, 
@@ -151,11 +148,9 @@ contract Escrow {
         require(a.releaser != address(0), "must not have already been cleared");
 
         if (a.ids.length == 0) {
-            // TODO: update from address
-            _asset.transferAllFrom(address(0), address(this), _buildList(a.low, a.high));
+            _asset.transferAllFrom(address(this), _to, _buildList(a.low, a.high));
         } else {
-            // TODO: update from address
-            _asset.transferAllFrom(address(0), address(this), a.ids);
+            _asset.transferAllFrom(address(this), _to, a.ids);
         }
 
         delete accounts[id];

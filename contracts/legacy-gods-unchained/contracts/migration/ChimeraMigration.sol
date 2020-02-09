@@ -41,11 +41,27 @@ contract ChimeraMigration is BaseMigration {
     }
 
     /**
+     * @dev Migrate multiple tokens at once.
+     *
+     * @param _tokenIds List of tokens to migrate
+     */
+    function migrateMultiple(
+        uint[] _tokenIds
+    )
+        public
+    {
+        for (uint i = 0; i < _tokenIds.length; i++) {
+            migrate(_tokenId);
+        }
+    }
+    
+
+    /**
      * @dev Migrate Chimeras from the old Cards contract to the new one.
      */
     function migrate(
         uint _tokenId
-    ) public {
+    ) public returns (bool) {
         require(
             _tokenId >= cutOffLimit,
             "Chimera Migration: must be greater than the cut off"

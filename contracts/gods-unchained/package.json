@@ -33,7 +33,7 @@
     "ethers": "4.0.42",
     "minimist": "^1.2.0",
     "save": "^2.4.0",
-    "typescript": "^3.6.4"
+    "typescript": "^3.7.5"
   },
   "devDependencies": {
     "@imtbl/addresses": "^1.0.11",

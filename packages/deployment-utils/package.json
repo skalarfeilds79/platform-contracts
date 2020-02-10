@@ -6,8 +6,8 @@
   "typings": "dist/index.d.ts",
   "private": true,
   "dependencies": {
-    "@imtbl/addresses": "^1.1.1",
-    "@imtbl/common-types": "^1.0.11",
+    "@imtbl/addresses": "^1.0.10",
+    "@imtbl/common-types": "^1.0.10",
     "@imtbl/test-utils": "^1.0.10",
     "@imtbl/utils": "^1.0.10",
     "dotenv": "^8.2.0",
@@ -17,7 +17,7 @@
     "truffle": "^5.0.44",
     "truffle-plugin-verify": "^0.3.5",
     "ts-node": "^8.4.1",
-    "typescript": "^3.6.4"
+    "typescript": "^3.7.5"
   },
   "scripts": {
     "lint": "tslint --project . -t verbose 'src/**/*.{tsx,ts}'",

@@ -1,3 +1,5 @@
+import 'jest';
+
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { Cards, CardsFactory } from '../../src';
 import { Wallet, ethers } from 'ethers';

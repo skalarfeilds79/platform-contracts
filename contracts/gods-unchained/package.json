@@ -25,19 +25,19 @@
   "dependencies": {
     "@0x/contracts-exchange-libs": "^3.0.8",
     "@0x/order-utils": "^8.4.0",
-    "@imtbl/common-types": "^1.0.11",
-    "@imtbl/deployment-utils": "^1.0.13",
-    "@imtbl/types": "^1.0.10",
+    "@imtbl/common-types": "^1.0.10",
+    "@imtbl/deployment-utils": "1.0.13",
+    "@imtbl/types": "1.0.10",
     "@imtbl/utils": "^1.0.10",
     "@openzeppelin/contracts": "^2.3.0",
     "ethers": "4.0.42",
     "minimist": "^1.2.0",
     "save": "^2.4.0",
-    "typescript": "^3.6.4"
+    "typescript": "^3.7.5"
   },
   "devDependencies": {
     "@imtbl/addresses": "^1.0.11",
-    "@imtbl/test-utils": "^1.0.10",
+    "@imtbl/test-utils": "1.0.10",
     "@types/jest": "^24.0.21",
     "@types/node": "^12.12.3",
     "dotenv": "^8.2.0",

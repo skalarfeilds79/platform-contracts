@@ -1,3 +1,5 @@
+import 'jest';
+
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { CardIntegrationTwoFactory, ChimeraMigrationFactory } from '../src/contracts';
 import { CardsFactory, CardsWrapper, PromoFactoryFactory } from '@imtbl/gods-unchained';

@@ -1,3 +1,5 @@
+import 'jest';
+
 import { Cards, CardsFactory } from '../../src';
 
 import { ethers } from 'ethers';

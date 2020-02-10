@@ -14,16 +14,58 @@ contract SeasonChest {
 
     event ChestOpened();
 
-    // Purchase a chest via some currency
-    function purchaseChest() public {}
+    /**
+     * @dev Purchase a chest of packs.
+     *
+     * @param _count The number of chests to purchase
+     * @param _affiliate The affiliate to give a cut to
+     */
+    function purchaseChest(
+        uint256 _count,
+        address _affiliate
+    ) public {}
 
-    // Purchase a chest via a signed receipt
+    /**
+     * @dev Purchase a chest of packs on behalf of someone else.
+     * 
+     * @param _user The user to purchase it for
+     * @param _count The number of chests to purchase
+     * @param _affiliate The affiliate to give a cut to
+     */
+    function purchaseChestFor(
+        address _user,
+        uint256 _count,
+        address _affiliate
+    ) public {}
+
+    /**
+     * @dev // TODO: Purchase a chest via a signed receipt.
+     */
     function purchaseChestViaReceipt() public {}
 
-    // Open a chest via some currency
-    function openChest() public {} 
+    /**
+     * @dev Open a chest that has been purchased
+     *
+     * @param _count Number of chests to open
+     */
+    function openChest(
+        uint256 _count
+    ) public {}
 
-    // Enable trading of chests
+    /**
+     * @dev Open a chest on behalf of another user
+     *
+     * @param _user User to open on behalf of
+     * @param _count Number of chest to open
+     */
+    function openChestFor(
+        address _user,
+        uint256 _count
+    ) public {}
+
+    /**
+     * @dev Unlock trading of chests between users.
+     */
     function unlockTrading() public {}
   
 }

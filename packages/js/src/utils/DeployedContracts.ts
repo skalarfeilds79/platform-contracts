@@ -13,7 +13,7 @@ export class DeployedContracts {
 
   public async init(addressBook: AddressBook): Promise<DeployedContracts> {
     if (addressBook.cardsAddress) {
-      this.cards = await new CardsFactory(this.wallet).init(addressBook.cardsAddress);
+      this.cards = await new CardsFactory(this.wallet).attach(addressBook.cardsAddress);
     }
 
     return this;

@@ -1,3 +1,5 @@
+import 'jest';
+
 import { CardsWrapper, IExchangeFactory } from '../../src';
 import { DeploymentEnvironment, DeploymentNetwork } from '@imtbl/common-types';
 

@@ -24,15 +24,15 @@
   "license": "MIT",
   "dependencies": {
     "@imtbl/addresses": "^1.0.10",
-    "@imtbl/common-types": "^1.0.11",
-    "@imtbl/deployment-utils": "^1.0.13",
+    "@imtbl/common-types": "^1.0.10",
+    "@imtbl/deployment-utils": "^1.0.10",
     "@imtbl/gods-unchained": "^1.0.10",
     "@imtbl/utils": "^1.0.10",
     "@openzeppelin/contracts": "^2.3.0",
     "dotenv": "^8.2.0",
     "ethers": "4.0.42",
     "minimist": "^1.2.0",
-    "typescript": "^3.6.4"
+    "typescript": "^3.7.5"
   },
   "devDependencies": {
     "@0xproject/types": "^1.1.4",

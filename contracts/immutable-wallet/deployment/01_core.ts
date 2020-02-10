@@ -107,6 +107,8 @@ export class CoreStage implements DeploymentStage {
 
       console.log('*** Deployed contract wallet ***');
       return testWallet;
+    } else {
+      return null;
     }
   }
 }

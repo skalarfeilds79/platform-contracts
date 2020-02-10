@@ -31,6 +31,21 @@ contract EtherbotsMigration is BaseMigration {
     );
 
     /**
+     * @dev Migrate multiple tokens at once.
+     *
+     * @param _tokenIds List of tokens to migrate
+     */
+    function migrateMultiple(
+        uint[] memory _tokenIds
+    )
+        public
+    {
+        for (uint i = 0; i < _tokenIds.length; i++) {
+            migrate(_tokenIds[i]);
+        }
+    }
+
+    /**
      * @dev Migrate Etherbot cards from the old Cards contract to the new one.
      *
      * @param _tokenId The id of the Etherbots card

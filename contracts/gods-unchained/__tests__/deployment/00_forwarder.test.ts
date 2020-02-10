@@ -1,3 +1,5 @@
+import 'jest';
+
 import { Forwarder, ForwarderFactory } from '../../src';
 import { Wallet, ethers } from 'ethers';
 

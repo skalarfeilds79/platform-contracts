@@ -90,8 +90,8 @@ export class CardsWrapper {
   }
 
   async mint(to: Address, proto: number, quality: number, quantity: number = 1): Promise<number[]> {
-    let protos = [];
-    let qualities = [];
+    const protos = [];
+    const qualities = [];
 
     for (let i = 0; i < quantity; i++) {
       protos.push(proto);

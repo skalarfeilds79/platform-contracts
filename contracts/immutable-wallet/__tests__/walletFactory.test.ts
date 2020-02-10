@@ -1,3 +1,5 @@
+import 'jest';
+
 import { generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
 

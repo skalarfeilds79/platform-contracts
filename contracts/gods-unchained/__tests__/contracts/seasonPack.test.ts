@@ -1,3 +1,5 @@
+import 'jest';
+
 import { JsonRpcProvider } from 'ethers/providers';
 import { generatedWallets } from '@imtbl/test-utils';
 import { SeasonPackFactory } from './../../src/generated/SeasonPackFactory';

@@ -1,3 +1,5 @@
+import 'jest';
+
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 
 import { CardIntegrationTwoFactory } from './../src/generated/CardIntegrationTwoFactory';

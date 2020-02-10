@@ -1,3 +1,5 @@
+import 'jest';
+
 import { Address } from '@imtbl/common-types';
 import { parseLogs } from '@imtbl/utils';
 import { SeasonCoreFactory } from './../../src/generated/SeasonCoreFactory';

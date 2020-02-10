@@ -1,3 +1,5 @@
+import 'jest';
+
 describe('SeasonChest', () => {
   describe('#purchaseChest', () => {
     it('should not be able to purchase 0 chests');

@@ -1,6 +1,7 @@
+import 'jest';
+
 import { generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
-import "jest"
 
 import { Factory, PurchaseModuleFactory, PurchaseModule } from '../src';
 import { DeploymentWrapper } from '../src/wrappers/deploymentWrapper';

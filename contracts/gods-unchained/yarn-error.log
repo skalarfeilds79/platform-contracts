@@ -1,11 +1,11 @@
 Arguments: 
-  /Users/kerman/.nvm/versions/node/v11.15.0/bin/node /usr/local/Cellar/yarn/1.19.1/libexec/bin/yarn.js list --patern ethers
+  /usr/local/bin/node /usr/local/Cellar/yarn/1.21.1/libexec/bin/yarn.js
 
 PATH: 
-  /Users/kerman/.nvm/versions/node/v11.15.0/bin:/Users/kerman/.cargo/bin:/Library/Frameworks/Python.framework/Versions/3.8/bin:/Users/kerman/.cargo/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/Users/kerman/go:/usr/local/opt/go/libexec/bin
+  /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/usr/local/share/dotnet:~/.dotnet/tools
 
 Yarn version: 
-  1.19.1
+  1.21.1
 
 Node version: 
   11.15.0
@@ -14,17 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@imtbl%2fdeployment-utils: Not found
-      at Request.params.callback [as _callback] (/usr/local/Cellar/yarn/1.19.1/libexec/lib/cli.js:66926:18)
-      at Request.self.callback (/usr/local/Cellar/yarn/1.19.1/libexec/lib/cli.js:140564:22)
-      at Request.emit (events.js:193:13)
-      at Request.<anonymous> (/usr/local/Cellar/yarn/1.19.1/libexec/lib/cli.js:141536:10)
-      at Request.emit (events.js:193:13)
-      at IncomingMessage.<anonymous> (/usr/local/Cellar/yarn/1.19.1/libexec/lib/cli.js:141458:12)
-      at Object.onceWrapper (events.js:281:20)
-      at IncomingMessage.emit (events.js:198:15)
-      at endReadableNT (_stream_readable.js:1139:12)
-      at processTicksAndRejections (internal/process/task_queues.js:81:17)
+  Error: EINVAL: invalid argument, lstat '/Users/alonnovy/Documents/Immutable/platform-contracts/contracts/gods-unchained/node_modules/@imtbl/test-utils/node_modules/typescript/.yarnrc'
 
 npm manifest: 
   {
@@ -53,12 +43,13 @@ npm manifest:
     "dependencies": {
       "@0x/contracts-exchange-libs": "^3.0.8",
       "@0x/order-utils": "^8.4.0",
-      "@imtbl/common-types": "^1.0.11",
-      "@imtbl/deployment-utils": "^1.0.13",
+      "@imtbl/common-types": "link:../../packages/common-types",
+      "@imtbl/deployment-utils": "link:../../packages/deployment-utils",
       "@imtbl/types": "^1.0.10",
       "@imtbl/utils": "^1.0.10",
       "@openzeppelin/contracts": "^2.3.0",
       "ethers": "4.0.42",
+      "minimist": "^1.2.0",
       "save": "^2.4.0",
       "typescript": "^3.7.5"
     },
@@ -2138,10 +2129,10 @@ Lockfile:
       safe-buffer "^5.1.1"
       util.promisify "^1.0.0"
   
-  ethers@^4.0.42:
-    version "4.0.43"
-    resolved "https://registry.yarnpkg.com/ethers/-/ethers-4.0.43.tgz#d669b5d5a9a16dbcd3ae12935ad70297048f52b4"
-    integrity sha512-VjQRVgPrlU12jSMvypdE1yEqYQccdVbH8bbiz67dLF7raHlRV4+zW70GlxHcZYqgsnz0XYWrn6C06gqTQRb5tw==
+  ethers@4.0.42:
+    version "4.0.42"
+    resolved "https://registry.yarnpkg.com/ethers/-/ethers-4.0.42.tgz#7def83a1f770b84d44cf1c2dfc58b7fd29d1d45d"
+    integrity sha512-2gmmt5x683Xz4QwGDBVJhrdXevVAEr5fnXPGDPou2AKB+zklrirGpl0w1SHBn7Wa9hbL2z6MvP3n7k8Yss2MFg==
     dependencies:
       aes-js "3.0.0"
       bn.js "^4.4.0"
@@ -5693,15 +5684,15 @@ Lockfile:
       fs-extra "^7.0.0"
       ts-generator "^0.0.8"
   
+  typescript@3.6.4:
+    version "3.6.4"
+    resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.6.4.tgz#b18752bb3792bc1a0281335f7f6ebf1bbfc5b91d"
+    integrity sha512-unoCll1+l+YK4i4F8f22TaNVPRHcD9PA3yCuZ8g5e0qGqlVlJ/8FSateOLLSagn+Yg5+ZwuPkL8LFUc0Jcvksg==
+  
   typescript@^3.5.3:
     version "3.7.2"
     resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.7.2.tgz#27e489b95fa5909445e9fef5ee48d81697ad18fb"
     integrity sha512-ml7V7JfiN2Xwvcer+XAf2csGO1bPBdRbFCkYBczNZggrBZ9c7G3riSUeJmqEU5uOtXNPMhE3n+R4FA/3YOAWOQ==
-  
-  typescript@^3.6.4:
-    version "3.6.4"
-    resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.6.4.tgz#b18752bb3792bc1a0281335f7f6ebf1bbfc5b91d"
-    integrity sha512-unoCll1+l+YK4i4F8f22TaNVPRHcD9PA3yCuZ8g5e0qGqlVlJ/8FSateOLLSagn+Yg5+ZwuPkL8LFUc0Jcvksg==
   
   typical@^2.6.0, typical@^2.6.1:
     version "2.6.1"

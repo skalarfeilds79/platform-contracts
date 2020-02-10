@@ -7,6 +7,8 @@ import { generatedWallets } from '@imtbl/test-utils';
 import { getAddressBook } from '@imtbl/addresses';
 import { orderHashUtils } from '@0x/order-utils';
 
+import "jest";
+
 const provider = new ethers.providers.JsonRpcProvider();
 
 describe('Order Generator', () => {

@@ -1,10 +1,11 @@
+import { SeasonCoreFactory } from './../../src/generated/SeasonCoreFactory';
 import 'jest';
 
 import { JsonRpcProvider } from 'ethers/providers';
 import { generatedWallets } from '@imtbl/test-utils';
 import { SeasonPackFactory } from './../../src/generated/SeasonPackFactory';
 import { SeasonPack } from './../../src/generated/SeasonPack';
-import { ethers } from 'ethers';
+import { ethers, Wallet } from 'ethers';
 
 const provider = new ethers.providers.JsonRpcProvider();
 
@@ -24,6 +25,25 @@ describe('SeasonPack', () => {
   });
 
   describe('#purchasePack', () => {
+    let seasonPackAddress: string;
+
+    let caller: Wallet;
+    let callerSaleCap: number;
+
+    beforeEach(async () => {
+      caller = userWallet;
+      callerSaleCap = 2;
+
+      const seasonCore = await new SeasonCoreFactory(ownerWallet).deploy();
+      const seasonPack = await new SeasonPackFactory(ownerWallet).deploy(
+        seasonCore.address,
+        callerSaleCap,
+      );
+
+      await seasonCore.functions.createSeason(10, 1);
+      // await seasonCore.functions.createPack(1, 'Rare', 6, ethers.constants.AddressZero);
+    });
+
     it('should not be able to purchase 0 packs', async () => {});
 
     it('should not be able to purchase with no user set', async () => {});

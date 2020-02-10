@@ -1,7 +1,8 @@
+import 'jest';
+
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { Cards, CardsFactory, Forge, ForgeFactory } from '../../src';
 import { Wallet, ethers } from 'ethers';
-import "jest";
 
 const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();

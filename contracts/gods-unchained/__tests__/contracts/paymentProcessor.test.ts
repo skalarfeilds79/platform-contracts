@@ -1,3 +1,5 @@
+import 'jest';
+
 describe('PaymentProcessor', () => {
   describe('#processPurchase', () => {
     it('should not be able to purchase without a valid address for the user');

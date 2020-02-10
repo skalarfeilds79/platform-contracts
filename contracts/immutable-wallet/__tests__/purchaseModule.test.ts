@@ -1,3 +1,5 @@
+import 'jest';
+
 import {
   CardsWrapper,
   Forwarder,

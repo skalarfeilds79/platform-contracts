@@ -10,13 +10,9 @@
       "declaration": true,
       "outDir": "dist",
       "preserveSymlinks": true,
+      "esModuleInterop": true,
       "paths": {
-      },
-      "typeRoots": [
-        "node_modules/@types",
-        "node_modules/@imtbl/common-types"
-      ],
-      "types": ["node", "jest"]
+      }
     },
     "include": [
       "src",

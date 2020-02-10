@@ -2,6 +2,7 @@ import { Cards, CardsFactory } from '../../src';
 
 import { ethers } from 'ethers';
 import { generatedWallets } from '@imtbl/test-utils';
+import "jest";
 
 const provider = new ethers.providers.JsonRpcProvider();
 

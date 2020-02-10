@@ -8,13 +8,10 @@
     "sourceMap": true,
     "noUnusedLocals": false,
     "declaration": true,
+    "esModuleInterop": true,
     "outDir": "dist",
     "preserveSymlinks": true,
-    "typeRoots": [
-      "node_modules/@types",
-      "node_modules/@imtbl/common-types"
-    ],
-    "types": ["node", "jest"]
+    
   },
   "include": [
     "src"

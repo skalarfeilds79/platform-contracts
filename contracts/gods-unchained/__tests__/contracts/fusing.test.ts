@@ -5,6 +5,7 @@ import { Wallet, ethers } from 'ethers';
 import { ContractReceipt } from 'ethers/contract';
 import { FusingFactory } from '../../src/generated/FusingFactory';
 import { parseLogs } from '@imtbl/utils';
+import "jest";
 
 const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();

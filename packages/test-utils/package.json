@@ -4,6 +4,7 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "license": "MIT",
+  "esModuleInterop": true,
   "dependencies": {
     "typescript": "^3.7.5",
     "ethers": "4.0.42"
@@ -17,7 +18,7 @@
   },
   "devDependencies": {
     "@0xproject/types": "^1.1.4",
-    "@imtbl/common-types": "^1.0.11",
+    "@imtbl/common-types": "link:../common-types",
     "@types/bignumber.js": "^5.0.0",
     "@types/jest": "^24.0.21",
     "@types/lodash": "^4.14.137",

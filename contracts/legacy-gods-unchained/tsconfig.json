@@ -20,7 +20,7 @@
     ],
     "exclude": [
       "node_modules",
-      "gods-unchained"
+      "node_modules/gods-unchained"
     ],
     "compileOnSave": true
   }

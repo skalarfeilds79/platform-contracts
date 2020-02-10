@@ -36,7 +36,7 @@ export class CardsWrapper {
         {
           name: 'Test',
           low: 1,
-          high: 100,
+          high: 100
         },
       ],
       [

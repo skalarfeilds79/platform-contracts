@@ -46,7 +46,7 @@ export class CoreStage implements DeploymentStage {
 
     console.log('** Deploying Purchase Module **');
     const purchaseModule =
-      await findInstance('PurchaseModule') ||
+      (await findInstance('PurchaseModule')) ||
       (await wrapper.deployPurchaseModule(forwarderAddress)).address;
     await onDeployment('PurchaseModule', purchaseModule, false);
 
@@ -107,9 +107,8 @@ export class CoreStage implements DeploymentStage {
 
       console.log('*** Deployed contract wallet ***');
       return testWallet;
-    }
-    else {
-      throw "Wrong Network Id"; // TODO: [AN >> KK] tsc rejects the prior version of this because there is a case where the function will NOT return the string that was promised in the declaration
+    } else {
+      return null;
     }
   }
 }

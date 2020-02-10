@@ -46,12 +46,12 @@ contract ChimeraMigration is BaseMigration {
      * @param _tokenIds List of tokens to migrate
      */
     function migrateMultiple(
-        uint[] _tokenIds
+        uint[] memory _tokenIds
     )
         public
     {
         for (uint i = 0; i < _tokenIds.length; i++) {
-            migrate(_tokenId);
+            migrate(_tokenIds[i]);
         }
     }
     

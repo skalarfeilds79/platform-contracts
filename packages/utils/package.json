@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "@0xproject/types": "^1.1.4",
-    "@imtbl/common-types": "link:../common-types",
+    "@imtbl/common-types": "^1.0.10",
     "@types/bignumber.js": "^5.0.0",
     "@types/jest": "^24.0.21",
     "@types/lodash": "^4.14.137",

@@ -33,7 +33,6 @@ export { PromoFactory } from './generated/PromoFactory';
 export { PromoFactoryFactory } from './generated/PromoFactoryFactory';
 export { SeasonChestFactory } from './generated/SeasonChestFactory';
 export { SeasonCoreFactory } from './generated/SeasonCoreFactory';
-export { SeasonOneFactory } from './generated/SeasonOneFactory';
 export { SeasonPackFactory } from './generated/SeasonPackFactory';
 export { WETH9Factory } from './generated/WETH9Factory';
 
@@ -64,6 +63,5 @@ export { Ownable } from './generated/Ownable';
 export { PaymentProcessor } from './generated/PaymentProcessor';
 export { SeasonChest } from './generated/SeasonChest';
 export { SeasonCore } from './generated/SeasonCore';
-export { SeasonOne } from './generated/SeasonOne';
 export { SeasonPack } from './generated/SeasonPack';
 export { WETH9 } from './generated/WETH9';

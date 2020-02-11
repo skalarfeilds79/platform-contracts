@@ -11,7 +11,15 @@ const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();
 
 describe('Core', () => {
-  const [ownerWallet, minterWallet, userWallet, adminMinter] = generatedWallets(provider);
+  const [
+    ownerWallet,
+    minterWallet,
+    userWallet,
+    adminMinter,
+    adminMinter2,
+    adminMinter3,
+    adminMinter4,
+  ] = generatedWallets(provider);
   const BATCH_SIZE = 101;
 
   beforeEach(async () => {
@@ -241,6 +249,56 @@ describe('Core', () => {
 
       const adminMinterArray = await promoFactory.functions.getAdminMinters();
       expect(adminMinterArray.length).toBe(1);
+    });
+
+    it('should be able to add four admin minters and remove two', async () => {
+      const promoFactory = await new PromoFactoryFactory(ownerWallet).attach(promoFactoryAddress);
+
+      async function addAndCheckAdding(newAdmin: string, id: number) {
+        callerMinter = newAdmin;
+        await subject();
+        const adminMinterMappingVal = await promoFactory.functions.adminMintersMapping(newAdmin);
+        expect(adminMinterMappingVal.toNumber()).toBe(id);
+        const adminMinterArrayVal = await promoFactory.functions.getAdminMinters();
+        expect(adminMinterArrayVal[id - 1]).toBe(newAdmin);
+        expect(adminMinterArrayVal).toContain(newAdmin);
+      }
+
+      async function removeAndCheckRemoving(removeAdmin: string, id: number) {
+        const beforeAllAdmins = await promoFactory.functions.getAdminMinters();
+
+        let beforeAllIds: number[] = [];
+        await asyncForEach(beforeAllAdmins, async (address) => {
+          const id = await promoFactory.functions.adminMintersMapping(address);
+          beforeAllIds.push(id.toNumber());
+        });
+
+        await promoFactory.functions.removeAdminMinter(removeAdmin);
+
+        const afterAllAdmins = await promoFactory.functions.getAdminMinters();
+
+        let afterAllIds: number[] = [];
+        await asyncForEach(afterAllAdmins, async (address) => {
+          const id = await promoFactory.functions.adminMintersMapping(address);
+          afterAllIds.push(id.toNumber());
+        });
+
+        expect(afterAllAdmins.length).toBe(beforeAllIds.length - 1);
+        expect(afterAllIds.length).toBe(beforeAllIds.length - 1);
+
+        expect(afterAllAdmins).not.toContain(removeAdmin);
+        expect(afterAllIds).not.toContain(beforeAllIds.length);
+      }
+
+      await addAndCheckAdding(adminMinter.address, 1);
+      await addAndCheckAdding(adminMinter2.address, 2);
+      await addAndCheckAdding(adminMinter3.address, 3);
+      await addAndCheckAdding(adminMinter4.address, 4);
+
+      await removeAndCheckRemoving(adminMinter2.address, 2);
+      await removeAndCheckRemoving(adminMinter4.address, 4);
+      await removeAndCheckRemoving(adminMinter3.address, 3);
+      await removeAndCheckRemoving(adminMinter.address, 1);
     });
   });
 

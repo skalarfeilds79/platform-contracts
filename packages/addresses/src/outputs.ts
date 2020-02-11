@@ -5,7 +5,9 @@ export const outputs = {
     "human_friendly_name": "main-net-production",
     "addresses": {
       "Cards": "0x0e3a2a1f2146d86a604adc220b4967a898d7fe07",
-      "Forwarder": "0xb04239b53806ab31141e6cd47c63fb3480cac908"
+      "Forwarder": "0xb04239b53806ab31141e6cd47c63fb3480cac908",
+      "Fusing": "0x833EA312aC6Ef27d2ca40BF247B0c5edbe991314",
+      "PromoFactory": "0x7096D543add3042A8c3E03B97E7B5C43e586889A"
     },
     "dependencies": {
       "WETH": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
@@ -14,7 +16,8 @@ export const outputs = {
       "ZERO_EX_ERC721_PROXY": "0xefc70a1b18c432bdc64b596838b4d138f6bc6cad"
     },
     "state": {
-      "network_id": 1
+      "network_id": 1,
+      "last_deployment_stage": null
     }
   },
   "3-development": {

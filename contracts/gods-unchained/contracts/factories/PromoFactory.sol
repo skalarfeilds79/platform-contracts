@@ -9,9 +9,9 @@ contract PromoFactory is Ownable {
     ICards public cards;
 
     mapping(uint16 => Promo) public promos;
+    mapping(address => uint) public adminMintersMapping;
 
-    uint16 public maxProto;
-    uint16 public minProto;
+    address[] public adminMintersArray;
 
     struct Promo {
         bool isLocked;
@@ -22,7 +22,20 @@ contract PromoFactory is Ownable {
      * Events
      */
 
-    event PromoAssigned(
+    event AdminMinterAdded(
+        address minter
+    );
+
+    event AdminMinterRemoved(
+        address minter
+    );
+
+    event PromoMinterAdded(
+        uint16 proto,
+        address minter
+    );
+
+    event PromoMinterRemoved(
         uint16 proto,
         address minter
     );
@@ -36,15 +49,11 @@ contract PromoFactory is Ownable {
      */
 
     constructor(
-        ICards _cards,
-        uint16 _minProto,
-        uint16 _maxProto
+        ICards _cards
     )
         public
     {
         cards = _cards;
-        minProto = _minProto;
-        maxProto = _maxProto;
     }
 
     /**
@@ -169,8 +178,79 @@ contract PromoFactory is Ownable {
     }
 
     /**
-     * Only Owner functions
+     * @dev Return a list of all the admin minters
      */
+    function getAdminMinters() public view returns (address[] memory) {
+        return adminMintersArray;
+    }
+
+    /**
+     * Only Owner functions
+     *
+     */
+
+    /**
+     * @dev Add an admin minter (can mint anything)
+     *
+     * @param _minter The address of the minter to add
+     */
+    function addAdminMinter(
+        address _minter
+    )
+        public
+        onlyOwner
+    {
+        adminMintersMapping[_minter] = uint128(adminMintersArray.push(_minter));
+
+        emit AdminMinterAdded(_minter);
+    }
+
+    /**
+     * @dev Remove an admin minter.
+     *
+     * @param _minter The address of the minter to remove
+     */
+    function removeAdminMinter(
+        address _minter
+    )
+        public
+        onlyOwner
+    {
+        address last = adminMintersArray[adminMintersArray.length - 1];
+        if(_minter != last) {
+            uint256 targetIndex = adminMintersMapping[_minter] - 1;
+            adminMintersArray[targetIndex] = last;
+            adminMintersMapping[last] = targetIndex + 1;
+        }
+
+        adminMintersArray.length --;
+        delete adminMintersMapping[_minter];
+
+        emit AdminMinterRemoved(_minter);
+    }
+
+    /**
+     * @dev Mint cards as an admin minter
+     *
+     * @param _to Owner of the cards to be minted
+     * @param _protos Array of protos of cards to mint
+     * @param _qualities Array of qualities of cards to mint
+     */
+    function adminMintCards(
+        address _to,
+        uint16[] memory _protos,
+        uint8[] memory _qualities
+    )
+        public
+    {
+
+        require(
+            adminMintersMapping[msg.sender] > 0,
+            "Promo Factory: must be an admin minter to call adminMintCards()"
+        );
+
+        cards.mintCards(_to, _protos, _qualities);
+    }
 
     /**
      * @dev Assign an address to be a minter for a promo.
@@ -178,22 +258,13 @@ contract PromoFactory is Ownable {
      * @param _minter The minter to add
      * @param _proto The proto to assign the minter to
      */
-    function assignPromoMinter(
+    function addPromoMinter(
         address _minter,
         uint16 _proto
     )
         public
         onlyOwner
     {
-        require(
-            _proto >= minProto,
-            "Promo Factory: proto must be greater than min proto"
-        );
-
-        require(
-            _proto <= maxProto,
-            "Promo Factory: proto must be less than max proto"
-        );
 
         require(
             promos[_proto].isLocked == false,
@@ -202,8 +273,7 @@ contract PromoFactory is Ownable {
 
         promos[_proto].minters.push(_minter);
 
-        emit PromoAssigned(_proto, _minter);
-
+        emit PromoMinterAdded(_proto, _minter);
     }
 
     /**
@@ -241,6 +311,8 @@ contract PromoFactory is Ownable {
 
         delete promo.minters[promo.minters.length - 1];
         promo.minters.length--;
+
+        emit PromoMinterRemoved(_proto, _minter);
     }
 
     /**

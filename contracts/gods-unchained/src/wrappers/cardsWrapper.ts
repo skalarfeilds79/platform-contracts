@@ -142,11 +142,7 @@ export class CardsWrapper {
     minProto: number,
     maxProto: number,
   ): Promise<PromoFactory> {
-    const unsignedTx = await new PromoFactoryFactory(this.wallet).getDeployTransaction(
-      cards,
-      minProto,
-      maxProto,
-    );
+    const unsignedTx = await new PromoFactoryFactory(this.wallet).getDeployTransaction(cards);
     unsignedTx.nonce = await this.wallet.getTransactionCount();
     const signedTx = await this.wallet.sendTransaction(unsignedTx);
     const receipt = await signedTx.wait();

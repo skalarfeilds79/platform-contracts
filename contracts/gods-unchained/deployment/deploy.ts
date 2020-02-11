@@ -20,7 +20,9 @@ async function start() {
   }
 
   if (args.core) {
-    stages.push(new CoreStage(config.PRIVATE_KEY, config.RPC_ENDPOINT));
+    stages.push(
+      new CoreStage(config.PRIVATE_KEY, config.RPC_ENDPOINT, config.DEPLOYMENT_NETWORK_ID),
+    );
   }
 
   const newManager = new Manager(stages);

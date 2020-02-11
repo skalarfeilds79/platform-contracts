@@ -8,9 +8,11 @@ import { asyncForEach } from '@imtbl/utils';
 
 export class CoreStage implements DeploymentStage {
   private wallet: Wallet;
+  private networkId: number;
 
-  constructor(privateKey: string, rpcUrl: string) {
+  constructor(privateKey: string, rpcUrl: string, networkId: number) {
     this.wallet = new ethers.Wallet(privateKey, new ethers.providers.JsonRpcProvider(rpcUrl));
+    this.networkId = networkId;
   }
 
   async deploy(
@@ -36,18 +38,15 @@ export class CoreStage implements DeploymentStage {
 
     const promoFactory =
       (await findInstance('PromoFactory')) ||
-      (await this.deployPromoFactory(
-        cardWrapper,
-        cards,
-        parseInt(await findInstance('PROMO_FACTORY_MIN')),
-        parseInt(await findInstance('PROMO_FACTORY_MAX')),
-      ));
+      (await this.deployPromoFactory(cardWrapper, cards, 400, 999));
+    await onDeployment('PromoFactory', promoFactory, false);
 
     await this.authoriseFactories(cardWrapper, openMinter, fusing, promoFactory);
     await this.unlockTradingFor(cardWrapper, [1, 4]);
     await this.addFusingMinter(fusing, await findInstance('FUSING_MINTER'));
 
-    transferOwnership([cards, openMinter, fusing]);
+    // TODO: Implement this
+    transferOwnership([cards, openMinter, fusing, promoFactory]);
   }
 
   async deployCards(cardWrapper: CardsWrapper): Promise<string> {
@@ -85,6 +84,12 @@ export class CoreStage implements DeploymentStage {
 
   async deployOpenMinter(cardWrapper: CardsWrapper, cards: string): Promise<string> {
     console.log('** Deploying Open Minter **');
+
+    if (this.networkId == 1) {
+      console.log('** Skipping due to main-net selected **');
+      return;
+    }
+
     return (await cardWrapper.deployOpenMinter(cards)).address;
   }
 
@@ -100,6 +105,7 @@ export class CoreStage implements DeploymentStage {
     maxProto: number,
   ): Promise<string> {
     console.log('** Deploying Promo Factory **');
+    console.log(cards, minProto, maxProto);
     return (await cardsWrapper.deployPromoFactory(cards, minProto, maxProto)).address;
   }
 

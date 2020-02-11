@@ -42,4 +42,14 @@ export default {
     3: '0xA80E99f59cd0474F76754Ed5498F2Ef6D6f09951',
     50: '0x6Ecbe1DB9EF729CBe972C83Fb886247691Fb6beb',
   },
+  PROMO_FACTORY_MIN: {
+    1: 501,
+    3: 501,
+    50: 501,
+  },
+  PROMO_FACTORY_MAX: {
+    1: 999,
+    3: 999,
+    50: 999,
+  },
 };

@@ -6,6 +6,8 @@ import { Fusing } from '../generated/Fusing';
 import { FusingFactory } from '../generated/FusingFactory';
 import { OpenMinter } from '../generated/OpenMinter';
 import { OpenMinterFactory } from '../generated/OpenMinterFactory';
+import { PromoFactory } from '../generated/PromoFactory';
+import { PromoFactoryFactory } from '../generated/PromoFactoryFactory';
 import { Wallet } from 'ethers';
 
 type Season = {
@@ -133,6 +135,22 @@ export class CardsWrapper {
     const signedTx = await this.wallet.sendTransaction(unsignedTx);
     const receipt = await signedTx.wait();
     return new FusingFactory(this.wallet).attach(receipt.contractAddress);
+  }
+
+  async deployPromoFactory(
+    cards: string,
+    minProto: number,
+    maxProto: number,
+  ): Promise<PromoFactory> {
+    const unsignedTx = await new PromoFactoryFactory(this.wallet).getDeployTransaction(
+      cards,
+      minProto,
+      maxProto,
+    );
+    unsignedTx.nonce = await this.wallet.getTransactionCount();
+    const signedTx = await this.wallet.sendTransaction(unsignedTx);
+    const receipt = await signedTx.wait();
+    return new PromoFactoryFactory(this.wallet).attach(receipt.contractAddress);
   }
 
   async unlockTrading(seasons: number[]): Promise<boolean> {

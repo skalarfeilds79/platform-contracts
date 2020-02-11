@@ -1,6 +1,6 @@
+import { CardsFactory, PromoFactory } from '../src';
 import { Wallet, ethers } from 'ethers';
 
-import { CardsFactory } from '../src';
 import { CardsWrapper } from './../src/wrappers/cardsWrapper';
 import { DeploymentStage } from '@imtbl/deployment-utils';
 import { FusingFactory } from './../src/generated/FusingFactory';
@@ -34,7 +34,16 @@ export class CoreStage implements DeploymentStage {
     const fusing = (await findInstance('Fusing')) || (await this.deployFusing(cardWrapper, cards));
     await onDeployment('Fusing', fusing, false);
 
-    await this.authoriseFactories(cardWrapper, openMinter, fusing);
+    const promoFactory =
+      (await findInstance('PromoFactory')) ||
+      (await this.deployPromoFactory(
+        cardWrapper,
+        cards,
+        parseInt(await findInstance('PROMO_FACTORY_MIN')),
+        parseInt(await findInstance('PROMO_FACTORY_MAX')),
+      ));
+
+    await this.authoriseFactories(cardWrapper, openMinter, fusing, promoFactory);
     await this.unlockTradingFor(cardWrapper, [1, 4]);
     await this.addFusingMinter(fusing, await findInstance('FUSING_MINTER'));
 
@@ -84,46 +93,77 @@ export class CoreStage implements DeploymentStage {
     return (await cardWrapper.deployFusing(cards)).address;
   }
 
-  async authoriseFactories(cardWrapper: CardsWrapper, openMinter: string, fusing: string) {
+  async deployPromoFactory(
+    cardsWrapper: CardsWrapper,
+    cards: string,
+    minProto: number,
+    maxProto: number,
+  ): Promise<string> {
+    console.log('** Deploying Promo Factory **');
+    return (await cardsWrapper.deployPromoFactory(cards, minProto, maxProto)).address;
+  }
+
+  async authoriseFactories(
+    cardWrapper: CardsWrapper,
+    openMinter: string,
+    fusing: string,
+    promoFactory: string,
+  ) {
     console.log('** Authorising Factories **');
 
-    const factories = [
-      {
-        minter: openMinter,
-        season: 1,
-      },
-      {
-        minter: fusing,
-        season: 4,
-      },
-    ];
+    try {
+      const factories = [
+        {
+          minter: openMinter,
+          season: 1,
+        },
+        {
+          minter: fusing,
+          season: 4,
+        },
+        {
+          minter: promoFactory,
+          season: 4,
+        },
+      ];
 
-    await asyncForEach(factories, async (factory) => {
-      const isApproved = cardWrapper.instance.functions.factoryApproved(
-        factory.minter,
-        factory.season,
-      );
-      if (!isApproved) {
-        cardWrapper.addFactories([factory]);
-      }
-    });
+      await asyncForEach(factories, async (factory) => {
+        const isApproved = cardWrapper.instance.functions.factoryApproved(
+          factory.minter,
+          factory.season,
+        );
+        if (!isApproved) {
+          cardWrapper.addFactories([factory]);
+        }
+      });
+    } catch {
+      console.log('!!! Failed to authorise factories !!!');
+    }
   }
 
   async unlockTradingFor(cardWrapper: CardsWrapper, seasons: number[]) {
     console.log('Unlocking Trading...');
 
-    await asyncForEach(seasons, async (season) => {
-      const isTradeable = cardWrapper.instance.functions.seasonTradable(season);
-      if (!isTradeable) {
-        await cardWrapper.unlockTrading([season]);
-      }
-    });
+    try {
+      await asyncForEach(seasons, async (season) => {
+        const isTradeable = cardWrapper.instance.functions.seasonTradable(season);
+        if (!isTradeable) {
+          await cardWrapper.unlockTrading([season]);
+        }
+      });
+    } catch {
+      console.log('!!! Failed to unlock trading !!!');
+    }
   }
 
   async addFusingMinter(fusing: string, minter: string) {
     console.log('Adding Fusing Minter..');
 
-    const fusingContract = await new FusingFactory(this.wallet).attach(fusing);
-    await fusingContract.functions.addMinter(minter);
+    try {
+      const fusingContract = await new FusingFactory(this.wallet).attach(fusing);
+      await fusingContract.functions.addMinter(minter);
+    } catch {
+      console.log('!!! Failed to add Fusing Minter');
+    }
   }
 }

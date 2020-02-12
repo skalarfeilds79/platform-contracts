@@ -299,6 +299,9 @@ describe('Core', () => {
       await removeAndCheckRemoving(adminMinter4.address, 4);
       await removeAndCheckRemoving(adminMinter3.address, 3);
       await removeAndCheckRemoving(adminMinter.address, 1);
+
+      await addAndCheckAdding(adminMinter2.address, 1);
+      await addAndCheckAdding(adminMinter3.address, 2);
     });
   });
 

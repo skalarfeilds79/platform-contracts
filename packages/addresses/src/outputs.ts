@@ -6,8 +6,9 @@ export const outputs = {
     "addresses": {
       "Cards": "0x0e3a2a1f2146d86a604adc220b4967a898d7fe07",
       "Forwarder": "0xb04239b53806ab31141e6cd47c63fb3480cac908",
-      "Fusing": "0x833EA312aC6Ef27d2ca40BF247B0c5edbe991314",
-      "PromoFactory": "0x4bE37c6054624e33a9f743DCd9A98119971f05a2"
+      "BLACKLIST_Fusing": "0x833EA312aC6Ef27d2ca40BF247B0c5edbe991314",
+      "Fusing": "0x7c633611d9199Faff68bCE5c5Ad97d3514319B77",
+      "PromoFactory": "0x8eB207F54846614Aebe3335DF2BD351823a04316"
     },
     "dependencies": {
       "WETH": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",

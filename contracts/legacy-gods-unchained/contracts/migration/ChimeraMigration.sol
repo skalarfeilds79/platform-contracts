@@ -64,7 +64,7 @@ contract ChimeraMigration is BaseMigration {
     ) public returns (bool) {
         require(
             _tokenId >= cutOffLimit,
-            "Chimera Migration: must be greater than the cut off"
+            "Chimera Migration: must be greater than or equal to the cut off"
         );
 
         address originalOwner = oldCards.ownerOf(_tokenId);

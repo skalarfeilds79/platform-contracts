@@ -25,7 +25,11 @@ export class ChimeraMigrationStage implements DeploymentStage {
 
   async deployChimeraMigration(oldCards: string, newCards: string) {
     console.log('*** Deploying Chimera Migration ***');
-    const contract = await new ChimeraMigrationFactory(this.wallet).deploy(oldCards, newCards, 100);
+    const contract = await new ChimeraMigrationFactory(this.wallet).deploy(
+      oldCards,
+      newCards,
+      580732,
+    );
     return contract.address;
   }
 }

@@ -32,6 +32,7 @@
     "dotenv": "^8.2.0",
     "ethers": "4.0.42",
     "minimist": "^1.2.0",
+    "truffle-plugin-verify": "^0.3.9",
     "typescript": "^3.7.5"
   },
   "devDependencies": {

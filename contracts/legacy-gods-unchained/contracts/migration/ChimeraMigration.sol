@@ -1,13 +1,14 @@
 pragma solidity 0.5.11;
 
 import "@imtbl/gods-unchained/contracts/factories/PromoFactory.sol";
+import "@openzeppelin/contracts/ownership/Ownable.sol";
 
 import "../cards/CardIntegrationTwo.sol";
 import "../cards/CardBase.sol";
 
 import "./BaseMigration.sol";
 
-contract ChimeraMigration is BaseMigration {
+contract ChimeraMigration is BaseMigration, Ownable {
 
     // The old cards contract
     CardIntegrationTwo public oldCards;
@@ -38,6 +39,10 @@ contract ChimeraMigration is BaseMigration {
         oldCards = CardIntegrationTwo(_oldCardsAddress);
         promoFactory = PromoFactory(_promoFactoryAddress);
         cutOffLimit = _cutOffLimit;
+    }
+
+    function selfDestruct() public onlyOwner {
+        selfdestruct(address(uint160(0x0)));
     }
 
     /**
@@ -75,6 +80,11 @@ contract ChimeraMigration is BaseMigration {
         );
 
         (uint16 proto, uint16 purity) = oldCards.getCard(_tokenId);
+
+        require(
+            proto == 394,
+            "Chimera Migration: must be a Chimera card"
+        );
 
         uint16 convertedProto = convertProto(proto);
         uint8 convertedQuality = convertPurity(purity);

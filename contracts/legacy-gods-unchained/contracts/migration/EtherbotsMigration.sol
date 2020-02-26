@@ -1,13 +1,14 @@
 pragma solidity 0.5.11;
 
 import "@imtbl/gods-unchained/contracts/Cards.sol";
+import "@openzeppelin/contracts/ownership/Ownable.sol";
 
 import "../cards/CardIntegrationTwo.sol";
 import "../cards/CardBase.sol";
 
 import "./BaseMigration.sol";
 
-contract EtherbotsMigration is BaseMigration {
+contract EtherbotsMigration is BaseMigration, Ownable {
 
     // The old cards contract
     CardIntegrationTwo public oldCards;
@@ -18,9 +19,19 @@ contract EtherbotsMigration is BaseMigration {
     // Keep track of migrated cards
     mapping (uint => bool) public hasMigrated;
 
-    constructor(address _oldCardsAddress, address _newCardsAddress) public {
+    mapping(uint16 => bool) public etherbotProtos;
+
+    constructor(
+        address _oldCardsAddress,
+        address _newCardsAddress,
+        uint16[] memory _etherbotIds
+    ) public {
         oldCards = CardIntegrationTwo(_oldCardsAddress);
         newCards = Cards(_newCardsAddress);
+
+        for (uint16 i = 0; i < _etherbotIds.length; i++) {
+            etherbotProtos[_etherbotIds[i]] = true;
+        }
     }
 
     event Migrated(
@@ -29,6 +40,10 @@ contract EtherbotsMigration is BaseMigration {
         uint16 proto,
         uint8 quality
     );
+
+    function selfDestruct() public onlyOwner {
+        selfdestruct(address(uint160(0x0)));
+    }
 
     /**
      * @dev Migrate multiple tokens at once.
@@ -63,6 +78,11 @@ contract EtherbotsMigration is BaseMigration {
 
         (uint16 proto, uint16 purity) = oldCards.getCard(_tokenId);
 
+        require(
+            etherbotProtos[proto] == true,
+            "Etherbots Migration: not an Etherbots proto"
+        );
+
         uint16 convertedProto = convertProto(proto);
         uint8 convertedQuality = convertPurity(purity);
 
@@ -71,5 +91,50 @@ contract EtherbotsMigration is BaseMigration {
         newCards.mintCard(originalOwner, convertedProto, convertedQuality);
 
         emit Migrated(_tokenId, originalOwner, convertedProto, convertedQuality);
+    }
+
+    /**
+     * @dev Migrate multiple Etherbot cards with the same owner
+     */
+    function migrateSameOwner(
+        uint[] memory _tokenIds,
+        address _owner
+    ) public {
+
+        if (_tokenIds.length == 1) {
+            migrate(_tokenIds[0]);
+            return;
+        }
+
+        uint16[] memory protos = new uint16[](_tokenIds.length);
+        uint8[] memory qualities = new uint8[](_tokenIds.length);
+
+        for (uint i = 0; i < _tokenIds.length; i++) {
+            uint256 tokenId = _tokenIds[i];
+
+            require(
+                hasMigrated[tokenId] == false,
+                "Etherbots Migration: has already migrated Etherbots"
+            );
+
+            require(
+                oldCards.ownerOf(tokenId) == _owner,
+                "Etherbots Migration: different owner found"
+            );
+
+            (uint16 proto, uint16 purity) = oldCards.getCard(tokenId);
+
+            require(
+                etherbotProtos[proto] == true,
+                "Etherbots Migration: not an Etherbots proto"
+            );
+
+            protos[i] = convertProto(proto);
+            qualities[i] = convertPurity(purity);
+
+            hasMigrated[tokenId] = true;
+        }
+
+        newCards.mintCards(_owner, protos, qualities);
     }
 }

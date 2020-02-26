@@ -55,10 +55,17 @@ describe('Core', () => {
 
       const oldCards = await new CardIntegrationTwoFactory(ownerWallet).deploy();
       await oldCards.functions.addProto(394, 1, 1, 1, 1, 1, 1, 1, false);
+      await oldCards.functions.addProto(393, 1, 1, 1, 1, 1, 1, 1, false);
 
       // Create 4 cards to test with
       await asyncForEach([0, 1, 2, 3], async (item) => {
         const tx = await oldCards.functions.createCard(userWallet.address, 394, 1);
+        await tx.wait();
+      });
+
+      // Create 4 extra to test with
+      await asyncForEach([0, 1, 2, 3], async (item) => {
+        const tx = await oldCards.functions.createCard(userWallet.address, 393, 1);
         await tx.wait();
       });
 
@@ -104,6 +111,17 @@ describe('Core', () => {
       await subject();
     });
 
+    it('should not be able to migrate anything other than Chimeras', async () => {
+      callerTokenId = 4;
+      await expectRevert(subject());
+      callerTokenId = 5;
+      await expectRevert(subject());
+      callerTokenId = 6;
+      await expectRevert(subject());
+      callerTokenId = 7;
+      await expectRevert(subject());
+    });
+
     it('should be able to migrate as the migrator', async () => {
       caller = immutableWallet;
       await subject();
@@ -113,14 +131,14 @@ describe('Core', () => {
       expect(card.proto).toBe(402);
     });
 
-    it('should be able to migrate if the token id is on the CUT_OFF', async () => {
-      callerTokenId = 2;
-      await subject();
-    });
-
     it('should not be able to migrate the same card twice', async () => {
       await subject();
       await expectRevert(subject());
+    });
+
+    it('should be able to migrate if the token id is on the CUT_OFF', async () => {
+      callerTokenId = 2;
+      await subject();
     });
 
     it('should be able to migrate the card with the correct proto', async () => {

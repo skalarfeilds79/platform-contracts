@@ -133,6 +133,13 @@ contract EtherbotsMigration is BaseMigration, Ownable {
             qualities[i] = convertPurity(purity);
 
             hasMigrated[tokenId] = true;
+
+            emit Migrated(
+                tokenId,
+                _owner,
+                protos[i],
+                qualities[i]
+            );
         }
 
         newCards.mintCards(_owner, protos, qualities);

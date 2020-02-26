@@ -15,11 +15,11 @@ async function start() {
     args.chimera = true;
   }
 
-  if (args.etherbots) {
+  if (args.chimera) {
     stages.push(new ChimeraMigrationStage(config.PRIVATE_KEY, config.RPC_ENDPOINT));
   }
 
-  if (args.chimera) {
+  if (args.etherbots) {
     stages.push(new EtherBotsMigrationStage(config.PRIVATE_KEY, config.RPC_ENDPOINT));
   }
 

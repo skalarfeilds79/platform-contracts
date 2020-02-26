@@ -24,6 +24,39 @@ import { asyncForEach } from '@imtbl/utils';
 import dependencies from './dependencies';
 import fs from 'fs-extra';
 
+const ownershipABI = [
+  {
+    constant: false,
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'newOwner',
+        type: 'address',
+      },
+    ],
+    name: 'transferOwnership',
+    outputs: [],
+    payable: false,
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    constant: true,
+    inputs: [],
+    name: 'owner',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    payable: false,
+    stateMutability: 'view',
+    type: 'function',
+  },
+];
+
 export class Manager {
   private _networkId: number;
   private _wallet: Wallet;
@@ -51,7 +84,19 @@ export class Manager {
             console.log(`${address}\n`);
             await writeContractToOutputs(name, address, dependency);
           },
-          async (addresses) => {},
+          async (address) => {
+            const contract = await new ethers.Contract(address, ownershipABI, this._wallet);
+            try {
+              console.log(`*** Transferring ownership of ${address} `);
+              const currentOwner = await contract.functions.owner();
+              const intendedOwner = await findDependency('INTENDED_OWNER');
+              if (intendedOwner.length > 0 && currentOwner != intendedOwner) {
+                await contract.functions.transferOwnership(intendedOwner);
+              }
+            } catch {
+              console.log(`* Failed to transfer ownership of ${address}`);
+            }
+          },
         );
 
         await writeStateToOutputs('last_deployment_stage', parseInt(stage));

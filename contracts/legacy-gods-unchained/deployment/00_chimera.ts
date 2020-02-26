@@ -17,10 +17,11 @@ export class ChimeraMigrationStage implements DeploymentStage {
   ) {
     const oldCardsAddress = await findInstance('LegacyCards');
     const newCardsAddress = await findInstance('Cards');
-    const etherbots =
+    const chimera =
       (await findInstance('ChimeraMigration')) ||
       (await this.deployChimeraMigration(oldCardsAddress, newCardsAddress));
-    onDeployment('ChimeraMigration', etherbots, false);
+    onDeployment('ChimeraMigration', chimera, false);
+    transferOwnership([chimera]);
   }
 
   async deployChimeraMigration(oldCards: string, newCards: string) {

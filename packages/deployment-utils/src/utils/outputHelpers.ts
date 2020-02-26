@@ -1,7 +1,6 @@
-import * as fs from 'fs-extra';
-
 import { Provider } from 'ethers/providers';
 import dependencies from '../dependencies';
+import fs from 'fs-extra';
 
 const dotenv = require('dotenv');
 const config = dotenv.config({ path: '../../.env' }).parsed;

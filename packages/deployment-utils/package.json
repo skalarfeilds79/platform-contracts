@@ -21,6 +21,8 @@
   },
   "scripts": {
     "lint": "tslint --project . -t verbose 'src/**/*.{tsx,ts}'",
+    "clean": "rm -rf dist",
+    "build": "yarn tsc",
     "generate-outputs": "bash scripts/generate-outputs.sh"
   },
   "devDependencies": {

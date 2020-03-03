@@ -12,8 +12,8 @@ export const outputs = {
       S5PromoFactory: '0x8eB207F54846614Aebe3335DF2BD351823a04316',
       Forge: '0x604b7a4a8ad3c4bc876c660a74b1a6e147b156c0',
       BLACKLIST_Fusing: '0x833EA312aC6Ef27d2ca40BF247B0c5edbe991314',
-      ChimeraMigration: '0x07260408470A499515527BDe49cf59966d91aB3A',
       EtherbotsMigration: '0xa777967d22043BE43f8fAd3552AD486f3765FD29',
+      ChimeraMigration: '0x2037CFAEc7c18377fd78399245d403cb218c19AA',
     },
     dependencies: {
       WETH: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',

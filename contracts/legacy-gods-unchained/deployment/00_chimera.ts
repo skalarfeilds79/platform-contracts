@@ -16,19 +16,19 @@ export class ChimeraMigrationStage implements DeploymentStage {
     transferOwnership: (addresses: string[]) => void,
   ) {
     const oldCardsAddress = await findInstance('LegacyCards');
-    const newCardsAddress = await findInstance('Cards');
+    const promoFactoryAddress = await findInstance('S3PromoFactory');
     const chimera =
       (await findInstance('ChimeraMigration')) ||
-      (await this.deployChimeraMigration(oldCardsAddress, newCardsAddress));
+      (await this.deployChimeraMigration(oldCardsAddress, promoFactoryAddress));
     onDeployment('ChimeraMigration', chimera, false);
     transferOwnership([chimera]);
   }
 
-  async deployChimeraMigration(oldCards: string, newCards: string) {
+  async deployChimeraMigration(oldCards: string, promoFactory: string) {
     console.log('*** Deploying Chimera Migration ***');
     const contract = await new ChimeraMigrationFactory(this.wallet).deploy(
       oldCards,
-      newCards,
+      promoFactory,
       580732,
     );
     return contract.address;

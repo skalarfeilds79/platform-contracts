@@ -2,7 +2,7 @@ import 'jest';
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { CardIntegrationTwoFactory, ChimeraMigrationFactory } from '../src/contracts';
-import { CardsFactory, CardsWrapper, PromoFactoryFactory } from '@imtbl/gods-unchained';
+import { CardsFactory, CardsWrapper, S3PromoFactoryFactory } from '@imtbl/gods-unchained';
 
 import { Address } from '@imtbl/common-types';
 import { asyncForEach } from '@imtbl/utils';
@@ -73,7 +73,7 @@ describe('Core', () => {
         { name: 'Promo', low: 400, high: 500 },
       ]);
 
-      const promoFactory = await new PromoFactoryFactory(ownerWallet).deploy(
+      const promoFactory = await new S3PromoFactoryFactory(ownerWallet).deploy(
         newCards.address,
         400,
         500,

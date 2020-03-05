@@ -13,7 +13,7 @@ export const outputs = {
       Forge: '0x604b7a4a8ad3c4bc876c660a74b1a6e147b156c0',
       BLACKLIST_Fusing: '0x833EA312aC6Ef27d2ca40BF247B0c5edbe991314',
       EtherbotsMigration: '0xa777967d22043BE43f8fAd3552AD486f3765FD29',
-      ChimeraMigration: '0x2037CFAEc7c18377fd78399245d403cb218c19AA',
+      ChimeraMigration: '0xc0f1eE9884Be19c4bB2e31F505f7a18FdB9c8025',
     },
     dependencies: {
       WETH: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',

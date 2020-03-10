@@ -20,6 +20,8 @@ jobs:
 
     - name: Setup repos
       run: yarn setup
+      env: 
+        ETHERSCAN_KEY: ''
 
     - name: Run linter
       run: yarn lint

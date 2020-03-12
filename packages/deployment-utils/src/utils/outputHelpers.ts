@@ -32,16 +32,6 @@ export async function sortOutputs() {
   return orderedOutputs;
 }
 
-export async function writeTypescriptOutputs() {
-  const outputs = await returnOutputs();
-  const typescriptFile = `/* tslint:disable */\n\nexport const outputs = ${JSON.stringify(
-    outputs,
-    null,
-    2,
-  )}`;
-  await fs.outputFile(OUTPUTS_PATH.replace('.json', '.ts'), typescriptFile);
-}
-
 export async function findDependency(name: string) {
   let dependencyValue = dependencies[name];
 

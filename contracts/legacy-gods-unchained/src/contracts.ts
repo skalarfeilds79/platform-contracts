@@ -50,6 +50,8 @@ export { PromoFactoryFactory } from './generated/PromoFactoryFactory';
 export { RarePackFourFactory } from './generated/RarePackFourFactory';
 export { RarityProviderFactory } from './generated/RarityProviderFactory';
 export { ReferralsFactory } from './generated/ReferralsFactory';
+export { S3PromoFactory } from './generated/S3PromoFactory';
+export { S3PromoFactoryFactory } from './generated/S3PromoFactoryFactory';
 export { v1MigrationFactory } from './generated/v1MigrationFactory';
 export { v2MigrationFactory } from './generated/v2MigrationFactory';
 

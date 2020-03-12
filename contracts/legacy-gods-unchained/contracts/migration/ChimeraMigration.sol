@@ -1,6 +1,6 @@
 pragma solidity 0.5.11;
 
-import "@imtbl/gods-unchained/contracts/factories/PromoFactory.sol";
+import "@imtbl/gods-unchained/contracts/factories/S3PromoFactory.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";
 
 import "../cards/CardIntegrationTwo.sol";
@@ -14,7 +14,7 @@ contract ChimeraMigration is BaseMigration, Ownable {
     CardIntegrationTwo public oldCards;
 
     // The promo factory that ChimeraMigration can create new cards from
-    PromoFactory public promoFactory;
+    S3PromoFactory public promoFactory;
 
     // The cut off point at which before cards will NOT be migrated.
     uint public cutOffLimit;
@@ -37,7 +37,7 @@ contract ChimeraMigration is BaseMigration, Ownable {
         public
     {
         oldCards = CardIntegrationTwo(_oldCardsAddress);
-        promoFactory = PromoFactory(_promoFactoryAddress);
+        promoFactory = S3PromoFactory(_promoFactoryAddress);
         cutOffLimit = _cutOffLimit;
     }
 
@@ -89,8 +89,14 @@ contract ChimeraMigration is BaseMigration, Ownable {
         uint16 convertedProto = convertProto(proto);
         uint8 convertedQuality = convertPurity(purity);
 
+        uint16[] memory protos = new uint16[](1);
+        protos[0] = convertedProto;
+
+        uint8[] memory qualities = new uint8[](1);
+        qualities[0] = convertedQuality;
+
         hasMigrated[_tokenId] = true;
-        promoFactory.mintSingle(originalOwner, convertedProto, convertedQuality);
+        promoFactory.mint(originalOwner, protos, qualities);
 
         emit Migrated(_tokenId, originalOwner, convertedProto, convertedQuality);
     }

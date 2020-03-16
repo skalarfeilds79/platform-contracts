@@ -37,7 +37,7 @@ describe('Genesis Board', () => {
         'GU: Board',
         'GU:GENESISBOARD',
       );
-      genesisBoard.setMinterStatus(minterWallet.address, true);
+      await genesisBoard.setMinterStatus(minterWallet.address, true);
       callerDestination = userWallet.address;
       callerLevel = 1;
       callerWallet = minterWallet;
@@ -45,7 +45,8 @@ describe('Genesis Board', () => {
 
     async function subject() {
       const contract = await new GenesisBoardFactory(callerWallet).attach(genesisBoard.address);
-      await contract.mint(callerDestination, callerLevel);
+      const tx = await contract.mint(callerDestination, callerLevel);
+      return tx.wait();
     }
 
     it('should not be able to mint as an unauthorised user', async () => {
@@ -53,7 +54,7 @@ describe('Genesis Board', () => {
       await expectRevert(subject());
     });
 
-    it('should not be able to mint as a valid minter', async () => {
+    it('should be able to mint as a valid minter', async () => {
       await subject();
       const supply = await genesisBoard.functions.totalSupply();
       expect(supply.toNumber()).toBe(1);
@@ -65,18 +66,26 @@ describe('Genesis Board', () => {
     let callerWallet;
 
     beforeEach(async () => {
+      callerWallet = userWallet;
+
       genesisBoard = await new GenesisBoardFactory(ownerWallet).deploy(
         'GU: Board',
         'GU:GENESISBOARD',
       );
-      await genesisBoard.setMinterStatus(minterWallet.address, true);
-      await genesisBoard.mint(userWallet.address, 1);
-      callerWallet = userWallet;
+      const tx1 = await genesisBoard.setMinterStatus(minterWallet.address, true);
+      await tx1.wait();
+
+      const tx2 = await genesisBoard.mint(userWallet.address, 1);
+      const receipt = await tx2.wait();
+
+      const parsed = parseLogs(receipt.logs, new GenesisBoardFactory().interface.abi);
+      console.log(parsed[1].values.tokenId.toNumber());
     });
 
     async function subject() {
       const contract = await new GenesisBoardFactory(callerWallet).attach(genesisBoard.address);
-      await contract.transferFrom(userWallet, ownerWallet, 0);
+      const tx = await contract.functions.transferFrom(userWallet.address, ownerWallet.address, 1);
+      return tx.wait();
     }
 
     it('should not be able to transfer if trading has not been unlocked', async () => {
@@ -84,10 +93,12 @@ describe('Genesis Board', () => {
     });
 
     it('should be able to trade if trading unlocked', async () => {
-      await genesisBoard.functions.setTradabilityStatus(true);
+      const tx = await genesisBoard.functions.setTradabilityStatus(true);
+      await tx.wait();
+
       await subject();
-      const balance = await genesisBoard.functions.ownerOf(ownerWallet.address);
-      expect(balance).toBe(1);
+      const balance = await genesisBoard.functions.balanceOf(ownerWallet.address);
+      expect(balance.toNumber()).toBe(1);
     });
   });
 });

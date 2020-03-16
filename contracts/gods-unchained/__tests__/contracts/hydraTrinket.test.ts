@@ -69,7 +69,7 @@ describe('Hydra Trinket', () => {
 
     async function subject() {
       const contract = await new HydraTrinketFactory(callerWallet).attach(hydraTrinket.address);
-      await contract.transferFrom(userWallet, ownerWallet, 0);
+      await contract.functions.transferFrom(userWallet.address, ownerWallet.address, 1);
     }
 
     it('should not be able to transfer if trading has not been unlocked', async () => {
@@ -79,8 +79,8 @@ describe('Hydra Trinket', () => {
     it('should be able to trade if trading unlocked', async () => {
       await hydraTrinket.functions.setTradabilityStatus(true);
       await subject();
-      const balance = await hydraTrinket.functions.ownerOf(ownerWallet.address);
-      expect(balance).toBe(1);
+      const balance = await hydraTrinket.functions.balanceOf(ownerWallet.address);
+      expect(balance.toNumber()).toBe(1);
     });
   });
 });

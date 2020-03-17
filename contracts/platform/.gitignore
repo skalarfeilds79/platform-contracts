@@ -1,3 +1,6 @@
 old
 secrets.json
 .etherlime-store
+src
+node_modules
+build

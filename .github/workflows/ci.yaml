@@ -17,6 +17,9 @@ jobs:
 
     - name: Install dependencies
       run: yarn install
+    
+    - name: Bootstrap packages
+      run: yarn lerna bootstrap
 
     - name: Setup repos
       run: yarn setup

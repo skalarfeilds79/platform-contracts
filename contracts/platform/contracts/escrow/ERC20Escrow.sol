@@ -13,7 +13,7 @@ contract ERC20Escrow {
     // Emitted when a vault is destroyed
     event Released(uint256 indexed vaultID, address indexed to);
 
-    struct ERC20Vault {
+    struct Vault {
         address player;
         address releaser;
         IERC20 asset;
@@ -21,14 +21,14 @@ contract ERC20Escrow {
     }
 
     // Every Escrow vault tracked by this contract
-    ERC20Vault[] public vaults;
+    Vault[] public vaults;
 
     /**
      * @dev Create a new escrow vault
      *
      * @param vault the escrow vault to be created
      */
-    function escrow(ERC20Vault memory vault, address from) public returns (uint256 vaultID) {
+    function escrow(Vault memory vault, address from) public returns (uint256 vaultID) {
         require(vault.balance > 0, "must have a non-zero balance");
         require(address(vault.asset) != address(0), "must be a non-null asset");
         require(vault.releaser != address(0), "must have a releaser");
@@ -39,7 +39,7 @@ contract ERC20Escrow {
     }
 
     function release(uint256 vaultID, address to) public {
-        ERC20Vault memory vault = vaults[vaultID];
+        Vault memory vault = vaults[vaultID];
         require(vault.releaser == msg.sender, "must be the releaser");
         vault.asset.transfer(to, vault.balance);
         delete vaults[vaultID];

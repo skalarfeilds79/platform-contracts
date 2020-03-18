@@ -1,7 +1,7 @@
 
 # Escrow
 
-## Reducing Transfer Costs
+## Securely Reducing Transfer Costs
 
 A key requirement for this system is that it must be possible to mint assets directly into escrow. Minting all the assets, then transferring them individually could cap our cards/tx at around 100, which is clearly unacceptable. One strategy for direct minting would be minting the assets directly to the escrow contract, then creating an escrow vault for those assets. The escrow contract would check to see whether it owned the assets before allowing them to be deposited. 
 
@@ -30,11 +30,16 @@ Escrow: Check to see that I now own the tokens. If not, revert everything (clear
 
 Even still, we need to wrap the escrow in a mutex to prevent a scenario in which a user could prepare, then use the callback to create another esrow account (re-entrancy), and then have two valid escrow accounts with the same assets. The user could then withdraw the assets once, wait for someone else to deposit the assets again, and then withdraw them a second time. Fungible tokens would be particularly vulnerable to this attack vector. 
 
+We now have two concepts:
+
+- Push Escrow: assets will be pushed into escrow by another contract
+- Pull Escrow: assets will be pulled into escrow by the escrow contract itself
+
 
 This reinforces the need for us to develop an ERC721+ token standard, which will cover:
 
 - Batch Operations
-- TransferRange()
+- A TransferRange() event
 - Metadata properties/formatting
 
 

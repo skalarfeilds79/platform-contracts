@@ -4,24 +4,27 @@ import "@openzeppelin/contracts/ownership/Ownable.sol";
 
 contract ERC721Escrow is Ownable {
 
+    // Tracker for whether batch transfers are available for a particular asset
     mapping(address => bool) public singleTxEnabled;
-
+    // Mutex which protects escrow vault creation
     bool public mutexLocked;
 
-    function setSingleTxEnabled(address user, bool enabled) external onlyOwner {
-        singleTxEnabled[user] = enabled;
+    /**
+     * @dev Set whether a particular contract has batch transfers available
+     *
+     * @param asset the address of the asset contract
+     * @param enabled whether this asset can use batch transfers
+     */
+    function setSingleTxEnabled(address asset, bool enabled) external onlyOwner {
+        singleTxEnabled[asset] = enabled;
     }
 
     function _transfer(uint256 vaultID, address from, address to) internal;
     function _areAssetsEscrowed(uint256 vaultID) internal view returns (bool);
 
-    function _escrow(uint256 vaultID, address from, bool alreadyTransferred) internal {
+    function _escrow(uint256 vaultID, address from) internal {
         require(!mutexLocked, "mutex must be unlocked");
-        if (alreadyTransferred) {
-            require(_areAssetsEscrowed(vaultID), "assets must be escrowed already");
-        } else {
-            _transfer(vaultID, from, address(this));
-        }
+        _transfer(vaultID, from, address(this));
     }
 
     function _release(uint256 vaultID, address to) internal {

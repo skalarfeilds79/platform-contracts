@@ -14,20 +14,40 @@ contract ListERC721Escrow is ERC721Escrow {
         uint256[] tokenIDs;
     }
 
+    // List of all escrow vaults
     Vault[] public vaults;
 
+    /**
+     * @dev Create an escrow account where assets will be pushed into escrow by another contract
+     *
+     * @param vault the details of the new escrow vault
+     * @param callbackTo the address to use for the callback transaction
+     * @param callbackData the data to pass to the callback transaction
+     */
     function callbackEscrow(Vault memory vault, address callbackTo, bytes memory callbackData) public returns (uint256 vaultID) {
         vaultID = vaults.push(vault);
         _callbackEscrow(vaultID, callbackTo, callbackData);
         return vaultID;
     }
 
-    function escrow(Vault memory vault, address from, bool alreadyTransferred) public returns (uint256 vaultID) {
+    /**
+     * @dev Create an escrow account where assets will be pulled into escrow by this contract
+     *
+     * @param vault the details of the new escrow vault
+     * @param from the current owner of the assets to be escrowed
+     */
+    function escrow(Vault memory vault, address from) public returns (uint256 vaultID) {
         vaultID = vaults.push(vault);
-        _escrow(vaultID, from, alreadyTransferred);
+        _escrow(vaultID, from);
         return vaultID;
     }
 
+    /**
+     * @dev Release assets from an escrow account
+     *
+     * @param vaultID the id of the escrow vault
+     * @param to the address to which assets should be released
+     */
     function release(uint256 vaultID, address to) external {
         _release(vaultID, to);
         delete vaults[vaultID];

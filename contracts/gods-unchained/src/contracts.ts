@@ -47,6 +47,7 @@ export { SeasonChestFactory } from './generated/SeasonChestFactory';
 export { SeasonCoreFactory } from './generated/SeasonCoreFactory';
 export { SeasonManagerFactory } from './generated/SeasonManagerFactory';
 export { SeasonPackFactory } from './generated/SeasonPackFactory';
+export { TestFactory } from './generated/TestFactory';
 export { WETH9Factory } from './generated/WETH9Factory';
 
 export { BatchToken } from './generated/BatchToken';
@@ -88,4 +89,5 @@ export { SeasonChest } from './generated/SeasonChest';
 export { SeasonCore } from './generated/SeasonCore';
 export { SeasonManager } from './generated/SeasonManager';
 export { SeasonPack } from './generated/SeasonPack';
+export { Test } from './generated/Test';
 export { WETH9 } from './generated/WETH9';

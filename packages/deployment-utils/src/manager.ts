@@ -15,7 +15,6 @@ import {
   sortOutputs,
   writeContractToOutputs,
   writeStateToOutputs,
-  writeTypescriptOutputs,
 } from './utils/outputHelpers';
 import { Wallet, ethers, utils } from 'ethers';
 
@@ -103,10 +102,8 @@ export class Manager {
       });
 
       await sortOutputs();
-      await writeTypescriptOutputs();
     } catch (error) {
       console.log(error);
-      await writeTypescriptOutputs();
     }
   }
 

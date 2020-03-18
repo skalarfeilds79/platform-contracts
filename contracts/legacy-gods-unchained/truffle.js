@@ -1,5 +1,5 @@
 const dotenv = require('dotenv');
-const config = dotenv.config({ path: '../../.env' }).parsed;
+const config = dotenv.config({ path: '../../.env' }).parsed || { ETHERSCAN_KEY: '' };
 
 const truffleConfig = require('../../truffle.config');
 

@@ -7,7 +7,7 @@ contract ERC721Escrow is Ownable {
     // Tracker for whether batch transfers are available for a particular asset
     mapping(address => bool) public singleTxEnabled;
     // Mutex which protects escrow vault creation
-    bool public mutexLocked;
+    bool internal mutexLocked;
 
     /**
      * @dev Set whether a particular contract has batch transfers available
@@ -22,9 +22,11 @@ contract ERC721Escrow is Ownable {
     function _transfer(uint256 vaultID, address from, address to) internal;
     function _areAnyAssetsEscrowed(uint256 vaultID) internal returns (bool);
     function _areAllAssetsEscrowed(uint256 vaultID) internal returns (bool);
+    function _validate(uint256 vaultID, address from) internal;
 
     function _escrow(uint256 vaultID, address from) internal {
         require(!mutexLocked, "mutex must be unlocked");
+        _validate(vaultID, from);
         _transfer(vaultID, from, address(this));
     }
 

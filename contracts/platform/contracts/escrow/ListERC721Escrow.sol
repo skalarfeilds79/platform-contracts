@@ -84,4 +84,11 @@ contract ListERC721Escrow is ERC721Escrow {
         return true;
     }
 
+    function _validate(uint256 vaultID, address from) internal {
+        Vault memory vault = vaults[vaultID];
+        require(vault.releaser != address(0), "must have releaser set");
+        require(address(vault.asset) != address(0), "must have non-null asset");
+        require(vault.tokenIDs.length > 0, "must have token IDs");
+    }
+
 }

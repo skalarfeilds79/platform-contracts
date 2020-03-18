@@ -1,6 +1,6 @@
 import 'jest';
 
-import { BatchERC721Escrow, BatchERC721EscrowFactory, TestERC721Token, TestERC721TokenFactory, MaliciousBatchPack, MaliciousBatchPackFactory } from '../../src/contracts';
+import { BatchERC721Escrow, BatchERC721EscrowFactory, TestERC721Token, TestERC721TokenFactory, MaliciousBatchPack, MaliciousBatchPackFactory, TestPack, TestPackFactory } from '../../src/contracts';
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
@@ -24,8 +24,8 @@ describe('BatchERC271Escrow', () => {
     await blockchain.revertAsync();
   });
 
-  async function checkBalance(erc20: TestERC721Token, address: string, expected: number) {
-    let balance = await erc20.balanceOf(address);
+  async function checkBalance(token: TestERC721Token, address: string, expected: number) {
+    let balance = await token.balanceOf(address);
     expect(balance.toNumber()).toBe(expected);
   }
 
@@ -66,7 +66,19 @@ describe('BatchERC271Escrow', () => {
           releaser: user.address,
           asset: erc721.address,
           lowTokenID: 0,
-          highTokenID: 1
+          highTokenID: 0
+      }, user.address));
+    });
+
+    it('should not be able to escrow invalid range', async () => {
+      await erc721.mint(user.address, 1);
+      await erc721.setApprovalForAll(escrow.address, true);
+      await expectRevert(escrow.escrow({
+          player: user.address,
+          releaser: user.address,
+          asset: erc721.address,
+          lowTokenID: 10,
+          highTokenID: 0
       }, user.address));
     });
 
@@ -124,7 +136,8 @@ describe('BatchERC271Escrow', () => {
     it('should not be able to escrow unowned tokens', async () => {
       const len = 1;
       await erc721.mint(other.address, len);
-      await erc721.setApprovalForAll(escrow.address, true, {from: other.address});
+      // TODO: change owner
+      await erc721.setApprovalForAll(escrow.address, true);
       await expectRevert(escrow.escrow({
           player: user.address,
           releaser: user.address,
@@ -168,7 +181,8 @@ describe('BatchERC271Escrow', () => {
           player: user.address,
           releaser: user.address,
           asset: erc721.address,
-          tokenIDs: [0],
+          lowTokenID: 0,
+          highTokenID: 1
       }, user.address);
       await checkBalance(erc721, user.address, 0);
       await checkBalance(erc721, escrow.address, 1);
@@ -184,14 +198,20 @@ describe('BatchERC271Escrow', () => {
     let escrow: BatchERC721Escrow;
     let erc721: TestERC721Token;
     let malicious: MaliciousBatchPack;
+    let pack: TestPack;
 
     beforeEach(async() => {
         escrow = await new BatchERC721EscrowFactory(user).deploy();
         erc721 = await new TestERC721TokenFactory(user).deploy();
         malicious = await new MaliciousBatchPackFactory(user).deploy(escrow.address, erc721.address);
+        pack = await new TestPackFactory(user).deploy(escrow.address, erc721.address);
     });
 
-    it('should not be able to create a callback escrow vault in the callback', async () => {
+    it('should be able to create a vault using a callback', async () => {
+      await pack.purchase(5);
+    });
+
+    it('should not be able to create a push escrow vault in the callback', async () => {
       await expectRevert(malicious.maliciousPush(5));
     });
 

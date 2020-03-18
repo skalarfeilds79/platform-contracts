@@ -22,9 +22,16 @@ A second solution is to use:
 
 ```
 Pack --> Escrow (Escrow): I want to open an escrow account and store tokens 1 to 5 in contract C. Pass callback function details to Escrow. 
+Escrow: Check to see that I own none of these tokens. 
 Escrow --> Pack (Callback): Call provided callback function. 
 Pack: Mint the tokens directly into Escrow. 
 Escrow: Check to see that I now own the tokens. If not, revert everything (clearing the prepare). 
 ```
+
+Of course, this still requires a linear number of `CALL`s to check ownership information, which will hurt us. This reinforces the need for us to develop an ERC721+ token standard, which will cover:
+
+- Batch Operations
+- TransferRange()
+- Metadata properties/formatting
 
 

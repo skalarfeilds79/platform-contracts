@@ -15,7 +15,21 @@ contract BatchERC721Escrow is ERC721Escrow {
         uint256 highTokenID;
     }
 
+    struct Callback {
+        address to;
+        bytes data;
+    }
+
     Vault[] public vaults;
+
+    function commitEscrow(Vault memory vault, address callbackTo, bytes memory callbackData) public {
+        uint256 vaultID = vaults.push(vault);
+        require(_ownsNone(vaultID), "must own none of the tokens");
+        // solium-disable-next-line security/no-low-level-calls
+        callbackTo.call(callbackData);
+        require(_ownsAll(vaultID), "must now own all tokens");
+    }
+
 
     function escrow(Vault memory vault, address from, bool alreadyTransferred) public returns (uint256 vaultID) {
         // vaultID = vaults.push(vault);

@@ -30,7 +30,7 @@ describe('ERC20Escrow', () => {
   }
 
   describe('#constructor', () => {
-    it('should be able to deploy the beacon contract', async () => {
+    it('should be able to deploy the escrow contract', async () => {
       const escrow = await new ERC20EscrowFactory(user).deploy();
     });
   });

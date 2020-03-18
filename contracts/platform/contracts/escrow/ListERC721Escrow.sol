@@ -64,17 +64,17 @@ contract ListERC721Escrow is ERC721Escrow {
         }
     }
 
-    function _areAnyAssetsEscrowed(uint256 vaultID) internal view returns (bool) {
+    function _areAnyAssetsEscrowed(uint256 vaultID) internal returns (bool) {
         Vault memory vault = vaults[vaultID];
         for (uint i = 0; i < vault.tokenIDs.length; i++) {
-            if (vault.asset.ownerOf(vault.tokenIDs[i]) == address(this)) {
+            if (_isValidAndOwnedBy(address(vault.asset), vault.tokenIDs[i], address(this))) {
                 return true;
             }
         }
         return false;
     }
 
-    function _areAllAssetsEscrowed(uint256 vaultID) internal view returns (bool) {
+    function _areAllAssetsEscrowed(uint256 vaultID) internal returns (bool) {
         Vault memory vault = vaults[vaultID];
         for (uint i = 0; i < vault.tokenIDs.length; i++) {
             if (vault.asset.ownerOf(vault.tokenIDs[i]) != address(this)) {

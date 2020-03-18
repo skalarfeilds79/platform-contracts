@@ -20,7 +20,8 @@ contract ERC721Escrow is Ownable {
     }
 
     function _transfer(uint256 vaultID, address from, address to) internal;
-    function _areAssetsEscrowed(uint256 vaultID) internal view returns (bool);
+    function _areAnyAssetsEscrowed(uint256 vaultID) internal returns (bool);
+    function _areAllAssetsEscrowed(uint256 vaultID) internal returns (bool);
 
     function _escrow(uint256 vaultID, address from) internal {
         require(!mutexLocked, "mutex must be unlocked");
@@ -39,6 +40,23 @@ contract ERC721Escrow is Ownable {
         callbackTo.call(callbackData);
         require(_areAllAssetsEscrowed(vaultID), "must now own all tokens");
         mutexLocked = false;
+    }
+
+    function _isValidAndOwnedBy(address asset, uint256 tokenID, address possibleOwner) internal returns (bool) {
+        bytes memory data = abi.encodeWithSignature("ownerOf(uint256)", tokenID);
+        // solium-disable-next-line security/no-low-level-calls
+        (bool success, bytes memory response) = asset.call(data);
+        if (success) {
+            address owner;
+            // solium-disable-next-line security/no-inline-assembly
+            assembly {
+                owner := mload(add(response, 20))
+            }
+            if (possibleOwner == address(this)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

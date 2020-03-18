@@ -1,17 +1,20 @@
 import 'jest';
 
-import { BatchERC721Escrow, BatchERC721EscrowFactory, TestERC721Token, TestERC721TokenFactory } from '../../src/contracts';
+import { 
+    BatchERC721Escrow, BatchERC721EscrowFactory, 
+    TestERC721Token, TestERC721TokenFactory, 
+    TestPack, TestPackFactory
+} from '../../src/contracts';
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
-import { BigNumberish } from 'ethers/utils';
 
 const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();
 
 const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
-describe('BatchERC271Escrow', () => {
+describe('TestPack', () => {
 
   const [user, other] = generatedWallets(provider);
 
@@ -29,33 +32,20 @@ describe('BatchERC271Escrow', () => {
     expect(balance.toNumber()).toBe(expected);
   }
 
-  describe('#constructor', () => {
-    it('should be able to deploy the escrow contract', async () => {
-      const escrow = await new BatchERC721EscrowFactory(user).deploy();
-    });
-  });
-
-  describe('#escrow', () => {
+  describe('#purchase', () => {
 
     let escrow: BatchERC721Escrow;
     let erc721: TestERC721Token;
+    let pack: TestPack;
 
     beforeEach(async() => {
         escrow = await new BatchERC721EscrowFactory(user).deploy();
         erc721 = await new TestERC721TokenFactory(user).deploy();
+        pack = await new TestPackFactory(user).deploy(escrow.address, erc721.address);
     })
 
-    it('should be able able to escrow', async () => {
-        await erc721.mint(user.address, 1);
-        await checkBalance(erc721, user.address, 1);
-        await erc721.setApprovalForAll(escrow.address, true);
-        await escrow.escrow({
-            player: user.address,
-            releaser: user.address,
-            asset: erc721.address,
-            lowTokenID: 0,
-            highTokenID: 1
-        }, user.address, false);
+    it('should be able able to purchase a pack', async () => {
+        await pack.purchase(5);
     });
 
     // it('should only remove correct amount', async () => {

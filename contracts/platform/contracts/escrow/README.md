@@ -28,19 +28,25 @@ Pack: Mint the tokens directly into Escrow.
 Escrow: Check to see that I now own the tokens. If not, revert everything (clearing the prepare). 
 ```
 
-Even still, we need to wrap the escrow in a mutex to prevent a scenario in which a user could prepare, then use the callback to create another esrow account (re-entrancy), and then have two valid escrow accounts with the same assets. The user could then withdraw the assets once, wait for someone else to deposit the assets again, and then withdraw them a second time. Fungible tokens would be particularly vulnerable to this attack vector. 
+Even still, we need to wrap the escrow in a mutex to prevent a scenario in which a user could prepare, then use the callback to create another escrow account (re-entrancy), and then have two valid escrow accounts with the same assets. The user could then withdraw the assets once, wait for someone else to deposit the assets again, and then withdraw them a second time. Fungible tokens would be particularly vulnerable to this attack vector. 
+
+As not every token will have been created before this initial escrow call, the ownership checks in the escrow contracts must account for that possibility (currently they do so by catching the revert on ```ownerOf```).
+
+## Escrow Types
 
 We now have two concepts:
 
 - Push Escrow: assets will be pushed into escrow by another contract
 - Pull Escrow: assets will be pulled into escrow by the escrow contract itself
 
+## Future Work
 
 This reinforces the need for us to develop an ERC721+ token standard, which will cover:
 
 - Batch Operations
 - A TransferRange() event
 - Metadata properties/formatting
+- A public ```exists()``` function
 
 
 

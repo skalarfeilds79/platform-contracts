@@ -21,6 +21,7 @@ export { ListTransferFactory } from './generated/ListTransferFactory';
 export { OwnableFactory } from './generated/OwnableFactory';
 export { TestERC20TokenFactory } from './generated/TestERC20TokenFactory';
 export { TestERC721TokenFactory } from './generated/TestERC721TokenFactory';
+export { TestPackFactory } from './generated/TestPackFactory';
 
 export { BatchERC721Escrow } from './generated/BatchERC721Escrow';
 export { BatchTransfer } from './generated/BatchTransfer';
@@ -39,3 +40,4 @@ export { ListTransfer } from './generated/ListTransfer';
 export { Ownable } from './generated/Ownable';
 export { TestERC20Token } from './generated/TestERC20Token';
 export { TestERC721Token } from './generated/TestERC721Token';
+export { TestPack } from './generated/TestPack';

@@ -6,6 +6,13 @@ contract TestERC721Token is ERC721 {
 
     function mint(address to, uint256 value) public {
         _mint(to, value);
+        count++;
+    }
+
+    uint256 internal count;
+
+    function totalSupply() public view returns (uint256) {
+        return count;
     }
 
 }

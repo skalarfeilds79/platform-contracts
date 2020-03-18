@@ -64,17 +64,17 @@ contract BatchERC721Escrow is ERC721Escrow {
         }
     }
 
-    function _areAnyAssetsEscrowed(uint256 vaultID) internal view returns (bool) {
+    function _areAnyAssetsEscrowed(uint256 vaultID) internal returns (bool) {
         Vault memory vault = vaults[vaultID];
         for (uint i = vault.lowTokenID; i < vault.highTokenID; i++) {
-            if (vault.asset.ownerOf(i) == address(this)) {
-                return true
+            if (_isValidAndOwnedBy(address(vault.asset), i, address(this))) {
+                return true;
             }
         }
         return false;
     }
 
-    function _areAssetsEscrowed(uint256 vaultID) internal view returns (bool) {
+    function _areAllAssetsEscrowed(uint256 vaultID) internal returns (bool) {
         Vault memory vault = vaults[vaultID];
         for (uint i = vault.lowTokenID; i < vault.highTokenID; i++) {
             if (vault.asset.ownerOf(i) != address(this)) {

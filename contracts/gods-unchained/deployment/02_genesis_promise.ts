@@ -64,7 +64,7 @@ export class GenesisPromiseStage implements DeploymentStage {
 
   async deployHyperionWhiteStar() {
     const whiteStar = await new RaffleItemFactory(this.wallet).deploy(
-      'GU: Hyperion White Start',
+      'GU: Hyperion White Star',
       'GU:WHITESTAR',
     );
     return whiteStar.address;
@@ -72,7 +72,7 @@ export class GenesisPromiseStage implements DeploymentStage {
 
   async deployHyperionBlackStar() {
     const blackStar = await new RaffleItemFactory(this.wallet).deploy(
-      'GU: Hyperion Black Start',
+      'GU: Hyperion Black Star',
       'GU:BLACKSTAR',
     );
     return blackStar.address;

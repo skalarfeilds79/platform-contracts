@@ -20,9 +20,11 @@ The 'same-tx' validation is there to stop users opening a number of prepares, th
 
 A second solution is to use:
 
+```
 Pack --> Escrow (Escrow): I want to open an escrow account and store tokens 1 to 5 in contract C. Pass callback function details to Escrow. 
 Escrow --> Pack (Callback): Call provided callback function. 
 Pack: Mint the tokens directly into Escrow. 
 Escrow: Check to see that I now own the tokens. If not, revert everything (clearing the prepare). 
+```
 
 

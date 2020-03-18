@@ -22,16 +22,21 @@ A second solution is to use:
 
 ```
 Pack --> Escrow (Escrow): I want to open an escrow account and store tokens 1 to 5 in contract C. Pass callback function details to Escrow. 
-Escrow: Check to see that I own none of these tokens. 
+Escrow: Check to see that I own none of these tokens.
 Escrow --> Pack (Callback): Call provided callback function. 
 Pack: Mint the tokens directly into Escrow. 
 Escrow: Check to see that I now own the tokens. If not, revert everything (clearing the prepare). 
 ```
 
-Of course, this still requires a linear number of `CALL`s to check ownership information, which will hurt us. This reinforces the need for us to develop an ERC721+ token standard, which will cover:
+Even still, we need to wrap the escrow in a mutex to prevent a scenario in which a user could prepare, then use the callback to create another esrow account (re-entrancy), and then have two valid escrow accounts with the same assets. The user could then withdraw the assets once, wait for someone else to deposit the assets again, and then withdraw them a second time. Fungible tokens would be particularly vulnerable to this attack vector. 
+
+
+This reinforces the need for us to develop an ERC721+ token standard, which will cover:
 
 - Batch Operations
 - TransferRange()
 - Metadata properties/formatting
+
+
 
 

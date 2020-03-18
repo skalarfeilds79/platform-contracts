@@ -15,27 +15,18 @@ contract BatchERC721Escrow is ERC721Escrow {
         uint256 highTokenID;
     }
 
-    struct Callback {
-        address to;
-        bytes data;
-    }
-
     Vault[] public vaults;
 
-    function commitEscrow(Vault memory vault, address callbackTo, bytes memory callbackData) public {
-        uint256 vaultID = vaults.push(vault);
-        require(_ownsNone(vaultID), "must own none of the tokens");
-        // solium-disable-next-line security/no-low-level-calls
-        callbackTo.call(callbackData);
-        require(_ownsAll(vaultID), "must now own all tokens");
+    function callbackEscrow(Vault memory vault, address callbackTo, bytes memory callbackData) public returns (uint256 vaultID) {
+        vaultID = vaults.push(vault);
+        _callbackEscrow(vaultID, callbackTo, callbackData);
+        return vaultID;
     }
 
-
     function escrow(Vault memory vault, address from, bool alreadyTransferred) public returns (uint256 vaultID) {
-        // vaultID = vaults.push(vault);
-        // _escrow(vaultID, from, alreadyTransferred);
-        // return vaultID;
-        return 0;
+        vaultID = vaults.push(vault);
+        _escrow(vaultID, from, alreadyTransferred);
+        return vaultID;
     }
 
     function release(uint256 vaultID, address to) external {
@@ -52,6 +43,16 @@ contract BatchERC721Escrow is ERC721Escrow {
                 vault.asset.transferFrom(from, to, i);
             }
         }
+    }
+
+    function _areAnyAssetsEscrowed(uint256 vaultID) internal view returns (bool) {
+        Vault memory vault = vaults[vaultID];
+        for (uint i = vault.lowTokenID; i < vault.highTokenID; i++) {
+            if (vault.asset.ownerOf(i) == address(this)) {
+                return true
+            }
+        }
+        return false;
     }
 
     function _areAssetsEscrowed(uint256 vaultID) internal view returns (bool) {

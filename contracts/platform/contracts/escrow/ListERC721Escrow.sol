@@ -16,6 +16,12 @@ contract ListERC721Escrow is ERC721Escrow {
 
     Vault[] public vaults;
 
+    function callbackEscrow(Vault memory vault, address callbackTo, bytes memory callbackData) public returns (uint256 vaultID) {
+        vaultID = vaults.push(vault);
+        _callbackEscrow(vaultID, callbackTo, callbackData);
+        return vaultID;
+    }
+
     function escrow(Vault memory vault, address from, bool alreadyTransferred) public returns (uint256 vaultID) {
         vaultID = vaults.push(vault);
         _escrow(vaultID, from, alreadyTransferred);
@@ -38,7 +44,17 @@ contract ListERC721Escrow is ERC721Escrow {
         }
     }
 
-    function _areAssetsEscrowed(uint256 vaultID) internal view returns (bool) {
+    function _areAnyAssetsEscrowed(uint256 vaultID) internal view returns (bool) {
+        Vault memory vault = vaults[vaultID];
+        for (uint i = 0; i < vault.tokenIDs.length; i++) {
+            if (vault.asset.ownerOf(vault.tokenIDs[i]) == address(this)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function _areAllAssetsEscrowed(uint256 vaultID) internal view returns (bool) {
         Vault memory vault = vaults[vaultID];
         for (uint i = 0; i < vault.tokenIDs.length; i++) {
             if (vault.asset.ownerOf(vault.tokenIDs[i]) != address(this)) {

@@ -48,6 +48,8 @@ describe('TestPack', () => {
         await pack.purchase(5);
     });
 
+
+
     // it('should only remove correct amount', async () => {
     //     await erc20.mint(user.address, 1000);
     //     await erc20.approve(escrow.address, 1000);
@@ -138,6 +140,7 @@ describe('TestPack', () => {
     // });
 
   });
+  
 
 
 });

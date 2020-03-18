@@ -21,5 +21,5 @@ fs.writeFileSync(buildPath, file);
 
 console.log(`${item} - ${address}`);
 execSync(
-  `truffle run verify ${item}@${address} --network ${root.human_friendly_name.split('-')[0]}`,
+  `yarn truffle run verify ${item}@${address} --network ${root.human_friendly_name.split('-')[0]}`,
 );

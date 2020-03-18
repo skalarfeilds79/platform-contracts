@@ -4,10 +4,14 @@
  *
 */
 
-export { BeaconFactory } from './generated/BeaconFactory';
-export { ConsumerFactory } from './generated/ConsumerFactory';
-export { IBeaconFactory } from './generated/IBeaconFactory';
+export { ContextFactory } from './generated/ContextFactory';
+export { ERC20EscrowFactory } from './generated/ERC20EscrowFactory';
+export { ERC20Factory } from './generated/ERC20Factory';
+export { IERC20Factory } from './generated/IERC20Factory';
+export { TestERC20TokenFactory } from './generated/TestERC20TokenFactory';
 
-export { Beacon } from './generated/Beacon';
-export { Consumer } from './generated/Consumer';
-export { IBeacon } from './generated/IBeacon';
+export { Context } from './generated/Context';
+export { ERC20 } from './generated/ERC20';
+export { ERC20Escrow } from './generated/ERC20Escrow';
+export { IERC20 } from './generated/IERC20';
+export { TestERC20Token } from './generated/TestERC20Token';

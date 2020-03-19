@@ -44,6 +44,9 @@ export class GenesisPromiseStage implements DeploymentStage {
     const royalCardBack =
       (await findInstance('GU_ROYAL_CARD_BACK')) || (await this.deployRoyalCardBack());
     await onDeployment('GU_ROYAL_CARD_BACK', royalCardBack, false);
+
+    const tethysCrow = (await findInstance('GU_TETHYS_CROWN')) || (await this.deployTethysCrown());
+    await onDeployment('GU_TETHYS_CROWN', tethysCrow, false);
   }
 
   async deployGenesisBoards() {
@@ -100,5 +103,13 @@ export class GenesisPromiseStage implements DeploymentStage {
       'GU:ROYALCARDBACK',
     );
     return royalCard.address;
+  }
+
+  async deployTethysCrown() {
+    const tethyCrown = await new RaffleItemFactory(this.wallet).deploy(
+      'GU: Tethy Crown',
+      'GU:TETHYCROWN',
+    );
+    return tethyCrown.address;
   }
 }

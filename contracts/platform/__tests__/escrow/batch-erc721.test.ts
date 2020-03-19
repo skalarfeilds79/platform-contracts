@@ -1,6 +1,6 @@
 import 'jest';
 
-import { BatchERC721Escrow, BatchERC721EscrowFactory, TestERC721Token, TestERC721TokenFactory, MaliciousBatchPack, MaliciousBatchPackFactory, TestPack, TestPackFactory } from '../../src/contracts';
+import { BatchERC721Escrow, BatchERC721EscrowFactory, TestERC721Token, TestERC721TokenFactory, MaliciousBatchPack, MaliciousBatchPackFactory, TestBatchPackFactory, TestBatchPack } from '../../src/contracts';
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
@@ -198,13 +198,13 @@ describe('BatchERC271Escrow', () => {
     let escrow: BatchERC721Escrow;
     let erc721: TestERC721Token;
     let malicious: MaliciousBatchPack;
-    let pack: TestPack;
+    let pack: TestBatchPack;
 
     beforeEach(async() => {
         escrow = await new BatchERC721EscrowFactory(user).deploy();
         erc721 = await new TestERC721TokenFactory(user).deploy();
         malicious = await new MaliciousBatchPackFactory(user).deploy(escrow.address, erc721.address);
-        pack = await new TestPackFactory(user).deploy(escrow.address, erc721.address);
+        pack = await new TestBatchPackFactory(user).deploy(escrow.address, erc721.address);
     });
 
     it('should be able to create a vault using a callback', async () => {

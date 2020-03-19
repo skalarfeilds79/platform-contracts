@@ -25,7 +25,7 @@ contract ListERC721Escrow is ERC721Escrow {
      * @param callbackData the data to pass to the callback transaction
      */
     function callbackEscrow(Vault memory vault, address callbackTo, bytes memory callbackData) public returns (uint256 vaultID) {
-        vaultID = vaults.push(vault);
+        vaultID = vaults.push(vault) - 1;
         _callbackEscrow(vaultID, callbackTo, callbackData);
         return vaultID;
     }
@@ -37,7 +37,7 @@ contract ListERC721Escrow is ERC721Escrow {
      * @param from the current owner of the assets to be escrowed
      */
     function escrow(Vault memory vault, address from) public returns (uint256 vaultID) {
-        vaultID = vaults.push(vault);
+        vaultID = vaults.push(vault) - 1;
         _escrow(vaultID, from);
         return vaultID;
     }
@@ -49,6 +49,8 @@ contract ListERC721Escrow is ERC721Escrow {
      * @param to the address to which assets should be released
      */
     function release(uint256 vaultID, address to) external {
+        Vault memory vault = vaults[vaultID];
+        require(msg.sender == vault.releaser, "must be the releaser");
         _release(vaultID, to);
         delete vaults[vaultID];
     }
@@ -67,7 +69,7 @@ contract ListERC721Escrow is ERC721Escrow {
     function _areAnyAssetsEscrowed(uint256 vaultID) internal returns (bool) {
         Vault memory vault = vaults[vaultID];
         for (uint i = 0; i < vault.tokenIDs.length; i++) {
-            if (_isValidAndOwnedBy(address(vault.asset), vault.tokenIDs[i], address(this))) {
+            if (_existsAndOwnedBy(address(vault.asset), vault.tokenIDs[i], address(this))) {
                 return true;
             }
         }

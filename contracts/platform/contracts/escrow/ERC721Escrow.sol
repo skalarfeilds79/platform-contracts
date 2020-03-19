@@ -44,7 +44,7 @@ contract ERC721Escrow is Ownable {
         mutexLocked = false;
     }
 
-    function _isValidAndOwnedBy(address asset, uint256 tokenID, address possibleOwner) internal returns (bool) {
+    function _existsAndOwnedBy(address asset, uint256 tokenID, address possibleOwner) internal returns (bool) {
         bytes memory data = abi.encodeWithSignature("ownerOf(uint256)", tokenID);
         // solium-disable-next-line security/no-low-level-calls
         (bool success, bytes memory response) = asset.call(data);

@@ -1,28 +1,28 @@
 pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
-import "../BatchERC721Escrow.sol";
+import "../ListERC721Escrow.sol";
 import "./TestERC721Token.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
-contract MaliciousBatchPack {
+contract MaliciousListPack {
 
     struct Purchase {
         uint256 count;
     }
 
     Purchase[] public purchases;
-    BatchERC721Escrow escrow;
+    ListERC721Escrow escrow;
     TestERC721Token asset;
 
-    constructor(BatchERC721Escrow _escrow, TestERC721Token _asset) public {
+    constructor(ListERC721Escrow _escrow, TestERC721Token _asset) public {
         escrow = _escrow;
         asset = _asset;
     }
 
     function maliciousPush(uint256 count) public {
 
-        BatchERC721Escrow.Vault memory vault = _createVault(count);
+        ListERC721Escrow.Vault memory vault = _createVault(count);
 
         uint256 id = purchases.push(Purchase({
             count: count
@@ -35,7 +35,7 @@ contract MaliciousBatchPack {
 
     function maliciousPull(uint256 count) public {
 
-        BatchERC721Escrow.Vault memory vault = _createVault(count);
+        ListERC721Escrow.Vault memory vault = _createVault(count);
 
         uint256 id = purchases.push(Purchase({
             count: count
@@ -50,7 +50,7 @@ contract MaliciousBatchPack {
         require(msg.sender == address(escrow), "must be the escrow contract");
         Purchase memory p = purchases[purchaseID];
 
-        BatchERC721Escrow.Vault memory vault = _createVault(p.count);
+        ListERC721Escrow.Vault memory vault = _createVault(p.count);
 
         bytes memory data = abi.encodeWithSignature("emptyHook()");
 
@@ -68,7 +68,7 @@ contract MaliciousBatchPack {
         require(msg.sender == address(escrow), "must be the escrow contract");
         Purchase memory p = purchases[purchaseID];
 
-        BatchERC721Escrow.Vault memory vault = _createVault(p.count);
+        ListERC721Escrow.Vault memory vault = _createVault(p.count);
 
         asset.mint(address(this), p.count);
         asset.setApprovalForAll(address(escrow), true);
@@ -78,17 +78,21 @@ contract MaliciousBatchPack {
         delete purchases[purchaseID];
     }
 
-    function _createVault(uint256 count) internal returns (BatchERC721Escrow.Vault memory) {
-        // predict what the token IDs will be
-        uint256 low = asset.totalSupply();
-        uint256 high = low + count;
+    function _createVault(uint256 count) internal returns (ListERC721Escrow.Vault memory) {
 
-        return BatchERC721Escrow.Vault({
+        // predict token IDs
+
+        uint[] memory ids = new uint[](count);
+        uint start = asset.totalSupply();
+        for (uint i = 0; i < count; i++) {
+            ids[i] = start + i;
+        }
+
+        return ListERC721Escrow.Vault({
             player: msg.sender,
             releaser: msg.sender,
             asset: asset,
-            lowTokenID: low,
-            highTokenID: high
+            tokenIDs: ids
         });
     }
 

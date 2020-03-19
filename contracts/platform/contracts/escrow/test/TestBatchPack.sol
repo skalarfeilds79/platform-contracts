@@ -5,7 +5,7 @@ import "../BatchERC721Escrow.sol";
 import "./TestERC721Token.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
-contract TestPack {
+contract TestBatchPack {
 
     struct Purchase {
         uint256 count;
@@ -36,7 +36,7 @@ contract TestPack {
 
         uint256 id = purchases.push(Purchase({
             count: count
-        }));
+        })) - 1;
 
         bytes memory data = abi.encodeWithSignature("escrowHook(uint256)", id);
 

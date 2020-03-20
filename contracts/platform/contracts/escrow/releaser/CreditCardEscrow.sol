@@ -247,15 +247,6 @@ contract CreditCardEscrow is Ownable {
         return id;
     }
 
-    /**
-     * @dev Escrow a consecutive range of assets
-     *
-     * @param _asset NFT contract address of the assets to be escrowed
-     * @param _low The first token ID in the range to be escrowed (inclusive)
-     * @param _high The last token ID in the range to be escrowed (inclusive)
-     * @param _owner Address which will own these assets during escrow
-     * @param _duration Number of blocks for which to hold this asset in escrow
-     */
     function escrowBatch(
         BatchERC721Escrow.Vault memory vault, address cbTo, bytes memory cbData,
         uint64 _duration, address _owner

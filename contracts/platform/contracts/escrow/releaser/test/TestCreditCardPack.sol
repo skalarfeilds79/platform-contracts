@@ -34,6 +34,8 @@ contract TestCreditCardPack {
             balance: count
         });
 
+        erc20.mint(user, count);
+
         escrow.escrowERC20(vault, duration, user);
     }
 

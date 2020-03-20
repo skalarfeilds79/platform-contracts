@@ -50,28 +50,13 @@ contract ICreditCardEscrow {
      */
     function destroy(address _escrow, uint _id) public;
 
-    function escrowERC20(ERC20Escrow.Vault memory vault) public returns (uint);
+    function escrowERC20(ERC20Escrow.Vault memory vault, uint64 _duration, address _owner) public returns (uint);
 
-    /**
-     * @dev Escrow a consecutive range of assets
-     *
-     * @param _asset NFT contract address of the assets to be escrowed
-     * @param _low The first token ID in the range to be escrowed (inclusive)
-     * @param _high The last token ID in the range to be escrowed (inclusive)
-     * @param _owner Address which will own these assets during escrow
-     * @param _duration Number of blocks for which to hold this asset in escrow
-     */
-    function escrowBatch(BatchERC721Escrow.Vault memory vault, address cbTo, bytes memory cbData) public returns (uint);
+    function escrowBatch(
+        BatchERC721Escrow.Vault memory vault, address cbTo, bytes memory cbData,
+        uint64 _duration, address _owner
+    ) public returns (uint);
 
-    /**
-     * @dev Escrow a list of assets
-     *
-     * @param vault NFT contract address of the assets to be escrowed
-     * @param _low The first token ID in the range to be escrowed (inclusive)
-     * @param _high The last token ID in the range to be escrowed (inclusive)
-     * @param _owner Address which will own these assets during escrow
-     * @param _duration Number of blocks for which to hold this asset in escrow
-     */
     function escrowList(ListERC721Escrow.Vault memory vault, address cbTo, bytes memory cbData) public returns (uint);
 
 

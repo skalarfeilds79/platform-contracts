@@ -3,7 +3,7 @@ import 'jest';
 import { 
     ERC20Escrow, ERC20EscrowFactory, 
     TestERC20Token, TestERC20TokenFactory, 
-    BatchERC721EscrowFactory, ListERC721EscrowFactory,
+    BatchERC721EscrowFactory,
     CreditCardEscrowFactory, CreditCardEscrow, 
     TestERC721Token, TestERC721TokenFactory,
     TestCreditCardPack, TestCreditCardPackFactory
@@ -39,14 +39,13 @@ describe('CreditCardEscrow', () => {
     it('should be able to deploy the escrow contract', async () => {
       const erc20Escrow = await new ERC20EscrowFactory(user).deploy();
       const batchEscrow = await new BatchERC721EscrowFactory(user).deploy();
-      const listEscrow = await new ListERC721EscrowFactory(user).deploy();
-      const destroyer = user;
+      const destroyer = user.address;
       const destructionDelay = 100;
-      const custodian = user;
+      const custodian = user.address;
       const releaseDelay = 100;
       const escrow = await new CreditCardEscrowFactory(user).deploy(
+        erc20Escrow.address,
         batchEscrow.address,
-        listEscrow.address,
         destroyer,
         destructionDelay,
         custodian, 
@@ -70,6 +69,42 @@ describe('CreditCardEscrow', () => {
         cc = await new CreditCardEscrowFactory(user).deploy(
             escrow.address,
             ZERO_EX,
+            ZERO_EX, 
+            100,
+            ZERO_EX,
+            100
+        );
+        pack = await new TestCreditCardPackFactory(user).deploy(
+            cc.address,
+            erc20.address,
+            erc721.address
+        );
+    })
+
+    // it('should be able to escrow an erc20 token', async () => {
+    //     await pack.purchaseERC20(user.address, 10);
+    // });
+
+    it('should be able to escrow an erc721 token', async () => {
+        await pack.purchaseERC721(user.address, 10);
+    });
+
+  });
+
+  describe('#release ERC721', () => {
+
+    let escrow: ERC20Escrow;
+    let cc: CreditCardEscrow;
+    let erc20: TestERC20Token;
+    let erc721: TestERC721Token;
+    let pack: TestCreditCardPack;
+
+    beforeEach(async() => {
+        erc20 = await new TestERC20TokenFactory(user).deploy();
+        erc721 = await new TestERC721TokenFactory(user).deploy();
+        escrow = await new ERC20EscrowFactory(user).deploy();
+        cc = await new CreditCardEscrowFactory(user).deploy(
+            escrow.address,
             ZERO_EX,
             ZERO_EX, 
             100,
@@ -83,13 +118,10 @@ describe('CreditCardEscrow', () => {
         );
     })
 
-    it('should be able to escrow an erc20 token', async () => {
-        pack.purchaseERC20(user, 10);
-    });
+    // it('should be able to escrow an erc20 token', async () => {
+    //     await pack.purchaseERC20(user.address, 10);
+    // });
 
-    it('should be able to escrow an erc721 token', async () => {
-        pack.purchaseERC721(user, 10);
-    });
 
   });
 

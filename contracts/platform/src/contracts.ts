@@ -27,7 +27,8 @@ export { ListTransferFactory } from './generated/ListTransferFactory';
 export { MaliciousBatchPackFactory } from './generated/MaliciousBatchPackFactory';
 export { MaliciousListPackFactory } from './generated/MaliciousListPackFactory';
 export { OwnableFactory } from './generated/OwnableFactory';
-export { TestBatcbPackFactory } from './generated/TestBatcbPackFactory';
+
+export { ProcessorFactory } from './generated/ProcessorFactory';
 export { TestBatchPackFactory } from './generated/TestBatchPackFactory';
 export { TestCreditCardPackFactory } from './generated/TestCreditCardPackFactory';
 export { TestERC20TokenFactory } from './generated/TestERC20TokenFactory';
@@ -58,6 +59,8 @@ export { ListTransfer } from './generated/ListTransfer';
 export { MaliciousBatchPack } from './generated/MaliciousBatchPack';
 export { MaliciousListPack } from './generated/MaliciousListPack';
 export { Ownable } from './generated/Ownable';
+
+export { Processor } from './generated/Processor';
 export { TestBatcbPack } from './generated/TestBatcbPack';
 export { TestBatchPack } from './generated/TestBatchPack';
 export { TestCreditCardPack } from './generated/TestCreditCardPack';

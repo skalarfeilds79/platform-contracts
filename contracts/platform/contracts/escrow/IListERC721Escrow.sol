@@ -1,9 +1,16 @@
 pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
-import "./ListERC721Escrow.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
 contract IListERC721Escrow {
+
+    struct Vault {
+        address player;
+        address releaser;
+        IERC721 asset;
+        uint256[] tokenIDs;
+    }
 
     /**
      * @dev Create an escrow account where assets will be pushed into escrow by another contract
@@ -12,9 +19,7 @@ contract IListERC721Escrow {
      * @param callbackTo the address to use for the callback transaction
      * @param callbackData the data to pass to the callback transaction
      */
-    function callbackEscrow(
-        ListERC721Escrow.Vault memory vault, address callbackTo, bytes memory callbackData
-    ) public returns (uint256 vaultID);
+    function callbackEscrow(Vault memory vault, address callbackTo, bytes memory callbackData) public returns (uint256 vaultID);
 
     /**
      * @dev Create an escrow account where assets will be pulled into escrow by this contract
@@ -22,7 +27,7 @@ contract IListERC721Escrow {
      * @param vault the details of the new escrow vault
      * @param from the current owner of the assets to be escrowed
      */
-    function escrow(ListERC721Escrow.Vault memory vault, address from) public returns (uint256 vaultID);
+    function escrow(Vault memory vault, address from) public returns (uint256 vaultID);
 
     /**
      * @dev Release assets from an escrow account

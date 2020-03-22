@@ -27,7 +27,7 @@ contract TestCreditCardPack {
 
     function purchaseERC20(address user, uint256 count) public {
 
-        ERC20Escrow.Vault memory vault = ERC20Escrow.Vault({
+        IERC20Escrow.Vault memory vault = IERC20Escrow.Vault({
             player: user,
             releaser: address(escrow),
             asset: erc20,
@@ -45,7 +45,7 @@ contract TestCreditCardPack {
         uint256 low = erc721.totalSupply();
         uint256 high = low + count;
 
-        BatchERC721Escrow.Vault memory vault = BatchERC721Escrow.Vault({
+        IBatchERC721Escrow.Vault memory vault = IBatchERC721Escrow.Vault({
             player: user,
             releaser: address(escrow),
             asset: erc721,

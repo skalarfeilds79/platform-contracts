@@ -1,19 +1,17 @@
 pragma solidity 0.5.11;
+pragma experimental ABIEncoderV2;
 
 import "./referral/IReferral.sol";
-import "@imtbl/platform/contracts/escrow/IEscrow.sol";
 import "@imtbl/platform/contracts/escrow/releaser/ICreditCardEscrow.sol";
 import "@imtbl/platform/contracts/pay/IProcessor.sol";
+import "@openzeppelin/contracts/math/SafeMath.sol";
 
 contract Product {
 
-    event ProductPurchased(
-        uint256 indexed saleID, address indexed user,
-        address indexed referrer, uint qty,
-        Processor.PaymentType paymentType
-    );
-
     using SafeMath for uint256;
+
+    event ProductPurchased(uint256 indexed paymentID, uint256 indexed saleID);
+    event ProductEscrowed(uint256 indexed saleID, address indexed escrow, uint256 indexed escrowID);
 
     // Total number of this product which this contract can sell
     uint256 saleCap;
@@ -25,8 +23,6 @@ contract Product {
     bytes32 sku;
     // Referral contract
     IReferral referral;
-    // Core escrow contract
-    IEscrow escrow;
     // Escrow contract
     ICreditCardEscrow fiatEscrow;
     // Payment processor
@@ -34,18 +30,18 @@ contract Product {
 
     constructor(
         bytes32 _sku, uint256 _saleCap, uint _price,
-        IReferral _referral, ICreditCardEscrow _fiatEscrow, IEscrow _escrow, IProcessor _processor
+        IReferral _referral, ICreditCardEscrow _fiatEscrow,
+        IProcessor _processor
     ) public {
         sku = _sku;
         saleCap = _saleCap;
         price = _price;
         referral = _referral;
         fiatEscrow = _fiatEscrow;
-        escrow = _escrow;
         processor = _processor;
     }
 
-    function purchase(uint256 qty, Processor.Payment memory payment, address referrer) public {
+    function purchase(uint256 qty, IProcessor.Payment memory payment, address payable referrer) public {
         purchaseFor(msg.sender, qty, payment, referrer);
     }
 
@@ -55,18 +51,16 @@ contract Product {
         require(saleCap == 0 || saleCap >= sold + qty, "cap has been exhausted");
         uint totalPrice = price.mul(qty);
         // if the user is paying in ETH, we can pay affiliate fees instantly!
-        if (payment.currency == Processor.Currency.ETH && referrer != address(0)) {
+        if (payment.currency == IProcessor.Currency.ETH && referrer != address(0)) {
             uint toReferrer;
             (totalPrice, toReferrer) = referral.getSplit(msg.sender, totalPrice, referrer);
             referrer.transfer(toReferrer);
         }
-        uint256 saleID = processor.process(sku, qty, totalPrice, payment);
+        processor.process(sku, qty, totalPrice, payment);
         sold += qty;
-
-        emit ProductPurchased(saleID, user, referrer, qty, payment.currency);
     }
 
-    function available() public {
+    function available() public view returns (bool) {
         return saleCap > sold;
     }
 

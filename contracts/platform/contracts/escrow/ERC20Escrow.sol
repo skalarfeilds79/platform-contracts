@@ -3,8 +3,9 @@ pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
+import "./IERC20Escrow.sol";
 
-contract ERC20Escrow {
+contract ERC20Escrow is IERC20Escrow {
 
     using SafeMath for uint256;
 
@@ -12,13 +13,6 @@ contract ERC20Escrow {
     event Escrowed(uint256 indexed vaultID, address indexed asset, address indexed releaser, address player, uint256 balance);
     // Emitted when a vault is destroyed
     event Released(uint256 indexed vaultID, address indexed to);
-
-    struct Vault {
-        address player;
-        address releaser;
-        IERC20 asset;
-        uint256 balance;
-    }
 
     // Every Escrow vault tracked by this contract
     Vault[] public vaults;

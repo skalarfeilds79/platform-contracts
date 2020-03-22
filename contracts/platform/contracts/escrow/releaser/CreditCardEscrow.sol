@@ -233,7 +233,7 @@ contract CreditCardEscrow is Ownable {
         emit Destroyed(_escrow, _id);
     }
 
-    function escrowERC20(ERC20Escrow.Vault memory vault, uint64 _duration, address _owner) public returns (uint) {
+    function escrowERC20(IERC20Escrow.Vault memory vault, uint64 _duration, address _owner) public returns (uint) {
 
         require(_duration > 0, "must be locked for a number of blocks");
         require(_owner != address(0), "cannot release to the zero address");
@@ -248,7 +248,7 @@ contract CreditCardEscrow is Ownable {
     }
 
     function escrowBatch(
-        BatchERC721Escrow.Vault memory vault, address cbTo, bytes memory cbData,
+        IBatchERC721Escrow.Vault memory vault, address cbTo, bytes memory cbData,
         uint64 _duration, address _owner
     ) public returns (uint) {
 

@@ -1,12 +1,13 @@
 pragma solidity 0.5.11;
+pragma experimental ABIEncoderV2;
 
 import "../Product.sol";
 import "./RarityProvider.sol";
 import "../../ICards.sol";
-import "@imtbl/platform/contracts/escrow/BatchERC721Escrow.sol";
+import "@imtbl/platform/contracts/escrow/IBatchERC721Escrow.sol";
 import "@imtbl/platform/contracts/randomness/IBeacon.sol";
 
-contract Pack is Product, Rarity {
+contract Pack is Product, RarityProvider {
 
     struct Purchase {
         uint64 commitBlock;
@@ -26,9 +27,9 @@ contract Pack is Product, Rarity {
         IBeacon _beacon, ICards _cards,
         bytes32 _sku, uint256 _saleCap, uint _price,
         IReferral _referral, ICreditCardEscrow _fiatEscrow,
-        IEscrow _escrow, IProcessor _processor
+        IProcessor _processor
     ) public Product(
-        _sku, _saleCap, _price, _referral, _fiatEscrow, _escrow, _processor
+        _sku, _saleCap, _price, _referral, _fiatEscrow, _processor
     ) {
         beacon = _beacon;
         cards = _cards;
@@ -40,49 +41,51 @@ contract Pack is Product, Rarity {
     }
 
     function escrowHook(uint256 purchaseID) public {
-        require(msg.sender == escrowCore, "must be escrow core to use hook");
+        // require(msg.sender == escrowCore, "must be escrow core to use hook");
         require(purchaseID < purchases.length, "purchase ID invalid");
         _createCards(purchaseID);
     }
 
-    function _escrowCards(Purchase memory purchase) internal {
-        uint cardCount = purchase.qty.mul(5);
+    function _escrowCards(uint purchaseID) internal {
+        Purchase memory purchase = purchases[purchaseID];
+        uint cardCount = purchase.qty * 5;
         uint low = cards.nextBatch();
         uint high = low + cardCount;
 
-        BatchERC721Escrow.Vault memory vault = BatchERC721Escrow.Vault({
-            player: user,
-            releaser: address(escrow),
-            asset: IERC721(cards),
+        IBatchERC721Escrow.Vault memory vault = IBatchERC721Escrow.Vault({
+            player: purchase.user,
+            releaser: address(fiatEscrow),
+            asset: IERC721(address(cards)),
             lowTokenID: low,
             highTokenID: high
         });
 
         bytes memory data = abi.encodeWithSignature("escrowHook(uint256)", purchaseID);
 
-        uint id = escrow.escrowBatch(vault, address(this), data, purchase.escrowPeriod, user);
+        uint id = fiatEscrow.escrowBatch(vault, address(this), data, purchase.escrowPeriod, purchase.user);
 
     }
 
-    function purchaseFor(address user, uint256 qty, address referrer, Processor.Payment memory payment) public {
+    function purchaseFor(address user, uint256 qty, address referrer, IProcessor.Payment memory payment) public {
         super.purchaseFor(user, qty, referrer, payment);
         bool shouldEscrow = (payment.currency == IProcessor.Currency.Fiat);
         _createPurchase(user, qty, shouldEscrow);
     }
 
-    function _createCards(Purchase memory purchase) internal {
-        bytes32 randomness = beacon.getRandomness(commitBlock);
-        uint cardCount = purchase.qty.mul(5);
+    function _createCards(uint256 purchaseID) internal {
+        Purchase memory purchase = purchases[purchaseID];
+        bytes32 randomness = beacon.getRandomness(purchase.commitBlock);
+        uint cardCount = purchase.qty * 5;
         uint16[] memory protos = new uint16[](cardCount);
         uint16[] memory qualities = new uint8[](cardCount);
         for (uint i = 0; i < cardCount; i++) {
-            (protos[i], qualities[i]) = getCardDetails(randomness, i);
+            (protos[i], qualities[i]) = _getCardDetails(randomness, i);
         }
         cards.mintCards(purchase.user, protos, qualities);
     }
 
     function openChests(address user, uint256 qty) public {
-        require(msg.sender == chest, "must be the chest contract");
+        // require(msg.sender == chest, "must be the chest contract");
         _createPurchase(user, qty, false);
     }
 

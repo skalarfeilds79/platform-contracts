@@ -8,9 +8,9 @@ contract RarityProvider {
     uint16[] commons = [1];
 
     enum Rarity {
-        Common, 
-        Rare, 
-        Epic, 
+        Common,
+        Rare,
+        Epic,
         Legendary,
         Mythic
     }
@@ -34,7 +34,6 @@ contract RarityProvider {
     ) {
         uint random = uint(keccak256(abi.encodePacked(cardIndex, rand)));
         return RandomnessComponents({
-            random: random,
             rarity: uint32(extract(random, 4, 10) % 1000000),
             quality: uint16(extract(random, 2, 4) % 1000),
             proto: uint16(extract(random, 2, 8) % (2**16-1))
@@ -101,13 +100,13 @@ contract RarityProvider {
         // modulo bias is fine - creates rarity tiers etc
         // will obviously revert is there are no cards of that type: this is expected - should never happen
         if (rarity == Rarity.Common) {
-            return commons[random % common.length];
+            return commons[random % commons.length];
         } else if (rarity == Rarity.Rare) {
-            return rares[random % rare.length];
+            return rares[random % rares.length];
         } else if (rarity == Rarity.Epic) {
-            return epics[random % epic.length];
+            return epics[random % epics.length];
         } else {
-            return legendaries[random % legendary.length];
+            return legendaries[random % legendaries.length];
         }
     }
 

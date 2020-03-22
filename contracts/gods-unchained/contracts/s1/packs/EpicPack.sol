@@ -1,4 +1,5 @@
 pragma solidity 0.5.11;
+pragma experimental ABIEncoderV2;
 
 import "./Pack.sol";
 
@@ -7,9 +8,9 @@ contract EpicPack is Pack {
     constructor(
         IBeacon _beacon, bytes32 _sku,
         IReferral _referral, ICreditCardEscrow _fiatEscrow,
-        IEscrow _escrow, IProcessor _processor
+        IProcessor _processor
     ) public Pack(
-        _beacon, _sku, 0, 299, _referral, _fiatEscrow, _escrow, _processor
+        _beacon, _sku, 0, 299, _referral, _fiatEscrow, _processor
     ) {}
 
     function _getCardDetails(uint cardIndex, uint result) internal view returns (uint16 proto, uint8 quality) {

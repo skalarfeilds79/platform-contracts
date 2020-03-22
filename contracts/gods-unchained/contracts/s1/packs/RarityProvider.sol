@@ -74,7 +74,7 @@ contract RarityProvider {
         return Rarity.Legendary;
     }
 
-    function _getQuality(uint16 randOne) internal pure returns (uint16) {
+    function _getQuality(uint16 randOne) internal pure returns (uint8) {
         if (randOne >= 998) {
             return 1;
         } else if (randOne >= 988) {
@@ -86,7 +86,7 @@ contract RarityProvider {
         }
     }
 
-    function _getShinyQuality(uint16 randOne) internal pure returns (uint16) {
+    function _getShinyQuality(uint16 randOne) internal pure returns (uint8) {
         if (randOne >= 998) {
             return 1;
         } else if (randOne >= 748) {

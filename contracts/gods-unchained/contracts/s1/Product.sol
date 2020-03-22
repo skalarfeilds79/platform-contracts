@@ -41,12 +41,12 @@ contract Product {
         processor = _processor;
     }
 
-    function purchase(uint256 qty, IProcessor.Payment memory payment, address payable referrer) public {
-        purchaseFor(msg.sender, qty, payment, referrer);
+    function purchase(uint256 qty, address payable referrer, IProcessor.Payment memory payment) public {
+        purchaseFor(msg.sender, qty, referrer, payment);
     }
 
     function purchaseFor(
-        address user, uint256 qty, IProcessor.Payment memory payment, address payable referrer
+        address user, uint256 qty, address payable referrer, IProcessor.Payment memory payment
     ) public {
         require(saleCap == 0 || saleCap >= sold + qty, "cap has been exhausted");
         uint totalPrice = price.mul(qty);

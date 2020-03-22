@@ -13,7 +13,6 @@ contract Pack is Product, RarityProvider {
         uint64 commitBlock;
         uint32 qty;
         address user;
-        uint64 escrowPeriod;
     }
 
     // All purchases recorded by this pack
@@ -62,11 +61,15 @@ contract Pack is Product, RarityProvider {
 
         bytes memory data = abi.encodeWithSignature("escrowHook(uint256)", purchaseID);
 
-        uint id = fiatEscrow.escrowBatch(vault, address(this), data, purchase.escrowPeriod, purchase.user);
+        uint id = fiatEscrow.escrowBatch(
+            vault, address(this), data, 64, purchase.user
+        );
 
     }
 
-    function purchaseFor(address user, uint256 qty, address referrer, IProcessor.Payment memory payment) public {
+    function purchaseFor(
+        address user, uint256 qty, address payable referrer, IProcessor.Payment memory payment
+    ) public {
         super.purchaseFor(user, qty, referrer, payment);
         bool shouldEscrow = (payment.currency == IProcessor.Currency.Fiat);
         _createPurchase(user, qty, shouldEscrow);
@@ -74,10 +77,10 @@ contract Pack is Product, RarityProvider {
 
     function _createCards(uint256 purchaseID) internal {
         Purchase memory purchase = purchases[purchaseID];
-        bytes32 randomness = beacon.getRandomness(purchase.commitBlock);
+        uint256 randomness = uint256(beacon.randomness(purchase.commitBlock));
         uint cardCount = purchase.qty * 5;
         uint16[] memory protos = new uint16[](cardCount);
-        uint16[] memory qualities = new uint8[](cardCount);
+        uint8[] memory qualities = new uint8[](cardCount);
         for (uint i = 0; i < cardCount; i++) {
             (protos[i], qualities[i]) = _getCardDetails(randomness, i);
         }
@@ -92,9 +95,8 @@ contract Pack is Product, RarityProvider {
     function _createPurchase(address user, uint256 qty, bool shouldEscrow) internal returns (uint256) {
         return purchases.push(Purchase({
             commitBlock: beacon.commit(0),
-            qty: qty,
-            user: user,
-            shouldEscrow: shouldEscrow
+            qty: uint32(qty),
+            user: user
         })) - 1;
     }
 

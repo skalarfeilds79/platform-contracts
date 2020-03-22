@@ -20,7 +20,7 @@ contract Processor is Ownable {
     }
 
     struct Payment {
-        PaymentType type;
+        Currency currency;
         bytes32 receiptHash;
         uint64 usdCents;
     }
@@ -38,9 +38,9 @@ contract Processor is Ownable {
         require(sku != bytes32(0), "must have a set SKU");
         require(quantity > 0, "must have a valid quality");
 
-        if (payment.type == PaymentType.FIAT) {
+        if (payment.currency == Currency.Fiat) {
             _checkReceiptAndUpdateSignerLimit(totalPrice, payment);
-        } else if (payment.type == PaymentType.ETH) {
+        } else if (payment.currency == Currency.ETH) {
             _processETHPayment(totalPrice);
         } else {
             require(false, "unsupported payment type");

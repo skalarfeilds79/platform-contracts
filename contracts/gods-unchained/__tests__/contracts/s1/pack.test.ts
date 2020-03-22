@@ -63,6 +63,7 @@ describe('Referral', () => {
     it('should deploy rare pack', async () => {
         await new RarePackFactory(owner).deploy(
           beacon.address,
+          ZERO_EX,
           sku, 
           referral.address,
           cc.address,
@@ -73,6 +74,7 @@ describe('Referral', () => {
     it('should deploy epic pack', async () => {
         await new EpicPackFactory(owner).deploy(
           beacon.address,
+          ZERO_EX,
           sku, 
           referral.address,
           cc.address,
@@ -83,6 +85,7 @@ describe('Referral', () => {
     it('should deploy legendary pack', async () => {
         await new LegendaryPackFactory(owner).deploy(
           beacon.address,
+          ZERO_EX,
           sku, 
           referral.address,
           cc.address,
@@ -93,6 +96,7 @@ describe('Referral', () => {
     it('should deploy shiny pack', async () => {
         await new ShinyPackFactory(owner).deploy(
           beacon.address,
+          ZERO_EX,
           sku, 
           referral.address,
           cc.address,

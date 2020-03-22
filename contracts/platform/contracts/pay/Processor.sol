@@ -2,28 +2,13 @@ pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/ownership/Ownable.sol";
+import "./IProcessor.sol";
 
-contract Processor is Ownable {
+contract Processor is IProcessor, Ownable {
 
     event SellerApprovalChanged(bytes32 indexed sku, address indexed seller, bool approved);
     event SignerLimitChanged(address indexed signer, uint64 usdCentsLimit);
     event PaymentProcessed(uint256 id, bytes32 sku, uint quantity, Payment payment);
-
-    enum Currency {
-        ETH, Token, Fiat
-    }
-
-    struct Limit {
-        uint256 periodEnd;
-        uint64 limit;
-        uint64 processed;
-    }
-
-    struct Payment {
-        Currency currency;
-        bytes32 receiptHash;
-        uint64 usdCents;
-    }
 
     // Track whether a contract can sell through this processor
     mapping(bytes32 => mapping(address => bool)) public sellerApproved;

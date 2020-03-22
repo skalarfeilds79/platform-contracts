@@ -4,11 +4,17 @@
  *
 */
 
+export { BatchERC721EscrowFactory } from './generated/BatchERC721EscrowFactory';
 export { BatchTokenFactory } from './generated/BatchTokenFactory';
+export { BatchTransferFactory } from './generated/BatchTransferFactory';
+export { BeaconFactory } from './generated/BeaconFactory';
 export { CardsFactory } from './generated/CardsFactory';
 export { ContextFactory } from './generated/ContextFactory';
+export { CreditCardEscrowFactory } from './generated/CreditCardEscrowFactory';
 export { ERC165Factory } from './generated/ERC165Factory';
+export { ERC20EscrowFactory } from './generated/ERC20EscrowFactory';
 export { ERC721EnumerableFactory } from './generated/ERC721EnumerableFactory';
+export { ERC721EscrowFactory } from './generated/ERC721EscrowFactory';
 export { ERC721Factory } from './generated/ERC721Factory';
 export { ERC721FullFactory } from './generated/ERC721FullFactory';
 export { ERC721MetadataFactory } from './generated/ERC721MetadataFactory';
@@ -46,6 +52,7 @@ export { OpenMinterFactory } from './generated/OpenMinterFactory';
 export { OwnableFactory } from './generated/OwnableFactory';
 export { PackFactory } from './generated/PackFactory';
 export { PaymentProcessorFactory } from './generated/PaymentProcessorFactory';
+export { ProcessorFactory } from './generated/ProcessorFactory';
 export { ProductFactory } from './generated/ProductFactory';
 export { PromoFactory } from './generated/PromoFactory';
 export { PromoFactoryFactory } from './generated/PromoFactoryFactory';
@@ -60,12 +67,18 @@ export { SeasonPackFactory } from './generated/SeasonPackFactory';
 export { ShinyPackFactory } from './generated/ShinyPackFactory';
 export { WETH9Factory } from './generated/WETH9Factory';
 
+export { BatchERC721Escrow } from './generated/BatchERC721Escrow';
 export { BatchToken } from './generated/BatchToken';
+export { BatchTransfer } from './generated/BatchTransfer';
+export { Beacon } from './generated/Beacon';
 export { Cards } from './generated/Cards';
 export { Context } from './generated/Context';
+export { CreditCardEscrow } from './generated/CreditCardEscrow';
 export { ERC165 } from './generated/ERC165';
+export { ERC20Escrow } from './generated/ERC20Escrow';
 export { ERC721 } from './generated/ERC721';
 export { ERC721Enumerable } from './generated/ERC721Enumerable';
+export { ERC721Escrow } from './generated/ERC721Escrow';
 export { ERC721Full } from './generated/ERC721Full';
 export { ERC721Metadata } from './generated/ERC721Metadata';
 export { EpicPack } from './generated/EpicPack';
@@ -102,6 +115,7 @@ export { OpenMinter } from './generated/OpenMinter';
 export { Ownable } from './generated/Ownable';
 export { Pack } from './generated/Pack';
 export { PaymentProcessor } from './generated/PaymentProcessor';
+export { Processor } from './generated/Processor';
 export { Product } from './generated/Product';
 export { RaffleItem } from './generated/RaffleItem';
 export { RarePack } from './generated/RarePack';

@@ -14,6 +14,7 @@ import {
   ShinyPack, ShinyPackFactory,
 } from '../../../src';
 import { Wallet, ethers } from 'ethers';
+import { keccak256 } from 'ethers/utils';
 
 const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();
@@ -42,7 +43,7 @@ describe('Referral', () => {
     let erc20Escrow: ERC20Escrow;
     let erc721Escrow: BatchERC721Escrow;
     let cc: CreditCardEscrow;
-    let sku = [];
+    let sku = keccak256('0x00');
 
     beforeEach(async() => {
         erc20Escrow = await new ERC20EscrowFactory(owner).deploy();

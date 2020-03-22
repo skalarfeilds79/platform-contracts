@@ -38,7 +38,7 @@ contract Processor is IProcessor, Ownable {
         return id;
     }
 
-    function _checkReceiptAndUpdateSignerLimit(Payment memory payment) internal {
+    function _checkReceiptAndUpdateSignerLimit(uint totalPrice, Payment memory payment) internal {
 
         address signer = _getSigner(payment);
 
@@ -54,9 +54,10 @@ contract Processor is IProcessor, Ownable {
     }
 
     function _getSigner(Payment memory payment) internal view returns (address) {
-        bytes32 sigHash = keccak256(abi.encodePacked(address(this), payment.usdCents));
-        require(sigHash == payment.receiptHash, "hashes must match");
-        return ecrecover(payment.receiptHash, payment.v, payment.r, payment.s);
+        return address(0);
+        // bytes32 sigHash = keccak256(abi.encodePacked(address(this), payment.usdCents));
+        // require(sigHash == payment.receiptHash, "hashes must match");
+        // return ecrecover(payment.receiptHash, payment.v, payment.r, payment.s);
     }
 
     function setSignerLimit(address signer, uint64 usdCentsLimit) public onlyOwner {
@@ -69,7 +70,7 @@ contract Processor is IProcessor, Ownable {
         emit SellerApprovalChanged(sku, seller, approved);
     }
 
-    function _processETHPayment() internal {
+    function _processETHPayment(uint totalPrice) internal {
         
     }
 

@@ -6,7 +6,7 @@ import {
     BatchERC721EscrowFactory,
     CreditCardEscrowFactory, CreditCardEscrow, 
     TestERC721Token, TestERC721TokenFactory,
-    TestCreditCardPack, TestCreditCardPackFactory
+    TestCreditCardPack, TestCreditCardPackFactory, BatchERC721Escrow
 } from '../../../src/contracts';
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
@@ -54,9 +54,10 @@ describe('CreditCardEscrow', () => {
     });
   });
 
-  describe('#escrowERC20', () => {
+  describe('#escrow', () => {
 
-    let escrow: ERC20Escrow;
+    let erc20Escrow: ERC20Escrow;
+    let erc721Escrow: BatchERC721Escrow;
     let cc: CreditCardEscrow;
     let erc20: TestERC20Token;
     let erc721: TestERC721Token;
@@ -65,10 +66,11 @@ describe('CreditCardEscrow', () => {
     beforeEach(async() => {
         erc20 = await new TestERC20TokenFactory(user).deploy();
         erc721 = await new TestERC721TokenFactory(user).deploy();
-        escrow = await new ERC20EscrowFactory(user).deploy();
+        erc20Escrow = await new ERC20EscrowFactory(user).deploy();
+        erc721Escrow = await new BatchERC721EscrowFactory(user).deploy();
         cc = await new CreditCardEscrowFactory(user).deploy(
-            escrow.address,
-            ZERO_EX,
+            erc20Escrow.address,
+            erc721Escrow.address,
             ZERO_EX, 
             100,
             ZERO_EX,

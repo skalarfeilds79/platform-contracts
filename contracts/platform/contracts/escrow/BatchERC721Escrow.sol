@@ -20,7 +20,7 @@ contract BatchERC721Escrow is IBatchERC721Escrow, ERC721Escrow {
      */
     function callbackEscrow(Vault memory vault, address callbackTo, bytes memory callbackData) public returns (uint256 vaultID) {
         vaultID = vaults.push(vault) - 1;
-        _callbackEscrow(vaultID, callbackTo, callbackData);
+        callbackTo.call(callbackData);
         return vaultID;
     }
 

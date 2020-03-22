@@ -21,7 +21,7 @@ contract ICreditCardEscrow {
      * @param _id The ID of the escrow account to be marked
      */
     function requestRelease(address _escrow, uint _id) public;
-    
+
     /**
      * @dev Cancel a release request
      *
@@ -35,7 +35,7 @@ contract ICreditCardEscrow {
      * @param _id The ID of the escrow account to be marked
      */
     function requestDestruction(address _escrow, uint _id) public;
-    
+
     /**
      * @dev Revoke a destruction request
      *
@@ -50,14 +50,13 @@ contract ICreditCardEscrow {
      */
     function destroy(address _escrow, uint _id) public;
 
-    function escrowERC20(ERC20Escrow.Vault memory vault, uint64 _duration, address _owner) public returns (uint);
+    function escrowERC20(IERC20Escrow.Vault memory vault, uint64 _duration, address _owner) public returns (uint);
 
     function escrowBatch(
-        BatchERC721Escrow.Vault memory vault, address cbTo, bytes memory cbData,
+        IBatchERC721Escrow.Vault memory vault, address cbTo, bytes memory cbData,
         uint64 _duration, address _owner
     ) public returns (uint);
 
-    function escrowList(ListERC721Escrow.Vault memory vault, address cbTo, bytes memory cbData) public returns (uint);
-
+    function escrowList(IListERC721Escrow.Vault memory vault, address cbTo, bytes memory cbData) public returns (uint);
 
 }

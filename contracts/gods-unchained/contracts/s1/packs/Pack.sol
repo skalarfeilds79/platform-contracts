@@ -94,7 +94,7 @@ contract Pack is Product, RarityProvider {
 
     function _createPurchase(address user, uint256 qty, bool shouldEscrow) internal returns (uint256) {
         return purchases.push(Purchase({
-            commitBlock: beacon.commit(0),
+            commitBlock: uint64(beacon.commit(0)),
             qty: uint32(qty),
             user: user
         })) - 1;

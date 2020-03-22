@@ -15,6 +15,10 @@ import {
 } from '../../../src';
 import { Wallet, ethers } from 'ethers';
 import { keccak256 } from 'ethers/utils';
+import { RarePack } from '../../../src/generated/RarePack';
+import { EpicPack } from '../../../src/generated/EpicPack';
+import { LegendaryPack } from '../../../src/generated/LegendaryPack';
+import { ShinyPack } from '../../../src/generated/ShinyPack';
 
 const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();
@@ -44,6 +48,11 @@ describe('Referral', () => {
     let erc721Escrow: BatchERC721Escrow;
     let cc: CreditCardEscrow;
     let sku = keccak256('0x00');
+
+    let rare: RarePack;
+    let epic: EpicPack;
+    let legendary: LegendaryPack;
+    let shiny: ShinyPack;
 
     beforeEach(async() => {
         erc20Escrow = await new ERC20EscrowFactory(owner).deploy();
@@ -103,6 +112,13 @@ describe('Referral', () => {
           cc.address,
           processor.address
         );
+    });
+
+    it('should purchase one pack', async () => {
+      await rare.purchase(1, ZERO_EX, {
+        usdCents: 299,
+        receipt: '',
+      }, { value: 100 })
     });
 
   });

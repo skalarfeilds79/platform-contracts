@@ -61,9 +61,11 @@ contract Pack is Product, RarityProvider {
 
         bytes memory data = abi.encodeWithSignature("escrowHook(uint256)", purchaseID);
 
-        uint id = fiatEscrow.escrowBatch(
+        uint escrowID = fiatEscrow.escrowBatch(
             vault, address(this), data, 64, purchase.user
         );
+
+        event ProductEscrowed(purchaseID, address(fiatEscrow), escrowID);
 
     }
 

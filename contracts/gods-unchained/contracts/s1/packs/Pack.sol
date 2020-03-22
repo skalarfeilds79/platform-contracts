@@ -66,8 +66,8 @@ contract Pack is Product, Rarity {
 
     function purchaseFor(address user, uint256 qty, address referrer, Processor.Payment memory payment) public {
         super.purchaseFor(user, qty, referrer, payment);
-        // bool shouldEscrow = (payment.type == Processor.PaymentType.FIAT);
-        // _createPurchase(user, qty shouldEscrow);
+        bool shouldEscrow = (payment.currency == IProcessor.Currency.Fiat);
+        _createPurchase(user, qty, shouldEscrow);
     }
 
     function _createCards(Purchase memory purchase) internal {

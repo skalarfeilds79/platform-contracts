@@ -1,9 +1,9 @@
 pragma solidity 0.5.11;
 
 import "./referral/IReferral.sol";
+import "@imtbl/platform/contracts/escrow/IEscrow.sol";
 import "@imtbl/platform/contracts/escrow/releaser/ICreditCardEscrow.sol";
 import "@imtbl/platform/contracts/pay/IProcessor.sol";
-import "@imtbl/platform/contracts/pay/Processor.sol";
 
 contract Product {
 
@@ -49,7 +49,9 @@ contract Product {
         purchaseFor(msg.sender, qty, payment, referrer);
     }
 
-    function purchaseFor(address user, uint256 qty, Processor.Payment memory payment, address payable referrer) public {
+    function purchaseFor(
+        address user, uint256 qty, IProcessor.Payment memory payment, address payable referrer
+    ) public {
         require(saleCap == 0 || saleCap >= sold + qty, "cap has been exhausted");
         uint totalPrice = price.mul(qty);
         // if the user is paying in ETH, we can pay affiliate fees instantly!

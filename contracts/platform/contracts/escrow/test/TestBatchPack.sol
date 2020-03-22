@@ -1,7 +1,7 @@
 pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
-import "../BatchERC721Escrow.sol";
+import "../IBatchERC721Escrow.sol";
 import "./TestERC721Token.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
@@ -12,10 +12,10 @@ contract TestBatchPack {
     }
 
     Purchase[] public purchases;
-    BatchERC721Escrow escrow;
+    IBatchERC721Escrow escrow;
     TestERC721Token asset;
 
-    constructor(BatchERC721Escrow _escrow, TestERC721Token _asset) public {
+    constructor(IBatchERC721Escrow _escrow, TestERC721Token _asset) public {
         escrow = _escrow;
         asset = _asset;
     }
@@ -26,7 +26,7 @@ contract TestBatchPack {
         uint256 low = asset.totalSupply();
         uint256 high = low + count;
 
-        BatchERC721Escrow.Vault memory vault = BatchERC721Escrow.Vault({
+        IBatchERC721Escrow.Vault memory vault = IBatchERC721Escrow.Vault({
             player: msg.sender,
             releaser: msg.sender,
             asset: asset,

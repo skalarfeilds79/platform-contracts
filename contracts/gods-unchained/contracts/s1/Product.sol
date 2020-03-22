@@ -1,7 +1,7 @@
 pragma solidity 0.5.11;
 
 import "./referral/IReferral.sol";
-import "@imtbl/platform/contracts/escrow/ICreditCardEscrow.sol";
+import "@imtbl/platform/contracts/escrow/releaser/ICreditCardEscrow.sol";
 import "@imtbl/platform/contracts/pay/IProcessor.sol";
 
 contract Product {
@@ -24,19 +24,22 @@ contract Product {
     bytes32 sku;
     // Referral contract
     IReferral referral;
+    // Core escrow contract
+    IEscrow escrow;
     // Escrow contract
-    ICreditCardEscrow escrow;
+    ICreditCardEscrow fiatEscrow;
     // Payment processor
     IProcessor processor;
 
     constructor(
         bytes32 _sku, uint256 _saleCap, uint _price,
-        IReferral _referral, ICreditCardEscrow _escrow, IProcessor _processor
+        IReferral _referral, ICreditCardEscrow _fiatEscrow, IEscrow _escrow, IProcessor _processor
     ) public {
         sku = _sku;
         saleCap = _saleCap;
         price = _price;
         referral = _referral;
+        fiatEscrow = _fiatEscrow;
         escrow = _escrow;
         processor = _processor;
     }
@@ -49,14 +52,15 @@ contract Product {
         require(saleCap == 0 || saleCap >= sold + qty, "cap has been exhausted");
         uint totalPrice = price.mul(qty);
         // if the user is paying in ETH, we can pay affiliate fees instantly!
-        if (payment.type == Processor.PaymentType.ETH && referrer != address(0)) {
-            (totalPrice, uint toReferrer) = referral.getSplit(msg.sender, totalPrice, referrer);
+        if (payment.currency == Processor.Currency.ETH && referrer != address(0)) {
+            uint toReferrer;
+            (totalPrice, toReferrer) = referral.getSplit(msg.sender, totalPrice, referrer);
             referrer.transfer(toReferrer);
         }
         uint256 saleID = processor.process(sku, qty, totalPrice, payment);
         sold += qty;
 
-        emit ProductPurchased(saleID, user, referrer, qty, payment.type);
+        emit ProductPurchased(saleID, user, referrer, qty, payment.currency);
     }
 
     function available() public {

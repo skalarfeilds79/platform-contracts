@@ -9,8 +9,8 @@ contract Processor is Ownable {
     event SignerLimitChanged(address indexed signer, uint64 usdCentsLimit);
     event PaymentProcessed(uint256 id, bytes32 sku, uint quantity, Payment payment);
 
-    enum PaymentType {
-        ETH, TOKEN, FIAT
+    enum Currency {
+        ETH, Token, Fiat
     }
 
     struct Limit {

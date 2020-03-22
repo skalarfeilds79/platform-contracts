@@ -32,13 +32,14 @@ contract Beacon is IBeacon {
      *
      * @param offset the offset from the current block of the block which will be used in our random seed
      */
-    function commit(uint256 offset) public {
+    function commit(uint256 offset) public returns (uint256) {
         require(block.number + offset >= block.number, "must not overflow");
         uint256 commitBlock = block.number + offset;
         if (!commitRequested[commitBlock]) {
             commitRequested[commitBlock] = true;
             emit Commit(commitBlock);
         }
+        return commitBlock;
     }
 
     /**

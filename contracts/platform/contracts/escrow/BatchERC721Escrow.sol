@@ -4,16 +4,9 @@ pragma experimental ABIEncoderV2;
 import "../token/BatchTransfer.sol";
 import "./ERC721Escrow.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "./IBatchERC721Escrow.sol";
 
-contract BatchERC721Escrow is ERC721Escrow {
-
-    struct Vault {
-        address player;
-        address releaser;
-        IERC721 asset;
-        uint256 lowTokenID;
-        uint256 highTokenID;
-    }
+contract BatchERC721Escrow is IBatchERC721Escrow, ERC721Escrow {
 
     // List of all escrow vaults
     Vault[] public vaults;

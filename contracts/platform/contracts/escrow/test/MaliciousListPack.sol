@@ -1,7 +1,7 @@
 pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
-import "../ListERC721Escrow.sol";
+import "../IListERC721Escrow.sol";
 import "./TestERC721Token.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
@@ -12,17 +12,17 @@ contract MaliciousListPack {
     }
 
     Purchase[] public purchases;
-    ListERC721Escrow escrow;
+    IListERC721Escrow escrow;
     TestERC721Token asset;
 
-    constructor(ListERC721Escrow _escrow, TestERC721Token _asset) public {
+    constructor(IListERC721Escrow _escrow, TestERC721Token _asset) public {
         escrow = _escrow;
         asset = _asset;
     }
 
     function maliciousPush(uint256 count) public {
 
-        ListERC721Escrow.Vault memory vault = _createVault(count);
+        IListERC721Escrow.Vault memory vault = _createVault(count);
 
         uint256 id = purchases.push(Purchase({
             count: count
@@ -35,7 +35,7 @@ contract MaliciousListPack {
 
     function maliciousPull(uint256 count) public {
 
-        ListERC721Escrow.Vault memory vault = _createVault(count);
+        IListERC721Escrow.Vault memory vault = _createVault(count);
 
         uint256 id = purchases.push(Purchase({
             count: count
@@ -50,7 +50,7 @@ contract MaliciousListPack {
         require(msg.sender == address(escrow), "must be the escrow contract");
         Purchase memory p = purchases[purchaseID];
 
-        ListERC721Escrow.Vault memory vault = _createVault(p.count);
+        IListERC721Escrow.Vault memory vault = _createVault(p.count);
 
         bytes memory data = abi.encodeWithSignature("emptyHook()");
 
@@ -68,7 +68,7 @@ contract MaliciousListPack {
         require(msg.sender == address(escrow), "must be the escrow contract");
         Purchase memory p = purchases[purchaseID];
 
-        ListERC721Escrow.Vault memory vault = _createVault(p.count);
+        IListERC721Escrow.Vault memory vault = _createVault(p.count);
 
         asset.mint(address(this), p.count);
         asset.setApprovalForAll(address(escrow), true);
@@ -78,7 +78,7 @@ contract MaliciousListPack {
         delete purchases[purchaseID];
     }
 
-    function _createVault(uint256 count) internal returns (ListERC721Escrow.Vault memory) {
+    function _createVault(uint256 count) internal returns (IListERC721Escrow.Vault memory) {
 
         // predict token IDs
 
@@ -88,7 +88,7 @@ contract MaliciousListPack {
             ids[i] = start + i;
         }
 
-        return ListERC721Escrow.Vault({
+        return IListERC721Escrow.Vault({
             player: msg.sender,
             releaser: msg.sender,
             asset: asset,

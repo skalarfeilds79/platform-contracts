@@ -1,9 +1,9 @@
 pragma solidity 0.5.11;
 
-interface ICards {
+contract ICards {
 
-    function mintCards(address user, uint16[] memory protos, uint8[] memory qualities) external;
-    function mintCards(address user, uint16 proto, uint8 quality) external;
-    function nextBatch() external view returns (uint256);
+    function mintCards(address user, uint16[] memory protos, uint8[] memory qualities) public;
+    function mintCards(address user, uint16 proto, uint8 quality) public;
+    function nextBatch() public view returns (uint256);
 
 }

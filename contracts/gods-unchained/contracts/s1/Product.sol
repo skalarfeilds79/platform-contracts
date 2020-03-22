@@ -3,6 +3,7 @@ pragma solidity 0.5.11;
 import "./referral/IReferral.sol";
 import "@imtbl/platform/contracts/escrow/releaser/ICreditCardEscrow.sol";
 import "@imtbl/platform/contracts/pay/IProcessor.sol";
+import "@imtbl/platform/contracts/pay/Processor.sol";
 
 contract Product {
 

@@ -28,7 +28,10 @@ export { ListTransferFactory } from './generated/ListTransferFactory';
 export { MaliciousBatchPackFactory } from './generated/MaliciousBatchPackFactory';
 export { MaliciousListPackFactory } from './generated/MaliciousListPackFactory';
 export { OwnableFactory } from './generated/OwnableFactory';
+<<<<<<< HEAD
 export { PayFactory } from './generated/PayFactory';
+=======
+>>>>>>> 696dcba0a611a6e0106c2f8d3d518e241dce66d6
 export { ProcessorFactory } from './generated/ProcessorFactory';
 export { TestBatcbPackFactory } from './generated/TestBatcbPackFactory';
 export { TestBatchPackFactory } from './generated/TestBatchPackFactory';
@@ -63,7 +66,10 @@ export { ListTransfer } from './generated/ListTransfer';
 export { MaliciousBatchPack } from './generated/MaliciousBatchPack';
 export { MaliciousListPack } from './generated/MaliciousListPack';
 export { Ownable } from './generated/Ownable';
+<<<<<<< HEAD
 export { Pay } from './generated/Pay';
+=======
+>>>>>>> 696dcba0a611a6e0106c2f8d3d518e241dce66d6
 export { Processor } from './generated/Processor';
 export { TestBatcbPack } from './generated/TestBatcbPack';
 export { TestBatchPack } from './generated/TestBatchPack';

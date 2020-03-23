@@ -1,6 +1,6 @@
 import 'jest';
 
-import { Processor, ProcessorFactory } from '../src/contracts';
+import { Processor, ProcessorFactory } from '../../src/contracts';
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { ethers, Wallet } from 'ethers';
@@ -11,7 +11,7 @@ const blockchain = new Blockchain();
 
 const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
-describe('ERC20Escrow', () => {
+describe('Processor', () => {
 
   const [user, other] = generatedWallets(provider);
 
@@ -45,17 +45,17 @@ describe('ERC20Escrow', () => {
         return await signer.signMessage(hash);
     }
 
-    it('should be able to process payment', async () => {
-        await processor.setSignerLimit(user.address, 100);
-        let receipt = await createReceipt(user, 100);
-        await processor.process();
-    });
+    // it('should be able to process payment', async () => {
+    //     await processor.setSignerLimit(user.address, 100);
+    //     let receipt = await createReceipt(user, 100);
+    //     await processor.process();
+    // });
 
-    it('should not be able to exceed daily limit', async () => {
-        await processor.setSignerLimit(user.address, 100)
-        let receipt = await createReceipt(user, 101);
-        await expectRevert(processor.process())
-    });
+    // it('should not be able to exceed daily limit', async () => {
+    //     await processor.setSignerLimit(user.address, 100)
+    //     let receipt = await createReceipt(user, 101);
+    //     await expectRevert(processor.process())
+    // });
 
   });
 
@@ -79,26 +79,26 @@ describe('ERC20Escrow', () => {
   describe('#setSellerApproval', () => {
 
     let processor: Processor;
-    let product = "";
+    let sku = keccak256('0x00');
 
     beforeEach(async () => {
         processor = await new ProcessorFactory(user).deploy();
     });
 
     it('should start as unapproved', async () => {
-        let approved = await processor.sellerApproval(product, other.address);
+        let approved = await processor.sellerApproved(sku, other.address);
         expect(approved).toBeFalsy();
     });
 
     it('should be able to set seller approval as owner', async () => {
-        await processor.setSellerApproval(product, other.address, true);
-        let approved = await processor.sellerApproval(product, other.address);
+        await processor.setSellerApproval(sku, other.address, true);
+        let approved = await processor.sellerApproved(sku, other.address);
         expect(approved).toBeTruthy();
     });
 
     it('should not be able to set seller approval as non-owner', async () => {
-        await expectRevert(processor.setSellerApproval(product, other.address, true));
-        let approved = await processor.sellerApproval(product, other.address);
+        await expectRevert(processor.setSellerApproval(sku, other.address, true));
+        let approved = await processor.sellerApproved(sku, other.address);
         expect(approved).toBeTruthy();
     });
   });

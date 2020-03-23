@@ -2,14 +2,16 @@ pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/ownership/Ownable.sol";
-import "./IProcessor.sol";
+import "./IPay.sol";
 
-contract Processor is IProcessor, Ownable {
+contract Pay is IPay, Ownable {
 
     event SellerApprovalChanged(bytes32 indexed sku, address indexed seller, bool approved);
     event SignerLimitChanged(address indexed signer, uint64 usdCentsLimit);
     event PaymentProcessed(uint256 id, bytes32 sku, uint quantity, Payment payment);
 
+    // Stores the nonce mapping
+    mapping(address => mapping(uint256 => bool)) receiptNonces;
     // Track whether a contract can sell through this processor
     mapping(bytes32 => mapping(address => bool)) public sellerApproved;
     // Track the daily limit of each signing address
@@ -17,28 +19,27 @@ contract Processor is IProcessor, Ownable {
     // The number of payments this contract has processed
     uint256 public count;
 
+    function process(Order memory order, Payment memory payment) public payable returns (uint) {
 
-    function process(bytes32 sku, uint quantity, uint totalPrice, Payment memory payment) public returns (uint) {
+        require(false, "my error");
 
-        require(sku != bytes32(0), "must have a set SKU");
-        require(quantity > 0, "must have a valid quality");
+        // require(order.sku != bytes32(0), "must have a set SKU");
+        // require(order.qty > 0, "must have a valid quality");
 
-        if (payment.currency == Currency.Fiat) {
-            _checkReceiptAndUpdateSignerLimit(totalPrice, payment);
-        } else if (payment.currency == Currency.ETH) {
-            _processETHPayment(totalPrice);
-        } else {
-            require(false, "unsupported payment type");
-        }
+        // if (payment.currency == Currency.USDCents) {
+        //     _checkReceiptAndUpdateSignerLimit(order.amount, payment);
+        // } else if (payment.currency == Currency.ETH) {
+        //     _processETHPayment(order.amount);
+        // } else {
+        //     require(false, "unsupported payment type");
+        // }
 
         uint id = count++;
-
-        emit PaymentProcessed(id, sku, quantity, payment);
 
         return id;
     }
 
-    function _checkReceiptAndUpdateSignerLimit(Payment memory payment) internal {
+    function _checkReceiptAndUpdateSignerLimit(uint256 amount, Payment memory payment) internal {
 
         address signer = _getSigner(payment);
 
@@ -55,8 +56,9 @@ contract Processor is IProcessor, Ownable {
 
     function _getSigner(Payment memory payment) internal view returns (address) {
         bytes32 sigHash = keccak256(abi.encodePacked(address(this), payment.usdCents));
-        require(sigHash == payment.receiptHash, "hashes must match");
-        return ecrecover(payment.receiptHash, payment.v, payment.r, payment.s);
+        return address(0);
+        // require(sigHash == payment.receiptHash, "hashes must match");
+        // return ecrecover(payment.receiptHash, payment.v, payment.r, payment.s);
     }
 
     function setSignerLimit(address signer, uint64 usdCentsLimit) public onlyOwner {
@@ -69,7 +71,7 @@ contract Processor is IProcessor, Ownable {
         emit SellerApprovalChanged(sku, seller, approved);
     }
 
-    function _processETHPayment() internal {
+    function _processETHPayment(uint256 amount) internal {
         
     }
 

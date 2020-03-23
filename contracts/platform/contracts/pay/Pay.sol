@@ -8,7 +8,7 @@ contract Pay is IPay, Ownable {
 
     event SellerApprovalChanged(bytes32 indexed sku, address indexed seller, bool approved);
     event SignerLimitChanged(address indexed signer, uint64 usdCentsLimit);
-    event PaymentProcessed(uint256 id, bytes32 sku, uint quantity, Payment payment);
+    event PaymentProcessed(uint256 id, Order order, Payment payment);
 
     // Stores the nonce mapping
     mapping(address => mapping(uint256 => bool)) receiptNonces;
@@ -21,20 +21,21 @@ contract Pay is IPay, Ownable {
 
     function process(Order memory order, Payment memory payment) public payable returns (uint) {
 
-        require(false, "my error");
+        require(order.sku != bytes32(0), "must have a set SKU");
+        require(order.qty > 0, "must have a valid quality");
+        require(sellerApproved[order.sku][msg.sender], "must be approved to sell this product");
 
-        // require(order.sku != bytes32(0), "must have a set SKU");
-        // require(order.qty > 0, "must have a valid quality");
-
-        // if (payment.currency == Currency.USDCents) {
-        //     _checkReceiptAndUpdateSignerLimit(order.amount, payment);
-        // } else if (payment.currency == Currency.ETH) {
-        //     _processETHPayment(order.amount);
-        // } else {
-        //     require(false, "unsupported payment type");
-        // }
+        if (payment.currency == Currency.USDCents) {
+            _checkReceiptAndUpdateSignerLimit(order.amount, payment);
+        } else if (payment.currency == Currency.ETH) {
+            _processETHPayment(order.amount);
+        } else {
+            require(false, "unsupported payment type");
+        }
 
         uint id = count++;
+
+        emit PaymentProcessed(id, order, payment);
 
         return id;
     }
@@ -43,6 +44,9 @@ contract Pay is IPay, Ownable {
 
         address signer = _getSigner(payment);
 
+        require(!receiptNonces[signer][payment.receipt.nonce], "nonce must not be used");
+        receiptNonces[signer][payment.receipt.nonce] = true;
+
         Limit storage limit = signerLimits[signer];
 
         if (limit.periodEnd < block.timestamp) {
@@ -50,15 +54,17 @@ contract Pay is IPay, Ownable {
             limit.processed = 0;
         }
 
-        require (limit.limit > limit.processed + payment.usdCents, "exceeds signing limit for this address");
-        limit.processed += payment.usdCents;
+        // TODO: this
+        require(payment.receipt.usdCents >= amount, "must pay more than the requested amount");
+        require (limit.limit > limit.processed + payment.receipt.usdCents, "exceeds signing limit for this address");
+        limit.processed += payment.receipt.usdCents;
     }
 
     function _getSigner(Payment memory payment) internal view returns (address) {
-        bytes32 sigHash = keccak256(abi.encodePacked(address(this), payment.usdCents));
-        return address(0);
-        // require(sigHash == payment.receiptHash, "hashes must match");
-        // return ecrecover(payment.receiptHash, payment.v, payment.r, payment.s);
+        SignedReceipt memory receipt = payment.receipt;
+        bytes32 sigHash = keccak256(abi.encodePacked(address(this), receipt.nonce, receipt.usdCents));
+        require(sigHash == receipt.signedHash, "hashes must match");
+        return ecrecover(receipt.signedHash, receipt.v, receipt.r, receipt.s);
     }
 
     function setSignerLimit(address signer, uint64 usdCentsLimit) public onlyOwner {
@@ -72,7 +78,7 @@ contract Pay is IPay, Ownable {
     }
 
     function _processETHPayment(uint256 amount) internal {
-        
+        require(msg.value >= amount, "must have provided enough ETH");
     }
 
 }

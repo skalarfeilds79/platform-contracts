@@ -21,8 +21,16 @@ contract IPay {
         Currency currency;
         address token;
         uint256 maxToken;
-        bytes signedReceipt;
+        SignedReceipt receipt;
+    }
+
+    struct SignedReceipt {
+        uint256 nonce;
         uint64 usdCents;
+        bytes32 signedHash;
+        bytes32 r;
+        bytes32 s;
+        uint8 v;
     }
 
     struct Limit {

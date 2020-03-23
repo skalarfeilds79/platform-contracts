@@ -71,9 +71,6 @@ describe('Processor', () => {
         await processor.setSignerLimit(user.address, 100);
     });
 
-    it('should not be able to set signer limit as non-owner', async () => {
-        await expectRevert(processor.setSignerLimit(user.address, 100));
-    });
   });
 
   describe('#setSellerApproval', () => {
@@ -96,11 +93,6 @@ describe('Processor', () => {
         expect(approved).toBeTruthy();
     });
 
-    it('should not be able to set seller approval as non-owner', async () => {
-        await expectRevert(processor.setSellerApproval(sku, other.address, true));
-        let approved = await processor.sellerApproved(sku, other.address);
-        expect(approved).toBeTruthy();
-    });
   });
 
 });

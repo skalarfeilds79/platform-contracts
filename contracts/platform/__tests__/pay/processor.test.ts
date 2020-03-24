@@ -1,6 +1,6 @@
 import 'jest';
 
-import { Processor, ProcessorFactory } from '../../src/contracts';
+import { Pay, PayFactory } from '../../src/contracts';
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { ethers, Wallet } from 'ethers';
@@ -11,7 +11,7 @@ const blockchain = new Blockchain();
 
 const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
-describe('Processor', () => {
+describe('Pay', () => {
 
   const [user, other] = generatedWallets(provider);
 
@@ -27,16 +27,16 @@ describe('Processor', () => {
 
   describe('#constructor', () => {
     it('should be able to deploy the processor contract', async () => {
-      const processor = await new ProcessorFactory(user).deploy();
+      const processor = await new PayFactory(user).deploy();
     });
   });
 
   describe('#process', () => {
 
-    let processor: Processor;
+    let processor: Pay;
 
     beforeEach(async () => {
-        processor = await new ProcessorFactory(user).deploy();
+        processor = await new PayFactory(user).deploy();
     });
 
     async function createReceipt(signer: Wallet, usdCents: number) {
@@ -61,10 +61,10 @@ describe('Processor', () => {
 
   describe('#setSignerLimit', () => {
 
-    let processor: Processor;
+    let processor: Pay;
 
     beforeEach(async () => {
-        processor = await new ProcessorFactory(user).deploy();
+        processor = await new PayFactory(user).deploy();
     });
 
     it('should be able to set signer limit as owner', async () => {
@@ -75,11 +75,11 @@ describe('Processor', () => {
 
   describe('#setSellerApproval', () => {
 
-    let processor: Processor;
+    let processor: Pay;
     let sku = keccak256('0x00');
 
     beforeEach(async () => {
-        processor = await new ProcessorFactory(user).deploy();
+        processor = await new PayFactory(user).deploy();
     });
 
     it('should start as unapproved', async () => {

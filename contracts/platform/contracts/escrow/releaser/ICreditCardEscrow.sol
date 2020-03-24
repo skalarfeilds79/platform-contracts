@@ -50,13 +50,15 @@ contract ICreditCardEscrow {
      */
     function destroy(address _escrow, uint _id) public;
 
-    function escrowERC20(IERC20Escrow.Vault memory vault, uint64 _duration, address _owner) public returns (uint);
-
-    function escrowBatch(
-        IBatchERC721Escrow.Vault memory vault, address cbTo, bytes memory cbData,
-        uint64 _duration, address _owner
+    function escrowERC20(
+        IERC20Escrow.Vault memory vault, address cbTo, bytes memory cbData, uint64 _duration
     ) public returns (uint);
 
-    function escrowList(IListERC721Escrow.Vault memory vault, address cbTo, bytes memory cbData) public returns (uint);
+    function escrowBatch(
+        IBatchERC721Escrow.Vault memory vault, address cbTo, bytes memory cbData, uint64 _duration
+    ) public returns (uint);
+
+    function getERC20Escrow() public view returns (IERC20Escrow);
+    function getBatchEscrow() public view returns (IBatchERC721Escrow);
 
 }

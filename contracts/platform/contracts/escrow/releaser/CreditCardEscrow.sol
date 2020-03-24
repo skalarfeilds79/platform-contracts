@@ -263,7 +263,7 @@ contract CreditCardEscrow is Ownable {
         IERC20Escrow.Vault memory vault, address cbTo, bytes memory cbData, uint64 duration
     ) public returns (uint) {
 
-        require(_duration > 0, "must be locked for a number of blocks");
+        require(duration > 0, "must be locked for a number of blocks");
         require(vault.releaser == address(this), "must be releasable by this");
 
         // escrow the assets with this contract as the releaser
@@ -286,7 +286,7 @@ contract CreditCardEscrow is Ownable {
         IBatchERC721Escrow.Vault memory vault, address cbTo, bytes memory cbData, uint64 duration
     ) public returns (uint) {
 
-        require(_duration > 0, "must be locked for a number of blocks");
+        require(duration > 0, "must be locked for a number of blocks");
         require(vault.releaser == address(this), "must be releasable by this");
 
         // escrow the assets with this contract as the releaser
@@ -295,6 +295,14 @@ contract CreditCardEscrow is Ownable {
         _lock(address(batchEscrow), id, duration, vault.player);
 
         return id;
+    }
+
+    function getERC20Escrow() public view returns (IERC20Escrow) {
+        return erc20Escrow;
+    }
+
+    function getBatchEscrow() public view returns (IBatchERC721Escrow) {
+        return batchEscrow;
     }
 
     function _lock(address _escrow, uint _id, uint64 _duration, address _owner) internal {
@@ -306,7 +314,8 @@ contract CreditCardEscrow is Ownable {
             owner: _owner,
             endBlock: uint64(block.number + _duration),
             destructionBlock: 0,
-            releaseBlock: 0
+            releaseBlock: 0,
+            releaseTo: address(0)
         });
 
         emit Escrowed(_escrow, _id, _owner, _duration);

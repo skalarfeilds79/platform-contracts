@@ -1,6 +1,9 @@
 import 'jest';
 
-import { ERC20Escrow, ERC20EscrowFactory, TestERC20Token, TestERC20TokenFactory } from '../../src/contracts';
+import { 
+  ERC20Escrow, ERC20EscrowFactory, TestERC20Token, TestERC20TokenFactory, 
+  TestChest, TestChestFactory, MaliciousChest, MaliciousChestFactory
+} from '../../src/contracts';
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
@@ -144,6 +147,34 @@ describe('ERC20Escrow', () => {
       await escrow.release(0, user.address);
       await checkBalance(erc20, user.address, 1000);
       await checkBalance(erc20, escrow.address, 0);
+    });
+
+  });
+
+  describe('#callbackEscrow', () => {
+
+    let escrow: ERC20Escrow;
+    let erc20: TestERC20Token;
+    let malicious: MaliciousChest;
+    let chest: TestChest;
+
+    beforeEach(async() => {
+        escrow = await new ERC20EscrowFactory(user).deploy();
+        erc20 = await new TestERC20TokenFactory(user).deploy();
+        malicious = await new MaliciousChestFactory(user).deploy(escrow.address, erc20.address);
+        chest = await new TestChestFactory(user).deploy(escrow.address, erc20.address);
+    });
+
+    it('should be able to create a vault using a callback', async () => {
+      await chest.purchase(5);
+    });
+
+    it('should not be able to create a push escrow vault in the callback', async () => {
+      await expectRevert(malicious.maliciousPush(5));
+    });
+
+    it('should not be able to create a pull escrow vault in the callback', async () => {
+      await expectRevert(malicious.maliciousPull(5));
     });
 
   });

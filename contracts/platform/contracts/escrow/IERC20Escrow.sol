@@ -19,6 +19,18 @@ contract IERC20Escrow {
      * @dev Create a new escrow vault
      *
      * @param vault the escrow vault to be created
+     * @param callbackTo the address to use for the callback transaction
+     * @param callbackData the data to pass to the callback transaction
+     */
+    function callbackEscrow(
+        Vault memory vault, address callbackTo, bytes memory callbackData
+    ) public returns (uint256 vaultID);
+
+    /**
+     * @dev Create a new escrow vault
+     *
+     * @param vault the escrow vault to be created
+     * @param from the address from which to pull the tokens
      */
     function escrow(Vault memory vault, address from) public returns (uint256 vaultID);
 

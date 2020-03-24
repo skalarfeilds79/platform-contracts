@@ -10,7 +10,7 @@ const blockchain = new Blockchain();
 describe('Referral', () => {
 
   const [ownerWallet] = generatedWallets(provider);
-  
+
   beforeEach(async () => {
     await blockchain.resetAsync();
     await blockchain.saveSnapshotAsync();

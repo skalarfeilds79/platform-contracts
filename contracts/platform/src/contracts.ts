@@ -21,20 +21,22 @@ export { IERC20Factory } from './generated/IERC20Factory';
 export { IERC721Factory } from './generated/IERC721Factory';
 export { IERC721ReceiverFactory } from './generated/IERC721ReceiverFactory';
 export { IListERC721EscrowFactory } from './generated/IListERC721EscrowFactory';
+export { IPayFactory } from './generated/IPayFactory';
 export { IReleasableFactory } from './generated/IReleasableFactory';
 export { ListERC721EscrowFactory } from './generated/ListERC721EscrowFactory';
 export { ListTransferFactory } from './generated/ListTransferFactory';
 export { MaliciousBatchPackFactory } from './generated/MaliciousBatchPackFactory';
 export { MaliciousListPackFactory } from './generated/MaliciousListPackFactory';
 export { OwnableFactory } from './generated/OwnableFactory';
+export { PayFactory } from './generated/PayFactory';
 
-export { ProcessorFactory } from './generated/ProcessorFactory';
 export { TestBatchPackFactory } from './generated/TestBatchPackFactory';
 export { TestCreditCardPackFactory } from './generated/TestCreditCardPackFactory';
 export { TestERC20TokenFactory } from './generated/TestERC20TokenFactory';
 export { TestERC721TokenFactory } from './generated/TestERC721TokenFactory';
 export { TestListPackFactory } from './generated/TestListPackFactory';
 export { TestPackFactory } from './generated/TestPackFactory';
+export { TestVendorFactory } from './generated/TestVendorFactory';
 
 export { BatchERC721Escrow } from './generated/BatchERC721Escrow';
 export { BatchTransfer } from './generated/BatchTransfer';
@@ -53,6 +55,7 @@ export { IERC20Escrow } from './generated/IERC20Escrow';
 export { IERC721 } from './generated/IERC721';
 export { IERC721Receiver } from './generated/IERC721Receiver';
 export { IListERC721Escrow } from './generated/IListERC721Escrow';
+export { IPay } from './generated/IPay';
 export { IReleasable } from './generated/IReleasable';
 export { ListERC721Escrow } from './generated/ListERC721Escrow';
 export { ListTransfer } from './generated/ListTransfer';
@@ -60,11 +63,12 @@ export { MaliciousBatchPack } from './generated/MaliciousBatchPack';
 export { MaliciousListPack } from './generated/MaliciousListPack';
 export { Ownable } from './generated/Ownable';
 
-export { Processor } from './generated/Processor';
-export { TestBatcbPack } from './generated/TestBatcbPack';
+export { Pay } from './generated/Pay';
+
 export { TestBatchPack } from './generated/TestBatchPack';
 export { TestCreditCardPack } from './generated/TestCreditCardPack';
 export { TestERC20Token } from './generated/TestERC20Token';
 export { TestERC721Token } from './generated/TestERC721Token';
 export { TestListPack } from './generated/TestListPack';
 export { TestPack } from './generated/TestPack';
+export { TestVendor } from './generated/TestVendor';

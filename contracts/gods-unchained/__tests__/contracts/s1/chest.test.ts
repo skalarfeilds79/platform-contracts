@@ -36,6 +36,9 @@ describe('Chest', () => {
     beforeEach(async () => {
       referral = await new ReferralFactory(ownerWallet).deploy();
       chest = await new ChestFactory(ownerWallet).deploy(
+        "GU: S1 Rare Chest",
+        "GU:1:RC",
+        0,
         ZERO_EX,
         keccak256('0x00'),
         0,

@@ -29,12 +29,12 @@ contract IPay {
         bytes32 sku;
         uint64 quantity;
         uint64 requiredEscrowPeriod;
-        uint64 usdCents;
+        uint256 value;
+        Currency currency;
     }
 
     struct SignedReceipt {
         ReceiptDetails details;
-        bytes32 signedHash;
         uint256 nonce;
         bytes32 r;
         bytes32 s;

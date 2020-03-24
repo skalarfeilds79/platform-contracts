@@ -12,6 +12,15 @@ contract Chest is Product, TradeToggleERC20, ERC20Burnable, Ownable {
 
     IPack public pack;
 
+    struct Purchase {
+        address user;
+        uint256 count;
+    }
+
+    mapping(uint256 => Purchase) internal purchases;
+
+    uint IDTracker;
+
     constructor(
         string memory name, string memory symbol, uint8 decimals,
         IPack _pack, bytes32 _sku, uint256 _saleCap, uint _price,
@@ -26,7 +35,7 @@ contract Chest is Product, TradeToggleERC20, ERC20Burnable, Ownable {
     ) public {
         super.purchaseFor(user, qty, referrer, payment);
         if (payment.currency == IPay.Currency.ETH) {
-            _mint(msg.sender, qty);
+            _mintTokens(msg.sender, qty);
         } else {
             // escrow the chests
             IERC20Escrow.Vault memory vault = IERC20Escrow.Vault({
@@ -35,8 +44,25 @@ contract Chest is Product, TradeToggleERC20, ERC20Burnable, Ownable {
                 asset: IERC20(address(this)),
                 balance: qty
             });
-            fiatEscrow.escrowERC20(vault, payment.receipt.details.requiredEscrowPeriod, user);
+
+            uint id = IDTracker++
+
+            purchases[id] = Purchase({
+                user: user,
+                count: count
+            });
+
+            bytes memory data = abi.encodeWithSignature("mintTokens(uint256)", id);
+
+            fiatEscrow.escrowERC20(vault, payment.receipt.details.requiredEscrowPeriod, );
         }
+    }
+
+    function mintTokens(address user, uint256 count) public {
+        require(msg.sender == fiatEscrow.escrowCore(), "must be core escrow contract");
+        Purchase memory purchase = purchases[id];
+        _mint(purchase.user, purchase.count);
+        delete purchase[id];
     }
 
     function open(uint count) public {

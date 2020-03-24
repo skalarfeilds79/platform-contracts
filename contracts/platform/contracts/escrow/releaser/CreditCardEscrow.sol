@@ -233,14 +233,17 @@ contract CreditCardEscrow is Ownable {
         emit Destroyed(_escrow, _id);
     }
 
-    function escrowERC20(IERC20Escrow.Vault memory vault, uint64 _duration, address _owner) public returns (uint) {
+    function escrowERC20(
+        IERC20Escrow.Vault memory vault, address cbTo, bytes memory cbData,
+        uint64 _duration, address _owner
+    ) public returns (uint) {
 
         require(_duration > 0, "must be locked for a number of blocks");
         require(_owner != address(0), "cannot release to the zero address");
         require(vault.releaser == address(this), "must be releasable by this");
 
         // escrow the assets with this contract as the releaser
-        uint id = erc20Escrow.escrow(vault, _owner);
+        uint id = erc20Escrow.callbackEscrow(vault, cbTo, cbData);
 
         _lock(address(erc20Escrow), id, _duration, _owner);
 

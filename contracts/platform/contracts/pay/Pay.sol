@@ -4,6 +4,8 @@ pragma experimental ABIEncoderV2;
 import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "./IPay.sol";
 
+// solhint-ignore security/no-block-members
+
 contract Pay is IPay, Ownable {
 
     event SellerApprovalChanged(bytes32 indexed sku, address indexed seller, bool approved);
@@ -22,11 +24,11 @@ contract Pay is IPay, Ownable {
     function process(Order memory order, Payment memory payment) public payable returns (uint) {
 
         require(order.sku != bytes32(0), "must have a set SKU");
-        require(order.qty > 0, "must have a valid quality");
+        require(order.quantity > 0, "must have a valid quality");
         require(sellerApproved[order.sku][msg.sender], "must be approved to sell this product");
 
         if (payment.currency == Currency.USDCents) {
-            _checkReceiptAndUpdateSignerLimit(order.amount, payment);
+            _checkReceiptAndUpdateSignerLimit(order, payment);
         } else if (payment.currency == Currency.ETH) {
             _processETHPayment(order.amount);
         } else {
@@ -40,29 +42,43 @@ contract Pay is IPay, Ownable {
         return id;
     }
 
-    function _checkReceiptAndUpdateSignerLimit(uint256 amount, Payment memory payment) internal {
+    function _checkReceiptAndUpdateSignerLimit(Order memory order, Payment memory payment) internal {
 
         address signer = _getSigner(payment);
 
         require(!receiptNonces[signer][payment.receipt.nonce], "nonce must not be used");
         receiptNonces[signer][payment.receipt.nonce] = true;
 
-        Limit storage limit = signerLimits[signer];
+        _validateOrderPaymentMatch(order, payment);
 
+        _updateSignerLimit(signer, order.amount);
+    }
+
+    function _validateOrderPaymentMatch(Order memory order, Payment memory payment) internal {
+        ReceiptDetails memory details = payment.receipt.details;
+        require(details.seller == msg.sender, "sellers must match");
+        require(details.quantity == order.quantity, "quantities must match");
+        require(details.sku == order.sku, "skus must match");
+        require(details.usdCents >= order.amount, "receipt value must achieve ");
+    }
+
+    function _updateSignerLimit(address signer, uint256 amount) internal {
+        Limit storage limit = signerLimits[signer];
         if (limit.periodEnd < block.timestamp) {
             limit.periodEnd = block.timestamp + 1 days;
             limit.processed = 0;
         }
-
-        // TODO: this
-        require(payment.receipt.usdCents >= amount, "must pay more than the requested amount");
-        require (limit.limit > limit.processed + payment.receipt.usdCents, "exceeds signing limit for this address");
-        limit.processed += payment.receipt.usdCents;
+        require (limit.limit > limit.processed + amount, "exceeds signing limit for this address");
+        limit.processed += amount;
     }
 
     function _getSigner(Payment memory payment) internal view returns (address) {
         SignedReceipt memory receipt = payment.receipt;
-        bytes32 sigHash = keccak256(abi.encodePacked(address(this), receipt.nonce, receipt.usdCents));
+        bytes32 sigHash = keccak256(abi.encode(
+            address(this),
+            receipt.nonce,
+            receipt.details
+        ));
         require(sigHash == receipt.signedHash, "hashes must match");
         return ecrecover(receipt.signedHash, receipt.v, receipt.r, receipt.s);
     }

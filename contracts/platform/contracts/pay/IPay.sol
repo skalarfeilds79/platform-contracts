@@ -11,7 +11,7 @@ contract IPay {
 
     struct Order {
         bytes32 sku;
-        uint256 qty;
+        uint256 quantity;
         Currency currency;
         uint256 amount;
         address token;
@@ -24,10 +24,18 @@ contract IPay {
         SignedReceipt receipt;
     }
 
-    struct SignedReceipt {
-        uint256 nonce;
+    struct ReceiptDetails {
+        address seller;
+        bytes32 sku;
+        uint64 quantity;
+        uint64 requiredEscrowPeriod;
         uint64 usdCents;
+    }
+
+    struct SignedReceipt {
+        ReceiptDetails details;
         bytes32 signedHash;
+        uint256 nonce;
         bytes32 r;
         bytes32 s;
         uint8 v;
@@ -35,8 +43,8 @@ contract IPay {
 
     struct Limit {
         uint256 periodEnd;
-        uint64 limit;
-        uint64 processed;
+        uint256 limit;
+        uint256 processed;
     }
 
     function process(Order memory order, Payment memory payment) public payable returns (uint);

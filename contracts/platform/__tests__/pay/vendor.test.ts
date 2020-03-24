@@ -51,7 +51,7 @@ describe('Vendor', () => {
     function getETHOrder(sku: string, qty: number, amount: number) {
         return {
             sku: sku,
-            qty: qty,
+            quantity: qty,
             currency: 0,
             amount: amount,
             token: ZERO_EX,
@@ -64,8 +64,14 @@ describe('Vendor', () => {
             token: ZERO_EX,
             maxToken: 0,
             receipt: {
+                details: {
+                    seller: ZERO_EX,
+                    sku: sku,
+                    quantity: 1,
+                    requiredEscrowPeriod: 10,
+                    usdCents: 100,
+                },
                 nonce: 0,
-                usdCents: 0,
                 signedHash: keccak256('0x00'),
                 v: 0,
                 r: keccak256('0x00'),
@@ -84,8 +90,14 @@ describe('Vendor', () => {
             token: ZERO_EX,
             maxToken: 0,
             receipt: {
+                details: {
+                    seller: ZERO_EX,
+                    sku: sku,
+                    quantity: 1,
+                    requiredEscrowPeriod: 10,
+                    usdCents: value,
+                },
                 nonce: 0,
-                usdCents: value,
                 signedHash:keccak256('0x00'),
                 v: sig.v,
                 r: sig.r,
@@ -97,7 +109,7 @@ describe('Vendor', () => {
     function getUSDOrder(sku: string, qty: number, amount: number) {
         return {
             sku: sku,
-            qty: qty,
+            quantity: qty,
             currency: 1,
             amount: amount,
             token: ZERO_EX,

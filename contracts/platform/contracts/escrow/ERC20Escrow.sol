@@ -16,13 +16,41 @@ contract ERC20Escrow is IERC20Escrow {
 
     // Every Escrow vault tracked by this contract
     Vault[] public vaults;
+    // Mutex which protects escrow vault creation
+    bool internal mutexLocked;
 
     /**
      * @dev Create a new escrow vault
      *
      * @param vault the escrow vault to be created
+     * @param callbackTo the address to use for the callback transaction
+     * @param callbackData the data to pass to the callback transaction
+     */
+    function callbackEscrow(
+        Vault memory vault, address callbackTo, bytes memory callbackData
+    ) public returns (uint256 vaultID) {
+        require(!mutexLocked, "mutex must be unlocked");
+        require(vault.balance > 0, "must have a non-zero balance");
+        require(address(vault.asset) != address(0), "must be a non-null asset");
+        require(vault.releaser != address(0), "must have a releaser");
+        mutexLocked = true;
+        uint256 preBalance = vault.asset.balanceOf(address(this));
+        // solium-disable-next-line security/no-low-level-calls
+        callbackTo.call(callbackData);
+        uint256 postBalance = vault.asset.balanceOf(address(this));
+        require(postBalance.sub(preBalance) == vault.balance, "must have transferred the tokens");
+        mutexLocked = false;
+        return vaults.push(vault) - 1;
+    }
+
+    /**
+     * @dev Create a new escrow vault
+     *
+     * @param vault the escrow vault to be created
+     * @param from the address from which to pull the tokens
      */
     function escrow(Vault memory vault, address from) public returns (uint256 vaultID) {
+        require(!mutexLocked, "mutex must be unlocked");
         require(vault.balance > 0, "must have a non-zero balance");
         require(address(vault.asset) != address(0), "must be a non-null asset");
         require(vault.releaser != address(0), "must have a releaser");

@@ -50,6 +50,7 @@ contract Product {
     ) public {
         require(saleCap == 0 || saleCap >= sold + qty, "cap has been exhausted");
         uint totalPrice = price.mul(qty);
+
         IPay.Order memory order = IPay.Order({
             currency: IPay.Currency.USDCents,
             amount: totalPrice,

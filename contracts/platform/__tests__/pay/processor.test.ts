@@ -82,16 +82,16 @@ describe('Pay', () => {
         processor = await new PayFactory(user).deploy();
     });
 
-    it('should start as unapproved', async () => {
-        let approved = await processor.sellerApproved(sku, other.address);
-        expect(approved).toBeFalsy();
-    });
+    // it('should start as unapproved', async () => {
+    //     let approved = await processor.sellerApproved(sku, other.address);
+    //     expect(approved).toBeFalsy();
+    // });
 
-    it('should be able to set seller approval as owner', async () => {
-        await processor.setSellerApproval(sku, other.address, true);
-        let approved = await processor.sellerApproved(sku, other.address);
-        expect(approved).toBeTruthy();
-    });
+    // it('should be able to set seller approval as owner', async () => {
+    //     await processor.setSellerApproval(sku, other.address, true);
+    //     let approved = await processor.sellerApproved(sku, other.address);
+    //     expect(approved).toBeTruthy();
+    // });
 
   });
 

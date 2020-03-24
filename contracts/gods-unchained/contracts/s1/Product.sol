@@ -52,11 +52,12 @@ contract Product {
         uint totalPrice = price.mul(qty);
         IPay.Order memory order = IPay.Order({
             currency: IPay.Currency.USDCents,
-            price: totalPrice,
+            amount: totalPrice,
             sku: sku,
-            qty: qty,
+            quantity: qty,
             token: address(0)
         });
+
         uint valueToSend = 0;
         // if the user is paying in ETH, we can pay affiliate fees instantly!
         if (payment.currency == IPay.Currency.ETH) {

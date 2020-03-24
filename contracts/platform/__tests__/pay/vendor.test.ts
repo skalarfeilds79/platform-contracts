@@ -48,10 +48,10 @@ describe('Vendor', () => {
         vendor = await new TestVendorFactory(user).deploy(pay.address);
     });
 
-    function getETHOrder(sku: string, qty: number, amount: number) {
+    function getETHOrder(sku: string, quantity: number, amount: number) {
         return {
             sku: sku,
-            qty: qty,
+            quantity: quantity,
             currency: 0,
             amount: amount,
             token: ZERO_EX,
@@ -94,10 +94,10 @@ describe('Vendor', () => {
         };
     }
 
-    function getUSDOrder(sku: string, qty: number, amount: number) {
+    function getUSDOrder(sku: string, quantity: number, amount: number) {
         return {
             sku: sku,
-            qty: qty,
+            quantity: quantity,
             currency: 1,
             amount: amount,
             token: ZERO_EX,

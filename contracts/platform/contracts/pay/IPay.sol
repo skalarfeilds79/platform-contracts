@@ -11,7 +11,7 @@ contract IPay {
 
     struct Order {
         bytes32 sku;
-        uint256 qty;
+        uint256 quantity;
         Currency currency;
         uint256 amount;
         address token;

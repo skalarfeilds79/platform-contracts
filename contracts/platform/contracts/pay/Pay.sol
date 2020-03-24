@@ -22,7 +22,7 @@ contract Pay is IPay, Ownable {
     function process(Order memory order, Payment memory payment) public payable returns (uint) {
 
         require(order.sku != bytes32(0), "must have a set SKU");
-        require(order.qty > 0, "must have a valid quality");
+        require(order.quantity > 0, "must have a valid quality");
         require(sellerApproved[order.sku][msg.sender], "must be approved to sell this product");
 
         if (payment.currency == Currency.USDCents) {

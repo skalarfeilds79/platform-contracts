@@ -34,9 +34,13 @@ contract TestCreditCardPack {
             balance: count
         });
 
-        erc20.mint(user, count);
+        uint256 id = purchases.push(Purchase({
+            count: count
+        })) - 1;
 
-        escrow.escrowERC20(vault, duration, user);
+        bytes memory data = abi.encodeWithSignature("erc20Hook(uint256)", id);
+
+        escrow.escrowERC20(vault, address(this), data, duration);
     }
 
     function purchaseERC721(address user, uint256 count) public {
@@ -57,15 +61,22 @@ contract TestCreditCardPack {
             count: count
         })) - 1;
 
-        bytes memory data = abi.encodeWithSignature("escrowHook(uint256)", id);
+        bytes memory data = abi.encodeWithSignature("erc721Hook(uint256)", id);
 
-        escrow.escrowBatch(vault, address(this), data, duration, user);
+        escrow.escrowBatch(vault, address(this), data, duration);
     }
 
-    function escrowHook(uint256 purchaseID) public {
-        require(msg.sender == address(escrow), "must be the escrow contract");
+    function erc721Hook(uint256 purchaseID) public {
+        require(msg.sender == address(escrow.getBatchEscrow()), "must be the escrow contract");
         Purchase memory p = purchases[purchaseID];
         erc721.mint(address(escrow), p.count);
+        delete purchases[purchaseID];
+    }
+
+    function erc20Hook(uint256 purchaseID) public {
+        require(msg.sender == address(escrow.getERC20Escrow()), "must be the escrow contract");
+        Purchase memory p = purchases[purchaseID];
+        erc20.mint(address(escrow), p.count);
         delete purchases[purchaseID];
     }
 

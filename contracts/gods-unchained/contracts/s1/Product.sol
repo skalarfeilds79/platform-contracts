@@ -50,13 +50,24 @@ contract Product {
     ) public {
         require(saleCap == 0 || saleCap >= sold + qty, "cap has been exhausted");
         uint totalPrice = price.mul(qty);
+        IPay.Order memory order = IPay.Order({
+            currency: IPay.Currency.USDCents,
+            price: totalPrice,
+            sku: sku,
+            qty: qty,
+            token: address(0)
+        });
+        uint valueToSend = 0;
         // if the user is paying in ETH, we can pay affiliate fees instantly!
-        if (payment.currency == IPay.Currency.ETH && referrer != address(0)) {
-            uint toReferrer;
-            (totalPrice, toReferrer) = referral.getSplit(msg.sender, totalPrice, referrer);
-            referrer.transfer(toReferrer);
+        if (payment.currency == IPay.Currency.ETH) {
+            if (referrer != address(0)) {
+                uint toReferrer;
+                (totalPrice, toReferrer) = referral.getSplit(msg.sender, totalPrice, referrer);
+                referrer.transfer(toReferrer);
+            }
+            valueToSend = totalPrice;
         }
-        processor.process(sku, qty, totalPrice, payment);
+        processor.process.value(valueToSend)(order, payment);
         sold += qty;
     }
 

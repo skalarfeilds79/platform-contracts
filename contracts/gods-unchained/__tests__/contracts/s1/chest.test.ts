@@ -2,10 +2,13 @@ import 'jest';
 
 import { Blockchain, generatedWallets } from '@imtbl/test-utils';
 import { 
-  S1Chest, S1ChestFactory,
-  Referral, ReferralFactory 
+  Chest, ChestFactory,
+  Referral, ReferralFactory, Pay, CreditCardEscrow, 
 } from '../../../src';
 import { Wallet, ethers } from 'ethers';
+import { keccak256 } from 'ethers/utils';
+
+const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
 const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();
@@ -25,10 +28,22 @@ describe('Chest', () => {
 
   describe('#makeTradable', () => {
 
-    let chest: S1Chest;
+    let chest: Chest;
+    let pay: Pay;
+    let escrow: CreditCardEscrow;
+    let referral: Referral;
 
     beforeEach(async () => {
       referral = await new ReferralFactory(ownerWallet).deploy();
+      chest = await new ChestFactory(ownerWallet).deploy(
+        ZERO_EX,
+        keccak256('0x00'),
+        0,
+        100,
+        referral.address,
+        escrow.address,
+        pay.address
+      );
     });
 
   });

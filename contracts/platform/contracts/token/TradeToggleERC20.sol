@@ -8,14 +8,14 @@ contract TradeToggleERC20 is ERC20 {
 
     bool internal tradable;
 
-    function transfer(address to, uint256 amount) public {
+    function transfer(address to, uint256 amount) public returns (bool) {
         require(isTradable(), "tokens are not currently tradable");
-        super.transfer(to, amount);
+        return super.transfer(to, amount);
     }
 
-    function transferFrom(address to, uint256 amount) public {
+    function transferFrom(address from, address to, uint256 amount) public returns (bool) {
         require(isTradable(), "tokens are not currently tradable");
-        super.transferFrom(from, to, amount);
+        return super.transferFrom(from, to, amount);
     }
 
     function isTradable() public view returns (bool) {

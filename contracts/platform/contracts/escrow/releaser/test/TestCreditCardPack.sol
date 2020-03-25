@@ -11,7 +11,6 @@ contract TestCreditCardPack {
     ICreditCardEscrow escrow;
     TestERC20Token erc20;
     TestERC721Token erc721;
-    uint64 duration = 100;
 
     struct Purchase {
         uint256 count;
@@ -25,7 +24,7 @@ contract TestCreditCardPack {
         erc721 = _erc721;
     }
 
-    function purchaseERC20(address user, uint256 count) public {
+    function purchaseERC20(address user, uint256 count, uint64 duration) public {
 
         IERC20Escrow.Vault memory vault = IERC20Escrow.Vault({
             player: user,
@@ -43,7 +42,7 @@ contract TestCreditCardPack {
         escrow.escrowERC20(vault, address(this), data, duration);
     }
 
-    function purchaseERC721(address user, uint256 count) public {
+    function purchaseERC721(address user, uint256 count, uint64 duration) public {
 
         // predict what the token IDs will be
         uint256 low = erc721.totalSupply();
@@ -67,16 +66,18 @@ contract TestCreditCardPack {
     }
 
     function erc721Hook(uint256 purchaseID) public {
-        require(msg.sender == address(escrow.getBatchEscrow()), "must be the escrow contract");
+        address erc721Escrow = address(escrow.getBatchEscrow());
+        require(msg.sender == erc721Escrow, "must be the escrow contract");
         Purchase memory p = purchases[purchaseID];
-        erc721.mint(address(escrow), p.count);
+        erc721.mint(erc721Escrow, p.count);
         delete purchases[purchaseID];
     }
 
     function erc20Hook(uint256 purchaseID) public {
-        require(msg.sender == address(escrow.getERC20Escrow()), "must be the escrow contract");
+        address erc20Escrow = address(escrow.getERC20Escrow());
+        require(msg.sender == erc20Escrow, "must be the escrow contract");
         Purchase memory p = purchases[purchaseID];
-        erc20.mint(address(escrow), p.count);
+        erc20.mint(erc20Escrow, p.count);
         delete purchases[purchaseID];
     }
 

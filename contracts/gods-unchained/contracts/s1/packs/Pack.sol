@@ -7,12 +7,13 @@ import "../../ICards.sol";
 import "@imtbl/platform/contracts/escrow/IBatchERC721Escrow.sol";
 import "@imtbl/platform/contracts/randomness/IBeacon.sol";
 
-contract Pack is Product, RarityProvider {
+contract Pack is Ownable, Product, RarityProvider {
 
     struct Purchase {
         uint64 commitBlock;
         uint32 qty;
         address user;
+        uint64 escrowDuration;
     }
 
     // All purchases recorded by this pack
@@ -34,19 +35,23 @@ contract Pack is Product, RarityProvider {
         cards = _cards;
     }
 
+    function setChest(address _chest) public onlyOwner {
+        require(chest == address(0), "must not have already set chest");
+        chest = _chest;
+    }
+
     function createCards(uint256 purchaseID) public {
         require(purchaseID < purchases.length, "purchase ID invalid");
         Purchase memory purchase = purchases[purchaseID];
+        if (purchase.escrowDuration == 0) {
+            _createCards(purchase, purchase.user);
+        } else {
+            _escrowCards(purchase);
+        }
     }
 
-    function escrowHook(uint256 purchaseID) public {
-        // require(msg.sender == escrowCore, "must be escrow core to use hook");
-        require(purchaseID < purchases.length, "purchase ID invalid");
-        _createCards(purchaseID);
-    }
+    function _escrowCards(Purchase memory purchase) internal {
 
-    function _escrowCards(uint purchaseID) internal {
-        Purchase memory purchase = purchases[purchaseID];
         uint cardCount = purchase.qty * 5;
         uint low = cards.nextBatch();
         uint high = low + cardCount;
@@ -61,24 +66,28 @@ contract Pack is Product, RarityProvider {
 
         bytes memory data = abi.encodeWithSignature("escrowHook(uint256)", purchaseID);
 
-        uint escrowID = fiatEscrow.escrowBatch(
-            vault, address(this), data, 64, purchase.user
-        );
+        fiatEscrow.escrowBatch(vault, address(this), data, 64);
+    }
 
-        event ProductEscrowed(purchaseID, address(fiatEscrow), escrowID);
-
+    function escrowHook(uint256 id) public {
+        address escrowAddress = address(fiatEscrow.getBatchEscrow());
+        require(msg.sender == escrowAddress, "must be core escrow");
+        Purchase memory purchase = purchases[id];
+        _createCards(purchase, escrowAddress);
     }
 
     function purchaseFor(
-        address user, uint256 qty, address payable referrer, IProcessor.Payment memory payment
+        address user, uint256 qty, address payable referrer, IPay.Payment memory payment
     ) public {
         super.purchaseFor(user, qty, referrer, payment);
-        bool shouldEscrow = (payment.currency == IProcessor.Currency.Fiat);
-        _createPurchase(user, qty, shouldEscrow);
+        uint64 escrowDuration = 0;
+        if (payment.currency == IPay.Currency.USDCents) {
+            escrowDuration = payment.receipt.details.requiredEscrowPeriod;
+        }
+        _createPurchase(user, qty, escrowDuration);
     }
 
-    function _createCards(uint256 purchaseID) internal {
-        Purchase memory purchase = purchases[purchaseID];
+    function _createCards(Purchase memory purchase, address user) internal {
         uint256 randomness = uint256(beacon.randomness(purchase.commitBlock));
         uint cardCount = purchase.qty * 5;
         uint16[] memory protos = new uint16[](cardCount);
@@ -86,19 +95,20 @@ contract Pack is Product, RarityProvider {
         for (uint i = 0; i < cardCount; i++) {
             (protos[i], qualities[i]) = _getCardDetails(randomness, i);
         }
-        cards.mintCards(purchase.user, protos, qualities);
+        cards.mintCards(user, protos, qualities);
     }
 
     function openChests(address user, uint256 qty) public {
-        // require(msg.sender == chest, "must be the chest contract");
-        _createPurchase(user, qty, false);
+        require(msg.sender == chest, "must be the chest contract");
+        _createPurchase(user, qty, 0);
     }
 
-    function _createPurchase(address user, uint256 qty, bool shouldEscrow) internal returns (uint256) {
+    function _createPurchase(address user, uint256 qty, uint64 escrowDuration) internal returns (uint256) {
         return purchases.push(Purchase({
             commitBlock: uint64(beacon.commit(0)),
             qty: uint32(qty),
-            user: user
+            user: user,
+            escrowDuration: escrowDuration
         })) - 1;
     }
 

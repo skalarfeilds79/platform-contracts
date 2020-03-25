@@ -8,7 +8,7 @@ contract RarePack is Pack {
     constructor(
         IBeacon _beacon, ICards _cards, bytes32 _sku,
         IReferral _referral, ICreditCardEscrow _fiatEscrow,
-        IProcessor _processor
+        IPay _processor
     ) public Pack(
         _beacon, _cards, _sku, 0, 299, _referral, _fiatEscrow, _processor
     ) {}

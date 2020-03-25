@@ -6,6 +6,7 @@ import "./RarityProvider.sol";
 import "../../ICards.sol";
 import "@imtbl/platform/contracts/escrow/IBatchERC721Escrow.sol";
 import "@imtbl/platform/contracts/randomness/IBeacon.sol";
+import "@openzeppelin/contracts/ownership/Ownable.sol";
 
 contract Pack is Ownable, Product, RarityProvider {
 
@@ -22,12 +23,14 @@ contract Pack is Ownable, Product, RarityProvider {
     IBeacon public beacon;
     // The core cards contract
     ICards public cards;
+    // The address of the chest linked to this pack
+    address public chest;
 
     constructor(
         IBeacon _beacon, ICards _cards,
         bytes32 _sku, uint256 _saleCap, uint _price,
         IReferral _referral, ICreditCardEscrow _fiatEscrow,
-        IProcessor _processor
+        IPay _processor
     ) public Product(
         _sku, _saleCap, _price, _referral, _fiatEscrow, _processor
     ) {
@@ -46,11 +49,13 @@ contract Pack is Ownable, Product, RarityProvider {
         if (purchase.escrowDuration == 0) {
             _createCards(purchase, purchase.user);
         } else {
-            _escrowCards(purchase);
+            _escrowCards(purchaseID);
         }
     }
 
-    function _escrowCards(Purchase memory purchase) internal {
+    function _escrowCards(uint256 id) internal {
+
+        Purchase memory purchase = purchases[id];
 
         uint cardCount = purchase.qty * 5;
         uint low = cards.nextBatch();
@@ -64,7 +69,7 @@ contract Pack is Ownable, Product, RarityProvider {
             highTokenID: high
         });
 
-        bytes memory data = abi.encodeWithSignature("escrowHook(uint256)", purchaseID);
+        bytes memory data = abi.encodeWithSignature("escrowHook(uint256)", id);
 
         fiatEscrow.escrowBatch(vault, address(this), data, 64);
     }

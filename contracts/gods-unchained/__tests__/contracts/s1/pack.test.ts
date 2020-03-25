@@ -15,10 +15,7 @@ import {
 } from '../../../src';
 import { Wallet, ethers } from 'ethers';
 import { keccak256 } from 'ethers/utils';
-import { RarePack } from '../../../src/generated/RarePack';
-import { EpicPack } from '../../../src/generated/EpicPack';
-import { LegendaryPack } from '../../../src/generated/LegendaryPack';
-import { ShinyPack } from '../../../src/generated/ShinyPack';
+
 
 const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();

@@ -3,7 +3,7 @@ pragma experimental ABIEncoderV2;
 
 import "./referral/IReferral.sol";
 import "@imtbl/platform/contracts/escrow/releaser/ICreditCardEscrow.sol";
-import "@imtbl/platform/contracts/pay/IProcessor.sol";
+import "@imtbl/platform/contracts/pay/IPay.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 
 contract Product {
@@ -26,12 +26,12 @@ contract Product {
     // Escrow contract
     ICreditCardEscrow fiatEscrow;
     // Payment processor
-    IProcessor processor;
+    IPay processor;
 
     constructor(
         bytes32 _sku, uint256 _saleCap, uint _price,
         IReferral _referral, ICreditCardEscrow _fiatEscrow,
-        IProcessor _processor
+        IPay _processor
     ) public {
         sku = _sku;
         saleCap = _saleCap;
@@ -41,22 +41,35 @@ contract Product {
         processor = _processor;
     }
 
-    function purchase(uint256 qty, address payable referrer, IProcessor.Payment memory payment) public {
+    function purchase(uint256 qty, address payable referrer, IPay.Payment memory payment) public {
         purchaseFor(msg.sender, qty, referrer, payment);
     }
 
     function purchaseFor(
-        address user, uint256 qty, address payable referrer, IProcessor.Payment memory payment
+        address user, uint256 qty, address payable referrer, IPay.Payment memory payment
     ) public {
         require(saleCap == 0 || saleCap >= sold + qty, "cap has been exhausted");
         uint totalPrice = price.mul(qty);
+
+        IPay.Order memory order = IPay.Order({
+            currency: IPay.Currency.USDCents,
+            amount: totalPrice,
+            sku: sku,
+            quantity: qty,
+            token: address(0)
+        });
+
+        uint valueToSend = 0;
         // if the user is paying in ETH, we can pay affiliate fees instantly!
-        if (payment.currency == IProcessor.Currency.ETH && referrer != address(0)) {
-            uint toReferrer;
-            (totalPrice, toReferrer) = referral.getSplit(msg.sender, totalPrice, referrer);
-            referrer.transfer(toReferrer);
+        if (payment.currency == IPay.Currency.ETH) {
+            if (referrer != address(0)) {
+                uint toReferrer;
+                (totalPrice, toReferrer) = referral.getSplit(msg.sender, totalPrice, referrer);
+                referrer.transfer(toReferrer);
+            }
+            valueToSend = totalPrice;
         }
-        processor.process(sku, qty, totalPrice, payment);
+        processor.process.value(valueToSend)(order, payment);
         sold += qty;
     }
 

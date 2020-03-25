@@ -10,10 +10,10 @@ import "@openzeppelin/contracts/ownership/Ownable.sol";
 contract CreditCardEscrow is Ownable {
 
     // Emitted when assets are escrowed
-    event Escrowed(address indexed escrow, uint indexed id, uint64 endBlock);
+    event Escrowed(address indexed escrow, uint indexed id, address indexed owner, uint64 endBlock);
 
     // Emitted when the release of the assets in a custodial escrow account is successfully requested
-    event ReleaseRequested(address indexed escrow, uint indexed id, uint64 endBlock);
+    event ReleaseRequested(address indexed escrow, uint indexed id, uint64 endBlock, address releaseTo);
 
     // Emitted when the release of the assets in a custodial escrow account is cancelled
     event ReleaseCancelled(address indexed escrow, uint indexed id);
@@ -31,14 +31,16 @@ contract CreditCardEscrow is Ownable {
     event Destroyed(address indexed escrow, uint indexed id);
 
     struct Lock {
-        // the block after which these cards can be taked from escrow
+        // the block after which these assets can be taked from escrow
         uint64 endBlock;
-        // the address which will own these cards after the escrow period
+        // the address which will own these assets after the escrow period
         address owner;
-        // the block after which these cards can be destroyed
+        // the block after which these assets can be destroyed
         uint64 destructionBlock;
-        // the block after which these cards will be released
+        // the block after which these assets will be released
         uint64 releaseBlock;
+        // the user to whom these assets will be released
+        address releaseTo;
     }
 
     // ERC20 escrow contract
@@ -123,6 +125,7 @@ contract CreditCardEscrow is Ownable {
     /**
      * @dev Release all assets from an escrow account
      *
+     * @param _escrow The address of the escrow contract (ERC20/BatchER721)
      * @param _id The ID of the escrow account to be released
      */
     function release(IReleasable _escrow, uint _id) public {
@@ -132,7 +135,12 @@ contract CreditCardEscrow is Ownable {
         require(lock.endBlock != 0, "must have escrow period set");
         require(block.number >= lock.endBlock, "escrow period must have expired");
 
-        _escrow.release(_id, lock.owner);
+        if (lock.owner != address(0)) {
+            _escrow.release(_id, lock.owner);
+        } else {
+            require(lock.releaseTo != address(0), "cannot burn assets");
+            _escrow.release(_id, lock.releaseTo);
+        }
 
         delete locks[address(_escrow)][_id];
 
@@ -142,36 +150,43 @@ contract CreditCardEscrow is Ownable {
     /**
      * @dev Request that a custodial escrow account's assets be marked for release
      *
+     * @param _escrow The address of the escrow contract (ERC20/BatchER721)
      * @param _id The ID of the escrow account to be marked
      */
-    function requestRelease(address _escrow, uint _id) public onlyCustodian {
+    function requestRelease(address _escrow, uint _id, address _to) public onlyCustodian {
 
         Lock storage lock = locks[_escrow][_id];
 
+        require(lock.owner == address(0), "escrow account is not custodial, call release directly");
         require(lock.endBlock != 0, "must be in escrow");
         require(lock.destructionBlock == 0, "must not be marked for destruction");
         require(block.number + releaseDelay >= lock.endBlock, "release period must end after escrow period");
+        require(_to != address(0), "must release to a real user");
 
         uint64 releaseBlock = uint64(block.number) + releaseDelay;
 
         lock.releaseBlock = releaseBlock;
+        lock.releaseTo = _to;
 
-        emit ReleaseRequested(_escrow, _id, releaseBlock);
+        emit ReleaseRequested(_escrow, _id, releaseBlock, _to);
     }
 
     /**
      * @dev Cancel a release request
      *
+     * @param _escrow The address of the escrow contract (ERC20/BatchER721)
      * @param _id The ID of the escrow account to be unmarked
      */
     function cancelRelease(address _escrow, uint _id) public onlyCustodian {
 
         Lock storage lock = locks[_escrow][_id];
 
+        require(lock.owner == address(0), "escrow account is not custodial, call release directly");
         require(lock.releaseBlock != 0, "must be marked for release");
         require(lock.releaseBlock > block.number, "release period must not have expired");
 
         lock.releaseBlock = 0;
+        lock.releaseTo = address(0);
 
         emit ReleaseCancelled(_escrow, _id);
     }
@@ -179,6 +194,7 @@ contract CreditCardEscrow is Ownable {
     /**
      * @dev Request that an escrow account's assets be marked for destruction
      *
+     * @param _escrow The address of the escrow contract (ERC20/BatchER721)
      * @param _id The ID of the escrow account to be marked
      */
     function requestDestruction(address _escrow, uint _id) public onlyDestroyer {
@@ -198,6 +214,7 @@ contract CreditCardEscrow is Ownable {
     /**
      * @dev Revoke a destruction request
      *
+     * @param _escrow The address of the escrow contract (ERC20/BatchER721)
      * @param _id The ID of the escrow account to be unmarked
      */
     function cancelDestruction(address _escrow, uint _id) public onlyDestroyer {
@@ -216,9 +233,10 @@ contract CreditCardEscrow is Ownable {
     /**
      * @dev Destroy all assets in an escrow account
      *
+     * @param _escrow The address of the escrow contract (ERC20/BatchER721)
      * @param _id The ID of the escrow account to be destroyed
      */
-    function destroy(address _escrow, uint _id) public {
+    function destroy(address _escrow, uint _id) public onlyDestroyer {
 
         Lock memory lock = locks[_escrow][_id];
 
@@ -233,35 +251,58 @@ contract CreditCardEscrow is Ownable {
         emit Destroyed(_escrow, _id);
     }
 
-    function escrowERC20(IERC20Escrow.Vault memory vault, uint64 _duration, address _owner) public returns (uint) {
+    /**
+     * @dev Escrow some amount of ERC20 tokens
+     *
+     * @param vault the details of the escrow vault
+     * @param cbTo the address to use for the callback transaction
+     * @param cbData the data to pass to the callback transaction
+     * @param duration the duration of the escrow
+     */
+    function escrowERC20(
+        IERC20Escrow.Vault memory vault, address cbTo, bytes memory cbData, uint64 duration
+    ) public returns (uint) {
 
-        require(_duration > 0, "must be locked for a number of blocks");
-        require(_owner != address(0), "cannot release to the zero address");
+        require(duration > 0, "must be locked for a number of blocks");
         require(vault.releaser == address(this), "must be releasable by this");
 
         // escrow the assets with this contract as the releaser
-        uint id = erc20Escrow.escrow(vault, _owner);
+        uint id = erc20Escrow.callbackEscrow(vault, cbTo, cbData);
 
-        _lock(address(erc20Escrow), id, _duration, _owner);
+        _lock(address(erc20Escrow), id, duration, vault.player);
 
         return id;
     }
 
+    /**
+     * @dev Escrow a batch of ERC721s
+     *
+     * @param vault the details of the escrow vault
+     * @param cbTo the address to use for the callback transaction
+     * @param cbData the data to pass to the callback transaction
+     * @param duration the duration of the escrow
+     */
     function escrowBatch(
-        IBatchERC721Escrow.Vault memory vault, address cbTo, bytes memory cbData,
-        uint64 _duration, address _owner
+        IBatchERC721Escrow.Vault memory vault, address cbTo, bytes memory cbData, uint64 duration
     ) public returns (uint) {
 
-        require(_duration > 0, "must be locked for a number of blocks");
-        require(_owner != address(0), "cannot release to the zero address");
+        require(duration > 0, "must be locked for a number of blocks");
         require(vault.releaser == address(this), "must be releasable by this");
 
         // escrow the assets with this contract as the releaser
         uint id = batchEscrow.callbackEscrow(vault, cbTo, cbData);
 
-        _lock(address(batchEscrow), id, _duration, _owner);
+        _lock(address(batchEscrow), id, duration, vault.player);
 
         return id;
+    }
+
+    function getERC20Escrow() public view returns (IERC20Escrow) {
+        return erc20Escrow;
+    }
+
+    function getBatchEscrow() public view returns (IBatchERC721Escrow) {
+        return batchEscrow;
     }
 
     function _lock(address _escrow, uint _id, uint64 _duration, address _owner) internal {
@@ -273,9 +314,10 @@ contract CreditCardEscrow is Ownable {
             owner: _owner,
             endBlock: uint64(block.number + _duration),
             destructionBlock: 0,
-            releaseBlock: 0
+            releaseBlock: 0,
+            releaseTo: address(0)
         });
 
-        emit Escrowed(_escrow, _id, _duration);
+        emit Escrowed(_escrow, _id, _owner, _duration);
     }
 }

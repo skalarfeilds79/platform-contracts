@@ -38,4 +38,4 @@ contract Referral {
         return (b % 2 == 0) ? b.div(2) : (b.div(2)).add(1);
     }
 
-}
+} 

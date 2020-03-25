@@ -87,10 +87,8 @@ export { Context } from './generated/Context';
 export { CreditCardEscrow } from './generated/CreditCardEscrow';
 export { ERC165 } from './generated/ERC165';
 export { ERC20 } from './generated/ERC20';
-
 export { ERC20Burnable } from './generated/ERC20Burnable';
 export { ERC20Detailed } from './generated/ERC20Detailed';
-
 export { ERC20Escrow } from './generated/ERC20Escrow';
 export { ERC20Mintable } from './generated/ERC20Mintable';
 export { ERC721 } from './generated/ERC721';

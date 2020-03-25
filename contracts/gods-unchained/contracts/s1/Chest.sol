@@ -17,9 +17,7 @@ contract Chest is Product, TradeToggleERC20, ERC20Burnable, Ownable {
         uint256 count;
     }
 
-    mapping(uint256 => Purchase) internal purchases;
-
-    uint IDTracker;
+    Purchase internal currentPurchase;
 
     constructor(
         string memory name, string memory symbol, uint8 decimals,
@@ -35,7 +33,7 @@ contract Chest is Product, TradeToggleERC20, ERC20Burnable, Ownable {
     ) public {
         super.purchaseFor(user, qty, referrer, payment);
         if (payment.currency == IPay.Currency.ETH) {
-            _mintTokens(msg.sender, qty);
+            _mint(msg.sender, qty);
         } else {
             // escrow the chests
             IERC20Escrow.Vault memory vault = IERC20Escrow.Vault({
@@ -45,24 +43,21 @@ contract Chest is Product, TradeToggleERC20, ERC20Burnable, Ownable {
                 balance: qty
             });
 
-            uint id = IDTracker++
-
-            purchases[id] = Purchase({
+            currentPurchase = Purchase({
                 user: user,
-                count: count
+                count: qty
             });
 
-            bytes memory data = abi.encodeWithSignature("mintTokens(uint256)", id);
+            bytes memory data = abi.encodeWithSignature("mintTokens()");
 
-            fiatEscrow.escrowERC20(vault, payment.receipt.details.requiredEscrowPeriod, );
+            fiatEscrow.escrowERC20(vault, address(this), data, payment.receipt.details.requiredEscrowPeriod);
         }
     }
 
-    function mintTokens(address user, uint256 count) public {
-        require(msg.sender == fiatEscrow.escrowCore(), "must be core escrow contract");
-        Purchase memory purchase = purchases[id];
-        _mint(purchase.user, purchase.count);
-        delete purchase[id];
+    function mintTokens() public {
+        require(msg.sender == address(fiatEscrow.getERC20Escrow()), "must be core escrow contract");
+        _mint(currentPurchase.user, currentPurchase.count);
+        delete currentPurchase;
     }
 
     function open(uint count) public {

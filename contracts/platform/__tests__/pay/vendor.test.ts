@@ -82,7 +82,7 @@ describe('Vendor', () => {
 
     async function getUSDPayment(seller: string, sku: string, quantity: number, escrowPeriod: number, value: number) {
 
-        let types = ['address', 'uint256', 'address', 'bytes32', 'uint64', 'uint64', 'uint256', 'uint8'];
+        let types = ['address', 'uint256', 'address', 'bytes32', 'uint256', 'uint64', 'uint256', 'uint8'];
         let values = [pay.address, nonce, seller, sku, quantity, escrowPeriod, value, 1];
 
         let hash = ethers.utils.solidityKeccak256(types, values);

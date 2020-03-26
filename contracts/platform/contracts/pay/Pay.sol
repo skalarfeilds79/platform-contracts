@@ -7,11 +7,11 @@ import "./IPay.sol";
 contract Pay is IPay, Ownable {
 
     event SellerApprovalChanged(bytes32 indexed sku, address indexed seller, bool approved);
-    event SignerLimitChanged(address indexed signer, uint64 usdCentsLimit);
-    event PaymentProcessed(uint256 id, Order order, Payment payment);
+    event SignerLimitChanged(address indexed signer, uint256 usdCentsLimit);
+    event PaymentProcessed(uint256 indexed id, Order order, Payment payment);
 
     // Stores the nonce mapping
-    mapping(address => mapping(uint256 => bool)) receiptNonces;
+    mapping(address => mapping(uint256 => bool)) public receiptNonces;
     // Track whether a contract can sell through this processor
     mapping(bytes32 => mapping(address => bool)) public sellerApproved;
     // Track the daily limit of each signing address
@@ -95,7 +95,7 @@ contract Pay is IPay, Ownable {
         return ecrecover(recoveryHash, receipt.v, receipt.r, receipt.s);
     }
 
-    function setSignerLimit(address signer, uint64 usdCentsLimit) public onlyOwner {
+    function setSignerLimit(address signer, uint256 usdCentsLimit) public onlyOwner {
         signerLimits[signer].limit = usdCentsLimit;
         emit SignerLimitChanged(signer, usdCentsLimit);
     }

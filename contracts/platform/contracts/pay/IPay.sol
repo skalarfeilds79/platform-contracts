@@ -27,7 +27,7 @@ contract IPay {
     struct ReceiptDetails {
         address seller;
         bytes32 sku;
-        uint64 quantity;
+        uint256 quantity;
         uint64 requiredEscrowPeriod;
         uint256 value;
         Currency currency;

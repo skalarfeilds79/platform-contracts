@@ -205,7 +205,7 @@ contract CreditCardEscrow is Ownable {
 
         require(lock.endBlock != 0, "must be in escrow");
         require(lock.destructionBlock == 0, "must not be marked for destruction");
-        require(block.number > lock.endBlock, "escrow period must not have expired");
+        require(lock.endBlock > block.number, "escrow period must not have expired");
         require(lock.owner == address(0), "must be zero address");
 
         uint64 destructionBlock = uint64(block.number) + destructionDelay;
@@ -247,7 +247,7 @@ contract CreditCardEscrow is Ownable {
         require(block.number >= lock.destructionBlock, "destruction period must have expired");
 
         // burn the assets by releasing to the 0 address
-        IReleasable(_escrow).release(_id, address(0));
+        // IReleasable(_escrow).release(_id, address(0));
 
         delete locks[_escrow][_id];
 

@@ -220,7 +220,6 @@ describe('CreditCardEscrow', () => {
 
     it('should be destroyed successfully', async () => {
       await pack.purchaseERC20(ZERO_EX, 1, 10);
-      await blockchain.waitBlocksAsync(10);
       await cc.requestDestruction(erc20Escrow.address, 0);
       await blockchain.waitBlocksAsync(destructionDelay);
       await cc.destroy(erc20Escrow.address, 0);
@@ -230,7 +229,6 @@ describe('CreditCardEscrow', () => {
 
     it('should not be able to be destroyed twice', async () => {
       await pack.purchaseERC20(ZERO_EX, 1, 10);
-      await blockchain.waitBlocksAsync(10);
       await cc.requestDestruction(erc20Escrow.address, 0);
       await blockchain.waitBlocksAsync(destructionDelay);
       await cc.destroy(erc20Escrow.address, 0);
@@ -286,6 +284,7 @@ describe('CreditCardEscrow', () => {
     it('should not be able to cancel a destruction request twice', async () => {
       await pack.purchaseERC20(ZERO_EX, 1, 10);
       await cc.requestDestruction(erc20Escrow.address, 0);
+      await cc.cancelDestruction(erc20Escrow.address, 0);
       await expectRevert(cc.cancelDestruction(erc20Escrow.address, 0));
     });
 
@@ -294,6 +293,12 @@ describe('CreditCardEscrow', () => {
       await cc.requestDestruction(erc20Escrow.address, 0);
       await cc.cancelDestruction(erc20Escrow.address, 0);
       await cc.requestDestruction(erc20Escrow.address, 0);
+    });
+
+    it('should not be able to release mid-destruction', async () => {
+      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await cc.requestDestruction(erc20Escrow.address, 0);
+      await expectRevert(cc.requestRelease(erc20Escrow.address, 0, user.address));
     });
 
   });

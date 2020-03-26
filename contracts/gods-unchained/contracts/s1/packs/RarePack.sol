@@ -10,7 +10,7 @@ contract RarePack is Pack {
         IReferral _referral, ICreditCardEscrow _fiatEscrow,
         IPay _processor
     ) public Pack(
-        _beacon, _cards, _sku, 0, 299, _referral, _fiatEscrow, _processor
+        _beacon, _cards, _sku, 0, 249, _referral, _fiatEscrow, _processor
     ) {}
 
     function _getCardDetails(uint cardIndex, uint result) internal view returns (uint16 proto, uint8 quality) {

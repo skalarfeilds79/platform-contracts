@@ -8,6 +8,8 @@ import "./IBatchERC721Escrow.sol";
 
 contract BatchERC721Escrow is IBatchERC721Escrow, ERC721Escrow {
 
+    event Escrowed(uint256 indexed id, Vault memory vault);
+
     // List of all escrow vaults
     Vault[] public vaults;
 
@@ -21,6 +23,7 @@ contract BatchERC721Escrow is IBatchERC721Escrow, ERC721Escrow {
     function callbackEscrow(Vault memory vault, address callbackTo, bytes memory callbackData) public returns (uint256 vaultID) {
         vaultID = vaults.push(vault) - 1;
         callbackTo.call(callbackData);
+        emit Escrowed(vaultID, vault);
         return vaultID;
     }
 
@@ -33,6 +36,7 @@ contract BatchERC721Escrow is IBatchERC721Escrow, ERC721Escrow {
     function escrow(Vault memory vault, address from) public returns (uint256 vaultID) {
         vaultID = vaults.push(vault) - 1;
         _escrow(vaultID, from);
+        emit Escrowed(vaultID, vault);
         return vaultID;
     }
 

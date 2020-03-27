@@ -10,7 +10,7 @@ contract ERC20Escrow is IERC20Escrow {
     using SafeMath for uint256;
 
     // Emitted when a vault is created
-    event Escrowed(uint256 indexed vaultID, address indexed asset, address indexed releaser, address player, uint256 balance);
+    event Escrowed(uint256 indexed vaultID, Vault vault);
     // Emitted when a vault is destroyed
     event Released(uint256 indexed vaultID, address indexed to);
 
@@ -40,7 +40,9 @@ contract ERC20Escrow is IERC20Escrow {
         uint256 postBalance = vault.asset.balanceOf(address(this));
         require(postBalance.sub(preBalance) == vault.balance, "must have transferred the tokens");
         mutexLocked = false;
-        return vaults.push(vault) - 1;
+        uint id = vaults.push(vault) - 1;
+        emit Escrowed(vaultID, vault);
+        return id;
     }
 
     /**
@@ -57,13 +59,16 @@ contract ERC20Escrow is IERC20Escrow {
 
         vault.asset.transferFrom(from, address(this), vault.balance);
 
-        return vaults.push(vault) - 1;
+        uint id = vaults.push(vault) - 1;
+        emit Escrowed(vaultID, vault);
+        return id;
     }
 
     function release(uint256 vaultID, address to) public {
         Vault memory vault = vaults[vaultID];
         require(vault.releaser == msg.sender, "must be the releaser");
         vault.asset.transfer(to, vault.balance);
+        emit Released(vaultID, to);
         delete vaults[vaultID];
     }
 

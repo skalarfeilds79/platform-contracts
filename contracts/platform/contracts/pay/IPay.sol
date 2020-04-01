@@ -10,35 +10,21 @@ contract IPay {
     }
 
     struct Order {
+        address user;
         bytes32 sku;
         uint256 quantity;
         Currency currency;
         uint256 amount;
-        address token;
     }
 
     struct Payment {
         Currency currency;
-        address token;
-        uint256 maxToken;
-        SignedReceipt receipt;
-    }
-
-    struct ReceiptDetails {
-        address seller;
-        bytes32 sku;
-        uint256 quantity;
-        uint64 requiredEscrowPeriod;
         uint256 value;
-        Currency currency;
-    }
-
-    struct SignedReceipt {
-        ReceiptDetails details;
         uint256 nonce;
         bytes32 r;
         bytes32 s;
         uint8 v;
+        uint256 requiredEscrowPeriod;
     }
 
     struct Limit {

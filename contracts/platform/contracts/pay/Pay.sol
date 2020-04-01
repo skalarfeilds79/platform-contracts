@@ -47,24 +47,20 @@ contract Pay is IPay, Ownable {
 
     function _checkReceiptAndUpdateSignerLimit(Order memory order, Payment memory payment) internal {
 
-        address signer = _getSigner(payment);
+        address signer = _getSigner(order, payment);
 
         _updateSignerLimit(signer, order.amount);
 
-        require(!receiptNonces[signer][payment.receipt.nonce], "nonce must not be used");
-        receiptNonces[signer][payment.receipt.nonce] = true;
+        require(!receiptNonces[signer][payment.nonce], "nonce must not be used");
+        receiptNonces[signer][payment.nonce] = true;
 
         _validateOrderPaymentMatch(order, payment);
 
     }
 
     function _validateOrderPaymentMatch(Order memory order, Payment memory payment) internal {
-        ReceiptDetails memory details = payment.receipt.details;
-        require(details.seller == msg.sender, "sellers must match");
-        require(details.quantity == order.quantity, "quantities must match");
-        require(details.sku == order.sku, "skus must match");
-        require(details.value >= order.amount, "receipt value must be sufficient");
-        require(details.currency == Currency.USDCents, "receipt currency must match");
+        require(payment.value >= order.amount, "receipt value must be sufficient");
+        require(payment.currency == Currency.USDCents, "receipt currency must match");
     }
 
     function _updateSignerLimit(address signer, uint256 amount) internal {
@@ -78,21 +74,20 @@ contract Pay is IPay, Ownable {
         limit.processed += amount;
     }
 
-    function _getSigner(Payment memory payment) internal view returns (address) {
-        SignedReceipt memory receipt = payment.receipt;
-        ReceiptDetails memory details = receipt.details;
+    function _getSigner(Order memory order, Payment memory payment) internal view returns (address) {
         bytes32 sigHash = keccak256(abi.encodePacked(
             address(this),
-            receipt.nonce,
-            details.seller,
-            details.sku,
-            details.quantity,
-            details.requiredEscrowPeriod,
-            details.value,
-            details.currency
+            msg.sender,
+            order.user,
+            order.sku,
+            order.quantity,
+            payment.nonce,
+            payment.requiredEscrowPeriod,
+            payment.value,
+            payment.currency
         ));
         bytes32 recoveryHash = keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", sigHash));
-        return ecrecover(recoveryHash, receipt.v, receipt.r, receipt.s);
+        return ecrecover(recoveryHash, payment.v, payment.r, payment.s);
     }
 
     function setSignerLimit(address signer, uint256 usdCentsLimit) public onlyOwner {

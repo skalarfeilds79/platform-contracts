@@ -6,6 +6,8 @@
 
 export { BatchERC721EscrowFactory } from './generated/BatchERC721EscrowFactory';
 export { BatchTransferFactory } from './generated/BatchTransferFactory';
+export { BeaconFactory } from './generated/BeaconFactory';
+export { ConsumerFactory } from './generated/ConsumerFactory';
 export { ContextFactory } from './generated/ContextFactory';
 export { CreditCardEscrowFactory } from './generated/CreditCardEscrowFactory';
 export { ERC165Factory } from './generated/ERC165Factory';
@@ -14,6 +16,7 @@ export { ERC20Factory } from './generated/ERC20Factory';
 export { ERC721EscrowFactory } from './generated/ERC721EscrowFactory';
 export { ERC721Factory } from './generated/ERC721Factory';
 export { IBatchERC721EscrowFactory } from './generated/IBatchERC721EscrowFactory';
+export { IBeaconFactory } from './generated/IBeaconFactory';
 export { ICreditCardEscrowFactory } from './generated/ICreditCardEscrowFactory';
 export { IERC165Factory } from './generated/IERC165Factory';
 export { IERC20EscrowFactory } from './generated/IERC20EscrowFactory';
@@ -43,6 +46,8 @@ export { TestVendorFactory } from './generated/TestVendorFactory';
 
 export { BatchERC721Escrow } from './generated/BatchERC721Escrow';
 export { BatchTransfer } from './generated/BatchTransfer';
+export { Beacon } from './generated/Beacon';
+export { Consumer } from './generated/Consumer';
 export { Context } from './generated/Context';
 export { CreditCardEscrow } from './generated/CreditCardEscrow';
 export { ERC165 } from './generated/ERC165';
@@ -51,6 +56,7 @@ export { ERC20Escrow } from './generated/ERC20Escrow';
 export { ERC721 } from './generated/ERC721';
 export { ERC721Escrow } from './generated/ERC721Escrow';
 export { IBatchERC721Escrow } from './generated/IBatchERC721Escrow';
+export { IBeacon } from './generated/IBeacon';
 export { ICreditCardEscrow } from './generated/ICreditCardEscrow';
 export { IERC165 } from './generated/IERC165';
 export { IERC20 } from './generated/IERC20';

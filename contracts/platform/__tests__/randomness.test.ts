@@ -9,6 +9,21 @@ import { BigNumber, BigNumberish } from 'ethers/utils';
 const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();
 
+jest.setTimeout(10000);
+
+function parseLogs(factory: any, logs: ethers.providers.Log[]): any[] {
+  const iface = new ethers.utils.Interface(factory.interface.abi);
+  return logs
+    .map((log) => iface.parseLog(log))
+    .map((item) => {
+      return {
+        name: item.name,
+        signature: item.signature,
+        values: item.values,
+      };
+    });
+}
+
 describe('Beacon', () => {
 
   beforeEach(async () => {
@@ -37,8 +52,12 @@ describe('Beacon', () => {
     })
 
     async function commit(offset: BigNumberish) {
-      let tx = await beacon.commit(offset);
+      let tx = await beacon.functions.commit(offset);
       let receipt = await tx.wait();
+      const parsed = parseLogs(new BeaconFactory(), receipt.logs);
+      expect(parsed.length).toBe(1);
+      expect(parsed[0].name).toBe('Commit');
+      expect(parsed[0].values.commitBlock.toNumber()).toBe(receipt.blockNumber + Number(offset));
       let committed = await beacon.commitRequested(receipt.blockNumber);
       expect(committed).toBeTruthy();
     }
@@ -68,12 +87,38 @@ describe('Beacon', () => {
       let tx = await beacon.commit(offset);
       let receipt = await tx.wait();
       await blockchain.waitBlocksAsync(wait);
-      await beacon.callback(offset + receipt.blockNumber);
-      await beacon.randomness(receipt.blockNumber);
+      let commitBlock = offset + receipt.blockNumber;
+      tx = await beacon.callback(commitBlock);
+      receipt = await tx.wait();
+      const parsed = parseLogs(new BeaconFactory(), receipt.logs);
+      expect(parsed.length).toBe(1);
+      expect(parsed[0].name).toBe('Callback');
+      expect(parsed[0].values.commitBlock.toNumber()).toBe(commitBlock);
+      expect(parsed[0].values.seed).toBeDefined();
     }
 
     it('should not be able to callback before block reached', async () => {
       await expectRevert(callback(10, 0));
+    });
+
+    it('should not be able to callback without a commit', async () => {
+      await expectRevert(beacon.callback(0));
+    });
+
+    it('should not be able to callback on the same block', async () => {
+      await expectRevert(consumer.sameBlockCallback(beacon.address));
+    });
+
+    it('should not be able to callback multiple times', async () => {
+      await expectRevert(consumer.multiCallback(beacon.address, 0, 2));
+    });
+
+    it('should not be able to callback after 256 blocks', async () => {
+      await expectRevert(callback(0, 256));
+    });
+
+    it('should not be able to callback after 250 blocks', async () => {
+      await callback(0, 250);
     });
 
     it('should be able to make a successful callback', async () => {
@@ -122,6 +167,62 @@ describe('Beacon', () => {
         await blockchain.waitBlocksAsync(256);
         await beacon.recommit(receipt.blockNumber, 0);
         await expectRevert(beacon.recommit(receipt.blockNumber, 0));
+    });
+
+    it('should be able to make a successful callback after a recommit', async () => {
+      let tx = await beacon.commit(0);
+      let receipt = await tx.wait();
+      await blockchain.waitBlocksAsync(256);
+      tx = await beacon.recommit(receipt.blockNumber, 0);
+      receipt = await tx.wait();
+      let committed = await beacon.commitRequested(receipt.blockNumber);
+      expect(committed).toBeTruthy();
+      await beacon.callback(receipt.blockNumber)
+    });
+
+  });
+
+  describe('#randomness', () => {
+
+    let beacon: Beacon;
+    let consumer: Consumer;
+
+    beforeEach(async() => {
+        beacon = await new BeaconFactory(provider.getSigner()).deploy();
+        consumer = await new ConsumerFactory(provider.getSigner()).deploy();
+    });
+
+    it('should not be able to get randomness without a commit', async () => {
+      await expectRevert(beacon.randomness(0));
+    });
+
+    it('should not be able to get randomness on the same block', async () => {
+      await expectRevert(consumer.sameBlockRandomness(beacon.address));
+    });
+
+    it('should be able to get randomness after recommit', async () => {
+      let tx = await beacon.commit(0);
+      let receipt = await tx.wait();
+      await blockchain.waitBlocksAsync(256);
+      tx = await beacon.recommit(receipt.blockNumber, 0);
+      receipt = await tx.wait();
+      await blockchain.waitBlocksAsync(1);
+      await beacon.randomness(receipt.blockNumber);
+    });
+
+    it('should be able to get randomness after callback', async () => {
+      let tx = await beacon.commit(0);
+      let receipt = await tx.wait();
+      await blockchain.waitBlocksAsync(1);
+      await beacon.callback(receipt.blockNumber);
+      await beacon.randomness(receipt.blockNumber);
+    });
+
+    it('should be able to get randomness without callback', async () => {
+      let tx = await beacon.commit(0);
+      let receipt = await tx.wait();
+      await blockchain.waitBlocksAsync(1);
+      await beacon.randomness(receipt.blockNumber);
     });
 
   });

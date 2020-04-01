@@ -21,11 +21,8 @@ contract Beacon is IBeacon {
     // Saved block hashes are our source of randomness
     mapping(uint256 => bytes32) public blockHashes;
     // Tracks whether a commit has been requested for a specific block number
-    bool[] public commitRequested;
+    mapping(uint256 => bool) public commitRequested;
 
-    constructor() public {
-        commitRequested.length = 2**256-1;
-    }
 
     /**
      * @dev Request randomness derived from a particular block
@@ -68,7 +65,7 @@ contract Beacon is IBeacon {
      */
     function randomness(uint256 _commitBlock) public returns (bytes32) {
         uint256 currentBlock = getCurrentBlock(_commitBlock);
-        if (blockHashes[currentBlock] != bytes32(0)) {
+        if (blockHashes[currentBlock] == bytes32(0)) {
             callback(_commitBlock);
         }
         return blockHashes[currentBlock];
@@ -91,9 +88,12 @@ contract Beacon is IBeacon {
         require(blockHashes[currentBlock] == bytes32(0), "IM:Beacon: randomness must not have been set");
         require(block.number + _offset >= block.number, "IM:Beacon: must not overflow");
 
-        forwards[_commitBlock] = block.number + _offset;
+        uint256 finalBlock = block.number + _offset;
+        forwards[_commitBlock] = finalBlock;
+        // actually commit to this new block
+        commit(_offset);
 
-        emit Recommit(_commitBlock, block.number + _offset);
+        emit Recommit(_commitBlock, finalBlock);
     }
 
     /**

@@ -14,7 +14,7 @@ contract IPay {
         bytes32 sku;
         uint256 quantity;
         Currency currency;
-        uint256 amount;
+        uint256 totalPrice;
     }
 
     struct Payment {
@@ -24,7 +24,7 @@ contract IPay {
         bytes32 r;
         bytes32 s;
         uint8 v;
-        uint256 requiredEscrowPeriod;
+        uint256 escrowFor;
     }
 
     struct Limit {

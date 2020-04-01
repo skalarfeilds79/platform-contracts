@@ -33,7 +33,7 @@ contract Pay is IPay, Ownable {
         if (payment.currency == Currency.USDCents) {
             _checkReceiptAndUpdateSignerLimit(order, payment);
         } else if (payment.currency == Currency.ETH) {
-            _processETHPayment(order.amount);
+            _processETHPayment(order.totalPrice);
         } else {
             require(false, "unsupported payment type");
         }
@@ -49,7 +49,7 @@ contract Pay is IPay, Ownable {
 
         address signer = _getSigner(order, payment);
 
-        _updateSignerLimit(signer, order.amount);
+        _updateSignerLimit(signer, order.totalPrice);
 
         require(!receiptNonces[signer][payment.nonce], "nonce must not be used");
         receiptNonces[signer][payment.nonce] = true;
@@ -59,7 +59,7 @@ contract Pay is IPay, Ownable {
     }
 
     function _validateOrderPaymentMatch(Order memory order, Payment memory payment) internal {
-        require(payment.value >= order.amount, "receipt value must be sufficient");
+        require(payment.value >= order.totalPrice, "receipt value must be sufficient");
         require(payment.currency == Currency.USDCents, "receipt currency must match");
     }
 
@@ -82,7 +82,7 @@ contract Pay is IPay, Ownable {
             order.sku,
             order.quantity,
             payment.nonce,
-            payment.requiredEscrowPeriod,
+            payment.escrowFor,
             payment.value,
             payment.currency
         ));

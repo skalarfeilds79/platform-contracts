@@ -6,9 +6,9 @@ import {
 } from '../../src/contracts';
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
-import { ethers, Wallet } from 'ethers';
-import { BigNumberish, keccak256 } from 'ethers/utils';
-import { getETHOrder, getETHPayment, getUSDPayment, getUSDOrder } from './helpers';
+import { ethers } from 'ethers';
+import { keccak256 } from 'ethers/utils';
+import { getETHPayment, getUSDPayment, Order, PaymentParams } from './helpers';
 
 const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();
@@ -41,10 +41,8 @@ describe('Vendor', () => {
     let pay: Pay;
     let vendor: TestVendor;
     let sku = keccak256('0x00');
-    let nonce = 0;
 
     beforeEach(async () => {
-        nonce = 0;
         pay = await new PayFactory(user).deploy();
         vendor = await new TestVendorFactory(user).deploy(pay.address);
     });
@@ -52,15 +50,11 @@ describe('Vendor', () => {
     async function processETHPayment(approved: boolean, qty: number, totalPrice: number, value: number) {
         await pay.setSellerApproval(vendor.address, [sku], approved);
         await vendor.processPayment(
-            getETHOrder(user.address, sku, qty, totalPrice),
+            { user: user.address, sku: sku, quantity: qty, totalPrice: totalPrice, currency: 0 },
             getETHPayment(),
             { value: value }
         );
     }
-
-    it('should be able to process an ETH payment', async () => {
-        await processETHPayment(true, 1, 100, 100);
-    });
 
     it('should not be able to process an insufficient ETH payment', async () => {
         await expectRevert(processETHPayment(true, 1, 100, 99));
@@ -68,6 +62,10 @@ describe('Vendor', () => {
 
     it('should not be able to process an ETH payment for an unapproved item', async () => {
         await expectRevert(processETHPayment(false, 1, 100, 100));
+    });
+
+    it('should be able to process an ETH payment', async () => {
+        await processETHPayment(true, 1, 100, 100);
     });
 
   });
@@ -85,37 +83,55 @@ describe('Vendor', () => {
         vendor = await new TestVendorFactory(user).deploy(pay.address);
     });
 
-    async function processUSDPayment(approved: boolean, signerLimit: number, qty: number, totalPrice: number, escrowPeriod:  number, receiptValue: number) {
-        await pay.setSellerApproval(vendor.address, [sku], approved);
-        await pay.setSignerLimit(user.address, signerLimit);
+    function getSimpleOrder(price: number): Order {
+        return { quantity: 1, totalPrice: price, currency: 1, sku: sku, user: user.address };
+    }
+
+    async function processUSDPayment(order: Order, payment: PaymentParams) {
+        await pay.setSellerApproval(vendor.address, [sku], true);
         await vendor.processPayment(
-            getUSDOrder(user.address, sku, qty, totalPrice),
-            await getUSDPayment(pay, user, vendor.address, nonce, sku, qty, escrowPeriod, receiptValue)
+            order,
+            await getUSDPayment(pay, user, vendor.address, order, payment)
         );
     }
 
     it('should be able to process a USD payment', async () => {
-        await processUSDPayment(true, 100, 1, 100, 10, 100);
+        await pay.setSignerLimit(user.address, 100);
+        let order = getSimpleOrder(100);
+        let payment = await getUSDPayment(pay, user, vendor.address, order, { nonce: 0, escrowFor: 10, value: 100 });
+        await processUSDPayment(order, payment);
     });
 
     it('should not be able to process an insufficient USD payment', async () => {
-        await expectRevert(processUSDPayment(true, 100, 1, 100, 10, 99));
+        await pay.setSignerLimit(user.address, 100);
+        let order = getSimpleOrder(100);
+        let payment = await getUSDPayment(pay, user, vendor.address, order, { nonce: 0, escrowFor: 10, value: 99 });
+        await expectRevert(processUSDPayment(order, payment));
     });
 
+
     it('should not be able to exceed seller limit in one tx', async () => {
-        await expectRevert(processUSDPayment(true, 100, 1, 101, 10, 101));
+        await pay.setSignerLimit(user.address, 100);
+        let order = getSimpleOrder(101);
+        let payment = await getUSDPayment(pay, user, vendor.address, order, { nonce: 0, escrowFor: 10, value: 101 });
+        await expectRevert(processUSDPayment(order, payment));
     });
 
     it('should not be able to exceed seller limit in two txs', async () => {
-        await processUSDPayment(true, 100, 1, 99, 10, 99);
+        await pay.setSignerLimit(user.address, 100);
+        let order = getSimpleOrder(99);
+        let payment = await getUSDPayment(pay, user, vendor.address, order, { nonce: 0, escrowFor: 10, value: 99 });
+        await processUSDPayment(order, payment);
         await expectRevert(vendor.processPayment(
-            getUSDOrder(user.address, sku, 1, 2),
-            await getUSDPayment(pay, user, vendor.address, nonce, sku, 1, 10, 2)
+            getSimpleOrder(99),
+            await getUSDPayment(pay, user, vendor.address, order, { nonce: 0, escrowFor: 10, value: 2 })
         ));
     });
 
     it('should not process payment from unapproved seller', async () => {
-        await expectRevert(processUSDPayment(false, 100, 1, 100, 10, 100));
+        let order = getSimpleOrder(99);
+        let payment = await getUSDPayment(pay, user, vendor.address, order, { nonce: 0, escrowFor: 10, value: 99 });
+        await expectRevert(processUSDPayment(order, payment));
     });
 
   });

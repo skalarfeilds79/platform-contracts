@@ -56,7 +56,7 @@ contract Product {
             amount: totalPrice,
             sku: sku,
             quantity: qty,
-            token: address(0)
+            user: user
         });
 
         uint valueToSend = 0;

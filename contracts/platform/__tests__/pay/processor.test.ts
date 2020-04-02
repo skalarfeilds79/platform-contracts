@@ -4,7 +4,7 @@ import { Pay, PayFactory } from '../../src/contracts';
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { ethers, Wallet } from 'ethers';
-import { BigNumberish, keccak256 } from 'ethers/utils';
+import { keccak256 } from 'ethers/utils';
 
 const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();
@@ -31,44 +31,25 @@ describe('Pay', () => {
     });
   });
 
-  describe('#process', () => {
-
-    let processor: Pay;
-
-    beforeEach(async () => {
-        processor = await new PayFactory(user).deploy();
-    });
-
-    async function createReceipt(signer: Wallet, usdCents: number) {
-        let data = [];
-        let hash = keccak256(data)
-        return await signer.signMessage(hash);
-    }
-
-    // it('should be able to process payment', async () => {
-    //     await processor.setSignerLimit(user.address, 100);
-    //     let receipt = await createReceipt(user, 100);
-    //     await processor.process();
-    // });
-
-    // it('should not be able to exceed daily limit', async () => {
-    //     await processor.setSignerLimit(user.address, 100)
-    //     let receipt = await createReceipt(user, 101);
-    //     await expectRevert(processor.process())
-    // });
-
-  });
-
   describe('#setSignerLimit', () => {
 
     let processor: Pay;
 
     beforeEach(async () => {
-        processor = await new PayFactory(user).deploy();
+      processor = await new PayFactory(user).deploy();
+    });
+
+    async function setSignerLimit(sender: Wallet, signer: string, value: number) {
+      const p = new PayFactory(sender).attach(processor.address);
+      await p.setSignerLimit(signer, value);
+    }
+
+    it('should not be able to set signer limit as owner', async () => {
+      await expectRevert(setSignerLimit(other, user.address, 100));
     });
 
     it('should be able to set signer limit as owner', async () => {
-        await processor.setSignerLimit(user.address, 100);
+      await setSignerLimit(user, user.address, 100);
     });
 
   });
@@ -82,16 +63,21 @@ describe('Pay', () => {
         processor = await new PayFactory(user).deploy();
     });
 
-    // it('should start as unapproved', async () => {
-    //     let approved = await processor.sellerApproved(sku, other.address);
-    //     expect(approved).toBeFalsy();
-    // });
+    async function setSellerApproval(sender: Wallet, seller: string, shouldApprove: boolean) {
+        const p = new PayFactory(sender).attach(processor.address);
+        await p.functions.setSellerApproval(seller, [sku], shouldApprove);
+    }
 
-    // it('should be able to set seller approval as owner', async () => {
-    //     await processor.setSellerApproval(sku, other.address, true);
-    //     let approved = await processor.sellerApproved(sku, other.address);
-    //     expect(approved).toBeTruthy();
-    // });
+
+    it('should not be able to set seller approval as non-owner', async () => {
+      await expectRevert(setSellerApproval(other, user.address, true));
+      await expectRevert(setSellerApproval(other, user.address, false));
+    });
+
+    it('should be able to set seller approval as owner', async () => {
+        await setSellerApproval(user, user.address, true);
+        await setSellerApproval(user, user.address, false);
+    });
 
   });
 

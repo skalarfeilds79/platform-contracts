@@ -10,10 +10,10 @@ import "@openzeppelin/contracts/ownership/Ownable.sol";
 contract Pack is Ownable, Product, RarityProvider {
 
     struct Purchase {
-        uint64 commitBlock;
+        uint256 commitBlock;
         uint32 qty;
         address user;
-        uint64 escrowDuration;
+        uint256 escrowDuration;
     }
 
     // All purchases recorded by this pack
@@ -80,13 +80,14 @@ contract Pack is Ownable, Product, RarityProvider {
         require(msg.sender == protocol, "must be core escrow");
         Purchase memory purchase = purchases[id];
         _createCards(purchase, protocol);
+        delete purchases[id];
     }
 
     function purchaseFor(
         address user, uint256 qty, address payable referrer, IPay.Payment memory payment
     ) public {
         super.purchaseFor(user, qty, referrer, payment);
-        uint64 escrowDuration = 0;
+        uint256 escrowDuration = 0;
         if (payment.currency == IPay.Currency.USDCents) {
             escrowDuration = payment.escrowFor;
         }
@@ -109,9 +110,9 @@ contract Pack is Ownable, Product, RarityProvider {
         _createPurchase(user, qty, 0);
     }
 
-    function _createPurchase(address user, uint256 qty, uint64 escrowDuration) internal returns (uint256) {
+    function _createPurchase(address user, uint256 qty, uint256 escrowDuration) internal returns (uint256) {
         return purchases.push(Purchase({
-            commitBlock: uint64(beacon.commit(0)),
+            commitBlock: beacon.commit(0),
             qty: uint32(qty),
             user: user,
             escrowDuration: escrowDuration

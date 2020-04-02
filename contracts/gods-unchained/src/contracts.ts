@@ -5,6 +5,7 @@
 */
 
 export { BatchTokenFactory } from './generated/BatchTokenFactory';
+export { BatchTransferFactory } from './generated/BatchTransferFactory';
 export { CardsFactory } from './generated/CardsFactory';
 export { ChestFactory } from './generated/ChestFactory';
 export { ContextFactory } from './generated/ContextFactory';
@@ -18,6 +19,7 @@ export { ERC721Factory } from './generated/ERC721Factory';
 export { ERC721FullFactory } from './generated/ERC721FullFactory';
 export { ERC721MetadataFactory } from './generated/ERC721MetadataFactory';
 export { EpicPackFactory } from './generated/EpicPackFactory';
+export { EscrowFactory } from './generated/EscrowFactory';
 export { ForgeFactory } from './generated/ForgeFactory';
 export { ForwarderFactory } from './generated/ForwarderFactory';
 export { FusingFactory } from './generated/FusingFactory';
@@ -44,6 +46,7 @@ export { InscribableTokenFactory } from './generated/InscribableTokenFactory';
 export { LegendaryPackFactory } from './generated/LegendaryPackFactory';
 export { LibEIP712Factory } from './generated/LibEIP712Factory';
 export { LibOrderFactory } from './generated/LibOrderFactory';
+export { ListTransferFactory } from './generated/ListTransferFactory';
 export { MultiTransferFactory } from './generated/MultiTransferFactory';
 export { OpenMinterFactory } from './generated/OpenMinterFactory';
 export { OwnableFactory } from './generated/OwnableFactory';
@@ -66,6 +69,7 @@ export { TradeToggleERC20Factory } from './generated/TradeToggleERC20Factory';
 export { WETH9Factory } from './generated/WETH9Factory';
 
 export { BatchToken } from './generated/BatchToken';
+export { BatchTransfer } from './generated/BatchTransfer';
 export { Cards } from './generated/Cards';
 export { Chest } from './generated/Chest';
 export { Context } from './generated/Context';
@@ -79,6 +83,7 @@ export { ERC721Enumerable } from './generated/ERC721Enumerable';
 export { ERC721Full } from './generated/ERC721Full';
 export { ERC721Metadata } from './generated/ERC721Metadata';
 export { EpicPack } from './generated/EpicPack';
+export { Escrow } from './generated/Escrow';
 export { Forge } from './generated/Forge';
 export { Forwarder } from './generated/Forwarder';
 export { Fusing } from './generated/Fusing';
@@ -105,6 +110,7 @@ export { InscribableToken } from './generated/InscribableToken';
 export { LegendaryPack } from './generated/LegendaryPack';
 export { LibEIP712 } from './generated/LibEIP712';
 export { LibOrder } from './generated/LibOrder';
+export { ListTransfer } from './generated/ListTransfer';
 export { MultiTransfer } from './generated/MultiTransfer';
 export { OpenMinter } from './generated/OpenMinter';
 export { Ownable } from './generated/Ownable';

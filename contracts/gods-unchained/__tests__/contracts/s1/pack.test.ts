@@ -2,10 +2,10 @@ import 'jest';
 
 import { Blockchain, generatedWallets } from '@imtbl/test-utils';
 import { 
+  Escrow, EscrowFactory,
   Beacon, BeaconFactory,
   CreditCardEscrow, CreditCardEscrowFactory,
-  Processor, ProcessorFactory,
-  Referral, ReferralFactory,
+  Referral, ReferralFactory,gf
   RarePack, RarePackFactory,
   EpicPack, EpicPackFactory,
   LegendaryPack, LegendaryPackFactory,
@@ -40,9 +40,9 @@ describe('Referral', () => {
 
     let beacon: Beacon;
     let referral: Referral;
-    let processor: Processor;
+    let processor: Pay;
 
-    let escro: Escrow;
+    let escrow: Escrow;
     let cc: CreditCardEscrow;
     let sku = keccak256('0x00');
 
@@ -62,7 +62,7 @@ describe('Referral', () => {
         );
         beacon = await new BeaconFactory(owner).deploy();
         referral = await new ReferralFactory(owner).deploy();
-        processor = await new ProcessorFactory(owner).deploy();
+        processor = await new PayFactory(owner).deploy();
     });
 
     it('should deploy rare pack', async () => {

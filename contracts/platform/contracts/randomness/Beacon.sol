@@ -21,20 +21,17 @@ contract Beacon is IBeacon {
     // Saved block hashes are our source of randomness
     mapping(uint256 => bytes32) public blockHashes;
     // Tracks whether a commit has been requested for a specific block number
-    bool[] public commitRequested;
+    mapping(uint256 => bool) public commitRequested;
 
-    constructor() public {
-        commitRequested.length = 2**256-1;
-    }
 
     /**
      * @dev Request randomness derived from a particular block
      *
-     * @param offset the offset from the current block of the block which will be used in our random seed
+     * @param _offset the offset from the current block of the block which will be used in our random seed
      */
-    function commit(uint256 offset) public returns (uint256) {
-        require(block.number + offset >= block.number, "must not overflow");
-        uint256 commitBlock = block.number + offset;
+    function commit(uint256 _offset) public returns (uint256) {
+        require(block.number + _offset >= block.number, "IM:Beacon: must not overflow");
+        uint256 commitBlock = block.number + _offset;
         if (!commitRequested[commitBlock]) {
             commitRequested[commitBlock] = true;
             emit Commit(commitBlock);
@@ -45,29 +42,32 @@ contract Beacon is IBeacon {
     /**
      * @dev Record the randomness result for a particular block
      *
-     * @param commitBlock the block in question
+     * @param _commitBlock the block in question
      */
-    function callback(uint256 commitBlock) public {
+    function callback(uint256 _commitBlock) public {
 
-        require(commitRequested[commitBlock], "must have requested a callback on this block");
-        require(block.number > commitBlock, "cannot callback on the same block");
-        require(blockHashes[commitBlock] == bytes32(0), "callback already set");
+        require(commitRequested[_commitBlock], "IM:Beacon: must have requested a callback on this block");
+        require(block.number > _commitBlock, "IM:Beacon: cannot callback on the same block");
 
-        bytes32 bhash = blockhash(commitBlock);
-        require(bhash != bytes32(0), "blockhash");
+        if (blockHashes[_commitBlock] == bytes32(0)) {
+            bytes32 bhash = blockhash(_commitBlock);
+            require(bhash != bytes32(0), "IM:Beacon: blockhash must not be zero");
 
-        blockHashes[commitBlock] = bhash;
-        emit Callback(commitBlock, bhash);
+            blockHashes[_commitBlock] = bhash;
+            emit Callback(_commitBlock, bhash);
+        }
     }
 
     /**
      * @dev Get the randomness result for a particular block
      *
-     * @param commitBlock the block in question
+     * @param _commitBlock the block in question
      */
-    function randomness(uint64 commitBlock) public view returns (bytes32) {
-        uint256 currentBlock = getCurrentBlock(commitBlock);
-        require(blockHashes[currentBlock] != bytes32(0), "randomness has not been set for this block");
+    function randomness(uint256 _commitBlock) public returns (bytes32) {
+        uint256 currentBlock = getCurrentBlock(_commitBlock);
+        if (blockHashes[currentBlock] == bytes32(0)) {
+            callback(_commitBlock);
+        }
         return blockHashes[currentBlock];
     }
 
@@ -75,32 +75,35 @@ contract Beacon is IBeacon {
      * @dev Forward all requests for this block's randomness to another block
      * as this block's hash is no longer discoverable
      *
-     * @param commitBlock the original commit block
-     * @param offset the offset from current block of the block which will be used in our random seed
+     * @param _commitBlock the original commit block
+     * @param _offset the offset from current block of the block which will be used in our random seed
      */
-    function recommit(uint256 commitBlock, uint256 offset) public {
+    function recommit(uint256 _commitBlock, uint256 _offset) public {
 
-        require(commitRequested[commitBlock], "original block must have requested a commit");
+        require(commitRequested[_commitBlock], "IM:Beacon: original block must have requested a commit");
 
-        uint256 currentBlock = getCurrentBlock(commitBlock);
+        uint256 currentBlock = getCurrentBlock(_commitBlock);
 
-        require(block.number > currentBlock + 256, "blockhash period must have expired");
-        require(blockHashes[currentBlock] == bytes32(0), "randomness must not have been set");
-        require(block.number + offset >= block.number, "must not overflow");
+        require(block.number > currentBlock + 256, "IM:Beacon: blockhash period must have expired");
+        require(blockHashes[currentBlock] == bytes32(0), "IM:Beacon: randomness must not have been set");
+        require(block.number + _offset >= block.number, "IM:Beacon: must not overflow");
 
-        forwards[commitBlock] = block.number + offset;
+        uint256 finalBlock = block.number + _offset;
+        forwards[_commitBlock] = finalBlock;
+        // actually commit to this new block
+        commit(_offset);
 
-        emit Recommit(commitBlock, block.number + offset);
+        emit Recommit(_commitBlock, finalBlock);
     }
 
     /**
      * @dev Gets the block which is the latest 'head' of this commit chain
      *
-     * @param commitBlock the original commit block
+     * @param _commitBlock the original commit block
      */
-    function getCurrentBlock(uint256 commitBlock) public view returns (uint256) {
-        uint256 forwardTo = forwards[commitBlock];
-        return (forwardTo == 0 ? commitBlock : forwardTo);
+    function getCurrentBlock(uint256 _commitBlock) public view returns (uint256) {
+        uint256 forwardTo = forwards[_commitBlock];
+        return (forwardTo == 0 ? _commitBlock : forwardTo);
     }
 
 }

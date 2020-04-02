@@ -7,11 +7,11 @@ import "./IPay.sol";
 contract Pay is IPay, Ownable {
 
     event SellerApprovalChanged(bytes32 indexed sku, address indexed seller, bool approved);
-    event SignerLimitChanged(address indexed signer, uint64 usdCentsLimit);
-    event PaymentProcessed(uint256 id, Order order, Payment payment);
+    event SignerLimitChanged(address indexed signer, uint256 usdCentsLimit);
+    event PaymentProcessed(uint256 indexed id, Order order, Payment payment);
 
     // Stores the nonce mapping
-    mapping(address => mapping(uint256 => bool)) receiptNonces;
+    mapping(address => mapping(uint256 => bool)) public receiptNonces;
     // Track whether a contract can sell through this processor
     mapping(bytes32 => mapping(address => bool)) public sellerApproved;
     // Track the daily limit of each signing address
@@ -33,7 +33,7 @@ contract Pay is IPay, Ownable {
         if (payment.currency == Currency.USDCents) {
             _checkReceiptAndUpdateSignerLimit(order, payment);
         } else if (payment.currency == Currency.ETH) {
-            _processETHPayment(order.amount);
+            _processETHPayment(order.totalPrice);
         } else {
             require(false, "unsupported payment type");
         }
@@ -47,24 +47,20 @@ contract Pay is IPay, Ownable {
 
     function _checkReceiptAndUpdateSignerLimit(Order memory order, Payment memory payment) internal {
 
-        address signer = _getSigner(payment);
+        address signer = _getSigner(order, payment);
 
-        _updateSignerLimit(signer, order.amount);
+        _updateSignerLimit(signer, order.totalPrice);
 
-        require(!receiptNonces[signer][payment.receipt.nonce], "nonce must not be used");
-        receiptNonces[signer][payment.receipt.nonce] = true;
+        require(!receiptNonces[signer][payment.nonce], "nonce must not be used");
+        receiptNonces[signer][payment.nonce] = true;
 
         _validateOrderPaymentMatch(order, payment);
 
     }
 
     function _validateOrderPaymentMatch(Order memory order, Payment memory payment) internal {
-        ReceiptDetails memory details = payment.receipt.details;
-        require(details.seller == msg.sender, "sellers must match");
-        require(details.quantity == order.quantity, "quantities must match");
-        require(details.sku == order.sku, "skus must match");
-        require(details.value >= order.amount, "receipt value must be sufficient");
-        require(details.currency == Currency.USDCents, "receipt currency must match");
+        require(payment.value >= order.totalPrice, "receipt value must be sufficient");
+        require(payment.currency == Currency.USDCents, "receipt currency must match");
     }
 
     function _updateSignerLimit(address signer, uint256 amount) internal {
@@ -78,24 +74,23 @@ contract Pay is IPay, Ownable {
         limit.processed += amount;
     }
 
-    function _getSigner(Payment memory payment) internal view returns (address) {
-        SignedReceipt memory receipt = payment.receipt;
-        ReceiptDetails memory details = receipt.details;
+    function _getSigner(Order memory order, Payment memory payment) internal view returns (address) {
         bytes32 sigHash = keccak256(abi.encodePacked(
             address(this),
-            receipt.nonce,
-            details.seller,
-            details.sku,
-            details.quantity,
-            details.requiredEscrowPeriod,
-            details.value,
-            details.currency
+            msg.sender,
+            order.user,
+            order.sku,
+            order.quantity,
+            payment.nonce,
+            payment.escrowFor,
+            payment.value,
+            payment.currency
         ));
         bytes32 recoveryHash = keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", sigHash));
-        return ecrecover(recoveryHash, receipt.v, receipt.r, receipt.s);
+        return ecrecover(recoveryHash, payment.v, payment.r, payment.s);
     }
 
-    function setSignerLimit(address signer, uint64 usdCentsLimit) public onlyOwner {
+    function setSignerLimit(address signer, uint256 usdCentsLimit) public onlyOwner {
         signerLimits[signer].limit = usdCentsLimit;
         emit SignerLimitChanged(signer, usdCentsLimit);
     }

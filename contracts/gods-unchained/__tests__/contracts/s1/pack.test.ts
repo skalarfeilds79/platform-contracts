@@ -3,8 +3,6 @@ import 'jest';
 import { Blockchain, generatedWallets } from '@imtbl/test-utils';
 import { 
   Beacon, BeaconFactory,
-  ERC20Escrow, ERC20EscrowFactory,
-  BatchERC721Escrow, BatchERC721EscrowFactory, 
   CreditCardEscrow, CreditCardEscrowFactory,
   Processor, ProcessorFactory,
   Referral, ReferralFactory,
@@ -16,44 +14,14 @@ import {
 import { Wallet, ethers } from 'ethers';
 import { keccak256 } from 'ethers/utils';
 
+import { getSignedPayment, Currency } from '@imtbl/platform/src/pay';
+
 jest.setTimeout(600000);
 
 const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();
 
 const ZERO_EX = '0x0000000000000000000000000000000000000000';
-
-let signerNonce = 0;
-
-async function getUSDPayment(signer: Wallet, pay: string, seller: string, sku: string, quantity: number, escrowPeriod: number, value: number) {
-
-  let types = ['address', 'uint256', 'address', 'bytes32', 'uint64', 'uint64', 'uint256', 'uint8'];
-  let values = [pay, signerNonce, seller, sku, quantity, escrowPeriod, value, 1];
-
-  let hash = ethers.utils.solidityKeccak256(types, values);
-  let signature = await signer.signMessage(ethers.utils.arrayify(hash));
-  var sig = ethers.utils.splitSignature(signature);
-
-  return {
-      currency: 1,
-      token: ZERO_EX,
-      maxToken: 0,
-      receipt: {
-          details: {
-              seller: seller,
-              sku: sku,
-              quantity: quantity,
-              requiredEscrowPeriod: escrowPeriod,
-              value: value,
-              currency: 1,
-          },
-          nonce: signerNonce++,
-          v: sig.v,
-          r: sig.r,
-          s: sig.s
-      },
-  };
-}
 
 describe('Referral', () => {
 
@@ -74,8 +42,7 @@ describe('Referral', () => {
     let referral: Referral;
     let processor: Processor;
 
-    let erc20Escrow: ERC20Escrow;
-    let erc721Escrow: BatchERC721Escrow;
+    let escro: Escrow;
     let cc: CreditCardEscrow;
     let sku = keccak256('0x00');
 
@@ -85,11 +52,9 @@ describe('Referral', () => {
     let shiny: ShinyPack;
 
     beforeEach(async() => {
-        erc20Escrow = await new ERC20EscrowFactory(owner).deploy();
-        erc721Escrow = await new BatchERC721EscrowFactory(owner).deploy();
+        escrow = await new EscrowFactory(owner).deploy();
         cc = await new CreditCardEscrowFactory(owner).deploy(
-            erc20Escrow.address,
-            erc721Escrow.address,
+            escrow.address,
             ZERO_EX, 
             100,
             ZERO_EX,
@@ -152,21 +117,18 @@ describe('Referral', () => {
     let referral: Referral;
     let pay: Pay;
 
-    let erc20Escrow: ERC20Escrow;
-    let erc721Escrow: BatchERC721Escrow;
+    let escrow: Escrow;
     let cc: CreditCardEscrow;
     let rarePackSKU = keccak256('0x00');
     let cards: Cards;
 
     let rare: RarePack;
+    let cost = 249;
 
     beforeEach(async() => {
-      signerNonce = 0;
-      erc20Escrow = await new ERC20EscrowFactory(owner).deploy();
-      erc721Escrow = await new BatchERC721EscrowFactory(owner).deploy();
+      escrow = await new EscrowFactory(owner).deploy();
       cc = await new CreditCardEscrowFactory(owner).deploy(
-          erc20Escrow.address,
-          erc721Escrow.address,
+          escrow.address,
           owner.address, 
           100,
           owner.address,
@@ -188,19 +150,23 @@ describe('Referral', () => {
       await pay.setSignerLimit(owner.address, 1000000000000000);
     });
 
+    async function purchasePacks(quantity: number) {
+      let order = { quantity: quantity, sku: rarePackSKU, user: owner.address, totalPrice: cost * quantity, currency: Currency.USDCents };
+      let params = { escrowFor: 0, nonce: 0, value: cost * quantity };
+      let payment = await getSignedPayment(owner, pay.address, rare.address, order, params);
+      await rare.purchase(quantity, ZERO_EX, payment)
+    }
+
     it('should purchase one pack with USD', async () => {
-      let payment = await getUSDPayment(owner, pay.address, rare.address, rarePackSKU, 1, 100, 249);
-      await rare.purchase(1, ZERO_EX, payment)
+      await purchasePacks(1);
     });
 
     it('should purchase five packs with USD', async () => {
-      let payment = await getUSDPayment(owner, pay.address, rare.address, rarePackSKU, 5, 100, 249 * 5);
-      await rare.purchase(5, ZERO_EX, payment)
+      await purchasePacks(5);
     });
 
     it('should purchase 100 packs with USD', async () => {
-      let payment = await getUSDPayment(owner, pay.address, rare.address, rarePackSKU, 100, 100, 249 * 100);
-      await rare.purchase(100, ZERO_EX, payment)
+      await purchasePacks(100);
     });
   
   });
@@ -211,20 +177,18 @@ describe('Referral', () => {
     let referral: Referral;
     let pay: Pay;
 
-    let erc20Escrow: ERC20Escrow;
-    let erc721Escrow: BatchERC721Escrow;
+    let escrow: Escrow;
     let cc: CreditCardEscrow;
     let rarePackSKU = keccak256('0x00');
     let cards: Cards;
 
     let rare: RarePack;
+    let cost = 249;
 
     beforeEach(async() => {
-      signerNonce = 0;
-      erc20Escrow = await new ERC20EscrowFactory(owner).deploy();
-      erc721Escrow = await new BatchERC721EscrowFactory(owner).deploy();
+      escrow = await new EscrowFactory(owner).deploy();
       cc = await new CreditCardEscrowFactory(owner).deploy(
-          erc20Escrow.address, erc721Escrow.address, owner.address, 100, owner.address, 100
+        escrow.address, owner.address, 100, owner.address, 100
       );
       beacon = await new BeaconFactory(owner).deploy();
       referral = await new ReferralFactory(owner).deploy();
@@ -240,7 +204,10 @@ describe('Referral', () => {
       await cards.addFactory(rare.address, 1);
     });
 
-    async function purchaseAndCallback(quantity: number, payment: any) {
+    async function purchaseAndCallback(quantity: number, escrowFor: number) {
+      let order = { quantity: quantity, sku: rarePackSKU, user: owner.address, totalPrice: cost * quantity, currency: Currency.USDCents };
+      let params = { escrowFor: escrowFor, nonce: 0, value: cost * quantity };
+      let payment = await getSignedPayment(owner, pay.address, rare.address, order, params);
       let tx = await rare.purchase(quantity, ZERO_EX, payment);
       let receipt = await tx.wait();
       await beacon.callback(receipt.blockNumber);
@@ -253,28 +220,22 @@ describe('Referral', () => {
     }
 
     it('should create cards from 1 pack', async () => {
-      let payment = await getUSDPayment(owner, pay.address, rare.address, rarePackSKU, 1, 100, 249);
-      await purchaseAndCallback(1, payment);
+      await purchaseAndCallback(1, 100);
       await rare.createCards(0);
     });
 
     it('should create cards from 5 packs', async () => {
-      let payment = await getUSDPayment(owner, pay.address, rare.address, rarePackSKU, 5, 100, 249 * 5);
-      await purchaseAndCallback(5, payment);
+      await purchaseAndCallback(5, 100);
       await rare.createCards(0);
     });
 
     it('should create cards from 1 packs with no escrow', async () => {
-      let packs = 1;
-      let payment = await getUSDPayment(owner, pay.address, rare.address, rarePackSKU, packs, 0, 249 * packs);
-      await purchaseAndCallback(packs, payment);
+      await purchaseAndCallback(1, 0);
       await createCardsTrackGas(0, "1 pack no escrow");
     });
 
     it('should create cards from 6 packs with no escrow', async () => {
-      let packs = 6;
-      let payment = await getUSDPayment(owner, pay.address, rare.address, rarePackSKU, packs, 0, 249 * packs);
-      await purchaseAndCallback(packs, payment);
+      await purchaseAndCallback(6, 0);
       await createCardsTrackGas(0, "6 packs no escrow");
     });
   

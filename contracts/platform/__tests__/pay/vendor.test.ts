@@ -6,8 +6,9 @@ import {
 } from '../../src/contracts';
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
-import { ethers, Wallet } from 'ethers';
-import { BigNumberish, keccak256 } from 'ethers/utils';
+import { ethers } from 'ethers';
+import { keccak256 } from 'ethers/utils';
+import { getETHPayment, getSignedPayment, Order, PaymentParams } from '../../src/pay';
 
 const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();
@@ -35,7 +36,41 @@ describe('Vendor', () => {
     });
   });
 
-  describe('#processPayment', () => {
+  describe('#processPayment in ETH', () => {
+
+    let pay: Pay;
+    let vendor: TestVendor;
+    let sku = keccak256('0x00');
+
+    beforeEach(async () => {
+        pay = await new PayFactory(user).deploy();
+        vendor = await new TestVendorFactory(user).deploy(pay.address);
+    });
+
+    async function processETHPayment(approved: boolean, qty: number, totalPrice: number, value: number) {
+        await pay.setSellerApproval(vendor.address, [sku], approved);
+        await vendor.processPayment(
+            { user: user.address, sku: sku, quantity: qty, totalPrice: totalPrice, currency: 0 },
+            getETHPayment(),
+            { value: value }
+        );
+    }
+
+    it('should not be able to process an insufficient ETH payment', async () => {
+        await expectRevert(processETHPayment(true, 1, 100, 99));
+    });
+
+    it('should not be able to process an ETH payment for an unapproved item', async () => {
+        await expectRevert(processETHPayment(false, 1, 100, 100));
+    });
+
+    it('should be able to process an ETH payment', async () => {
+        await processETHPayment(true, 1, 100, 100);
+    });
+
+  });
+
+  describe('#processPayment in USD', () => {
 
     let pay: Pay;
     let vendor: TestVendor;
@@ -48,142 +83,55 @@ describe('Vendor', () => {
         vendor = await new TestVendorFactory(user).deploy(pay.address);
     });
 
-    function getETHOrder(sku: string, quantity: number, amount: number) {
-        return {
-            sku: sku,
-            quantity: quantity,
-            currency: 0,
-            amount: amount,
-            token: ZERO_EX,
-        }
+    function getSimpleOrder(price: number): Order {
+        return { quantity: 1, totalPrice: price, currency: 1, sku: sku, user: user.address };
     }
 
-    function getETHPayment(seller: string, sku: string, quantity: number) {
-        return {
-            currency: 0,
-            token: ZERO_EX,
-            maxToken: 0,
-            receipt: {
-                details: {
-                    seller: seller,
-                    sku: sku,
-                    quantity: quantity,
-                    requiredEscrowPeriod: 0,
-                    value: 0,
-                    currency: 0,
-                },
-                nonce: 0,
-                v: 0,
-                r: keccak256('0x00'),
-                s: keccak256('0x00'),
-            }
-        };
-    }
-
-    async function getUSDPayment(seller: string, sku: string, quantity: number, escrowPeriod: number, value: number) {
-
-        let types = ['address', 'uint256', 'address', 'bytes32', 'uint64', 'uint64', 'uint256', 'uint8'];
-        let values = [pay.address, nonce, seller, sku, quantity, escrowPeriod, value, 1];
-
-        let hash = ethers.utils.solidityKeccak256(types, values);
-        let signature = await user.signMessage(ethers.utils.arrayify(hash));
-        var sig = ethers.utils.splitSignature(signature);
-
-        return {
-            currency: 1,
-            token: ZERO_EX,
-            maxToken: 0,
-            receipt: {
-                details: {
-                    seller: seller,
-                    sku: sku,
-                    quantity: quantity,
-                    requiredEscrowPeriod: escrowPeriod,
-                    value: value,
-                    currency: 1,
-                },
-                nonce: nonce++,
-                v: sig.v,
-                r: sig.r,
-                s: sig.s
-            },
-        };
-    }
-
-    function getUSDOrder(sku: string, quantity: number, amount: number) {
-        return {
-            sku: sku,
-            quantity: quantity,
-            currency: 1,
-            amount: amount,
-            token: ZERO_EX,
-        }
-    }
-
-    it('should be able to process an ETH payment', async () => {
+    async function processUSDPayment(order: Order, payment: PaymentParams) {
         await pay.setSellerApproval(vendor.address, [sku], true);
         await vendor.processPayment(
-            getETHOrder(sku, 1, 100),
-            getETHPayment(pay.address, sku, 1),
-            { value: 100 }
+            order,
+            await getSignedPayment(user, pay.address, vendor.address, order, payment)
         );
-    });
-
-    it('should not be able to process an insufficient ETH payment', async () => {
-        await pay.setSellerApproval(vendor.address, [sku], true);
-        await expectRevert(vendor.processPayment(
-            getETHOrder(sku, 1, 100),
-            getETHPayment(pay.address, sku, 1),
-            { value: 99 }
-        ));
-    });
+    }
 
     it('should be able to process a USD payment', async () => {
-        await pay.setSellerApproval(vendor.address, [sku], true);
         await pay.setSignerLimit(user.address, 100);
-        await vendor.processPayment(
-            getUSDOrder(sku, 1, 100),
-            await getUSDPayment(vendor.address, sku, 1, 10, 100)
-        );
+        let order = getSimpleOrder(100);
+        let payment = await getSignedPayment(user, pay.address, vendor.address, order, { nonce: 0, escrowFor: 10, value: 100 });
+        await processUSDPayment(order, payment);
     });
 
     it('should not be able to process an insufficient USD payment', async () => {
-        await pay.setSellerApproval(vendor.address, [sku], true);
         await pay.setSignerLimit(user.address, 100);
-        await expectRevert(vendor.processPayment(
-            getUSDOrder(sku, 1, 100),
-            await getUSDPayment(vendor.address, sku, 1, 10, 99)
-        ));
+        let order = getSimpleOrder(100);
+        let payment = await getSignedPayment(user, pay.address, vendor.address, order, { nonce: 0, escrowFor: 10, value: 99 });
+        await expectRevert(processUSDPayment(order, payment));
     });
 
+
     it('should not be able to exceed seller limit in one tx', async () => {
-        await pay.setSellerApproval(vendor.address, [sku], true);
         await pay.setSignerLimit(user.address, 100);
-        await expectRevert(vendor.processPayment(
-            getUSDOrder(sku, 1, 101),
-            await getUSDPayment(vendor.address, sku, 1, 10, 101)
-        ));
+        let order = getSimpleOrder(101);
+        let payment = await getSignedPayment(user, pay.address, vendor.address, order, { nonce: 0, escrowFor: 10, value: 101 });
+        await expectRevert(processUSDPayment(order, payment));
     });
 
     it('should not be able to exceed seller limit in two txs', async () => {
-        await pay.setSellerApproval(vendor.address, [sku], true);
         await pay.setSignerLimit(user.address, 100);
-        await vendor.processPayment(
-            getUSDOrder(sku, 1, 99),
-            await getUSDPayment(vendor.address, sku, 1, 10, 99)
-        );
+        let order = getSimpleOrder(99);
+        let payment = await getSignedPayment(user, pay.address, vendor.address, order, { nonce: 0, escrowFor: 10, value: 99 });
+        await processUSDPayment(order, payment);
         await expectRevert(vendor.processPayment(
-            getUSDOrder(sku, 1, 2),
-            await getUSDPayment(vendor.address, sku, 1, 10, 2)
+            getSimpleOrder(99),
+            await getSignedPayment(user, pay.address, vendor.address, order, { nonce: 0, escrowFor: 10, value: 2 })
         ));
     });
 
     it('should not process payment from unapproved seller', async () => {
-        await expectRevert(vendor.processPayment(
-            getETHOrder(sku, 1, 100),
-            getETHPayment(pay.address, sku, 1),
-            { value: 100 }
-        ));
+        let order = getSimpleOrder(99);
+        let payment = await getSignedPayment(user, pay.address, vendor.address, order, { nonce: 0, escrowFor: 10, value: 99 });
+        await expectRevert(processUSDPayment(order, payment));
     });
 
   });

@@ -54,7 +54,6 @@ export { MaliciousListPack } from './generated/MaliciousListPack';
 export { Ownable } from './generated/Ownable';
 
 export { Pay } from './generated/Pay';
-
 export { TestBatchPack } from './generated/TestBatchPack';
 export { TestChest } from './generated/TestChest';
 export { TestCreditCardPack } from './generated/TestCreditCardPack';

@@ -88,7 +88,7 @@ contract Pack is Ownable, Product, RarityProvider {
         super.purchaseFor(user, qty, referrer, payment);
         uint64 escrowDuration = 0;
         if (payment.currency == IPay.Currency.USDCents) {
-            escrowDuration = payment.receipt.details.requiredEscrowPeriod;
+            escrowDuration = payment.escrowFor;
         }
         _createPurchase(user, qty, escrowDuration);
     }

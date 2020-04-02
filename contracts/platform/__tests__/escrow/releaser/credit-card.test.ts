@@ -1,12 +1,11 @@
 import 'jest';
 
 import { 
-    ERC20Escrow, ERC20EscrowFactory, 
+    Escrow, EscrowFactory, 
     TestERC20Token, TestERC20TokenFactory, 
-    BatchERC721EscrowFactory,
     CreditCardEscrowFactory, CreditCardEscrow, 
     TestERC721Token, TestERC721TokenFactory,
-    TestCreditCardPack, TestCreditCardPackFactory, BatchERC721Escrow
+    TestCreditCardPack, TestCreditCardPackFactory
 } from '../../../src/contracts';
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
@@ -37,15 +36,13 @@ describe('CreditCardEscrow', () => {
 
   describe('#constructor', () => {
     it('should be able to deploy the escrow contract', async () => {
-      const erc20Escrow = await new ERC20EscrowFactory(user).deploy();
-      const batchEscrow = await new BatchERC721EscrowFactory(user).deploy();
+      const protocol = await new EscrowFactory(user).deploy();
       const destroyer = user.address;
       const destructionDelay = 100;
       const custodian = user.address;
       const releaseDelay = 100;
       const escrow = await new CreditCardEscrowFactory(user).deploy(
-        erc20Escrow.address,
-        batchEscrow.address,
+        protocol.address,
         destroyer,
         destructionDelay,
         custodian, 
@@ -56,8 +53,7 @@ describe('CreditCardEscrow', () => {
 
   describe('#escrow', () => {
 
-    let erc20Escrow: ERC20Escrow;
-    let erc721Escrow: BatchERC721Escrow;
+    let escrow: Escrow;
     let cc: CreditCardEscrow;
     let erc20: TestERC20Token;
     let erc721: TestERC721Token;
@@ -66,11 +62,9 @@ describe('CreditCardEscrow', () => {
     beforeEach(async() => {
         erc20 = await new TestERC20TokenFactory(user).deploy();
         erc721 = await new TestERC721TokenFactory(user).deploy();
-        erc20Escrow = await new ERC20EscrowFactory(user).deploy();
-        erc721Escrow = await new BatchERC721EscrowFactory(user).deploy();
+        escrow = await new EscrowFactory(user).deploy();
         cc = await new CreditCardEscrowFactory(user).deploy(
-            erc20Escrow.address,
-            erc721Escrow.address,
+            escrow.address,
             ZERO_EX, 
             100,
             ZERO_EX,
@@ -83,19 +77,19 @@ describe('CreditCardEscrow', () => {
         );
     })
 
-    // it('should be able to escrow an erc20 token', async () => {
-    //     await pack.purchaseERC20(user.address, 10);
-    // });
+    it('should be able to escrow an erc20 token', async () => {
+        await pack.purchaseERC20(user.address, 10, 10);
+    });
 
     it('should be able to escrow an erc721 token', async () => {
-        await pack.purchaseERC721(user.address, 10);
+        await pack.purchaseERC721(user.address, 10, 10);
     });
 
   });
 
-  describe('#release ERC721', () => {
+  describe('#release', () => {
 
-    let escrow: ERC20Escrow;
+    let escrow: Escrow;
     let cc: CreditCardEscrow;
     let erc20: TestERC20Token;
     let erc721: TestERC721Token;
@@ -104,10 +98,9 @@ describe('CreditCardEscrow', () => {
     beforeEach(async() => {
         erc20 = await new TestERC20TokenFactory(user).deploy();
         erc721 = await new TestERC721TokenFactory(user).deploy();
-        escrow = await new ERC20EscrowFactory(user).deploy();
+        escrow = await new EscrowFactory(user).deploy();
         cc = await new CreditCardEscrowFactory(user).deploy(
             escrow.address,
-            ZERO_EX,
             ZERO_EX, 
             100,
             ZERO_EX,
@@ -120,10 +113,305 @@ describe('CreditCardEscrow', () => {
         );
     })
 
-    // it('should be able to escrow an erc20 token', async () => {
-    //     await pack.purchaseERC20(user.address, 10);
-    // });
+    it('should be able to release an ERC20 token vault after the time period', async () => {
+        await pack.purchaseERC20(user.address, 1, 10);
+        await blockchain.waitBlocksAsync(10);
+        await cc.release(0);
+    });
 
+    it('should be able to release an ERC721 token vault after the time period', async () => {
+      await pack.purchaseERC721(user.address, 1, 10);
+      await blockchain.waitBlocksAsync(10);
+      await cc.release(0);
+    });
+
+    it('should not be able to release an ERC20 token vault before the time period', async () => {
+      await pack.purchaseERC20(user.address, 1, 10);
+      await expectRevert(cc.release(0));
+    });
+
+    it('should not be able to release an ERC721 token vault before the time period', async () => {
+      await pack.purchaseERC721(user.address, 1, 10);
+      await expectRevert(cc.release(0));
+    });
+
+    it('should not be able to directly release a custodial vault', async () => {
+      await pack.purchaseERC721(ZERO_EX, 1, 10);
+      await blockchain.waitBlocksAsync(10);
+      await expectRevert(cc.release(0));
+    });
+
+  });
+
+  describe('#requestDestruction', () => {
+
+    let escrow: Escrow;
+    let cc: CreditCardEscrow;
+    let erc20: TestERC20Token;
+    let erc721: TestERC721Token;
+    let pack: TestCreditCardPack;
+    const destroyer = user;
+    const destructionDelay = 100;
+    const custodian = user;
+    const releaseDelay = 100;
+
+    beforeEach(async() => {
+        erc20 = await new TestERC20TokenFactory(user).deploy();
+        erc721 = await new TestERC721TokenFactory(user).deploy();
+        escrow = await new EscrowFactory(user).deploy();
+        cc = await new CreditCardEscrowFactory(user).deploy(
+            escrow.address,
+            destroyer.address, 
+            100,
+            custodian.address,
+            100
+        );
+        pack = await new TestCreditCardPackFactory(user).deploy(
+            cc.address,
+            erc20.address,
+            erc721.address
+        );
+    })
+
+    it('should be able to request destroy immediately', async () => {
+        await pack.purchaseERC20(ZERO_EX, 1, 10);
+        await cc.requestDestruction(0);
+    });
+
+    it('should not be able to request rescission twice', async () => {
+      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await cc.requestDestruction(0);
+      await expectRevert(cc.requestDestruction(0));
+    });
+
+    it('should not be able to destroy a purchase with an actual user', async () => {
+      await pack.purchaseERC20(user.address, 1, 10);
+      await expectRevert(cc.requestDestruction(0));
+    });
+
+    it('should not be able to destroy a purchase without a successful request', async () => {
+      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await expectRevert(cc.destroy(0));
+    });
+
+    it('should not be able to destroy a purchase without a successful request', async () => {
+      await pack.purchaseERC20(user.address, 1, 10);
+      await expectRevert(cc.destroy(0));
+    });
+
+    it('should be able to release after successful request', async () => {
+      await pack.purchaseERC20(ZERO_EX, 1, 10)
+      await cc.requestDestruction(0);
+      await blockchain.waitBlocksAsync(destructionDelay);
+      await cc.destroy(0);
+    });
+
+    it('should be destroyed successfully', async () => {
+      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await cc.requestDestruction(0);
+      await blockchain.waitBlocksAsync(destructionDelay);
+      await cc.destroy(0);
+      let balance = await erc20.balanceOf(escrow.address);
+      expect(balance.toNumber()).toBe(1);
+    });
+
+    it('should not be able to be destroyed twice', async () => {
+      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await cc.requestDestruction(0);
+      await blockchain.waitBlocksAsync(destructionDelay);
+      await cc.destroy(0);
+      await expectRevert(cc.destroy(0));
+    });
+
+  });
+
+  describe('#cancelDestruction', () => {
+
+    let escrow: Escrow;
+    let cc: CreditCardEscrow;
+    let erc20: TestERC20Token;
+    let erc721: TestERC721Token;
+    let pack: TestCreditCardPack;
+    const destroyer = user;
+    const destructionDelay = 100;
+    const custodian = user;
+    const releaseDelay = 100;
+
+    beforeEach(async() => {
+        erc20 = await new TestERC20TokenFactory(user).deploy();
+        erc721 = await new TestERC721TokenFactory(user).deploy();
+        escrow = await new EscrowFactory(user).deploy();
+        cc = await new CreditCardEscrowFactory(user).deploy(
+            escrow.address,
+            destroyer.address, 
+            destructionDelay,
+            custodian.address,
+            releaseDelay
+        );
+        pack = await new TestCreditCardPackFactory(user).deploy(
+            cc.address,
+            erc20.address,
+            erc721.address
+        );
+    })
+
+    it('should be able to cancel a destruction request immediately', async () => {
+        await pack.purchaseERC20(ZERO_EX, 1, 10);
+        await cc.requestDestruction(0);
+        await cc.cancelDestruction(0);
+    });
+
+    it('should not be able to cancel a destruction request which is not in progress', async () => {
+      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await expectRevert(cc.cancelDestruction(0));
+    });
+
+    it('should not be able to cancel a destruction request twice', async () => {
+      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await cc.requestDestruction(0);
+      await cc.cancelDestruction(0);
+      await expectRevert(cc.cancelDestruction(0));
+    });
+
+    it('should be able to restart a request post-cancellation', async () => {
+      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await cc.requestDestruction(0);
+      await cc.cancelDestruction(0);
+      await cc.requestDestruction(0);
+    });
+
+    it('should not be able to release mid-destruction', async () => {
+      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await cc.requestDestruction(0);
+      await expectRevert(cc.requestRelease(0, user.address));
+    });
+
+  });
+
+  describe('#cancelRelease', () => {
+
+    let escrow: Escrow;
+    let cc: CreditCardEscrow;
+    let erc20: TestERC20Token;
+    let erc721: TestERC721Token;
+    let pack: TestCreditCardPack;
+    const destroyer = user;
+    const destructionDelay = 100;
+    const custodian = user;
+    const releaseDelay = 100;
+
+    beforeEach(async() => {
+        erc20 = await new TestERC20TokenFactory(user).deploy();
+        erc721 = await new TestERC721TokenFactory(user).deploy();
+        escrow = await new EscrowFactory(user).deploy();
+        cc = await new CreditCardEscrowFactory(user).deploy(
+            escrow.address,
+            destroyer.address, 
+            destructionDelay,
+            custodian.address,
+            releaseDelay
+        );
+        pack = await new TestCreditCardPackFactory(user).deploy(
+            cc.address,
+            erc20.address,
+            erc721.address
+        );
+    })
+
+    it('should be able to cancel a release request immediately', async () => {
+        await pack.purchaseERC20(ZERO_EX, 1, 10);
+        await cc.requestRelease(0, user.address);
+        await cc.cancelRelease(0);
+    });
+
+    it('should not be able to cancel a destruction request which is not in progress', async () => {
+      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await expectRevert(cc.cancelRelease(0));
+    });
+
+    it('should not be able to cancel a destruction request twice', async () => {
+      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await cc.requestRelease(0, user.address);
+      await cc.cancelRelease(0);
+      await expectRevert(cc.cancelRelease(0));
+    });
+
+    it('should be able to restart a request post-cancellation', async () => {
+      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await cc.requestRelease(0, user.address);
+      await cc.cancelRelease(0);
+      await cc.requestRelease(0, user.address);
+    });
+
+  });
+
+  describe('#requestRelease', () => {
+
+    let escrow: Escrow;
+    let cc: CreditCardEscrow;
+    let erc20: TestERC20Token;
+    let erc721: TestERC721Token;
+    let pack: TestCreditCardPack;
+    const destroyer = user;
+    const destructionDelay = 100;
+    const custodian = user;
+    const releaseDelay = 100;
+
+    beforeEach(async() => {
+        erc20 = await new TestERC20TokenFactory(user).deploy();
+        erc721 = await new TestERC721TokenFactory(user).deploy();
+        escrow = await new EscrowFactory(user).deploy();
+        cc = await new CreditCardEscrowFactory(user).deploy(
+            escrow.address,
+            destroyer.address, 
+            100,
+            custodian.address,
+            100
+        );
+        pack = await new TestCreditCardPackFactory(user).deploy(
+            cc.address,
+            erc20.address,
+            erc721.address
+        );
+    })
+
+    it('should be able to request release immediately', async () => {
+        await pack.purchaseERC20(ZERO_EX, 1, 10);
+        await cc.requestRelease(0, user.address);
+    });
+
+    it('should not be able to request release twice', async () => {
+      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await cc.requestRelease(0, user.address);
+      await expectRevert(cc.requestRelease(0, user.address));
+    });
+
+    it('should be able to release after successful request', async () => {
+      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await blockchain.waitBlocksAsync(10);
+      await cc.requestRelease(0, user.address);
+      await blockchain.waitBlocksAsync(releaseDelay);
+      await cc.release(0);
+    });
+
+    it('should be released to the correct user after a successful request', async () => {
+      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await blockchain.waitBlocksAsync(10);
+      await cc.requestRelease(0, user.address);
+      await blockchain.waitBlocksAsync(releaseDelay);
+      await cc.release(0);
+      let balance = await erc20.balanceOf(user.address);
+      expect(balance.toNumber()).toBe(1);
+    });
+
+    it('should not be able to release twice after successful request', async () => {
+      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await blockchain.waitBlocksAsync(10);
+      await cc.requestRelease(0, user.address);
+      await blockchain.waitBlocksAsync(releaseDelay);
+      await cc.release(0);
+      await expectRevert(cc.release(0));
+    });
 
   });
 

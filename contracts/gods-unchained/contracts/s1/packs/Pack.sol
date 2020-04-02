@@ -13,7 +13,7 @@ contract Pack is Ownable, Product, RarityProvider {
         uint256 commitBlock;
         uint32 qty;
         address user;
-        uint256 escrowDuration;
+        uint256 escrowFor;
     }
 
     // All purchases recorded by this pack
@@ -57,7 +57,7 @@ contract Pack is Ownable, Product, RarityProvider {
     function createCards(uint256 _id) public {
         require(_id < purchases.length, "purchase ID invalid");
         Purchase memory purchase = purchases[_id];
-        if (purchase.escrowDuration == 0) {
+        if (purchase.escrowFor == 0) {
             _createCards(purchase, purchase.user);
         } else {
             _escrowCards(_id);
@@ -84,7 +84,7 @@ contract Pack is Ownable, Product, RarityProvider {
 
         bytes memory data = abi.encodeWithSignature("escrowHook(uint256)", _id);
 
-        fiatEscrow.escrow(vault, address(this), data, purchase.escrowDuration);
+        fiatEscrow.escrow(vault, address(this), data, purchase.escrowFor);
     }
 
     function escrowHook(uint256 id) public {
@@ -112,28 +112,32 @@ contract Pack is Ownable, Product, RarityProvider {
         _createPurchase(_user, _qty, _payment.escrowFor);
     }
 
-    function _createCards(Purchase memory purchase, address user) internal {
-        uint256 randomness = uint256(beacon.randomness(purchase.commitBlock));
-        uint cardCount = purchase.qty * 5;
+    function _createCards(Purchase memory _purchase, address _user) internal {
+        uint256 randomness = uint256(beacon.randomness(_purchase.commitBlock));
+        uint cardCount = _purchase.qty * 5;
         uint16[] memory protos = new uint16[](cardCount);
         uint8[] memory qualities = new uint8[](cardCount);
         for (uint i = 0; i < cardCount; i++) {
-            (protos[i], qualities[i]) = _getCardDetails(randomness, i);
+            (protos[i], qualities[i]) = _getCardDetails(i, randomness);
         }
-        cards.mintCards(user, protos, qualities);
+        cards.mintCards(_user, protos, qualities);
     }
 
-    function openChests(address user, uint256 qty) public {
+    function openChests(address _user, uint256 _qty) public {
         require(msg.sender == chest, "must be the chest contract");
         _createPurchase(user, qty, 0);
     }
 
-    function _createPurchase(address user, uint256 qty, uint256 escrowDuration) internal returns (uint256) {
+    function _createPurchase(
+        address _user,
+        uint256 _qty,
+        uint256 _escrowFor
+    ) internal returns (uint256) {
         return purchases.push(Purchase({
             commitBlock: beacon.commit(0),
             qty: uint32(qty),
             user: user,
-            escrowDuration: escrowDuration
+            escrowFor: escrowFor
         })) - 1;
     }
 

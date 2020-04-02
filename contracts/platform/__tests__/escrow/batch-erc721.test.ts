@@ -1,6 +1,6 @@
 import 'jest';
 
-import { BatchERC721Escrow, BatchERC721EscrowFactory, TestERC721Token, TestERC721TokenFactory, MaliciousBatchPack, MaliciousBatchPackFactory, TestBatchPackFactory, TestBatchPack } from '../../src/contracts';
+import { Escrow, EscrowFactory, TestERC721Token, TestERC721TokenFactory, MaliciousBatchPack, MaliciousBatchPackFactory, TestBatchPackFactory, TestBatchPack } from '../../src/contracts';
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
@@ -31,17 +31,17 @@ describe('BatchERC271Escrow', () => {
 
   describe('#constructor', () => {
     it('should be able to deploy the escrow contract', async () => {
-      const escrow = await new BatchERC721EscrowFactory(user).deploy();
+      const escrow = await new EscrowFactory(user).deploy();
     });
   });
 
   describe('#escrow', () => {
 
-    let escrow: BatchERC721Escrow;
+    let escrow: Escrow;
     let erc721: TestERC721Token;
 
     beforeEach(async() => {
-        escrow = await new BatchERC721EscrowFactory(user).deploy();
+        escrow = await new EscrowFactory(user).deploy();
         erc721 = await new TestERC721TokenFactory(user).deploy();
     })
 
@@ -53,8 +53,10 @@ describe('BatchERC271Escrow', () => {
             player: user.address,
             releaser: user.address,
             asset: erc721.address,
+            balance: 0,
             lowTokenID: 0,
-            highTokenID: 1
+            highTokenID: 1,
+            tokenIDs: []
         }, user.address);
     });
 
@@ -65,8 +67,10 @@ describe('BatchERC271Escrow', () => {
           player: user.address,
           releaser: user.address,
           asset: erc721.address,
+          balance: 0,
           lowTokenID: 0,
-          highTokenID: 0
+          highTokenID: 0,
+          tokenIDs: []
       }, user.address));
     });
 
@@ -77,8 +81,10 @@ describe('BatchERC271Escrow', () => {
           player: user.address,
           releaser: user.address,
           asset: erc721.address,
+          balance: 0,
           lowTokenID: 10,
-          highTokenID: 0
+          highTokenID: 0,
+          tokenIDs: []
       }, user.address));
     });
 
@@ -89,8 +95,10 @@ describe('BatchERC271Escrow', () => {
           player: user.address,
           releaser: user.address,
           asset: ZERO_EX,
+          balance: 0,
           lowTokenID: 0,
-          highTokenID: 1
+          highTokenID: 1,
+          tokenIDs: []
       }, user.address));
     });
 
@@ -101,8 +109,10 @@ describe('BatchERC271Escrow', () => {
           player: user.address,
           releaser: ZERO_EX,
           asset: erc721.address,
+          balance: 0,
           lowTokenID: 0,
-          highTokenID: 1
+          highTokenID: 1,
+          tokenIDs: []
       }, user.address));
     });
 
@@ -115,8 +125,10 @@ describe('BatchERC271Escrow', () => {
           player: user.address,
           releaser: user.address,
           asset: erc721.address,
+          balance: 0,
           lowTokenID: 0,
-          highTokenID: len
+          highTokenID: len,
+          tokenIDs: []
       }, user.address);
     });
 
@@ -128,8 +140,10 @@ describe('BatchERC271Escrow', () => {
           player: user.address,
           releaser: user.address,
           asset: erc721.address,
+          balance: 0,
           lowTokenID: 0,
-          highTokenID: 1
+          highTokenID: 1,
+          tokenIDs: []
       }, user.address));
     });
 
@@ -142,8 +156,10 @@ describe('BatchERC271Escrow', () => {
           player: user.address,
           releaser: user.address,
           asset: erc721.address,
+          balance: 0,
           lowTokenID: 0,
-          highTokenID: len
+          highTokenID: len,
+          tokenIDs: []
       }, user.address));
     });
 
@@ -151,11 +167,11 @@ describe('BatchERC271Escrow', () => {
 
   describe('#release', () => {
 
-    let escrow: BatchERC721Escrow;
+    let escrow: Escrow;
     let erc721: TestERC721Token;
 
     beforeEach(async() => {
-        escrow = await new BatchERC721EscrowFactory(user).deploy();
+        escrow = await new EscrowFactory(user).deploy();
         erc721 = await new TestERC721TokenFactory(user).deploy();
     });
 
@@ -166,8 +182,10 @@ describe('BatchERC271Escrow', () => {
           player: user.address,
           releaser: other.address,
           asset: erc721.address,
+          balance: 0,
           lowTokenID: 0,
-          highTokenID: 1
+          highTokenID: 1,
+          tokenIDs: []
       }, user.address);
       await expectRevert(escrow.release(0, user.address));
     });
@@ -181,8 +199,10 @@ describe('BatchERC271Escrow', () => {
           player: user.address,
           releaser: user.address,
           asset: erc721.address,
+          balance: 0,
           lowTokenID: 0,
-          highTokenID: 1
+          highTokenID: 1,
+          tokenIDs: []
       }, user.address);
       await checkBalance(erc721, user.address, 0);
       await checkBalance(erc721, escrow.address, 1);
@@ -195,13 +215,13 @@ describe('BatchERC271Escrow', () => {
 
   describe('#callbackEscrow', () => {
 
-    let escrow: BatchERC721Escrow;
+    let escrow: Escrow;
     let erc721: TestERC721Token;
     let malicious: MaliciousBatchPack;
     let pack: TestBatchPack;
 
     beforeEach(async() => {
-        escrow = await new BatchERC721EscrowFactory(user).deploy();
+        escrow = await new EscrowFactory(user).deploy();
         erc721 = await new TestERC721TokenFactory(user).deploy();
         malicious = await new MaliciousBatchPackFactory(user).deploy(escrow.address, erc721.address);
         pack = await new TestBatchPackFactory(user).deploy(escrow.address, erc721.address);

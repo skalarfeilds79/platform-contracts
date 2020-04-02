@@ -1,10 +1,12 @@
 import 'jest';
 
-import { ListERC721Escrow, ListERC721EscrowFactory, TestERC721Token, TestERC721TokenFactory, TestListPack, TestBatcbPackFactory, MaliciousListPack, MaliciousListPackFactory, TestListPackFactory } from '../../src/contracts';
+import { 
+  Escrow, EscrowFactory, TestERC721Token, TestERC721TokenFactory, 
+  TestListPack, MaliciousListPack, MaliciousListPackFactory, TestListPackFactory 
+} from '../../src/contracts';
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
-import { BigNumberish } from 'ethers/utils';
 
 const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();
@@ -31,17 +33,17 @@ describe('ListERC271Escrow', () => {
 
   describe('#constructor', () => {
     it('should be able to deploy the escrow contract', async () => {
-      const escrow = await new ListERC721EscrowFactory(user).deploy();
+      const escrow = await new EscrowFactory(user).deploy();
     });
   });
 
   describe('#escrow', () => {
 
-    let escrow: ListERC721Escrow;
+    let escrow: Escrow;
     let erc721: TestERC721Token;
 
     beforeEach(async() => {
-        escrow = await new ListERC721EscrowFactory(user).deploy();
+        escrow = await new EscrowFactory(user).deploy();
         erc721 = await new TestERC721TokenFactory(user).deploy();
     })
 
@@ -53,6 +55,9 @@ describe('ListERC271Escrow', () => {
             player: user.address,
             releaser: user.address,
             asset: erc721.address,
+            balance: 0,
+            lowTokenID: 0,
+            highTokenID: 0,
             tokenIDs: [0]
         }, user.address);
     });
@@ -64,6 +69,9 @@ describe('ListERC271Escrow', () => {
           player: user.address,
           releaser: user.address,
           asset: erc721.address,
+          balance: 0,
+          lowTokenID: 0,
+          highTokenID: 0,
           tokenIDs: []
       }, user.address));
     });
@@ -75,6 +83,9 @@ describe('ListERC271Escrow', () => {
           player: user.address,
           releaser: user.address,
           asset: ZERO_EX,
+          balance: 0,
+          lowTokenID: 0,
+          highTokenID: 0,
           tokenIDs: [0]
       }, user.address));
     });
@@ -86,6 +97,9 @@ describe('ListERC271Escrow', () => {
           player: user.address,
           releaser: ZERO_EX,
           asset: erc721.address,
+          balance: 0,
+          lowTokenID: 0,
+          highTokenID: 0,
           tokenIDs: [0]
       }, user.address));
     });
@@ -100,6 +114,9 @@ describe('ListERC271Escrow', () => {
           player: user.address,
           releaser: user.address,
           asset: erc721.address,
+          balance: 0,
+          lowTokenID: 0,
+          highTokenID: 0,
           tokenIDs: tokenIDs
       }, user.address);
     });
@@ -112,6 +129,9 @@ describe('ListERC271Escrow', () => {
           player: user.address,
           releaser: user.address,
           asset: erc721.address,
+          balance: 0,
+          lowTokenID: 0,
+          highTokenID: 0,
           tokenIDs: [0]
       }, user.address));
     });
@@ -125,6 +145,9 @@ describe('ListERC271Escrow', () => {
           player: user.address,
           releaser: user.address,
           asset: erc721.address,
+          balance: 0,
+          lowTokenID: 0,
+          highTokenID: 0,
           tokenIDs: [0]
       }, user.address));
     });
@@ -133,11 +156,11 @@ describe('ListERC271Escrow', () => {
 
   describe('#release', () => {
 
-    let escrow: ListERC721Escrow;
+    let escrow: Escrow;
     let erc721: TestERC721Token;
 
     beforeEach(async() => {
-        escrow = await new ListERC721EscrowFactory(user).deploy();
+        escrow = await new EscrowFactory(user).deploy();
         erc721 = await new TestERC721TokenFactory(user).deploy();
     })
 
@@ -148,6 +171,9 @@ describe('ListERC271Escrow', () => {
           player: user.address,
           releaser: other.address,
           asset: erc721.address,
+          balance: 0,
+          lowTokenID: 0,
+          highTokenID: 0,
           tokenIDs: [0],
       }, user.address);
       await expectRevert(escrow.release(0, user.address));
@@ -162,6 +188,9 @@ describe('ListERC271Escrow', () => {
           player: user.address,
           releaser: user.address,
           asset: erc721.address,
+          balance: 0,
+          lowTokenID: 0,
+          highTokenID: 0,
           tokenIDs: [0],
       }, user.address);
       await checkBalance(erc721, user.address, 0);
@@ -175,13 +204,13 @@ describe('ListERC271Escrow', () => {
 
   describe('#callbackEscrow', () => {
 
-    let escrow: ListERC721Escrow;
+    let escrow: Escrow;
     let erc721: TestERC721Token;
     let malicious: MaliciousListPack
     let pack: TestListPack;
 
     beforeEach(async() => {
-        escrow = await new ListERC721EscrowFactory(user).deploy();
+        escrow = await new EscrowFactory(user).deploy();
         erc721 = await new TestERC721TokenFactory(user).deploy();
         malicious = await new MaliciousListPackFactory(user).deploy(escrow.address, erc721.address);
         pack = await new TestListPackFactory(user).deploy(escrow.address, erc721.address);

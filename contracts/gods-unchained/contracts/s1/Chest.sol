@@ -39,7 +39,7 @@ contract Chest is Product, TradeToggleERC20, ERC20Burnable, Ownable {
             IEscrow.Vault memory vault = IEscrow.Vault({
                 player: user,
                 releaser: address(fiatEscrow),
-                asset: IERC20(address(this)),
+                asset: address(this),
                 balance: qty,
                 lowTokenID: 0,
                 highTokenID: 0,
@@ -58,7 +58,7 @@ contract Chest is Product, TradeToggleERC20, ERC20Burnable, Ownable {
     }
 
     function mintTokens() public {
-        require(msg.sender == address(fiatEscrow.getERC20Escrow()), "must be core escrow contract");
+        require(msg.sender == address(fiatEscrow.getProtocol()), "must be core escrow contract");
         _mint(currentPurchase.user, currentPurchase.count);
         delete currentPurchase;
     }

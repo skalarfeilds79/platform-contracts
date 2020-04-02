@@ -5,7 +5,7 @@ import {
   Escrow, EscrowFactory,
   Beacon, BeaconFactory,
   CreditCardEscrow, CreditCardEscrowFactory,
-  Referral, ReferralFactory,gf
+  Referral, ReferralFactory,
   RarePack, RarePackFactory,
   EpicPack, EpicPackFactory,
   LegendaryPack, LegendaryPackFactory,

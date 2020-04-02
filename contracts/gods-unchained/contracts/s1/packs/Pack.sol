@@ -26,9 +26,13 @@ contract Pack is Ownable, Product, RarityProvider {
     address public chest;
 
     constructor(
-        IBeacon _beacon, ICards _cards,
-        bytes32 _sku, uint256 _saleCap, uint _price,
-        IReferral _referral, ICreditCardEscrow _fiatEscrow,
+        IBeacon _beacon,
+        ICards _cards,
+        bytes32 _sku,
+        uint256 _saleCap,
+        uint256 _price,
+        IReferral _referral,
+        ICreditCardEscrow _fiatEscrow,
         IPay _processor
     ) public Product(
         _sku, _saleCap, _price, _referral, _fiatEscrow, _processor
@@ -37,24 +41,32 @@ contract Pack is Ownable, Product, RarityProvider {
         cards = _cards;
     }
 
+    /** @dev Purchase packs for a user
+     *
+     * @param _chest the chest contract for this pack
+     */
     function setChest(address _chest) public onlyOwner {
         require(chest == address(0), "must not have already set chest");
         chest = _chest;
     }
 
-    function createCards(uint256 purchaseID) public {
-        require(purchaseID < purchases.length, "purchase ID invalid");
-        Purchase memory purchase = purchases[purchaseID];
+    /** @dev Create cards from a purchase
+     *
+     * @param _id the ID of the purchase
+     */
+    function createCards(uint256 _id) public {
+        require(_id < purchases.length, "purchase ID invalid");
+        Purchase memory purchase = purchases[_id];
         if (purchase.escrowDuration == 0) {
             _createCards(purchase, purchase.user);
         } else {
-            _escrowCards(purchaseID);
+            _escrowCards(_id);
         }
     }
 
-    function _escrowCards(uint256 id) internal {
+    function _escrowCards(uint256 _id) internal {
 
-        Purchase memory purchase = purchases[id];
+        Purchase memory purchase = purchases[_id];
 
         uint cardCount = purchase.qty * 5;
         uint low = cards.nextBatch();
@@ -70,9 +82,9 @@ contract Pack is Ownable, Product, RarityProvider {
             tokenIDs: new uint256[](0)
         });
 
-        bytes memory data = abi.encodeWithSignature("escrowHook(uint256)", id);
+        bytes memory data = abi.encodeWithSignature("escrowHook(uint256)", _id);
 
-        fiatEscrow.escrow(vault, address(this), data, 64);
+        fiatEscrow.escrow(vault, address(this), data, purchase.escrowDuration);
     }
 
     function escrowHook(uint256 id) public {
@@ -83,15 +95,21 @@ contract Pack is Ownable, Product, RarityProvider {
         delete purchases[id];
     }
 
+    /** @dev Purchase packs for a user
+     *
+     * @param _user the user who will receive the packs
+     * @param _qty the number of packs to purchase
+     * @param _referrer the address of the user who made this referral
+     * @param _payment the details of the method by which payment will be made
+     */
     function purchaseFor(
-        address user, uint256 qty, address payable referrer, IPay.Payment memory payment
+        address _user,
+        uint256 _qty,
+        address payable _referrer,
+        IPay.Payment memory _payment
     ) public {
-        super.purchaseFor(user, qty, referrer, payment);
-        uint256 escrowDuration = 0;
-        if (payment.currency == IPay.Currency.USDCents) {
-            escrowDuration = payment.escrowFor;
-        }
-        _createPurchase(user, qty, escrowDuration);
+        super.purchaseFor(_user, _qty, _referrer, _payment);
+        _createPurchase(_user, _qty, _payment.escrowFor);
     }
 
     function _createCards(Purchase memory purchase, address user) internal {
@@ -119,6 +137,6 @@ contract Pack is Ownable, Product, RarityProvider {
         })) - 1;
     }
 
-    function _getCardDetails(uint cardIndex, uint result) internal view returns (uint16 proto, uint8 quality);
+    function _getCardDetails(uint _index, uint _random) internal view returns (uint16 proto, uint8 quality);
 
 }

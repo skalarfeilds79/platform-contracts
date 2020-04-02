@@ -6,19 +6,22 @@ import "./Pack.sol";
 contract LegendaryPack is Pack {
 
     constructor(
-        IBeacon _beacon, ICards _cards, bytes32 _sku,
-        IReferral _referral, ICreditCardEscrow _fiatEscrow,
+        IBeacon _beacon,
+        ICards _cards,
+        bytes32 _sku,
+        IReferral _referral,
+        ICreditCardEscrow _fiatEscrow,
         IPay _processor
     ) public Pack(
         _beacon, _cards, _sku, 0, 2499, _referral, _fiatEscrow, _processor
     ) {}
 
-    function _getCardDetails(uint cardIndex, uint result) internal view returns (uint16 proto, uint8 quality) {
-        RandomnessComponents memory rc = getComponents(cardIndex, result);
+    function _getCardDetails(uint _index, uint _random) internal view returns (uint16 proto, uint8 quality) {
+        Components memory rc = _getComponents(_index, _random);
         Rarity rarity;
-        if (cardIndex % 5 == 0) {
+        if (_index % 5 == 0) {
             rarity = Rarity.Legendary;
-        } else if (cardIndex % 5 == 1) {
+        } else if (_index % 5 == 1) {
             rarity = _getRarePlusRarity(rc.rarity);
         } else {
             rarity = _getCommonPlusRarity(rc.rarity);

@@ -6,6 +6,7 @@
 
 export { BatchTokenFactory } from './generated/BatchTokenFactory';
 export { BatchTransferFactory } from './generated/BatchTransferFactory';
+export { BeaconFactory } from './generated/BeaconFactory';
 export { CardsFactory } from './generated/CardsFactory';
 export { ChestFactory } from './generated/ChestFactory';
 export { ContextFactory } from './generated/ContextFactory';
@@ -70,6 +71,7 @@ export { WETH9Factory } from './generated/WETH9Factory';
 
 export { BatchToken } from './generated/BatchToken';
 export { BatchTransfer } from './generated/BatchTransfer';
+export { Beacon } from './generated/Beacon';
 export { Cards } from './generated/Cards';
 export { Chest } from './generated/Chest';
 export { Context } from './generated/Context';

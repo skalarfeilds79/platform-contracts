@@ -58,29 +58,29 @@ contract Product is Ownable {
     /** @dev Purchase assets
      *
      * @param _qty the number of this product to purchase
-     * @param _referrer the address of the user who made this referral
      * @param _payment the details of the method by which payment will be made
+     * @param _referrer the address of the user who made this referral
      */
     function purchase(
         uint256 _qty,
-        address payable _referrer,
-        IPay.Payment memory _payment
+        IPay.Payment memory _payment,
+        address payable _referrer
     ) public {
-        purchaseFor(msg.sender, _qty, _referrer, _payment);
+        purchaseFor(msg.sender, _qty, _payment, _referrer);
     }
 
     /** @dev Purchase assets for a user
      *
      * @param _user the user who will receive the assets
      * @param _qty the number of this product to purchase
-     * @param _referrer the address of the user who made this referral
      * @param _payment the details of the method by which payment will be made
+     * @param _referrer the address of the user who made this referral
      */
     function purchaseFor(
-        address _user,
+        address payable _user,
         uint256 _qty,
-        address payable _referrer,
-        IPay.Payment memory _payment
+        IPay.Payment memory _payment,
+        address payable _referrer
     ) public {
         require(!paused, "GU:S1:Product: must be unpaused");
         require(saleCap == 0 || saleCap >= sold + _qty, "GU:S1:Product: product cap has been exhausted");

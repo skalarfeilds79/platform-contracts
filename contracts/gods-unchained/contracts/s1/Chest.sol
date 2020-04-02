@@ -38,17 +38,17 @@ contract Chest is Product, TradeToggleERC20, ERC20Burnable {
      *
      * @param _user the user who will receive the chests
      * @param _qty the number of chests to purchase
-     * @param _referrer the address of the user who made this referral
      * @param _payment the details of the method by which payment will be made
+     * @param _referrer the address of the user who made this referral
      */
     function purchaseFor(
-        address _user,
+        address payable _user,
         uint256 _qty,
-        address payable _referrer,
-        IPay.Payment memory _payment
+        IPay.Payment memory _payment,
+        address payable _referrer
     ) public {
 
-        super.purchaseFor(_user, _qty, _referrer, _payment);
+        super.purchaseFor(_user, _qty, _payment, _referrer);
 
         if (_payment.currency == IPay.Currency.ETH) {
             _mint(msg.sender, _qty);

@@ -103,12 +103,12 @@ contract Pack is Ownable, Product, RarityProvider {
      * @param _payment the details of the method by which payment will be made
      */
     function purchaseFor(
-        address _user,
+        address payable _user,
         uint256 _qty,
-        address payable _referrer,
-        IPay.Payment memory _payment
+        IPay.Payment memory _payment,
+        address payable _referrer
     ) public {
-        super.purchaseFor(_user, _qty, _referrer, _payment);
+        super.purchaseFor(_user, _qty, _payment, _referrer);
         _createPurchase(_user, _qty, _payment.escrowFor);
     }
 
@@ -125,7 +125,7 @@ contract Pack is Ownable, Product, RarityProvider {
 
     function openChests(address _user, uint256 _qty) public {
         require(msg.sender == chest, "must be the chest contract");
-        _createPurchase(user, qty, 0);
+        _createPurchase(_user, _qty, 0);
     }
 
     function _createPurchase(
@@ -135,9 +135,9 @@ contract Pack is Ownable, Product, RarityProvider {
     ) internal returns (uint256) {
         return purchases.push(Purchase({
             commitBlock: beacon.commit(0),
-            qty: uint32(qty),
-            user: user,
-            escrowFor: escrowFor
+            qty: uint32(_qty),
+            user: _user,
+            escrowFor: _escrowFor
         })) - 1;
     }
 

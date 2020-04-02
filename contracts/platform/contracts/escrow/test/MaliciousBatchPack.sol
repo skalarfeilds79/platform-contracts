@@ -1,7 +1,7 @@
 pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
-import "../IBatchERC721Escrow.sol";
+import "../IEscrow.sol";
 import "./TestERC721Token.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
@@ -12,17 +12,17 @@ contract MaliciousBatchPack {
     }
 
     Purchase[] public purchases;
-    IBatchERC721Escrow escrow;
+    IEscrow escrow;
     TestERC721Token asset;
 
-    constructor(IBatchERC721Escrow _escrow, TestERC721Token _asset) public {
+    constructor(IEscrow _escrow, TestERC721Token _asset) public {
         escrow = _escrow;
         asset = _asset;
     }
 
     function maliciousPush(uint256 count) public {
 
-        IBatchERC721Escrow.Vault memory vault = _createVault(count);
+        IEscrow.Vault memory vault = _createVault(count);
 
         uint256 id = purchases.push(Purchase({
             count: count
@@ -35,7 +35,7 @@ contract MaliciousBatchPack {
 
     function maliciousPull(uint256 count) public {
 
-        IBatchERC721Escrow.Vault memory vault = _createVault(count);
+        IEscrow.Vault memory vault = _createVault(count);
 
         uint256 id = purchases.push(Purchase({
             count: count
@@ -50,7 +50,7 @@ contract MaliciousBatchPack {
         require(msg.sender == address(escrow), "must be the escrow contract");
         Purchase memory p = purchases[purchaseID];
 
-        IBatchERC721Escrow.Vault memory vault = _createVault(p.count);
+        IEscrow.Vault memory vault = _createVault(p.count);
 
         bytes memory data = abi.encodeWithSignature("emptyHook()");
 
@@ -68,7 +68,7 @@ contract MaliciousBatchPack {
         require(msg.sender == address(escrow), "must be the escrow contract");
         Purchase memory p = purchases[purchaseID];
 
-        IBatchERC721Escrow.Vault memory vault = _createVault(p.count);
+        IEscrow.Vault memory vault = _createVault(p.count);
 
         asset.mint(address(this), p.count);
         asset.setApprovalForAll(address(escrow), true);
@@ -78,17 +78,19 @@ contract MaliciousBatchPack {
         delete purchases[purchaseID];
     }
 
-    function _createVault(uint256 count) internal returns (IBatchERC721Escrow.Vault memory) {
+    function _createVault(uint256 count) internal returns (IEscrow.Vault memory) {
         // predict what the token IDs will be
         uint256 low = asset.totalSupply();
         uint256 high = low + count;
 
-        return IBatchERC721Escrow.Vault({
+        return IEscrow.Vault({
             player: msg.sender,
             releaser: msg.sender,
-            asset: asset,
+            asset: address(asset),
+            balance: 0,
             lowTokenID: low,
-            highTokenID: high
+            highTokenID: high,
+            tokenIDs: new uint256[](0)
         });
     }
 

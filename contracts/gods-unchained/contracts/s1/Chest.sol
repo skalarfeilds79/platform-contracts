@@ -6,7 +6,7 @@ import "@imtbl/platform/contracts/token/TradeToggleERC20.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "./Product.sol";
 import "./IPack.sol";
-import "@imtbl/platform/contracts/escrow/IERC20Escrow.sol";
+import "@imtbl/platform/contracts/escrow/IEscrow.sol";
 
 contract Chest is Product, TradeToggleERC20, ERC20Burnable, Ownable {
 
@@ -35,12 +35,14 @@ contract Chest is Product, TradeToggleERC20, ERC20Burnable, Ownable {
         if (payment.currency == IPay.Currency.ETH) {
             _mint(msg.sender, qty);
         } else {
-            // escrow the chests
-            IERC20Escrow.Vault memory vault = IERC20Escrow.Vault({
+            IEscrow.Vault memory vault = IEscrow.Vault({
                 player: user,
                 releaser: address(fiatEscrow),
-                asset: IERC20(address(this)),
-                balance: qty
+                asset: address(this),
+                balance: qty,
+                lowTokenID: 0,
+                highTokenID: 0,
+                tokenIDs: new uint256[](0)
             });
 
             currentPurchase = Purchase({
@@ -50,12 +52,12 @@ contract Chest is Product, TradeToggleERC20, ERC20Burnable, Ownable {
 
             bytes memory data = abi.encodeWithSignature("mintTokens()");
 
-            fiatEscrow.escrowERC20(vault, address(this), data, payment.receipt.details.requiredEscrowPeriod);
+            fiatEscrow.escrow(vault, address(this), data, payment.receipt.details.requiredEscrowPeriod);
         }
     }
 
     function mintTokens() public {
-        require(msg.sender == address(fiatEscrow.getERC20Escrow()), "must be core escrow contract");
+        require(msg.sender == address(fiatEscrow.getProtocol()), "must be core escrow contract");
         _mint(currentPurchase.user, currentPurchase.count);
         delete currentPurchase;
     }

@@ -4,7 +4,6 @@ pragma experimental ABIEncoderV2;
 import "../Product.sol";
 import "./RarityProvider.sol";
 import "../../ICards.sol";
-import "@imtbl/platform/contracts/escrow/IBatchERC721Escrow.sol";
 import "@imtbl/platform/contracts/randomness/IBeacon.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";
 
@@ -61,24 +60,26 @@ contract Pack is Ownable, Product, RarityProvider {
         uint low = cards.nextBatch();
         uint high = low + cardCount;
 
-        IBatchERC721Escrow.Vault memory vault = IBatchERC721Escrow.Vault({
+        IEscrow.Vault memory vault = IEscrow.Vault({
             player: purchase.user,
             releaser: address(fiatEscrow),
-            asset: IERC721(address(cards)),
+            asset: address(cards),
+            balance: 0,
             lowTokenID: low,
-            highTokenID: high
+            highTokenID: high,
+            tokenIDs: new uint256[](0)
         });
 
         bytes memory data = abi.encodeWithSignature("escrowHook(uint256)", id);
 
-        fiatEscrow.escrowBatch(vault, address(this), data, 64);
+        fiatEscrow.escrow(vault, address(this), data, 64);
     }
 
     function escrowHook(uint256 id) public {
-        address escrowAddress = address(fiatEscrow.getBatchEscrow());
-        require(msg.sender == escrowAddress, "must be core escrow");
+        address protocol = address(fiatEscrow.getProtocol());
+        require(msg.sender == protocol, "must be core escrow");
         Purchase memory purchase = purchases[id];
-        _createCards(purchase, escrowAddress);
+        _createCards(purchase, protocol);
     }
 
     function purchaseFor(

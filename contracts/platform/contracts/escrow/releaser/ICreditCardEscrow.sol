@@ -47,7 +47,7 @@ contract ICreditCardEscrow {
      */
     function destroy(uint _id) public;
 
-    function escrow(IEscrow.Vault memory vault, address cbTo, bytes memory cbData, uint64 _duration) public returns (uint);
+    function escrow(IEscrow.Vault memory vault, address cbTo, bytes memory cbData, uint256 _duration) public returns (uint);
 
     function getProtocol() public view returns (IEscrow);
 }

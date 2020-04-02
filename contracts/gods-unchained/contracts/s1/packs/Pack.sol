@@ -99,16 +99,16 @@ contract Pack is Ownable, Product, RarityProvider {
      *
      * @param _user the user who will receive the packs
      * @param _qty the number of packs to purchase
-     * @param _referrer the address of the user who made this referral
      * @param _payment the details of the method by which payment will be made
+     * @param _referrer the address of the user who made this referral
      */
     function purchaseFor(
-        address _user,
+        address payable _user,
         uint256 _qty,
-        address payable _referrer,
-        IPay.Payment memory _payment
+        IPay.Payment memory _payment,
+        address payable _referrer
     ) public {
-        super.purchaseFor(_user, _qty, _referrer, _payment);
+        super.purchaseFor(_user, _qty, _payment, _referrer);
         _createPurchase(_user, _qty, _payment.escrowFor);
     }
 

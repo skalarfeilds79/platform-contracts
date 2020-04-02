@@ -53,7 +53,7 @@ contract Product {
 
         IPay.Order memory order = IPay.Order({
             currency: IPay.Currency.USDCents,
-            amount: totalPrice,
+            totalPrice: totalPrice,
             sku: sku,
             quantity: qty,
             user: user

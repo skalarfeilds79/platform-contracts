@@ -1,13 +1,12 @@
 import 'jest';
 
 import { 
-  ERC20Escrow, ERC20EscrowFactory, TestERC20Token, TestERC20TokenFactory, 
+  Escrow, EscrowFactory, TestERC20Token, TestERC20TokenFactory, 
   TestChest, TestChestFactory, MaliciousChest, MaliciousChestFactory
 } from '../../src/contracts';
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
-import { BigNumberish } from 'ethers/utils';
 
 const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();
@@ -34,17 +33,17 @@ describe('ERC20Escrow', () => {
 
   describe('#constructor', () => {
     it('should be able to deploy the escrow contract', async () => {
-      const escrow = await new ERC20EscrowFactory(user).deploy();
+      const escrow = await new EscrowFactory(user).deploy();
     });
   });
 
   describe('#escrow', () => {
 
-    let escrow: ERC20Escrow;
+    let escrow: Escrow;
     let erc20: TestERC20Token;
 
     beforeEach(async() => {
-        escrow = await new ERC20EscrowFactory(user).deploy();
+        escrow = await new EscrowFactory(user).deploy();
         erc20 = await new TestERC20TokenFactory(user).deploy();
     })
 
@@ -57,6 +56,9 @@ describe('ERC20Escrow', () => {
             releaser: user.address,
             asset: erc20.address,
             balance: 1000,
+            lowTokenID: 0,
+            highTokenID: 0,
+            tokenIDs: []
         }, user.address);
     });
 
@@ -68,6 +70,9 @@ describe('ERC20Escrow', () => {
             releaser: user.address,
             asset: erc20.address,
             balance: 100,
+            lowTokenID: 0,
+            highTokenID: 0,
+            tokenIDs: []
         }, user.address);
         let balance = await erc20.balanceOf(user.address);
         expect(balance.toNumber()).toBe(900);
@@ -81,6 +86,9 @@ describe('ERC20Escrow', () => {
           releaser: ZERO_EX,
           asset: erc20.address,
           balance: 100,
+          lowTokenID: 0,
+          highTokenID: 0,
+          tokenIDs: []
       }, user.address));
     });
 
@@ -92,6 +100,9 @@ describe('ERC20Escrow', () => {
             releaser: user.address,
             asset: erc20.address,
             balance: 1000,
+            lowTokenID: 0,
+            highTokenID: 0,
+            tokenIDs: []
         }, user.address));
     });
 
@@ -99,11 +110,11 @@ describe('ERC20Escrow', () => {
 
   describe('#release', () => {
 
-    let escrow: ERC20Escrow;
+    let escrow: Escrow;
     let erc20: TestERC20Token;
 
     beforeEach(async() => {
-        escrow = await new ERC20EscrowFactory(user).deploy();
+        escrow = await new EscrowFactory(user).deploy();
         erc20 = await new TestERC20TokenFactory(user).deploy();
     })
 
@@ -115,6 +126,9 @@ describe('ERC20Escrow', () => {
           releaser: user.address,
           asset: erc20.address,
           balance: 1000,
+          lowTokenID: 0,
+          highTokenID: 0,
+          tokenIDs: []
       }, user.address);
       await escrow.release(0, user.address);
     });
@@ -127,6 +141,9 @@ describe('ERC20Escrow', () => {
           releaser: other.address,
           asset: erc20.address,
           balance: 1000,
+          lowTokenID: 0,
+          highTokenID: 0,
+          tokenIDs: []
       }, user.address);
       await expectRevert(escrow.release(0, user.address));
     });
@@ -141,6 +158,9 @@ describe('ERC20Escrow', () => {
           releaser: user.address,
           asset: erc20.address,
           balance: 1000,
+          lowTokenID: 0,
+          highTokenID: 0,
+          tokenIDs: []
       }, user.address);
       await checkBalance(erc20, user.address, 0);
       await checkBalance(erc20, escrow.address, 1000);
@@ -153,13 +173,13 @@ describe('ERC20Escrow', () => {
 
   describe('#callbackEscrow', () => {
 
-    let escrow: ERC20Escrow;
+    let escrow: Escrow;
     let erc20: TestERC20Token;
     let malicious: MaliciousChest;
     let chest: TestChest;
 
     beforeEach(async() => {
-        escrow = await new ERC20EscrowFactory(user).deploy();
+        escrow = await new EscrowFactory(user).deploy();
         erc20 = await new TestERC20TokenFactory(user).deploy();
         malicious = await new MaliciousChestFactory(user).deploy(escrow.address, erc20.address);
         chest = await new TestChestFactory(user).deploy(escrow.address, erc20.address);

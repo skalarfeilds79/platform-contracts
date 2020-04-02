@@ -14,4 +14,5 @@ contract TestVendor {
     function processPayment(IPay.Order memory order, IPay.Payment memory payment) public payable {
         pay.process.value(msg.value)(order, payment);
     }
+
 }

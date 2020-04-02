@@ -53,10 +53,10 @@ contract Product {
 
         IPay.Order memory order = IPay.Order({
             currency: IPay.Currency.USDCents,
-            amount: totalPrice,
+            totalPrice: totalPrice,
             sku: sku,
             quantity: qty,
-            token: address(0)
+            user: user
         });
 
         uint valueToSend = 0;

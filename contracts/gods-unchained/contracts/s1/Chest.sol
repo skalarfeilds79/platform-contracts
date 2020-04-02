@@ -53,7 +53,7 @@ contract Chest is Product, TradeToggleERC20, ERC20Burnable, Ownable {
 
             bytes memory data = abi.encodeWithSignature("mintTokens()");
 
-            fiatEscrow.escrow(vault, address(this), data, payment.receipt.details.requiredEscrowPeriod);
+            fiatEscrow.escrow(vault, address(this), data, payment.escrowFor);
         }
     }
 

@@ -154,7 +154,7 @@ describe('Referral', () => {
       let order = { quantity: quantity, sku: rarePackSKU, user: owner.address, totalPrice: cost * quantity, currency: Currency.USDCents };
       let params = { escrowFor: 0, nonce: 0, value: cost * quantity };
       let payment = await getSignedPayment(owner, pay.address, rare.address, order, params);
-      await rare.purchase(quantity, ZERO_EX, payment)
+      await rare.purchase(quantity, payment, ZERO_EX)
     }
 
     it('should purchase one pack with USD', async () => {
@@ -208,7 +208,7 @@ describe('Referral', () => {
       let order = { quantity: quantity, sku: rarePackSKU, user: owner.address, totalPrice: cost * quantity, currency: Currency.USDCents };
       let params = { escrowFor: escrowFor, nonce: 0, value: cost * quantity };
       let payment = await getSignedPayment(owner, pay.address, rare.address, order, params);
-      let tx = await rare.purchase(quantity, ZERO_EX, payment);
+      let tx = await rare.purchase(quantity, payment, ZERO_EX);
       let receipt = await tx.wait();
       await beacon.callback(receipt.blockNumber);
     }

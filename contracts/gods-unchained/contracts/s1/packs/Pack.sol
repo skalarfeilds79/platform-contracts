@@ -99,8 +99,8 @@ contract Pack is Ownable, Product, RarityProvider {
      *
      * @param _user the user who will receive the packs
      * @param _qty the number of packs to purchase
-     * @param _referrer the address of the user who made this referral
      * @param _payment the details of the method by which payment will be made
+     * @param _referrer the address of the user who made this referral
      */
     function purchaseFor(
         address payable _user,

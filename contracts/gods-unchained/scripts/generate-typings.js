@@ -15,6 +15,7 @@ const template = `/**
 const TYPES_PATH = './src/generated';
 
 async function generateTypings() {
+  
   await tsGen(
     { cwd },
     new Typechain({
@@ -100,10 +101,13 @@ async function generateIndexFile() {
 }
 
 async function main() {
+  let start = process.hrtime();
   await generateTypings();
   await replaceTypingsWithInterfaces();
   await generateIndexFile();
 
+  let end = process.hrtime(start);
+  console.info('Execution time (hr): %ds %dms', end[0], end[1] / 1000000);
   console.log('The index file was successfully generated.');
 }
 

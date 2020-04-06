@@ -6,6 +6,7 @@
 
 export { BatchTokenFactory } from './generated/BatchTokenFactory';
 export { BatchTransferFactory } from './generated/BatchTransferFactory';
+export { BeaconFactory } from './generated/BeaconFactory';
 export { CardsFactory } from './generated/CardsFactory';
 export { ChestFactory } from './generated/ChestFactory';
 export { ContextFactory } from './generated/ContextFactory';
@@ -61,6 +62,7 @@ export { RarePackFactory } from './generated/RarePackFactory';
 export { ReferralFactory } from './generated/ReferralFactory';
 export { S3PromoFactory } from './generated/S3PromoFactory';
 export { S3PromoFactoryFactory } from './generated/S3PromoFactoryFactory';
+export { SaleFactory } from './generated/SaleFactory';
 export { SeasonChestFactory } from './generated/SeasonChestFactory';
 export { SeasonCoreFactory } from './generated/SeasonCoreFactory';
 export { SeasonPackFactory } from './generated/SeasonPackFactory';
@@ -70,6 +72,7 @@ export { WETH9Factory } from './generated/WETH9Factory';
 
 export { BatchToken } from './generated/BatchToken';
 export { BatchTransfer } from './generated/BatchTransfer';
+export { Beacon } from './generated/Beacon';
 export { Cards } from './generated/Cards';
 export { Chest } from './generated/Chest';
 export { Context } from './generated/Context';
@@ -121,6 +124,7 @@ export { Product } from './generated/Product';
 export { RaffleItem } from './generated/RaffleItem';
 export { RarePack } from './generated/RarePack';
 export { Referral } from './generated/Referral';
+export { Sale } from './generated/Sale';
 export { SeasonChest } from './generated/SeasonChest';
 export { SeasonCore } from './generated/SeasonCore';
 export { SeasonPack } from './generated/SeasonPack';

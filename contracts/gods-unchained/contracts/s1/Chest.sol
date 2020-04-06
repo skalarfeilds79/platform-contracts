@@ -9,13 +9,14 @@ import "./IPack.sol";
 
 contract Chest is Product, TradeToggleERC20, ERC20Burnable {
 
-    IPack public pack;
-
     struct Purchase {
         address user;
         uint256 count;
     }
 
+    // Pack contract in which these chests can be opened
+    IPack public pack;
+    // Temporary variable to hold the details of the current purchase before the escrow callback
     Purchase internal currentPurchase;
 
     constructor(
@@ -37,27 +38,27 @@ contract Chest is Product, TradeToggleERC20, ERC20Burnable {
     /** @dev Purchase chests for a user
      *
      * @param _user the user who will receive the chests
-     * @param _qty the number of chests to purchase
+     * @param _quantity the number of chests to purchase
      * @param _payment the details of the method by which payment will be made
      * @param _referrer the address of the user who made this referral
      */
     function purchaseFor(
         address payable _user,
-        uint256 _qty,
+        uint256 _quantity,
         IPay.Payment memory _payment,
         address payable _referrer
     ) public {
 
-        super.purchaseFor(_user, _qty, _payment, _referrer);
+        super.purchaseFor(_user, _quantity, _payment, _referrer);
 
         if (_payment.currency == IPay.Currency.ETH) {
-            _mint(msg.sender, _qty);
+            _mint(msg.sender, _quantity);
         } else {
             IEscrow.Vault memory vault = IEscrow.Vault({
                 player: _user,
                 releaser: address(fiatEscrow),
                 asset: address(this),
-                balance: _qty,
+                balance: _quantity,
                 lowTokenID: 0,
                 highTokenID: 0,
                 tokenIDs: new uint256[](0)
@@ -65,7 +66,7 @@ contract Chest is Product, TradeToggleERC20, ERC20Burnable {
 
             currentPurchase = Purchase({
                 user: _user,
-                count: _qty
+                count: _quantity
             });
 
             bytes memory data = abi.encodeWithSignature("mintTokens()");

@@ -2,13 +2,12 @@ pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20Burnable.sol";
-import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "@imtbl/platform/contracts/token/TradeToggleERC20.sol";
 import "@imtbl/platform/contracts/escrow/IEscrow.sol";
 import "./Product.sol";
 import "./IPack.sol";
 
-contract Chest is Product, TradeToggleERC20, ERC20Burnable, Ownable {
+contract Chest is Product, TradeToggleERC20, ERC20Burnable {
 
     IPack public pack;
 

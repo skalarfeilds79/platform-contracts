@@ -36,7 +36,7 @@ describe('Chest', () => {
     let escrow: CreditCardEscrow;
     let referral: Referral;
     let pack: TestPack;
-    const rarePackSKU = keccak256('0x00');
+    const rareChestSKU = keccak256('0x00');
     const rareChestPrice = 100;
 
     beforeEach(async () => {
@@ -56,7 +56,7 @@ describe('Chest', () => {
         "GU:1:RC",
         0,
         pack.address,
-        rarePackSKU,
+        rareChestSKU,
         0,
         rareChestPrice,
         referral.address,
@@ -66,7 +66,7 @@ describe('Chest', () => {
     });
 
     async function purchaseChests(quantity: number) {
-      await pay.setSellerApproval(chest.address, [rarePackSKU], true);
+      await pay.setSellerApproval(chest.address, [rareChestSKU], true);
       let balance = await chest.balanceOf(owner.address);
       expect(balance.toNumber()).toBe(0);
       await chest.purchase(quantity, getETHPayment(), ZERO_EX);
@@ -79,7 +79,7 @@ describe('Chest', () => {
     });
 
     it('should purchase 5 chests using ETH', async() => {
-      await purchaseChests(5)
+      await purchaseChests(5);
     });
 
   });

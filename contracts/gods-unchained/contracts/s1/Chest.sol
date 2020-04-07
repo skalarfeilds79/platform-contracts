@@ -16,8 +16,8 @@ contract Chest is Product, TradeToggleERC20, ERC20Burnable {
 
     // Pack contract in which these chests can be opened
     IPack public pack;
-    // Temporary variable to hold the details of the current purchase before the escrow callback
-    Purchase internal currentPurchase;
+    // Temporary variable to hold purchase details before the escrow callback
+    uint256 internal temporaryCount;
 
     constructor(
         string memory _name,
@@ -31,7 +31,7 @@ contract Chest is Product, TradeToggleERC20, ERC20Burnable {
         ICreditCardEscrow _escrow,
         IPay _pay
     ) public Product(_sku, _saleCap, _price, _referral, _escrow, _pay) TradeToggleERC20(_name, _symbol, _decimals) {
-        require(address(_pack) != address(0), "pack must be set");
+        require(address(_pack) != address(0), "GU:S1:Chest: pack must be set on construction");
         pack = _pack;
     }
 
@@ -51,9 +51,11 @@ contract Chest is Product, TradeToggleERC20, ERC20Burnable {
 
         super.purchaseFor(_user, _quantity, _payment, _referrer);
 
-        if (_payment.currency == IPay.Currency.ETH) {
-            _mint(msg.sender, _quantity);
+        if (_payment.currency == IPay.Currency.ETH || _payment.escrowFor == 0) {
+            _mint(_user, _quantity);
         } else {
+
+            // escrow the chests
             IEscrow.Vault memory vault = IEscrow.Vault({
                 player: _user,
                 releaser: address(fiatEscrow),
@@ -64,10 +66,7 @@ contract Chest is Product, TradeToggleERC20, ERC20Burnable {
                 tokenIDs: new uint256[](0)
             });
 
-            currentPurchase = Purchase({
-                user: _user,
-                count: _quantity
-            });
+            temporaryCount = _quantity;
 
             bytes memory data = abi.encodeWithSignature("mintTokens()");
 
@@ -76,10 +75,11 @@ contract Chest is Product, TradeToggleERC20, ERC20Burnable {
     }
 
     function mintTokens() public {
-        require(msg.sender == address(fiatEscrow.getProtocol()), "must be core escrow contract");
-        require(currentPurchase.count > 0, "must create some tokens");
-        _mint(currentPurchase.user, currentPurchase.count);
-        delete currentPurchase;
+        address protocol = address(fiatEscrow.getProtocol());
+        require(msg.sender == protocol, "GU:S1:Chest: minter must be core escrow contract");
+        require(temporaryCount > 0, "GU:S1:Chest: must create some tokens");
+        _mint(protocol, temporaryCount);
+        temporaryCount = 0;
     }
 
     /** @dev Open a number of chests
@@ -93,7 +93,7 @@ contract Chest is Product, TradeToggleERC20, ERC20Burnable {
 
     /** @dev One way switch to enable trading */
     function makeTradable() external onlyOwner {
-        require(!tradable, "must not be already tradable");
+        require(!tradable, "GU:S1:Chest: must not be already tradable");
         tradable = true;
         emit TradabilityChanged(true);
     }

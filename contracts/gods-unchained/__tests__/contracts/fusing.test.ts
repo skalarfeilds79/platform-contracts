@@ -1,7 +1,7 @@
 import 'jest';
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
-import { Cards, CardsWrapper } from '../../src/contracts';
+import { Cards, CardsWrapper, Fusing } from '../../src/contracts';
 import { Wallet, ethers } from 'ethers';
 
 import { ContractReceipt } from 'ethers/contract';
@@ -29,7 +29,7 @@ describe('Fusing', () => {
 
     it('should be able to deploy correctly', async () => {
       const cards = await cardsWrapper.deployTest(ownerWallet.address);
-      const fusing = await new FusingFactory(ownerWallet).deploy(cards.address);
+      const fusing = await Fusing.deploy(ownerWallet, cards.address);
 
       const returnedCardsAddress = await fusing.functions.cards();
       expect(returnedCardsAddress).toBe(cards.address);
@@ -50,7 +50,7 @@ describe('Fusing', () => {
       const cardsWrapper = new CardsWrapper(ownerWallet);
       cards = await cardsWrapper.deployTest(ownerWallet.address);
 
-      const fusingContract = await new FusingFactory(ownerWallet).deploy(cards.address);
+      const fusingContract = await Fusing.deploy(ownerWallet, cards.address);
       fusingAddress = fusingContract.address;
 
       await cards.functions.addFactory(fusingAddress, 1);
@@ -60,7 +60,7 @@ describe('Fusing', () => {
     });
 
     async function subject(): Promise<ContractReceipt> {
-      const fusing = await new FusingFactory(callerWallet).attach(fusingAddress);
+      const fusing = Fusing.at(callerWallet, fusingAddress);
       const tx = await fusing.functions.addMinter(callerMinterAddress);
 
       return await tx.wait();
@@ -91,7 +91,7 @@ describe('Fusing', () => {
       const cardsWrapper = new CardsWrapper(ownerWallet);
       cards = await cardsWrapper.deployTest(ownerWallet.address);
 
-      const fusingContract = await new FusingFactory(ownerWallet).deploy(cards.address);
+      const fusingContract = await Fusing.deploy(ownerWallet, cards.address);
       fusingAddress = fusingContract.address;
 
       await cards.functions.addFactory(fusingAddress, 1);
@@ -102,7 +102,7 @@ describe('Fusing', () => {
     });
 
     async function subject(): Promise<ContractReceipt> {
-      const fusing = await new FusingFactory(callerWallet).attach(fusingAddress);
+      const fusing = Fusing.at(callerWallet, fusingAddress);
       const tx = await fusing.functions.removeMinter(callerMinterAddress);
 
       return await tx.wait();
@@ -141,7 +141,7 @@ describe('Fusing', () => {
       const cardsWrapper = new CardsWrapper(ownerWallet);
       cards = await cardsWrapper.deployTest(ownerWallet.address);
 
-      const fusingContract = await new FusingFactory(ownerWallet).deploy(cards.address);
+      const fusingContract = await Fusing.deploy(ownerWallet, cards.address);
       fusingAddress = fusingContract.address;
 
       await cards.functions.addFactory(fusingAddress, 1);
@@ -155,7 +155,7 @@ describe('Fusing', () => {
     });
 
     async function subject(): Promise<ContractReceipt> {
-      const fusing = await new FusingFactory(callerWallet).attach(fusingAddress);
+      const fusing = Fusing.at(callerWallet, fusingAddress);
 
       const tx = await fusing.functions.fuse(
         callerProto,

@@ -33,8 +33,8 @@ describe('Core', () => {
 
   describe('#constructor', () => {
     it('should be able to deploy', async () => {
-      const cards = await new CardsFactory(ownerWallet).deploy(BATCH_SIZE, 'Test', 'TEST');
-      const promoFactory = await new PromoFactoryFactory(ownerWallet).deploy(cards.address);
+      const cards = await Cards.deploy(ownerWallet, BATCH_SIZE, 'Test', 'TEST');
+      const promoFactory = await PromoFactory.deploy(ownerWallet, cards.address);
     });
   });
 
@@ -50,15 +50,15 @@ describe('Core', () => {
       caller = ownerWallet;
       callerMinter = minterWallet;
       callerProtos = 400;
-      cards = await new CardsFactory(ownerWallet).deploy(BATCH_SIZE, 'Test', 'TEST');
-      promoFactory = await new PromoFactoryFactory(ownerWallet).deploy(cards.address);
+      cards = await Cards.deploy(ownerWallet, BATCH_SIZE, 'Test', 'TEST');
+      promoFactory = await PromoFactory.deploy(ownerWallet, cards.address);
 
       await cards.functions.startSeason('Promo', 400, 500);
       await cards.functions.addFactory(promoFactory.address, 1);
     });
 
     async function subject(): Promise<any> {
-      const newPromoFactory = await new PromoFactoryFactory(caller).attach(promoFactory.address);
+      const newPromoFactory = PromoFactory.at(caller, promoFactory.address);
       await newPromoFactory.functions.addPromoMinter(callerMinter.address, callerProtos);
     }
 
@@ -134,8 +134,8 @@ describe('Core', () => {
       callerMinter = minterWallet;
       callerProto = 400;
 
-      const cards = await new CardsFactory(ownerWallet).deploy(BATCH_SIZE, 'Test', 'TEST');
-      const promoFactory = await new PromoFactoryFactory(ownerWallet).deploy(cards.address);
+      const cards = await Cards.deploy(ownerWallet, BATCH_SIZE, 'Test', 'TEST');
+      const promoFactory = await PromoFactory.deploy(ownerWallet, cards.address);
       promoFactoryAddress = promoFactory.address;
 
       await cards.functions.startSeason('Promo', 400, 500);
@@ -145,7 +145,7 @@ describe('Core', () => {
     });
 
     async function subject() {
-      const promoFactory = await new PromoFactoryFactory(caller).attach(promoFactoryAddress);
+      const promoFactory = PromoFactory.at(caller, promoFactoryAddress);
       const tx = await promoFactory.functions.removePromoMinter(callerMinter.address, callerProto);
       return await tx.wait();
     }
@@ -159,7 +159,7 @@ describe('Core', () => {
       caller = userWallet;
       await expectRevert(subject());
 
-      const promoFactory = await new PromoFactoryFactory(caller).attach(promoFactoryAddress);
+      const promoFactory = PromoFactory.at(caller, promoFactoryAddress);
 
       const minters = await promoFactory.functions.validMinters(callerProto);
       expect(minters.length).toBe(1);
@@ -174,7 +174,7 @@ describe('Core', () => {
 
     it('should be able to remove a minter', async () => {
       await subject();
-      const promoFactory = await new PromoFactoryFactory(caller).attach(promoFactoryAddress);
+      const promoFactory = PromoFactory.at(caller, promoFactoryAddress);
 
       const minters = await promoFactory.functions.validMinters(callerProto);
       expect(minters.length).toBe(0);
@@ -187,7 +187,7 @@ describe('Core', () => {
     });
 
     it('should be able to remove one of three minter', async () => {
-      const promoFactory = await new PromoFactoryFactory(ownerWallet).attach(promoFactoryAddress);
+      const promoFactory = PromoFactory.at(ownerWallet, promoFactoryAddress);
       await promoFactory.functions.addPromoMinter(userWallet.address, callerProto);
       await promoFactory.functions.addPromoMinter(ownerWallet.address, callerProto);
 
@@ -214,8 +214,8 @@ describe('Core', () => {
       caller = ownerWallet;
       callerMinter = adminMinter.address;
 
-      const cards = await new CardsFactory(ownerWallet).deploy(BATCH_SIZE, 'Test', 'TEST');
-      const promoFactory = await new PromoFactoryFactory(ownerWallet).deploy(cards.address);
+      const cards = await Cards.deploy(ownerWallet, BATCH_SIZE, 'Test', 'TEST');
+      const promoFactory = await PromoFactory.deploy(ownerWallet, cards.address);
       promoFactoryAddress = promoFactory.address;
 
       await cards.functions.startSeason('Promo', 400, 500);
@@ -224,7 +224,7 @@ describe('Core', () => {
     });
 
     async function subject() {
-      const promoFactory = await new PromoFactoryFactory(caller).attach(promoFactoryAddress);
+      const promoFactory = PromoFactory.at(caller, promoFactoryAddress);
       const tx = await promoFactory.functions.addAdminMinter(callerMinter);
       return await tx.wait();
     }
@@ -242,7 +242,7 @@ describe('Core', () => {
     it('should be able to add as the owner', async () => {
       await subject();
 
-      const promoFactory = await new PromoFactoryFactory(caller).attach(promoFactoryAddress);
+      const promoFactory = PromoFactory.at(caller, promoFactoryAddress);
 
       const adminMinterMapping = await promoFactory.functions.adminMintersMapping(callerMinter);
       expect(adminMinterMapping).toBeTruthy();
@@ -252,7 +252,7 @@ describe('Core', () => {
     });
 
     it('should be able to add four admin minters and remove two', async () => {
-      const promoFactory = await new PromoFactoryFactory(ownerWallet).attach(promoFactoryAddress);
+      const promoFactory = PromoFactory.at(ownerWallet, promoFactoryAddress);
 
       async function addAndCheckAdding(newAdmin: string, id: number) {
         callerMinter = newAdmin;
@@ -315,8 +315,8 @@ describe('Core', () => {
       caller = ownerWallet;
       callerMinter = adminMinter.address;
 
-      const cards = await new CardsFactory(ownerWallet).deploy(BATCH_SIZE, 'Test', 'TEST');
-      const promoFactory = await new PromoFactoryFactory(ownerWallet).deploy(cards.address);
+      const cards = await Cards.deploy(ownerWallet, BATCH_SIZE, 'Test', 'TEST');
+      const promoFactory = await PromoFactory.deploy(ownerWallet, cards.address);
       promoFactoryAddress = promoFactory.address;
 
       await cards.functions.startSeason('Promo', 400, 500);
@@ -326,7 +326,7 @@ describe('Core', () => {
     });
 
     async function subject() {
-      const promoFactory = await new PromoFactoryFactory(caller).attach(promoFactoryAddress);
+      const promoFactory = PromoFactory.at(caller, promoFactoryAddress);
       const tx = await promoFactory.functions.removeAdminMinter(callerMinter);
       return await tx.wait();
     }
@@ -345,7 +345,7 @@ describe('Core', () => {
       caller = adminMinter;
       await expectRevert(subject());
 
-      const promoFactory = await new PromoFactoryFactory(caller).attach(promoFactoryAddress);
+      const promoFactory = PromoFactory.at(caller, promoFactoryAddress);
 
       const adminMinterMapping = await promoFactory.functions.adminMintersMapping(callerMinter);
       expect(adminMinterMapping).toBeTruthy();
@@ -357,7 +357,7 @@ describe('Core', () => {
     it('should be able to remove as the owner', async () => {
       await subject();
 
-      const promoFactory = await new PromoFactoryFactory(caller).attach(promoFactoryAddress);
+      const promoFactory = PromoFactory.at(caller, promoFactoryAddress);
 
       const adminMinterMapping = await promoFactory.functions.adminMintersMapping(callerMinter);
       expect(adminMinterMapping.toNumber()).toBe(0);
@@ -382,8 +382,8 @@ describe('Core', () => {
       callerProtos = [400, 401];
       callerQualities = [4, 4];
 
-      const cards = await new CardsFactory(ownerWallet).deploy(BATCH_SIZE, 'Test', 'TEST');
-      const promoFactory = await new PromoFactoryFactory(ownerWallet).deploy(cards.address);
+      const cards = await Cards.deploy(ownerWallet, BATCH_SIZE, 'Test', 'TEST');
+      const promoFactory = await PromoFactory.deploy(ownerWallet, cards.address);
 
       promoFactoryAddress = promoFactory.address;
       cardsAddress = cards.address;
@@ -396,7 +396,7 @@ describe('Core', () => {
     });
 
     async function subject() {
-      const promoFactory = await new PromoFactoryFactory(caller).attach(promoFactoryAddress);
+      const promoFactory = PromoFactory.at(caller, promoFactoryAddress);
       const tx = await promoFactory.functions.adminMintCards(
         callerTo,
         callerProtos,
@@ -423,7 +423,7 @@ describe('Core', () => {
     it('should be able to mint as an admin minter', async () => {
       await subject();
 
-      const cards = await new CardsFactory(adminMinter).attach(cardsAddress);
+      const cards = Cards.at(adminMinter, cardsAddress);
 
       const newTokenOwner = await cards.functions.ownerOf(0);
       expect(newTokenOwner).toBe(adminMinter.address);
@@ -447,8 +447,8 @@ describe('Core', () => {
       callerQualities = [1];
       caller = minterWallet;
 
-      cards = await new CardsFactory(ownerWallet).deploy(BATCH_SIZE, 'Test', 'TEST');
-      promoFactory = await new PromoFactoryFactory(ownerWallet).deploy(cards.address);
+      cards = await Cards.deploy(ownerWallet, BATCH_SIZE, 'Test', 'TEST');
+      promoFactory = await PromoFactory.deploy(ownerWallet, cards.address);
 
       await cards.functions.startSeason('Promo', 400, 500);
       await cards.functions.addFactory(promoFactory.address, 1);
@@ -458,7 +458,7 @@ describe('Core', () => {
     });
 
     async function subject(): Promise<any> {
-      const newPromoFactory = await new PromoFactoryFactory(caller).attach(promoFactory.address);
+      const newPromoFactory = PromoFactory.at(caller, promoFactory.address);
       return await newPromoFactory.functions.mint(
         userWallet.address,
         callerProtos,
@@ -514,8 +514,8 @@ describe('Core', () => {
       callerQuality = 1;
       caller = minterWallet;
 
-      cards = await new CardsFactory(ownerWallet).deploy(BATCH_SIZE, 'Test', 'TEST');
-      promoFactory = await new PromoFactoryFactory(ownerWallet).deploy(cards.address);
+      cards = await Cards.deploy(ownerWallet, BATCH_SIZE, 'Test', 'TEST');
+      promoFactory = await PromoFactory.deploy(ownerWallet, cards.address);
 
       await cards.functions.startSeason('Promo', 400, 500);
       await cards.functions.addFactory(promoFactory.address, 1);
@@ -525,7 +525,7 @@ describe('Core', () => {
     });
 
     async function subject(): Promise<any> {
-      const newPromoFactory = await new PromoFactoryFactory(caller).attach(promoFactory.address);
+      const newPromoFactory = PromoFactory.at(caller, promoFactory.address);
       return await newPromoFactory.functions.mintSingle(
         userWallet.address,
         callerProto,
@@ -569,8 +569,8 @@ describe('Core', () => {
     beforeEach(async () => {
       caller = ownerWallet;
       callerProtos = 400;
-      cards = await new CardsFactory(ownerWallet).deploy(BATCH_SIZE, 'Test', 'TEST');
-      promoFactory = await new PromoFactoryFactory(ownerWallet).deploy(cards.address);
+      cards = await Cards.deploy(ownerWallet, BATCH_SIZE, 'Test', 'TEST');
+      promoFactory = await PromoFactory.deploy(ownerWallet, cards.address);
 
       await cards.functions.startSeason('Promo', 400, 500);
       await cards.functions.addFactory(promoFactory.address, 1);
@@ -578,7 +578,7 @@ describe('Core', () => {
     });
 
     async function subject(): Promise<any> {
-      const newPromoFactory = await new PromoFactoryFactory(caller).attach(promoFactory.address);
+      const newPromoFactory = PromoFactory.at(caller, promoFactory.address);
       return newPromoFactory.functions.lock(callerProtos);
     }
 

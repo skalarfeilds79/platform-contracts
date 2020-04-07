@@ -1,7 +1,7 @@
 import 'jest';
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
-import { Cards, CardsFactory, Forge, ForgeFactory } from '../../src';
+import { Cards, Forge } from '../../src/contracts';
 import { Wallet, ethers } from 'ethers';
 
 const provider = new ethers.providers.JsonRpcProvider();
@@ -31,8 +31,8 @@ describe('Forge', () => {
       callerIds = [];
       caller = minterWallet;
 
-      cards = await new CardsFactory(ownerWallet).deploy(BATCH_SIZE, 'Test', 'TEST');
-      forge = await new ForgeFactory(ownerWallet).deploy(cards.address);
+      cards = await Cards.deploy(ownerWallet, BATCH_SIZE, 'Test', 'TEST');
+      forge = await Forge.deploy(ownerWallet, cards.address);
 
       const season = await cards.functions.startSeason('Test', 1, 100);
       await season.wait();
@@ -67,13 +67,11 @@ describe('Forge', () => {
     async function subject(approve: boolean = true): Promise<any> {
       for (let i = 0; i < callerIds.length; i++) {
         if (approve) {
-          await new CardsFactory(caller)
-            .attach(cards.address)
-            .functions.approve(forge.address, callerIds[i]);
+          await Cards.at(caller, cards.address).approve(forge.address, callerIds[i]);
         }
       }
 
-      const tx = await new ForgeFactory(caller).attach(forge.address).functions.forge(callerIds);
+      const tx = await Forge.at(caller, forge.address).forge(callerIds);
       return await tx.wait();
     }
 
@@ -128,9 +126,7 @@ describe('Forge', () => {
     it('should be able to forge on behalf of someone else', async () => {
       callerIds = await createCards(5, 1, 2);
       caller = userWallet;
-      await new CardsFactory(minterWallet)
-        .attach(cards.address)
-        .functions.setApprovalForAll(userWallet.address, true);
+      await Cards.at(minterWallet, cards.address).setApprovalForAll(userWallet.address, true);
 
       const beforeSupply = await cards.functions.totalSupply();
       expect(beforeSupply.toNumber()).toEqual(5);

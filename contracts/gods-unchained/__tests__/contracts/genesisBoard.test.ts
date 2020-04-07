@@ -1,6 +1,5 @@
 import { Address } from '@imtbl/common-types';
-import { GenesisBoardFactory } from '../../src/generated/GenesisBoardFactory';
-import { GenesisBoard } from '../../src/generated/GenesisBoard';
+import { GenesisBoard } from '../../src/contracts';
 
 import 'jest';
 
@@ -28,7 +27,8 @@ describe('Genesis Board', () => {
 
   describe('#constructor', () => {
     it('should be able to deploy', async () => {
-      const genesisBoard = await new GenesisBoardFactory(ownerWallet).deploy(
+      const genesisBoard = await GenesisBoard.deploy(
+        ownerWallet,
         'GU: Board',
         'GU:GENESISBOARD',
       );
@@ -42,7 +42,8 @@ describe('Genesis Board', () => {
     let callerWallet;
 
     beforeEach(async () => {
-      genesisBoard = await new GenesisBoardFactory(ownerWallet).deploy(
+      genesisBoard = await GenesisBoard.deploy(
+        ownerWallet,
         'GU: Board',
         'GU:GENESISBOARD',
       );
@@ -53,7 +54,7 @@ describe('Genesis Board', () => {
     });
 
     async function subject() {
-      const contract = await new GenesisBoardFactory(callerWallet).attach(genesisBoard.address);
+      const contract = GenesisBoard.at(callerWallet, genesisBoard.address);
       await contract.mint(callerDestination, callerLevel);
     }
 
@@ -74,7 +75,8 @@ describe('Genesis Board', () => {
     let callerWallet;
 
     beforeEach(async () => {
-      genesisBoard = await new GenesisBoardFactory(ownerWallet).deploy(
+      genesisBoard = await GenesisBoard.deploy(
+        ownerWallet,
         'GU: Board',
         'GU:GENESISBOARD',
       );
@@ -84,8 +86,8 @@ describe('Genesis Board', () => {
     });
 
     async function subject() {
-      const contract = await new GenesisBoardFactory(callerWallet).attach(genesisBoard.address);
-      await contract.transferFrom(userWallet, ownerWallet, 0);
+      const contract = GenesisBoard.at(callerWallet, genesisBoard.address);
+      await contract.transferFrom(userWallet.address, ownerWallet.address, 0);
     }
 
     it('should not be able to transfer if trading has not been unlocked', async () => {

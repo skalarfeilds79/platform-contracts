@@ -1,6 +1,6 @@
 import 'jest';
 
-import { Escrow, EscrowFactory, TestERC721Token, TestERC721TokenFactory, MaliciousBatchPack, MaliciousBatchPackFactory, TestBatchPackFactory, TestBatchPack } from '../../src/contracts';
+import { Escrow, TestERC721Token, MaliciousBatchPack, TestBatchPack } from '../../src/contracts';
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
@@ -31,7 +31,7 @@ describe('BatchERC271Escrow', () => {
 
   describe('#constructor', () => {
     it('should be able to deploy the escrow contract', async () => {
-      const escrow = await new EscrowFactory(user).deploy();
+      const escrow = await Escrow.deploy(user);
     });
   });
 
@@ -41,9 +41,9 @@ describe('BatchERC271Escrow', () => {
     let erc721: TestERC721Token;
 
     beforeEach(async() => {
-        escrow = await new EscrowFactory(user).deploy();
-        erc721 = await new TestERC721TokenFactory(user).deploy();
-    })
+      escrow = await Escrow.deploy(user);
+      erc721 = await TestERC721Token.deploy(user);
+    });
 
     it('should be able able to escrow', async () => {
         await erc721.mint(user.address, 1);
@@ -171,8 +171,8 @@ describe('BatchERC271Escrow', () => {
     let erc721: TestERC721Token;
 
     beforeEach(async() => {
-        escrow = await new EscrowFactory(user).deploy();
-        erc721 = await new TestERC721TokenFactory(user).deploy();
+      escrow = await Escrow.deploy(user);
+      erc721 = await TestERC721Token.deploy(user);
     });
 
     it('should not be able to release without being the releaser', async () => {
@@ -221,10 +221,10 @@ describe('BatchERC271Escrow', () => {
     let pack: TestBatchPack;
 
     beforeEach(async() => {
-        escrow = await new EscrowFactory(user).deploy();
-        erc721 = await new TestERC721TokenFactory(user).deploy();
-        malicious = await new MaliciousBatchPackFactory(user).deploy(escrow.address, erc721.address);
-        pack = await new TestBatchPackFactory(user).deploy(escrow.address, erc721.address);
+      escrow = await Escrow.deploy(user);
+      erc721 = await TestERC721Token.deploy(user);
+      malicious = await MaliciousBatchPack.deploy(user, escrow.address, erc721.address);
+      pack = await TestBatchPack.deploy(user, escrow.address, erc721.address);
     });
 
     it('should be able to create a vault using a callback', async () => {

@@ -1,6 +1,5 @@
 import { Address } from '@imtbl/common-types';
-import { RaffleItemFactory } from '../../src/generated/RaffleItemFactory';
-import { RaffleItem } from '../../src/generated/RaffleItem';
+import { RaffleItem } from '../../src/contracts';
 
 import 'jest';
 
@@ -28,7 +27,7 @@ describe('Raffle Item', () => {
 
   describe('#constructor', () => {
     it('should be able to deploy', async () => {
-      const raffleItem = await new RaffleItemFactory(ownerWallet).deploy('GU: Item', 'GU:ITEM');
+      const raffleItem = await RaffleItem.deploy(ownerWallet, 'GU: Item', 'GU:ITEM');
     });
   })
 
@@ -38,14 +37,14 @@ describe('Raffle Item', () => {
     let callerWallet;
 
     beforeEach(async () => {
-      raffleItem = await new RaffleItemFactory(ownerWallet).deploy('GU: Item', 'GU:ITEM');
+      raffleItem = await RaffleItem.deploy(ownerWallet, 'GU: Item', 'GU:ITEM');
       raffleItem.setMinterStatus(minterWallet.address, true);
       callerDestination = userWallet.address;
       callerWallet = minterWallet;
     });
 
     async function subject() {
-      const contract = await new RaffleItemFactory(callerWallet).attach(raffleItem.address);
+      const contract = RaffleItem.at(callerWallet, raffleItem.address);
       await contract.mint(callerDestination);
     }
 
@@ -66,15 +65,15 @@ describe('Raffle Item', () => {
     let callerWallet;
 
     beforeEach(async () => {
-      raffleItem = await new RaffleItemFactory(ownerWallet).deploy('GU: ITEM', 'GU:ITEM');
+      raffleItem = await RaffleItem.deploy(ownerWallet, 'GU: ITEM', 'GU:ITEM');
       await raffleItem.setMinterStatus(minterWallet.address, true);
       await raffleItem.mint(userWallet.address);
       callerWallet = userWallet;
     });
 
     async function subject() {
-      const contract = await new RaffleItemFactory(callerWallet).attach(raffleItem.address);
-      await contract.transferFrom(userWallet, ownerWallet, 0);
+      const contract = RaffleItem.at(callerWallet, raffleItem.address);
+      await contract.transferFrom(userWallet.address, ownerWallet.address, 0);
     }
 
     it('should not be able to transfer if trading has not been unlocked', async () => {

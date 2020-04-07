@@ -1,11 +1,10 @@
 import 'jest';
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
-import { Cards, CardsWrapper } from '../../src';
+import { Cards, CardsWrapper } from '../../src/contracts';
 import { Wallet, ethers } from 'ethers';
 
 import { ContractReceipt } from 'ethers/contract';
-import { FusingFactory } from '../../src/generated/FusingFactory';
 import { parseLogs } from '@imtbl/utils';
 
 const provider = new ethers.providers.JsonRpcProvider();

@@ -1,6 +1,5 @@
 import { Address } from '@imtbl/common-types';
-import { GenericAssetFactory } from './../../src/generated/GenericAssetFactory';
-import { GenericAsset } from './../../src/generated/GenericAsset';
+import { GenericAsset } from './../../src/contracts';
 import 'jest';
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
@@ -35,11 +34,11 @@ describe('Generic Asset', () => {
       callerMinter = minterWallet.address;
       callerWallet = ownerWallet;
       callerStatus = true;
-      genericAsset = await new GenericAssetFactory(ownerWallet).deploy('GU: Asset', 'GU');
+      genericAsset = await GenericAsset.deploy(ownerWallet, 'GU: Asset', 'GU');
     });
 
     async function subject() {
-      const contract = await new GenericAssetFactory(callerWallet).attach(genericAsset.address);
+      const contract = GenericAsset.at(callerWallet, genericAsset.address);
       await contract.functions.setMinterStatus(callerMinter, callerStatus);
     }
 
@@ -69,11 +68,11 @@ describe('Generic Asset', () => {
     beforeEach(async () => {
       callerWallet = ownerWallet;
       callerStatus = true;
-      genericAsset = await new GenericAssetFactory(ownerWallet).deploy('GU: Asset', 'GU');
+      genericAsset = await GenericAsset.deploy(ownerWallet, 'GU: Asset', 'GU');
     });
 
     async function subject() {
-      const contract = await new GenericAssetFactory(callerWallet).attach(genericAsset.address);
+      const contract = GenericAsset.at(callerWallet, genericAsset.address);
       await contract.functions.setTradabilityStatus(callerStatus);
     }
 

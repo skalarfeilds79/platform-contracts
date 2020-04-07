@@ -1,6 +1,6 @@
 import 'jest';
 
-import { CardsWrapper, IExchangeFactory } from '../../src';
+import { CardsWrapper } from '../../src/contracts';
 import { DeploymentEnvironment, DeploymentNetwork } from '@imtbl/common-types';
 
 import { ZeroExWrapper } from '../../src/wrappers/zeroExWrapper';

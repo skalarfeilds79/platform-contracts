@@ -1,6 +1,6 @@
 import 'jest';
 
-import { Cards, CardsFactory } from '../../src';
+import { Cards } from '../../src/contracts';
 
 import { ethers } from 'ethers';
 import { generatedWallets } from '@imtbl/test-utils';
@@ -22,7 +22,7 @@ describe('ERC721', () => {
    */
 
   beforeAll(async () => {
-    cards = await new CardsFactory(ownerWallet).deploy(BATCH_SIZE, 'Test', 'TEST');
+    cards = await Cards.deploy(ownerWallet, BATCH_SIZE, 'Test', 'TEST');
 
     mythicThreshold = await cards.functions.MYTHIC_THRESHOLD();
 
@@ -38,7 +38,7 @@ describe('ERC721', () => {
   });
 
   function parseLogs(logs: ethers.providers.Log[]): any[] {
-    const iface = new ethers.utils.Interface(new CardsFactory().interface.abi);
+    const iface = new ethers.utils.Interface(Cards.interface.abi);
     return logs
       .map((log) => iface.parseLog(log))
       .map((item) => {
@@ -114,9 +114,7 @@ describe('ERC721', () => {
   });
 
   it('should be able to spend approval', async () => {
-    const transferTx = await new CardsFactory(userWallet)
-      .attach(cards.address)
-      .functions.transferFrom(ownerWallet.address, userWallet.address, 1);
+    const transferTx = await Cards.at(userWallet, cards.address).transferFrom(ownerWallet.address, userWallet.address, 1);
 
     const receipt = await transferTx.wait();
     const parsed = parseLogs(receipt.logs);

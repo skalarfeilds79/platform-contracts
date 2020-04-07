@@ -1,6 +1,6 @@
 import 'jest';
 
-import { Beacon, BeaconFactory, Consumer, ConsumerFactory } from '../src/contracts';
+import { Beacon, Consumer } from '../src/contracts';
 
 import { Blockchain, expectRevert } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
@@ -37,7 +37,7 @@ describe('Beacon', () => {
 
   describe('#constructor', () => {
     it('should be able to deploy the beacon contract', async () => {
-      const beacon = await new BeaconFactory(provider.getSigner()).deploy();
+      const beacon = await Beacon.deploy(provider.getSigner());
     });
   });
 
@@ -47,14 +47,14 @@ describe('Beacon', () => {
     let consumer: Consumer;
 
     beforeEach(async() => {
-        beacon = await new BeaconFactory(provider.getSigner()).deploy();
-        consumer = await new ConsumerFactory(provider.getSigner()).deploy();
+      beacon = await Beacon.deploy(provider.getSigner());
+      consumer = await Consumer.deploy(provider.getSigner());
     })
 
     async function commit(offset: BigNumberish) {
-      let tx = await beacon.functions.commit(offset);
+      let tx = await beacon.commit(offset);
       let receipt = await tx.wait();
-      const parsed = parseLogs(new BeaconFactory(), receipt.logs);
+      const parsed = parseLogs(Beacon, receipt.logs);
       expect(parsed.length).toBe(1);
       expect(parsed[0].name).toBe('Commit');
       expect(parsed[0].values.commitBlock.toNumber()).toBe(receipt.blockNumber + Number(offset));
@@ -79,8 +79,8 @@ describe('Beacon', () => {
     let consumer: Consumer;
 
     beforeEach(async() => {
-        beacon = await new BeaconFactory(provider.getSigner()).deploy();
-        consumer = await new ConsumerFactory(provider.getSigner()).deploy();
+      beacon = await Beacon.deploy(provider.getSigner());
+      consumer = await Consumer.deploy(provider.getSigner());
     });
 
     async function callback(offset: number, wait: number) {
@@ -90,7 +90,7 @@ describe('Beacon', () => {
       let commitBlock = offset + receipt.blockNumber;
       tx = await beacon.callback(commitBlock);
       receipt = await tx.wait();
-      const parsed = parseLogs(new BeaconFactory(), receipt.logs);
+      const parsed = parseLogs(Beacon, receipt.logs);
       expect(parsed.length).toBe(1);
       expect(parsed[0].name).toBe('Callback');
       expect(parsed[0].values.commitBlock.toNumber()).toBe(commitBlock);
@@ -133,8 +133,8 @@ describe('Beacon', () => {
     let consumer: Consumer;
 
     beforeEach(async() => {
-        beacon = await new BeaconFactory(provider.getSigner()).deploy();
-        consumer = await new ConsumerFactory(provider.getSigner()).deploy();
+      beacon = await Beacon.deploy(provider.getSigner());
+      consumer = await Consumer.deploy(provider.getSigner());
     });
 
     it('should be able to make a successful recommit', async () => {
@@ -188,8 +188,8 @@ describe('Beacon', () => {
     let consumer: Consumer;
 
     beforeEach(async() => {
-        beacon = await new BeaconFactory(provider.getSigner()).deploy();
-        consumer = await new ConsumerFactory(provider.getSigner()).deploy();
+      beacon = await Beacon.deploy(provider.getSigner());
+      consumer = await Consumer.deploy(provider.getSigner());
     });
 
     it('should not be able to get randomness without a commit', async () => {

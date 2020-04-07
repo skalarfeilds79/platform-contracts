@@ -1,7 +1,7 @@
 import 'jest';
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
-import { Cards, CardsFactory, PromoFactory, PromoFactoryFactory } from '../../src';
+import { Cards, PromoFactory } from '../../src/contracts';
 import { Wallet, ethers } from 'ethers';
 
 import { Address } from '@imtbl/common-types';

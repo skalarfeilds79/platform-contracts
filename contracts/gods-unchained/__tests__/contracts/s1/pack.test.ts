@@ -2,19 +2,22 @@ import 'jest';
 
 import { Blockchain, generatedWallets } from '@imtbl/test-utils';
 import { 
-  Escrow, EscrowFactory,
-  Beacon, BeaconFactory,
-  CreditCardEscrow, CreditCardEscrowFactory,
-  Referral, ReferralFactory,
-  RarePack, RarePackFactory,
-  EpicPack, EpicPackFactory,
-  LegendaryPack, LegendaryPackFactory,
-  ShinyPack, ShinyPackFactory, CardsFactory, Cards, Pay, PayFactory,
-} from '../../../src';
+  Escrow, 
+  Beacon,
+  CreditCardEscrow,
+  Referral, 
+  RarePack,
+  EpicPack,
+  LegendaryPack,
+  ShinyPack, 
+  Cards, 
+  Pay
+} from '../../../src/contracts';
 import { Wallet, ethers } from 'ethers';
 import { keccak256 } from 'ethers/utils';
 
 import { getSignedPayment, Currency } from '@imtbl/platform/src/pay';
+import { on } from 'cluster';
 
 jest.setTimeout(600000);
 
@@ -52,21 +55,23 @@ describe('Referral', () => {
     let shiny: ShinyPack;
 
     beforeEach(async() => {
-        escrow = await new EscrowFactory(owner).deploy();
-        cc = await new CreditCardEscrowFactory(owner).deploy(
-            escrow.address,
-            ZERO_EX, 
-            100,
-            ZERO_EX,
-            100
+        escrow = await Escrow.deploy(owner);
+        cc = await CreditCardEscrow.deploy(
+          owner,
+          escrow.address,
+          ZERO_EX, 
+          100,
+          ZERO_EX,
+          100
         );
-        beacon = await new BeaconFactory(owner).deploy();
-        referral = await new ReferralFactory(owner).deploy();
-        processor = await new PayFactory(owner).deploy();
+        beacon = await Beacon.deploy(owner);
+        referral = await Referral.deploy(owner);
+        processor = await Pay.deploy(owner);
     });
 
     it('should deploy rare pack', async () => {
-        await new RarePackFactory(owner).deploy(
+        await RarePack.deploy(
+          owner,
           beacon.address,
           ZERO_EX,
           sku, 
@@ -77,7 +82,8 @@ describe('Referral', () => {
     });
 
     it('should deploy epic pack', async () => {
-        await new EpicPackFactory(owner).deploy(
+        await EpicPack.deploy(
+          owner,
           beacon.address,
           ZERO_EX,
           sku, 
@@ -88,7 +94,8 @@ describe('Referral', () => {
     });
 
     it('should deploy legendary pack', async () => {
-        await new LegendaryPackFactory(owner).deploy(
+        await LegendaryPack.deploy(
+          owner,
           beacon.address,
           ZERO_EX,
           sku, 
@@ -99,7 +106,8 @@ describe('Referral', () => {
     });
 
     it('should deploy shiny pack', async () => {
-        await new ShinyPackFactory(owner).deploy(
+        await ShinyPack.deploy(
+          owner,
           beacon.address,
           ZERO_EX,
           sku, 
@@ -126,19 +134,21 @@ describe('Referral', () => {
     let cost = 249;
 
     beforeEach(async() => {
-      escrow = await new EscrowFactory(owner).deploy();
-      cc = await new CreditCardEscrowFactory(owner).deploy(
+      escrow = await Escrow.deploy(owner);
+      cc = await CreditCardEscrow.deploy(
+        owner,
           escrow.address,
           owner.address, 
           100,
           owner.address,
           100
       );
-      beacon = await new BeaconFactory(owner).deploy();
-      referral = await new ReferralFactory(owner).deploy();
-      pay = await new PayFactory(owner).deploy();
-      cards = await new CardsFactory(owner).deploy(1250, "Cards", "CARD");
-      rare = await new RarePackFactory(owner).deploy(
+      beacon = await Beacon.deploy(owner);
+      referral = await Referral.deploy(owner);
+      pay = await Pay.deploy(owner);
+      cards = await Cards.deploy(owner, 1250, "Cards", "CARD");
+      rare = await RarePack.deploy(
+        owner,
         beacon.address,
         cards.address,
         rarePackSKU, 
@@ -186,15 +196,17 @@ describe('Referral', () => {
     let cost = 249;
 
     beforeEach(async() => {
-      escrow = await new EscrowFactory(owner).deploy();
-      cc = await new CreditCardEscrowFactory(owner).deploy(
+      escrow = await Escrow.deploy(owner);
+      cc = await CreditCardEscrow.deploy(
+        owner, 
         escrow.address, owner.address, 100, owner.address, 100
       );
-      beacon = await new BeaconFactory(owner).deploy();
-      referral = await new ReferralFactory(owner).deploy();
-      pay = await new PayFactory(owner).deploy();
-      cards = await new CardsFactory(owner).deploy(1250, "Cards", "CARD");
-      rare = await new RarePackFactory(owner).deploy(
+      beacon = await Beacon.deploy(owner);
+      referral = await Referral.deploy(owner);
+      pay = await Pay.deploy(owner);
+      cards = await Cards.deploy(owner, 1250, "Cards", "CARD");
+      rare = await RarePack.deploy(
+        owner,
         beacon.address, cards.address, rarePackSKU, 
         referral.address, cc.address, pay.address
       );

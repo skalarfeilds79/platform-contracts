@@ -1,7 +1,7 @@
 import 'jest';
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
-import { Cards, CardsFactory } from '../../src';
+import { Cards } from '../../src/contracts';
 import { Wallet, ethers } from 'ethers';
 
 import { Address } from '@imtbl/common-types';
@@ -24,7 +24,7 @@ describe('Core', () => {
 
   describe('#constructor', () => {
     async function subject(): Promise<any> {
-      return await new CardsFactory(ownerWallet).deploy(BATCH_SIZE, 'Hey', 'Hi');
+      return await Cards.deploy(ownerWallet, BATCH_SIZE, 'Hey', 'Hi');
     }
 
     it('should be able to deploy', async () => {
@@ -47,11 +47,11 @@ describe('Core', () => {
       callerName = 'New Season';
       callerLow = 1;
       callerHigh = 100;
-      cards = await new CardsFactory(ownerWallet).deploy(BATCH_SIZE, 'Test', 'TEST');
+      cards = await Cards.deploy(ownerWallet, BATCH_SIZE, 'Test', 'TEST');
     });
 
     async function subject(): Promise<any> {
-      const newCards = await new CardsFactory(caller).attach(cards.address);
+      const newCards = Cards.at(caller, cards.address);
       const tx = await newCards.functions.startSeason(callerName, callerLow, callerHigh);
       return await tx.wait();
     }
@@ -103,12 +103,12 @@ describe('Core', () => {
       callerFactory = ownerWallet.address;
       callerSeason = 1;
       caller = ownerWallet;
-      cards = await new CardsFactory(ownerWallet).deploy(BATCH_SIZE, 'Test', 'TEST');
+      cards = await Cards.deploy(ownerWallet, BATCH_SIZE, 'Test', 'TEST');
       await cards.functions.startSeason('Test', 1, 100);
     });
 
     async function subject(): Promise<any> {
-      const newCards = await new CardsFactory(caller).attach(cards.address);
+      const newCards = Cards.at(caller, cards.address);
       const tx = await newCards.functions.addFactory(callerFactory, callerSeason);
       return await tx.wait();
     }
@@ -158,12 +158,12 @@ describe('Core', () => {
     beforeEach(async () => {
       caller = ownerWallet;
       callerFactory = ownerWallet.address;
-      cards = await new CardsFactory(ownerWallet).deploy(BATCH_SIZE, 'Test', 'TEST');
+      cards = await Cards.deploy(ownerWallet, BATCH_SIZE, 'Test', 'TEST');
       callerMythic = await cards.functions.MYTHIC_THRESHOLD();
     });
 
     async function subject(): Promise<any> {
-      const newCards = await new CardsFactory(caller).attach(cards.address);
+      const newCards = Cards.at(caller, cards.address);
       const tx = await newCards.functions.approveForMythic(callerFactory, callerMythic);
       return tx.wait();
     }
@@ -197,13 +197,13 @@ describe('Core', () => {
     let callerMythic: number;
 
     beforeEach(async () => {
-      cards = await new CardsFactory(ownerWallet).deploy(BATCH_SIZE, 'Test', 'TEST');
+      cards = await Cards.deploy(ownerWallet, BATCH_SIZE, 'Test', 'TEST');
       caller = ownerWallet;
       callerMythic = await cards.functions.MYTHIC_THRESHOLD();
     });
 
     async function subject(): Promise<any> {
-      const newCards = await new CardsFactory(caller).attach(cards.address);
+      const newCards = Cards.at(caller, cards.address);
       return newCards.functions.makeMythicTradable(callerMythic);
     }
 
@@ -239,12 +239,12 @@ describe('Core', () => {
       caller = ownerWallet;
       callerSeason = 1;
 
-      cards = await new CardsFactory(ownerWallet).deploy(BATCH_SIZE, 'Test', 'TEST');
+      cards = await Cards.deploy(ownerWallet, BATCH_SIZE, 'Test', 'TEST');
       await cards.functions.startSeason('Season', 1, 100);
     });
 
     async function subject(): Promise<any> {
-      const newCards = await new CardsFactory(caller).attach(cards.address);
+      const newCards = Cards.at(caller, cards.address);
       return newCards.functions.unlockTrading(callerSeason);
     }
 
@@ -284,7 +284,7 @@ describe('Core', () => {
       callerTo = ownerWallet.address;
       callerProto = 1;
       callerQuality = 1;
-      cards = await new CardsFactory(ownerWallet).deploy(BATCH_SIZE, 'Test', 'TEST');
+      cards = await Cards.deploy(ownerWallet, BATCH_SIZE, 'Test', 'TEST');
 
       mythicThreshold = await cards.functions.MYTHIC_THRESHOLD();
 
@@ -297,7 +297,7 @@ describe('Core', () => {
     });
 
     async function subject(): Promise<any> {
-      const newCards = await new CardsFactory(caller).attach(cards.address);
+      const newCards = Cards.at(caller, cards.address);
       const tx = await newCards.functions.mintCard(callerTo, callerProto, callerQuality);
       return tx.wait();
     }
@@ -342,7 +342,7 @@ describe('Core', () => {
       callerProtos = null;
       callerQualities = null;
 
-      cards = await new CardsFactory(ownerWallet).deploy(BATCH_SIZE, 'Test', 'TEST');
+      cards = await Cards.deploy(ownerWallet, BATCH_SIZE, 'Test', 'TEST');
 
       await cards.functions.startSeason('Genesis', 1, 377);
       await cards.functions.startSeason('Etherbots', 380, 396);

@@ -167,10 +167,10 @@
     reflect-metadata "^0.1.12"
     tslib "^1.8.1"
 
-"@imtbl/isaac@0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@imtbl/isaac/-/isaac-0.0.2.tgz#1b203f6a3772b6fcf93b54adc07cd2407e1c30df"
-  integrity sha512-PkPlyI4pDMoNznx89wnhtAGdO7zpCZRsSdUnvb/EyRy/uX4J+KvFBxAoJo0XOw+eJtqt65LrOaKKszlRll51Bw==
+"@imtbl/isaac@0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@imtbl/isaac/-/isaac-0.0.3.tgz#6d843c755287b05b26f0cf997bc93cc7717ac005"
+  integrity sha512-+gLcTA5IRxMSDolGQQ/MBpg2svHNdMhlW/9V8xw0k/xs+HSPVYOcB++LaYHyDfXTTX5XhuRyjJ/Uv6mOcrJL2A==
   dependencies:
     ethers "4.0.42"
     glob "^7.1.6"

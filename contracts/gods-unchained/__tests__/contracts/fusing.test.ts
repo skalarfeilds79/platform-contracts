@@ -1,7 +1,8 @@
 import 'jest';
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
-import { Cards, CardsWrapper, Fusing } from '../../src/contracts';
+import { Cards, Fusing } from '../../src/contracts';
+import { CardsWrapper } from '../../src/wrappers';
 import { Wallet, ethers } from 'ethers';
 
 import { ContractReceipt } from 'ethers/contract';
@@ -73,7 +74,7 @@ describe('Fusing', () => {
 
     it('should be able to add a minter with the event emitted', async () => {
       const receipt = await subject();
-      const parsed = parseLogs(receipt.logs, new FusingFactory().interface.abi);
+      const parsed = parseLogs(receipt.logs, Fusing.ABI);
 
       const returnedMinter = parsed[0].values.minter;
       expect(returnedMinter).toBe(minterWallet.address);
@@ -120,7 +121,7 @@ describe('Fusing', () => {
 
     it('should be able to remove a minter with the event emitted', async () => {
       const receipt = await subject();
-      const parsed = parseLogs(receipt.logs, new FusingFactory().interface.abi);
+      const parsed = parseLogs(receipt.logs, Fusing.ABI);
 
       const returnedMinter = parsed[0].values.minter;
       expect(returnedMinter).toBe(minterWallet.address);
@@ -196,7 +197,7 @@ describe('Fusing', () => {
       callerReferences = [3, 2, 1];
       const receipt = await subject();
 
-      const parsed = parseLogs(receipt.logs, new FusingFactory().interface.abi);
+      const parsed = parseLogs(receipt.logs, Fusing.ABI);
       console.log(parsed);
       const returnedOwner = parsed[0].values.owner;
       expect(returnedOwner).toBe(callerDestination);

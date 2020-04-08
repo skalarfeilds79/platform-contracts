@@ -38,7 +38,7 @@ describe('ERC721', () => {
   });
 
   function parseLogs(logs: ethers.providers.Log[]): any[] {
-    const iface = new ethers.utils.Interface(Cards.interface.abi);
+    const iface = new ethers.utils.Interface(Cards.ABI);
     return logs
       .map((log) => iface.parseLog(log))
       .map((item) => {

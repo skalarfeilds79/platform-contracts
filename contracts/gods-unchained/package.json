@@ -41,7 +41,7 @@
     "@imtbl/test-utils": "^1.0.11",
     "@types/jest": "^24.0.21",
     "@types/node": "^12.12.3",
-    "@imtbl/isaac": "0.0.2",
+    "@imtbl/isaac": "0.0.4",
     "dotenv": "^8.2.0",
     "fs-readdir-recursive": "^1.1.0",
     "jest": "^24.9.0",

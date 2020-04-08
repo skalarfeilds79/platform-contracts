@@ -1,6 +1,7 @@
 import 'jest';
 
-import { CardsWrapper } from '../../src/contracts';
+import { CardsWrapper } from '../../src/wrappers';
+import { IExchange } from '../../src/contracts';
 import { DeploymentEnvironment, DeploymentNetwork } from '@imtbl/common-types';
 
 import { ZeroExWrapper } from '../../src/wrappers/zeroExWrapper';
@@ -33,7 +34,7 @@ describe('Order Generator', () => {
       addressBook.wethAddress,
     );
 
-    const exchange = await IExchangeFactory.connect(addressBook.zeroExExchangeAddress, makerWallet);
+    const exchange = IExchange.at(makerWallet, addressBook.zeroExExchangeAddress);
 
     const isValidSignature = await exchange.functions.isValidSignature(
       orderHashUtils.getOrderHashBuffer(zeroExWrapper.convertEthersOrderTo0xOrder(newOrder.order)),

@@ -1,6 +1,6 @@
 import 'jest';
 
-import { Forwarder, ForwarderFactory } from '../../src';
+import { Forwarder } from '../../src/contracts';
 import { Wallet, ethers } from 'ethers';
 
 import { getAddressBook } from '@imtbl/addresses';
@@ -17,7 +17,7 @@ describe('00_forwarder', () => {
   let forwarder: Forwarder;
 
   beforeAll(async () => {
-    forwarder = await new ForwarderFactory(wallet).attach(addressBook.forwarderAddress);
+    forwarder = Forwarder.at(wallet, addressBook.forwarderAddress);
   });
 
   it('should have a forwarder contract deployed', async () => {

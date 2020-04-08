@@ -17,8 +17,9 @@
     "build": "yarn lint:sol && yarn truffle compile --all && yarn generate-typings && yarn tsc",
     "deploy": "yarn ts-node deployment/deploy.ts",
     "test": "yarn build && yarn reset-test-evm && yarn jest __tests__/escrow/releaser --runInBand",
-    "test:watch": "yarn reset-test-evm && yarn jest __tests__/ --runInBand --watch",
-    "reset-test-evm": "node scripts/reset-test-evm.js"
+    "test:watch": "yarn reset-test-evm && yarn jest __tests__/randomness.test.ts --runInBand --watch",
+    "reset-test-evm": "node scripts/reset-test-evm.js",
+    "postinstall": "yarn truffle compile --all && yarn generate-typings"
   },
   "author": "",
   "license": "MIT",
@@ -36,7 +37,7 @@
   "devDependencies": {
     "@0xproject/types": "^1.1.4",
     "@imtbl/test-utils": "^1.0.11",
-    "@imtbl/isaac": "0.0.2",
+    "@imtbl/isaac": "0.0.3",
     "@types/jest": "^24.0.21",
     "@types/node": "^12.12.3",
     "fs-readdir-recursive": "^1.1.0",

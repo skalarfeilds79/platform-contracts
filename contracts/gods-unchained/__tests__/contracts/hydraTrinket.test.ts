@@ -38,7 +38,7 @@ describe('Hydra Trinket', () => {
 
     beforeEach(async () => {
       hydraTrinket = await HydraTrinket.deploy(ownerWallet, 'GU: Hydra', 'GU:HYDRA');
-      hydraTrinket.setMinterStatus(minterWallet.address, true);
+      await hydraTrinket.setMinterStatus(minterWallet.address, true);
       callerDestination = userWallet.address;
       callerHeads = 1;
       callerWallet = minterWallet;
@@ -56,7 +56,7 @@ describe('Hydra Trinket', () => {
 
     it('should be able to mint as a valid minter', async () => {
       await subject();
-      const supply = await hydraTrinket.functions.totalSupply();
+      const supply = await hydraTrinket.totalSupply();
       expect(supply.toNumber()).toBe(1);
     });
   });
@@ -74,7 +74,7 @@ describe('Hydra Trinket', () => {
 
     async function subject() {
       const contract = await HydraTrinket.at(callerWallet, hydraTrinket.address);
-      await contract.transferFrom(userWallet.address, ownerWallet.address, 0);
+      await contract.transferFrom(userWallet.address, ownerWallet.address, 1);
     }
 
     it('should not be able to transfer if trading has not been unlocked', async () => {
@@ -82,10 +82,10 @@ describe('Hydra Trinket', () => {
     });
 
     it('should be able to trade if trading unlocked', async () => {
-      await hydraTrinket.functions.setTradabilityStatus(true);
+      await hydraTrinket.setTradabilityStatus(true);
       await subject();
-      const balance = await hydraTrinket.functions.ownerOf(ownerWallet.address);
-      expect(balance).toBe(1);
+      const balance = await hydraTrinket.balanceOf(ownerWallet.address);
+      expect(balance.toNumber()).toBe(1);
     });
   });
 });

@@ -38,7 +38,7 @@ describe('Raffle Item', () => {
 
     beforeEach(async () => {
       raffleItem = await RaffleItem.deploy(ownerWallet, 'GU: Item', 'GU:ITEM');
-      raffleItem.setMinterStatus(minterWallet.address, true);
+      await raffleItem.setMinterStatus(minterWallet.address, true);
       callerDestination = userWallet.address;
       callerWallet = minterWallet;
     });
@@ -55,7 +55,7 @@ describe('Raffle Item', () => {
 
     it('should be able to mint as a valid minter', async () => {
       await subject();
-      const supply = await raffleItem.functions.totalSupply();
+      const supply = await raffleItem.totalSupply();
       expect(supply.toNumber()).toBe(1);
     });
   });
@@ -73,7 +73,7 @@ describe('Raffle Item', () => {
 
     async function subject() {
       const contract = RaffleItem.at(callerWallet, raffleItem.address);
-      await contract.transferFrom(userWallet.address, ownerWallet.address, 0);
+      await contract.transferFrom(userWallet.address, ownerWallet.address, 1);
     }
 
     it('should not be able to transfer if trading has not been unlocked', async () => {
@@ -81,10 +81,10 @@ describe('Raffle Item', () => {
     });
 
     it('should be able to trade if trading unlocked', async () => {
-      await raffleItem.functions.setTradabilityStatus(true);
+      await raffleItem.setTradabilityStatus(true);
       await subject();
-      const balance = await raffleItem.functions.ownerOf(ownerWallet.address);
-      expect(balance).toBe(1);
+      const balance = await raffleItem.balanceOf(ownerWallet.address);
+      expect(balance.toNumber()).toBe(1);
     });
   });
 });

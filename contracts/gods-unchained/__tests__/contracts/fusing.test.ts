@@ -32,10 +32,10 @@ describe('Fusing', () => {
       const cards = await cardsWrapper.deployTest(ownerWallet.address);
       const fusing = await Fusing.deploy(ownerWallet, cards.address);
 
-      const returnedCardsAddress = await fusing.functions.cards();
+      const returnedCardsAddress = await fusing.cards();
       expect(returnedCardsAddress).toBe(cards.address);
 
-      const returnedOwnerAddress = await fusing.functions.owner();
+      const returnedOwnerAddress = await fusing.owner();
       expect(returnedOwnerAddress).toBe(ownerWallet.address);
     });
   });
@@ -54,7 +54,7 @@ describe('Fusing', () => {
       const fusingContract = await Fusing.deploy(ownerWallet, cards.address);
       fusingAddress = fusingContract.address;
 
-      await cards.functions.addFactory(fusingAddress, 1);
+      await cards.addFactory(fusingAddress, 1);
 
       callerWallet = ownerWallet;
       callerMinterAddress = minterWallet.address;
@@ -62,7 +62,7 @@ describe('Fusing', () => {
 
     async function subject(): Promise<ContractReceipt> {
       const fusing = Fusing.at(callerWallet, fusingAddress);
-      const tx = await fusing.functions.addMinter(callerMinterAddress);
+      const tx = await fusing.addMinter(callerMinterAddress);
 
       return await tx.wait();
     }
@@ -95,8 +95,8 @@ describe('Fusing', () => {
       const fusingContract = await Fusing.deploy(ownerWallet, cards.address);
       fusingAddress = fusingContract.address;
 
-      await cards.functions.addFactory(fusingAddress, 1);
-      await fusingContract.functions.addMinter(minterWallet.address);
+      await cards.addFactory(fusingAddress, 1);
+      await fusingContract.addMinter(minterWallet.address);
 
       callerWallet = ownerWallet;
       callerMinterAddress = minterWallet.address;
@@ -104,7 +104,7 @@ describe('Fusing', () => {
 
     async function subject(): Promise<ContractReceipt> {
       const fusing = Fusing.at(callerWallet, fusingAddress);
-      const tx = await fusing.functions.removeMinter(callerMinterAddress);
+      const tx = await fusing.removeMinter(callerMinterAddress);
 
       return await tx.wait();
     }
@@ -145,8 +145,8 @@ describe('Fusing', () => {
       const fusingContract = await Fusing.deploy(ownerWallet, cards.address);
       fusingAddress = fusingContract.address;
 
-      await cards.functions.addFactory(fusingAddress, 1);
-      await fusingContract.functions.addMinter(minterWallet.address);
+      await cards.addFactory(fusingAddress, 1);
+      await fusingContract.addMinter(minterWallet.address);
 
       callerWallet = minterWallet;
       callerProto = 1;
@@ -158,7 +158,7 @@ describe('Fusing', () => {
     async function subject(): Promise<ContractReceipt> {
       const fusing = Fusing.at(callerWallet, fusingAddress);
 
-      const tx = await fusing.functions.fuse(
+      const tx = await fusing.fuse(
         callerProto,
         callerQuality,
         callerDestination,

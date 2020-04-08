@@ -39,7 +39,7 @@ describe('Generic Asset', () => {
 
     async function subject() {
       const contract = GenericAsset.at(callerWallet, genericAsset.address);
-      await contract.functions.setMinterStatus(callerMinter, callerStatus);
+      await contract.setMinterStatus(callerMinter, callerStatus);
     }
 
     it('should not be able set minters as an unauthorised user', async () => {
@@ -49,13 +49,13 @@ describe('Generic Asset', () => {
 
     it('should be able to set minters as the owner', async () => {
       await subject();
-      const minterStatus = await genericAsset.functions.approvedMinters(minterWallet.address);
+      const minterStatus = await genericAsset.approvedMinters(minterWallet.address);
       expect(minterStatus).toBeTruthy();
     });
     it('should be able to remove minters as the owner', async () => {
       callerStatus = false;
       await subject();
-      const minterStatus = await genericAsset.functions.approvedMinters(minterWallet.address);
+      const minterStatus = await genericAsset.approvedMinters(minterWallet.address);
       expect(minterStatus).toBeFalsy();
     });
   });
@@ -73,7 +73,7 @@ describe('Generic Asset', () => {
 
     async function subject() {
       const contract = GenericAsset.at(callerWallet, genericAsset.address);
-      await contract.functions.setTradabilityStatus(callerStatus);
+      await contract.setTradabilityStatus(callerStatus);
     }
 
     it('should not be able to set trading status an unauthorised user', async () => {
@@ -89,7 +89,7 @@ describe('Generic Asset', () => {
     it('should be able to set trading status as the owner', async () => {
       callerWallet = userWallet;
       await subject();
-      const tradingStatus = await genericAsset.functions.isTradable();
+      const tradingStatus = await genericAsset.isTradable();
       expect(tradingStatus).toBeTruthy();
     });
   });

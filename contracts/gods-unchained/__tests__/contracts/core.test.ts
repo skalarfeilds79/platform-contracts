@@ -29,7 +29,7 @@ describe('Core', () => {
 
     it('should be able to deploy', async () => {
       const cards = await subject();
-      const manager = await cards.functions.propertyManager();
+      const manager = await cards.propertyManager();
       expect(manager).toEqual(ownerWallet.address);
     });
   });
@@ -52,7 +52,7 @@ describe('Core', () => {
 
     async function subject(): Promise<any> {
       const newCards = Cards.at(caller, cards.address);
-      const tx = await newCards.functions.startSeason(callerName, callerLow, callerHigh);
+      const tx = await newCards.startSeason(callerName, callerLow, callerHigh);
       return await tx.wait();
     }
 
@@ -79,14 +79,14 @@ describe('Core', () => {
     });
 
     it('should not be able to start a season at the mythic threshold', async () => {
-      const mythicThreshold = await cards.functions.MYTHIC_THRESHOLD();
+      const mythicThreshold = await cards.MYTHIC_THRESHOLD();
       callerHigh = mythicThreshold + 1;
       await expectRevert(subject());
     });
 
     it('should be able to start a season correctly', async () => {
       await subject();
-      const season = await cards.functions.seasons(0);
+      const season = await cards.seasons(0);
       expect(season.low).toEqual(1);
       expect(season.high).toEqual(100);
     });
@@ -104,12 +104,12 @@ describe('Core', () => {
       callerSeason = 1;
       caller = ownerWallet;
       cards = await Cards.deploy(ownerWallet, BATCH_SIZE, 'Test', 'TEST');
-      await cards.functions.startSeason('Test', 1, 100);
+      await cards.startSeason('Test', 1, 100);
     });
 
     async function subject(): Promise<any> {
       const newCards = Cards.at(caller, cards.address);
-      const tx = await newCards.functions.addFactory(callerFactory, callerSeason);
+      const tx = await newCards.addFactory(callerFactory, callerSeason);
       return await tx.wait();
     }
 
@@ -136,14 +136,14 @@ describe('Core', () => {
 
     it('should not be able to add a factory where the season is tradeable', async () => {
       await subject();
-      const tradeable = await cards.functions.unlockTrading(1);
+      const tradeable = await cards.unlockTrading(1);
       await tradeable.wait();
       await expectRevert(subject());
     });
 
     it('should be able to deploy a new factory', async () => {
       await subject();
-      const factoryApproved = await cards.functions.factoryApproved(ownerWallet.address, 1);
+      const factoryApproved = await cards.factoryApproved(ownerWallet.address, 1);
       expect(factoryApproved).toBeTruthy();
     });
   });
@@ -159,12 +159,12 @@ describe('Core', () => {
       caller = ownerWallet;
       callerFactory = ownerWallet.address;
       cards = await Cards.deploy(ownerWallet, BATCH_SIZE, 'Test', 'TEST');
-      callerMythic = await cards.functions.MYTHIC_THRESHOLD();
+      callerMythic = await cards.MYTHIC_THRESHOLD();
     });
 
     async function subject(): Promise<any> {
       const newCards = Cards.at(caller, cards.address);
-      const tx = await newCards.functions.approveForMythic(callerFactory, callerMythic);
+      const tx = await newCards.approveForMythic(callerFactory, callerMythic);
       return tx.wait();
     }
 
@@ -185,7 +185,7 @@ describe('Core', () => {
 
     it('should be able to approve a new mythic', async () => {
       await subject();
-      const approved = await cards.functions.mythicApproved(callerMythic, callerFactory);
+      const approved = await cards.mythicApproved(callerMythic, callerFactory);
       expect(approved).toBeTruthy();
     });
   });
@@ -199,12 +199,12 @@ describe('Core', () => {
     beforeEach(async () => {
       cards = await Cards.deploy(ownerWallet, BATCH_SIZE, 'Test', 'TEST');
       caller = ownerWallet;
-      callerMythic = await cards.functions.MYTHIC_THRESHOLD();
+      callerMythic = await cards.MYTHIC_THRESHOLD();
     });
 
     async function subject(): Promise<any> {
       const newCards = Cards.at(caller, cards.address);
-      return newCards.functions.makeMythicTradable(callerMythic);
+      return newCards.makeMythicTradable(callerMythic);
     }
 
     it('should not be able to make mythics tradeable as an unauthorised user', async () => {
@@ -224,7 +224,7 @@ describe('Core', () => {
 
     it('should be able to make a mythic tradeable', async () => {
       await subject();
-      const tradeable = await cards.functions.mythicTradable(callerMythic);
+      const tradeable = await cards.mythicTradable(callerMythic);
       expect(tradeable).toBeTruthy();
     });
   });
@@ -240,12 +240,12 @@ describe('Core', () => {
       callerSeason = 1;
 
       cards = await Cards.deploy(ownerWallet, BATCH_SIZE, 'Test', 'TEST');
-      await cards.functions.startSeason('Season', 1, 100);
+      await cards.startSeason('Season', 1, 100);
     });
 
     async function subject(): Promise<any> {
       const newCards = Cards.at(caller, cards.address);
-      return newCards.functions.unlockTrading(callerSeason);
+      return newCards.unlockTrading(callerSeason);
     }
 
     it('should not be able to make season tradeable as an unauthorised user', async () => {
@@ -265,7 +265,7 @@ describe('Core', () => {
 
     it('should be able to make a season tradeable', async () => {
       await subject();
-      const tradeable = await cards.functions.seasonTradable(1);
+      const tradeable = await cards.seasonTradable(1);
       expect(tradeable).toBeTruthy();
     });
   });
@@ -286,19 +286,19 @@ describe('Core', () => {
       callerQuality = 1;
       cards = await Cards.deploy(ownerWallet, BATCH_SIZE, 'Test', 'TEST');
 
-      mythicThreshold = await cards.functions.MYTHIC_THRESHOLD();
+      mythicThreshold = await cards.MYTHIC_THRESHOLD();
 
-      await cards.functions.startSeason('Genesis', 1, 377);
-      await cards.functions.startSeason('Etherbots', 380, 396);
-      await cards.functions.startSeason('Promo', 400, 500);
-      await cards.functions.addFactory(ownerWallet.address, 1);
-      await cards.functions.approveForMythic(ownerWallet.address, mythicThreshold);
-      await cards.functions.approveForMythic(ownerWallet.address, mythicThreshold + 1);
+      await cards.startSeason('Genesis', 1, 377);
+      await cards.startSeason('Etherbots', 380, 396);
+      await cards.startSeason('Promo', 400, 500);
+      await cards.addFactory(ownerWallet.address, 1);
+      await cards.approveForMythic(ownerWallet.address, mythicThreshold);
+      await cards.approveForMythic(ownerWallet.address, mythicThreshold + 1);
     });
 
     async function subject(): Promise<any> {
       const newCards = Cards.at(caller, cards.address);
-      const tx = await newCards.functions.mintCard(callerTo, callerProto, callerQuality);
+      const tx = await newCards.mintCard(callerTo, callerProto, callerQuality);
       return tx.wait();
     }
 
@@ -325,7 +325,7 @@ describe('Core', () => {
 
     it('should be able to mint a card', async () => {
       await subject();
-      const balance = await cards.functions.balanceOf(callerTo);
+      const balance = await cards.balanceOf(callerTo);
       expect(balance.toNumber()).toBe(1);
     });
   });
@@ -344,20 +344,20 @@ describe('Core', () => {
 
       cards = await Cards.deploy(ownerWallet, BATCH_SIZE, 'Test', 'TEST');
 
-      await cards.functions.startSeason('Genesis', 1, 377);
-      await cards.functions.startSeason('Etherbots', 380, 396);
-      await cards.functions.startSeason('Promo', 400, 500);
+      await cards.startSeason('Genesis', 1, 377);
+      await cards.startSeason('Etherbots', 380, 396);
+      await cards.startSeason('Promo', 400, 500);
 
-      await cards.functions.addFactory(ownerWallet.address, 1);
+      await cards.addFactory(ownerWallet.address, 1);
 
-      await cards.functions.approveForMythic(ownerWallet.address, 65000);
-      await cards.functions.approveForMythic(ownerWallet.address, 65001);
+      await cards.approveForMythic(ownerWallet.address, 65000);
+      await cards.approveForMythic(ownerWallet.address, 65001);
     });
 
     async function subject(): Promise<any> {
       callerProtos = callerProtos || Array(callerSize).fill(1);
       callerQualities = callerQualities || Array(callerSize).fill(1);
-      return await cards.functions.mintCards(ownerWallet.address, callerProtos, callerQualities);
+      return await cards.mintCards(ownerWallet.address, callerProtos, callerQualities);
     }
 
     it('should not be able to mint with zero supplied protos', async () => {
@@ -402,7 +402,7 @@ describe('Core', () => {
 
     it('should be able to batch mint exactly the limit', async () => {
       await subject();
-      const supply = await cards.functions.totalSupply();
+      const supply = await cards.totalSupply();
       expect(supply.toNumber()).toBe(callerSize);
     });
   });

@@ -24,17 +24,17 @@ describe('ERC721', () => {
   beforeAll(async () => {
     cards = await Cards.deploy(ownerWallet, BATCH_SIZE, 'Test', 'TEST');
 
-    mythicThreshold = await cards.functions.MYTHIC_THRESHOLD();
+    mythicThreshold = await cards.MYTHIC_THRESHOLD();
 
-    await cards.functions.startSeason('Genesis', 1, 377);
-    await cards.functions.startSeason('Etherbots', 380, 396);
-    await cards.functions.startSeason('Promo', 400, 500);
-    await cards.functions.addFactory(ownerWallet.address, 1);
-    await cards.functions.approveForMythic(ownerWallet.address, mythicThreshold);
-    await cards.functions.approveForMythic(ownerWallet.address, mythicThreshold + 1);
-    await cards.functions.unlockTrading(1);
-    await cards.functions.unlockTrading(2);
-    await cards.functions.unlockTrading(3);
+    await cards.startSeason('Genesis', 1, 377);
+    await cards.startSeason('Etherbots', 380, 396);
+    await cards.startSeason('Promo', 400, 500);
+    await cards.addFactory(ownerWallet.address, 1);
+    await cards.approveForMythic(ownerWallet.address, mythicThreshold);
+    await cards.approveForMythic(ownerWallet.address, mythicThreshold + 1);
+    await cards.unlockTrading(1);
+    await cards.unlockTrading(2);
+    await cards.unlockTrading(3);
   });
 
   function parseLogs(logs: ethers.providers.Log[]): any[] {
@@ -61,7 +61,7 @@ describe('ERC721', () => {
   }
 
   it('should mint cards and return the correct ids', async () => {
-    const tx = await cards.functions.mintCards(
+    const tx = await cards.mintCards(
       ownerWallet.address,
       Array(5).fill(1),
       Array(5).fill(1),
@@ -79,12 +79,12 @@ describe('ERC721', () => {
     expect(parsed[5].name).toBe('CardsMinted');
     expect(parsed[5].values.protos).toStrictEqual([1, 1, 1, 1, 1]);
 
-    const supply = await cards.functions.totalSupply();
+    const supply = await cards.totalSupply();
     expect(supply.toNumber()).toBe(5);
   });
 
   it('should be able to transfer tokens', async () => {
-    const transferTx = await cards.functions.transferFrom(
+    const transferTx = await cards.transferFrom(
       ownerWallet.address,
       userWallet.address,
       0,
@@ -100,7 +100,7 @@ describe('ERC721', () => {
   });
 
   it('should be able to give approval', async () => {
-    const approvalTx = await cards.functions.approve(userWallet.address, 1);
+    const approvalTx = await cards.approve(userWallet.address, 1);
     const receipt = await approvalTx.wait();
     const parsed = parseLogs(receipt.logs);
 
@@ -109,7 +109,7 @@ describe('ERC721', () => {
     expect(parsed[0].values.owner).toBe(ownerWallet.address);
     expect(parsed[0].values.approved).toBe(userWallet.address);
 
-    const approvalOwner = await cards.functions.getApproved(1);
+    const approvalOwner = await cards.getApproved(1);
     expect(approvalOwner).toBe(userWallet.address);
   });
 
@@ -126,7 +126,7 @@ describe('ERC721', () => {
   });
 
   it('should be able to burn cards', async () => {
-    const burnTx = await cards.functions.burn(2);
+    const burnTx = await cards.burn(2);
     const receipt = await burnTx.wait();
     const parsed = parseLogs(receipt.logs);
 

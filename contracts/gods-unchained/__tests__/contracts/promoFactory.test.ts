@@ -53,13 +53,13 @@ describe('Core', () => {
       cards = await Cards.deploy(ownerWallet, BATCH_SIZE, 'Test', 'TEST');
       promoFactory = await PromoFactory.deploy(ownerWallet, cards.address);
 
-      await cards.functions.startSeason('Promo', 400, 500);
-      await cards.functions.addFactory(promoFactory.address, 1);
+      await cards.startSeason('Promo', 400, 500);
+      await cards.addFactory(promoFactory.address, 1);
     });
 
     async function subject(): Promise<any> {
       const newPromoFactory = PromoFactory.at(caller, promoFactory.address);
-      await newPromoFactory.functions.addPromoMinter(callerMinter.address, callerProtos);
+      await newPromoFactory.addPromoMinter(callerMinter.address, callerProtos);
     }
 
     it('should not be able to assign a minter as an unauthorised user', async () => {
@@ -71,13 +71,13 @@ describe('Core', () => {
       await subject();
 
       await asyncForEach(callerProtos, async (proto) => {
-        const isValidMinter = await promoFactory.functions.isValidMinter(
+        const isValidMinter = await promoFactory.isValidMinter(
           proto,
           minterWallet.address,
         );
         expect(isValidMinter).toBeTruthy();
 
-        const isLocked = await promoFactory.functions.isPromoLocked(proto);
+        const isLocked = await promoFactory.isPromoLocked(proto);
         expect(isLocked).toBeFalsy();
       });
     });
@@ -89,17 +89,17 @@ describe('Core', () => {
       await expectRevert(subject());
 
       await asyncForEach(callerProtos, async (proto) => {
-        const isValidMinter = await promoFactory.functions.isValidMinter(proto, userWallet.address);
+        const isValidMinter = await promoFactory.isValidMinter(proto, userWallet.address);
         expect(isValidMinter).toBeFalsy();
 
-        const isLocked = await promoFactory.functions.isPromoLocked(proto);
+        const isLocked = await promoFactory.isPromoLocked(proto);
         expect(isLocked).toBeFalsy();
       });
     });
 
     it('should not be able to assign a minter to a locked promo', async () => {
       await subject();
-      await promoFactory.functions.lock(callerProtos);
+      await promoFactory.lock(callerProtos);
       callerMinter = userWallet;
       await expectRevert(subject());
     });
@@ -110,13 +110,13 @@ describe('Core', () => {
       await subject();
 
       await asyncForEach(callerProtos, async (proto) => {
-        const isValidMinter = await promoFactory.functions.isValidMinter(
+        const isValidMinter = await promoFactory.isValidMinter(
           proto,
           minterWallet.address,
         );
         expect(isValidMinter).toBeTruthy();
 
-        const isLocked = await promoFactory.functions.isPromoLocked(proto);
+        const isLocked = await promoFactory.isPromoLocked(proto);
         expect(isLocked).toBeFalsy();
       });
     });
@@ -138,15 +138,15 @@ describe('Core', () => {
       const promoFactory = await PromoFactory.deploy(ownerWallet, cards.address);
       promoFactoryAddress = promoFactory.address;
 
-      await cards.functions.startSeason('Promo', 400, 500);
-      await cards.functions.addFactory(promoFactory.address, 1);
+      await cards.startSeason('Promo', 400, 500);
+      await cards.addFactory(promoFactory.address, 1);
 
-      await promoFactory.functions.addPromoMinter(minterWallet.address, 400);
+      await promoFactory.addPromoMinter(minterWallet.address, 400);
     });
 
     async function subject() {
       const promoFactory = PromoFactory.at(caller, promoFactoryAddress);
-      const tx = await promoFactory.functions.removePromoMinter(callerMinter.address, callerProto);
+      const tx = await promoFactory.removePromoMinter(callerMinter.address, callerProto);
       return await tx.wait();
     }
 
@@ -161,11 +161,11 @@ describe('Core', () => {
 
       const promoFactory = PromoFactory.at(caller, promoFactoryAddress);
 
-      const minters = await promoFactory.functions.validMinters(callerProto);
+      const minters = await promoFactory.validMinters(callerProto);
       expect(minters.length).toBe(1);
       console.log(minters);
 
-      const isValidMinter = await promoFactory.functions.isValidMinter(
+      const isValidMinter = await promoFactory.isValidMinter(
         callerMinter.address,
         callerProto,
       );
@@ -176,10 +176,10 @@ describe('Core', () => {
       await subject();
       const promoFactory = PromoFactory.at(caller, promoFactoryAddress);
 
-      const minters = await promoFactory.functions.validMinters(callerProto);
+      const minters = await promoFactory.validMinters(callerProto);
       expect(minters.length).toBe(0);
 
-      const isValidMinter = await promoFactory.functions.isValidMinter(
+      const isValidMinter = await promoFactory.isValidMinter(
         callerMinter.address,
         callerProto,
       );
@@ -188,15 +188,15 @@ describe('Core', () => {
 
     it('should be able to remove one of three minter', async () => {
       const promoFactory = PromoFactory.at(ownerWallet, promoFactoryAddress);
-      await promoFactory.functions.addPromoMinter(userWallet.address, callerProto);
-      await promoFactory.functions.addPromoMinter(ownerWallet.address, callerProto);
+      await promoFactory.addPromoMinter(userWallet.address, callerProto);
+      await promoFactory.addPromoMinter(ownerWallet.address, callerProto);
 
       await subject();
 
-      const minters = await promoFactory.functions.validMinters(callerProto);
+      const minters = await promoFactory.validMinters(callerProto);
       expect(minters.length).toBe(2);
 
-      const isValidMinter = await promoFactory.functions.isValidMinter(
+      const isValidMinter = await promoFactory.isValidMinter(
         callerMinter.address,
         callerProto,
       );
@@ -218,14 +218,14 @@ describe('Core', () => {
       const promoFactory = await PromoFactory.deploy(ownerWallet, cards.address);
       promoFactoryAddress = promoFactory.address;
 
-      await cards.functions.startSeason('Promo', 400, 500);
-      await cards.functions.addFactory(promoFactory.address, 1);
-      await promoFactory.functions.addPromoMinter(minterWallet.address, 400);
+      await cards.startSeason('Promo', 400, 500);
+      await cards.addFactory(promoFactory.address, 1);
+      await promoFactory.addPromoMinter(minterWallet.address, 400);
     });
 
     async function subject() {
       const promoFactory = PromoFactory.at(caller, promoFactoryAddress);
-      const tx = await promoFactory.functions.addAdminMinter(callerMinter);
+      const tx = await promoFactory.addAdminMinter(callerMinter);
       return await tx.wait();
     }
 
@@ -244,10 +244,10 @@ describe('Core', () => {
 
       const promoFactory = PromoFactory.at(caller, promoFactoryAddress);
 
-      const adminMinterMapping = await promoFactory.functions.adminMintersMapping(callerMinter);
+      const adminMinterMapping = await promoFactory.adminMintersMapping(callerMinter);
       expect(adminMinterMapping).toBeTruthy();
 
-      const adminMinterArray = await promoFactory.functions.getAdminMinters();
+      const adminMinterArray = await promoFactory.getAdminMinters();
       expect(adminMinterArray.length).toBe(1);
     });
 
@@ -257,29 +257,29 @@ describe('Core', () => {
       async function addAndCheckAdding(newAdmin: string, id: number) {
         callerMinter = newAdmin;
         await subject();
-        const adminMinterMappingVal = await promoFactory.functions.adminMintersMapping(newAdmin);
+        const adminMinterMappingVal = await promoFactory.adminMintersMapping(newAdmin);
         expect(adminMinterMappingVal.toNumber()).toBe(id);
-        const adminMinterArrayVal = await promoFactory.functions.getAdminMinters();
+        const adminMinterArrayVal = await promoFactory.getAdminMinters();
         expect(adminMinterArrayVal[id - 1]).toBe(newAdmin);
         expect(adminMinterArrayVal).toContain(newAdmin);
       }
 
       async function removeAndCheckRemoving(removeAdmin: string, id: number) {
-        const beforeAllAdmins = await promoFactory.functions.getAdminMinters();
+        const beforeAllAdmins = await promoFactory.getAdminMinters();
 
         let beforeAllIds: number[] = [];
         await asyncForEach(beforeAllAdmins, async (address) => {
-          const id = await promoFactory.functions.adminMintersMapping(address);
+          const id = await promoFactory.adminMintersMapping(address);
           beforeAllIds.push(id.toNumber());
         });
 
-        await promoFactory.functions.removeAdminMinter(removeAdmin);
+        await promoFactory.removeAdminMinter(removeAdmin);
 
-        const afterAllAdmins = await promoFactory.functions.getAdminMinters();
+        const afterAllAdmins = await promoFactory.getAdminMinters();
 
         let afterAllIds: number[] = [];
         await asyncForEach(afterAllAdmins, async (address) => {
-          const id = await promoFactory.functions.adminMintersMapping(address);
+          const id = await promoFactory.adminMintersMapping(address);
           afterAllIds.push(id.toNumber());
         });
 
@@ -319,15 +319,15 @@ describe('Core', () => {
       const promoFactory = await PromoFactory.deploy(ownerWallet, cards.address);
       promoFactoryAddress = promoFactory.address;
 
-      await cards.functions.startSeason('Promo', 400, 500);
-      await cards.functions.addFactory(promoFactory.address, 1);
-      await promoFactory.functions.addPromoMinter(minterWallet.address, 400);
-      await promoFactory.functions.addAdminMinter(adminMinter.address);
+      await cards.startSeason('Promo', 400, 500);
+      await cards.addFactory(promoFactory.address, 1);
+      await promoFactory.addPromoMinter(minterWallet.address, 400);
+      await promoFactory.addAdminMinter(adminMinter.address);
     });
 
     async function subject() {
       const promoFactory = PromoFactory.at(caller, promoFactoryAddress);
-      const tx = await promoFactory.functions.removeAdminMinter(callerMinter);
+      const tx = await promoFactory.removeAdminMinter(callerMinter);
       return await tx.wait();
     }
 
@@ -347,10 +347,10 @@ describe('Core', () => {
 
       const promoFactory = PromoFactory.at(caller, promoFactoryAddress);
 
-      const adminMinterMapping = await promoFactory.functions.adminMintersMapping(callerMinter);
+      const adminMinterMapping = await promoFactory.adminMintersMapping(callerMinter);
       expect(adminMinterMapping).toBeTruthy();
 
-      const adminMinterArray = await promoFactory.functions.getAdminMinters();
+      const adminMinterArray = await promoFactory.getAdminMinters();
       expect(adminMinterArray.length).toBe(1);
     });
 
@@ -359,10 +359,10 @@ describe('Core', () => {
 
       const promoFactory = PromoFactory.at(caller, promoFactoryAddress);
 
-      const adminMinterMapping = await promoFactory.functions.adminMintersMapping(callerMinter);
+      const adminMinterMapping = await promoFactory.adminMintersMapping(callerMinter);
       expect(adminMinterMapping.toNumber()).toBe(0);
 
-      const adminMinterArray = await promoFactory.functions.getAdminMinters();
+      const adminMinterArray = await promoFactory.getAdminMinters();
       expect(adminMinterArray.length).toBe(0);
     });
   });
@@ -388,16 +388,16 @@ describe('Core', () => {
       promoFactoryAddress = promoFactory.address;
       cardsAddress = cards.address;
 
-      await cards.functions.startSeason('Promo', 400, 500);
-      await cards.functions.addFactory(promoFactory.address, 1);
+      await cards.startSeason('Promo', 400, 500);
+      await cards.addFactory(promoFactory.address, 1);
 
-      await promoFactory.functions.addPromoMinter(minterWallet.address, 400);
-      await promoFactory.functions.addAdminMinter(adminMinter.address);
+      await promoFactory.addPromoMinter(minterWallet.address, 400);
+      await promoFactory.addAdminMinter(adminMinter.address);
     });
 
     async function subject() {
       const promoFactory = PromoFactory.at(caller, promoFactoryAddress);
-      const tx = await promoFactory.functions.adminMintCards(
+      const tx = await promoFactory.adminMintCards(
         callerTo,
         callerProtos,
         callerQualities,
@@ -425,10 +425,10 @@ describe('Core', () => {
 
       const cards = Cards.at(adminMinter, cardsAddress);
 
-      const newTokenOwner = await cards.functions.ownerOf(0);
+      const newTokenOwner = await cards.ownerOf(0);
       expect(newTokenOwner).toBe(adminMinter.address);
 
-      const balance = await cards.functions.balanceOf(adminMinter.address);
+      const balance = await cards.balanceOf(adminMinter.address);
       expect(balance.toNumber()).toBe(2);
     });
   });
@@ -450,16 +450,16 @@ describe('Core', () => {
       cards = await Cards.deploy(ownerWallet, BATCH_SIZE, 'Test', 'TEST');
       promoFactory = await PromoFactory.deploy(ownerWallet, cards.address);
 
-      await cards.functions.startSeason('Promo', 400, 500);
-      await cards.functions.addFactory(promoFactory.address, 1);
+      await cards.startSeason('Promo', 400, 500);
+      await cards.addFactory(promoFactory.address, 1);
 
       // TODO: Make into async loop rather than using first element
-      await promoFactory.functions.addPromoMinter(minterWallet.address, callerProtos[0]);
+      await promoFactory.addPromoMinter(minterWallet.address, callerProtos[0]);
     });
 
     async function subject(): Promise<any> {
       const newPromoFactory = PromoFactory.at(caller, promoFactory.address);
-      return await newPromoFactory.functions.mint(
+      return await newPromoFactory.mint(
         userWallet.address,
         callerProtos,
         callerQualities,
@@ -473,7 +473,7 @@ describe('Core', () => {
 
     it('should not be able to mint a locked promo', async () => {
       caller = ownerWallet;
-      await promoFactory.functions.lock(callerProtos[0]);
+      await promoFactory.lock(callerProtos[0]);
       caller = minterWallet;
       await expectRevert(subject());
     });
@@ -486,16 +486,16 @@ describe('Core', () => {
     it('should be able to mint a promo', async () => {
       await subject();
 
-      const isValidMinter = await promoFactory.functions.isValidMinter(
+      const isValidMinter = await promoFactory.isValidMinter(
         minterWallet.address,
         callerProtos[0],
       );
       expect(isValidMinter).toBeTruthy();
 
-      const isLocked = await promoFactory.functions.isPromoLocked(callerProtos[0]);
+      const isLocked = await promoFactory.isPromoLocked(callerProtos[0]);
       expect(isLocked).toBeFalsy();
 
-      const result = await cards.functions.balanceOf(userWallet.address);
+      const result = await cards.balanceOf(userWallet.address);
       expect(result.toNumber()).toBe(1);
     });
   });
@@ -517,16 +517,16 @@ describe('Core', () => {
       cards = await Cards.deploy(ownerWallet, BATCH_SIZE, 'Test', 'TEST');
       promoFactory = await PromoFactory.deploy(ownerWallet, cards.address);
 
-      await cards.functions.startSeason('Promo', 400, 500);
-      await cards.functions.addFactory(promoFactory.address, 1);
+      await cards.startSeason('Promo', 400, 500);
+      await cards.addFactory(promoFactory.address, 1);
 
       // TODO: Make into async loop rather than using first element
-      await promoFactory.functions.addPromoMinter(minterWallet.address, callerProto);
+      await promoFactory.addPromoMinter(minterWallet.address, callerProto);
     });
 
     async function subject(): Promise<any> {
       const newPromoFactory = PromoFactory.at(caller, promoFactory.address);
-      return await newPromoFactory.functions.mintSingle(
+      return await newPromoFactory.mintSingle(
         userWallet.address,
         callerProto,
         callerQuality,
@@ -540,7 +540,7 @@ describe('Core', () => {
 
     it('should not be able to mint a locked promo', async () => {
       caller = ownerWallet;
-      await promoFactory.functions.lock(callerProto);
+      await promoFactory.lock(callerProto);
       caller = minterWallet;
       await expectRevert(subject());
     });
@@ -552,9 +552,9 @@ describe('Core', () => {
 
     it('should be able to mint a promo', async () => {
       await subject();
-      const minterArray = await promoFactory.functions.validMinters(callerProto);
+      const minterArray = await promoFactory.validMinters(callerProto);
       expect(minterArray).toContain(minterWallet.address);
-      const result = await cards.functions.balanceOf(userWallet.address);
+      const result = await cards.balanceOf(userWallet.address);
       expect(result.toNumber()).toBe(1);
     });
   });
@@ -572,14 +572,14 @@ describe('Core', () => {
       cards = await Cards.deploy(ownerWallet, BATCH_SIZE, 'Test', 'TEST');
       promoFactory = await PromoFactory.deploy(ownerWallet, cards.address);
 
-      await cards.functions.startSeason('Promo', 400, 500);
-      await cards.functions.addFactory(promoFactory.address, 1);
-      await promoFactory.functions.addPromoMinter(minterWallet.address, callerProtos);
+      await cards.startSeason('Promo', 400, 500);
+      await cards.addFactory(promoFactory.address, 1);
+      await promoFactory.addPromoMinter(minterWallet.address, callerProtos);
     });
 
     async function subject(): Promise<any> {
       const newPromoFactory = PromoFactory.at(caller, promoFactory.address);
-      return newPromoFactory.functions.lock(callerProtos);
+      return newPromoFactory.lock(callerProtos);
     }
 
     it('should not be able to lock as an unauthorised user', async () => {
@@ -594,7 +594,7 @@ describe('Core', () => {
 
     it('should be able to lock a promo', async () => {
       await subject();
-      const isLocked = await promoFactory.functions.isPromoLocked(callerProtos);
+      const isLocked = await promoFactory.isPromoLocked(callerProtos);
       expect(isLocked).toBeTruthy();
     });
 

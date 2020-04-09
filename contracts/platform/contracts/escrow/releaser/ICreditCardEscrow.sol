@@ -47,7 +47,20 @@ contract ICreditCardEscrow {
      */
     function destroy(uint _id) public;
 
-    function escrow(IEscrow.Vault memory vault, address cbTo, bytes memory cbData, uint256 _duration) public returns (uint);
+    /**
+     * @dev Create a new escrow account
+     *
+     * @param _vault The vault details of this escrow
+     * @param _callbackTo The address on which to callback
+     * @param _callbackData The data to pass to the callback function
+     * @param _duration The duration of the escrow
+     */
+    function escrow(
+        IEscrow.Vault memory _vault,
+        address _callbackTo,
+        bytes memory _callbackData,
+        uint256 _duration
+    ) public returns (uint);
 
     function getProtocol() public view returns (IEscrow);
 }

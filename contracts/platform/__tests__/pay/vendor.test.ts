@@ -8,7 +8,7 @@ import {
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
 import { keccak256 } from 'ethers/utils';
-import { getETHPayment, getUSDPayment, Order, PaymentParams } from './helpers';
+import { getETHPayment, getSignedPayment, Order, PaymentParams } from '../../src/pay';
 
 const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();
@@ -91,21 +91,21 @@ describe('Vendor', () => {
         await pay.setSellerApproval(vendor.address, [sku], true);
         await vendor.processPayment(
             order,
-            await getUSDPayment(pay, user, vendor.address, order, payment)
+            await getSignedPayment(user, pay.address, vendor.address, order, payment)
         );
     }
 
     it('should be able to process a USD payment', async () => {
         await pay.setSignerLimit(user.address, 100);
         let order = getSimpleOrder(100);
-        let payment = await getUSDPayment(pay, user, vendor.address, order, { nonce: 0, escrowFor: 10, value: 100 });
+        let payment = await getSignedPayment(user, pay.address, vendor.address, order, { nonce: 0, escrowFor: 10, value: 100 });
         await processUSDPayment(order, payment);
     });
 
     it('should not be able to process an insufficient USD payment', async () => {
         await pay.setSignerLimit(user.address, 100);
         let order = getSimpleOrder(100);
-        let payment = await getUSDPayment(pay, user, vendor.address, order, { nonce: 0, escrowFor: 10, value: 99 });
+        let payment = await getSignedPayment(user, pay.address, vendor.address, order, { nonce: 0, escrowFor: 10, value: 99 });
         await expectRevert(processUSDPayment(order, payment));
     });
 
@@ -113,24 +113,24 @@ describe('Vendor', () => {
     it('should not be able to exceed seller limit in one tx', async () => {
         await pay.setSignerLimit(user.address, 100);
         let order = getSimpleOrder(101);
-        let payment = await getUSDPayment(pay, user, vendor.address, order, { nonce: 0, escrowFor: 10, value: 101 });
+        let payment = await getSignedPayment(user, pay.address, vendor.address, order, { nonce: 0, escrowFor: 10, value: 101 });
         await expectRevert(processUSDPayment(order, payment));
     });
 
     it('should not be able to exceed seller limit in two txs', async () => {
         await pay.setSignerLimit(user.address, 100);
         let order = getSimpleOrder(99);
-        let payment = await getUSDPayment(pay, user, vendor.address, order, { nonce: 0, escrowFor: 10, value: 99 });
+        let payment = await getSignedPayment(user, pay.address, vendor.address, order, { nonce: 0, escrowFor: 10, value: 99 });
         await processUSDPayment(order, payment);
         await expectRevert(vendor.processPayment(
             getSimpleOrder(99),
-            await getUSDPayment(pay, user, vendor.address, order, { nonce: 0, escrowFor: 10, value: 2 })
+            await getSignedPayment(user, pay.address, vendor.address, order, { nonce: 0, escrowFor: 10, value: 2 })
         ));
     });
 
     it('should not process payment from unapproved seller', async () => {
         let order = getSimpleOrder(99);
-        let payment = await getUSDPayment(pay, user, vendor.address, order, { nonce: 0, escrowFor: 10, value: 99 });
+        let payment = await getSignedPayment(user, pay.address, vendor.address, order, { nonce: 0, escrowFor: 10, value: 99 });
         await expectRevert(processUSDPayment(order, payment));
     });
 

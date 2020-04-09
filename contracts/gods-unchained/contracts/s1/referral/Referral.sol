@@ -2,34 +2,46 @@ pragma solidity 0.5.11;
 
 import "@openzeppelin/contracts/math/SafeMath.sol";
 
+/**
+ * @title Referral
+ * @notice The referral contract for Season 1.
+ * @author Gods Unchained
+ */
 contract Referral {
 
     using SafeMath for uint256;
 
+    /**
+     * @dev Get the split of cost between purchaser/referrer
+     *
+     * @param _user The address of the purchasing user
+     * @param _value The total value of the purchase
+     * @param _referrer The address of the referring user
+     */
     function getSplit(
-        address user, uint256 value, address referrer
+        address _user, uint256 _value, address _referrer
     ) external view returns (
         uint256 toVendor, uint256 toReferrer
     ) {
-        toVendor = getVendorPercentage(value, 90);
-        toReferrer = getReferrerPercentage(value, 10);
-        require(toVendor.add(toReferrer) == value, "wrong sum value");
+        toVendor = _getVendorPercentage(_value, 90);
+        toReferrer = _getReferrerPercentage(_value, 10);
+        require(toVendor.add(toReferrer) == _value, "wrong sum value");
         return (toVendor, toReferrer);
     }
 
-    function getVendorPercentage(uint amount, uint8 percentage) public pure returns (uint) {
-        return halfUpDiv(amount.mul(percentage), 100);
+    function _getVendorPercentage(uint _amount, uint8 _percentage) internal pure returns (uint) {
+        return _halfUpDiv(_amount.mul(_percentage), 100);
     }
 
-    function getReferrerPercentage(uint amount, uint8 percentage) public pure returns (uint) {
-        return moreThanHalfUpDiv(amount.mul(percentage), 100);
+    function _getReferrerPercentage(uint _amount, uint8 _percentage) internal pure returns (uint) {
+        return _moreThanHalfUpDiv(_amount.mul(_percentage), 100);
     }
 
-    function moreThanHalfUpDiv(uint256 a, uint256 b) internal pure returns (uint256) {
+    function _moreThanHalfUpDiv(uint256 a, uint256 b) internal pure returns (uint256) {
         return (a % b > _halfDenom(b)) ? a.div(b).add(1) : a.div(b);
     }
 
-    function halfUpDiv(uint256 a, uint256 b) internal pure returns (uint256) {
+    function _halfUpDiv(uint256 a, uint256 b) internal pure returns (uint256) {
         return (a % b >= _halfDenom(b)) ? a.div(b).add(1) : a.div(b);
     }
 

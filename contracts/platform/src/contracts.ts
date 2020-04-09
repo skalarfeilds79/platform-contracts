@@ -36,6 +36,7 @@ export { TestERC721TokenFactory } from './generated/TestERC721TokenFactory';
 export { TestListPackFactory } from './generated/TestListPackFactory';
 export { TestVendorFactory } from './generated/TestVendorFactory';
 export { TradeToggleERC20Factory } from './generated/TradeToggleERC20Factory';
+
 export { BatchTransfer } from './generated/BatchTransfer';
 export { Beacon } from './generated/Beacon';
 export { Consumer } from './generated/Consumer';

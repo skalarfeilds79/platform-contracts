@@ -1,9 +1,6 @@
 import 'jest';
 
-import { 
-  Escrow, EscrowFactory, TestERC20Token, TestERC20TokenFactory, 
-  TestChest, TestChestFactory, MaliciousChest, MaliciousChestFactory
-} from '../../src/contracts';
+import { Escrow, TestERC20Token, TestChest, MaliciousChest, EscrowFactory, TestERC20TokenFactory, TestChestFactory, MaliciousChestFactory } from '../../src/contracts';
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
@@ -60,6 +57,9 @@ describe('ERC20Escrow', () => {
             highTokenID: 0,
             tokenIDs: []
         }, user.address);
+        escrow.on('Escrowed', () => {
+
+        })
     });
 
     it('should only remove correct amount', async () => {
@@ -114,8 +114,8 @@ describe('ERC20Escrow', () => {
     let erc20: TestERC20Token;
 
     beforeEach(async() => {
-        escrow = await new EscrowFactory(user).deploy();
-        erc20 = await new TestERC20TokenFactory(user).deploy();
+      escrow = await new EscrowFactory(user).deploy();
+      erc20 = await new TestERC20TokenFactory(user).deploy();
     })
 
     it('should be able to release as the releaser', async () => {
@@ -179,10 +179,10 @@ describe('ERC20Escrow', () => {
     let chest: TestChest;
 
     beforeEach(async() => {
-        escrow = await new EscrowFactory(user).deploy();
-        erc20 = await new TestERC20TokenFactory(user).deploy();
-        malicious = await new MaliciousChestFactory(user).deploy(escrow.address, erc20.address);
-        chest = await new TestChestFactory(user).deploy(escrow.address, erc20.address);
+      escrow = await new EscrowFactory(user).deploy();
+      erc20 = await new TestERC20TokenFactory(user).deploy();
+      malicious = await new MaliciousChestFactory(user).deploy(escrow.address, erc20.address);
+      chest = await new TestChestFactory(user).deploy(escrow.address, erc20.address);
     });
 
     it('should be able to create a vault using a callback', async () => {

@@ -62,11 +62,19 @@ contract Product is Ownable {
      * @param _referrer the address of the user who made this referral
      */
     function purchase(
+<<<<<<< HEAD
+        uint256 _qty,
+        IPay.Payment memory _payment,
+        address payable _referrer
+    ) public {
+        purchaseFor(msg.sender, _qty, _payment, _referrer);
+=======
         uint256 _quantity,
         IPay.Payment memory _payment,
         address payable _referrer
     ) public {
         purchaseFor(msg.sender, _quantity, _payment, _referrer);
+>>>>>>> 2258662f1e28484cd2aedc8a2c03ad3bc36cdd57
     }
 
     /** @dev Purchase assets for a user

@@ -15,4 +15,4 @@ interface IReferral {
         uint256 toVendor, uint256 toReferrer
     );
 
-}
+} 

@@ -327,13 +327,6 @@
     reflect-metadata "^0.1.12"
     tslib "^1.8.1"
 
-"@imtbl/test-utils@1.0.10":
-  version "1.0.10"
-  resolved "https://registry.yarnpkg.com/@imtbl/test-utils/-/test-utils-1.0.10.tgz#3c0652cf9bd500145f281a94f36fae89156e9d19"
-  integrity sha512-r8EaaBB50OpZ6D3WNUKnb/CfQomO8K5U7sLb3rJLu/pzeklzFzos5Jv4A+7aCHdtDRDhX3dJGnwp28a+woFn+w==
-  dependencies:
-    typescript "^3.5.3"
-
 "@imtbl/types@1.0.10":
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/@imtbl/types/-/types-1.0.10.tgz#f27f932370aa94658224e2753ddfd77b89638e6d"

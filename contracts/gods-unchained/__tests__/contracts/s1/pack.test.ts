@@ -17,7 +17,6 @@ import { Wallet, ethers } from 'ethers';
 import { keccak256 } from 'ethers/utils';
 
 import { getSignedPayment, Currency } from '@imtbl/platform/src/pay';
-import { on } from 'cluster';
 
 jest.setTimeout(600000);
 

@@ -41,7 +41,7 @@ Pack --> Escrow (Escrow): Open an escrow account and store tokens 1 to 5 from co
 Escrow: Check to see that I own none of these tokens. Lock our mutex. 
 Escrow --> Pack (Callback): Call provided callback function. 
 Pack: Mint the tokens directly into Escrow. 
-Escrow: Check to see that I now own the tokens. If not, revert everything (clearing the prepare). 
+Escrow: Check to see that I now own the tokens. If not, revert everything. Unlock the mutex. 
 ```
 
 ## Escrow Types

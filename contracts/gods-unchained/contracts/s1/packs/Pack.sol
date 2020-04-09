@@ -91,6 +91,7 @@ contract Pack is Ownable, Product, RarityProvider {
         address protocol = address(fiatEscrow.getProtocol());
         require(msg.sender == protocol, "GU:S1:Pack: must be core escrow");
         Purchase memory purchase = purchases[id];
+        require(purchase.count > 0, "GU:S1:Pack: must have cards available");
         _createCards(purchase, protocol);
         delete purchases[id];
     }

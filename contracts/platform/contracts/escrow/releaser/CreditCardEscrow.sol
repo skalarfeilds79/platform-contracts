@@ -7,10 +7,10 @@ import "@openzeppelin/contracts/ownership/Ownable.sol";
 contract CreditCardEscrow is Ownable {
 
     // Emitted when assets are escrowed
-    event Escrowed(uint indexed id, address indexed owner, uint64 endBlock);
+    event Escrowed(uint indexed id, address indexed owner, uint256 endBlock);
 
     // Emitted when the release of the assets in a custodial escrow account is successfully requested
-    event ReleaseRequested(uint indexed id, uint64 endBlock, address releaseTo);
+    event ReleaseRequested(uint indexed id, uint256 endBlock, address releaseTo);
 
     // Emitted when the release of the assets in a custodial escrow account is cancelled
     event ReleaseCancelled(uint indexed id);
@@ -19,7 +19,7 @@ contract CreditCardEscrow is Ownable {
     event Released(uint indexed id);
 
     // Emitted when the destruction of the assets in an escrow account is successfully requested
-    event DestructionRequested(uint indexed id, uint64 endBlock);
+    event DestructionRequested(uint indexed id, uint256 endBlock);
 
     // Emitted when the destruction of the assets in an escrow account is cancelled
     event DestructionCancelled(uint indexed id);
@@ -29,13 +29,13 @@ contract CreditCardEscrow is Ownable {
 
     struct Lock {
         // the block after which these assets can be taked from escrow
-        uint64 endBlock;
+        uint256 endBlock;
         // the address which will own these assets after the escrow period
         address owner;
         // the block after which these assets can be destroyed
-        uint64 destructionBlock;
+        uint256 destructionBlock;
         // the block after which these assets will be released
-        uint64 releaseBlock;
+        uint256 releaseBlock;
         // the user to whom these assets will be released
         address releaseTo;
     }
@@ -47,18 +47,18 @@ contract CreditCardEscrow is Ownable {
     // The address which can destroy assets
     address public destroyer;
     // Number of blocks an escrow account must be marked for destruction before it is destroyed
-    uint64 public destructionDelay;
+    uint256 public destructionDelay;
     // The address which can withdraw custodial assets
     address public custodian;
     // Number of blocks a custodial escrow asset must be marked for release
-    uint64 public releaseDelay;
+    uint256 public releaseDelay;
 
     constructor(
         IEscrow _escrowProtocol,
         address _destroyer,
-        uint64 _destructionDelay,
+        uint256 _destructionDelay,
         address _custodian,
-        uint64 _releaseDelay
+        uint256 _releaseDelay
     ) public {
         escrowProtocol = _escrowProtocol;
         destroyer = _destroyer;
@@ -82,7 +82,7 @@ contract CreditCardEscrow is Ownable {
      *
      * @param _delay Number of blocks an escrow account must be marked for destruction before it is destroyed
      */
-    function setDestructionDelay(uint64 _delay) public onlyOwner {
+    function setDestructionDelay(uint256 _delay) public onlyOwner {
         destructionDelay = _delay;
     }
 
@@ -101,7 +101,7 @@ contract CreditCardEscrow is Ownable {
      *
      * @param _delay Number of blocks a custodial escrow account must be marked for release
      */
-    function setReleaseDelay(uint64 _delay) public onlyOwner {
+    function setReleaseDelay(uint256 _delay) public onlyOwner {
         releaseDelay = _delay;
     }
 
@@ -156,7 +156,7 @@ contract CreditCardEscrow is Ownable {
         require(block.number + releaseDelay >= lock.endBlock, "IM:CreditCardEscrow: release period must end after escrow period");
         require(_to != address(0), "IM:CreditCardEscrow: must release to a real user");
 
-        uint64 releaseBlock = uint64(block.number) + releaseDelay;
+        uint256 releaseBlock = block.number + releaseDelay;
 
         lock.releaseBlock = releaseBlock;
         lock.releaseTo = _to;
@@ -197,7 +197,7 @@ contract CreditCardEscrow is Ownable {
         require(lock.endBlock > block.number, "IM:CreditCardEscrow: escrow period must not have expired");
         require(lock.owner == address(0), "IM:CreditCardEscrow: must be zero address");
 
-        uint64 destructionBlock = uint64(block.number) + destructionDelay;
+        uint256 destructionBlock = block.number + destructionDelay;
         lock.destructionBlock = destructionBlock;
 
         emit DestructionRequested(_id, destructionBlock);
@@ -245,22 +245,22 @@ contract CreditCardEscrow is Ownable {
      * @dev Escrow some amount of ERC20 tokens
      *
      * @param _vault the details of the escrow vault
-     * @param _cbTo the address to use for the callback transaction
-     * @param _cbData the data to pass to the callback transaction
+     * @param _callbackTo the address to use for the callback transaction
+     * @param _callbackData the data to pass to the callback transaction
      * @param _duration the duration of the escrow
      */
     function escrow(
         IEscrow.Vault memory _vault,
-        address _cbTo,
-        bytes memory _cbData,
-        uint64 _duration
+        address _callbackTo,
+        bytes memory _callbackData,
+        uint256 _duration
     ) public returns (uint) {
 
         require(_duration > 0, "IM:CreditCardEscrow: must be locked for a number of blocks");
         require(_vault.releaser == address(this), "IM:CreditCardEscrow: must be releasable by this contract");
 
         // escrow the assets with this contract as the releaser
-        uint id = escrowProtocol.callbackEscrow(_vault, _cbTo, _cbData);
+        uint id = escrowProtocol.callbackEscrow(_vault, _callbackTo, _callbackData);
 
         _lock(id, _duration, _vault.player);
 
@@ -271,11 +271,11 @@ contract CreditCardEscrow is Ownable {
         return escrowProtocol;
     }
 
-    function _lock(uint _id, uint64 _duration, address _owner) internal {
+    function _lock(uint _id, uint256 _duration, address _owner) internal {
 
         locks[_id] = Lock({
             owner: _owner,
-            endBlock: uint64(block.number) + _duration,
+            endBlock: block.number + _duration,
             destructionBlock: 0,
             releaseBlock: 0,
             releaseTo: address(0)

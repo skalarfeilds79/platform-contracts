@@ -17,10 +17,14 @@ contract IEscrow {
      * @dev Create an escrow account where assets will be pushed into escrow by another contract
      *
      * @param _vault the details of the new escrow vault
-     * @param _cbTo the address to use for the callback transaction
-     * @param _cbData the data to pass to the callback transaction
+     * @param _callbackTo the address to use for the callback transaction
+     * @param _callbackData the data to pass to the callback transaction
      */
-    function callbackEscrow(Vault memory _vault, address _cbTo, bytes memory _cbData) public returns (uint256);
+    function callbackEscrow(
+        Vault memory _vault,
+        address _callbackTo,
+        bytes memory _callbackData
+    ) public returns (uint256);
 
     /**
      * @dev Create a new escrow vault

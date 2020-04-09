@@ -57,6 +57,9 @@ describe('ERC20Escrow', () => {
             highTokenID: 0,
             tokenIDs: []
         }, user.address);
+        escrow.on('Escrowed', () => {
+
+        })
     });
 
     it('should only remove correct amount', async () => {

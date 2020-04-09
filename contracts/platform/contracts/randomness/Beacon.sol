@@ -101,7 +101,7 @@ contract Beacon is IBeacon {
      *
      * @param _commitBlock the original commit block
      */
-    function getCurrentBlock(uint256 _commitBlock) public override view returns (uint256) {
+    function getCurrentBlock(uint256 _commitBlock) public view returns (uint256) {
         uint256 forwardTo = forwards[_commitBlock];
         return (forwardTo == 0 ? _commitBlock : forwardTo);
     }

@@ -62,7 +62,8 @@ contract Escrow is IEscrow, Ownable {
         mutexLocked = false;
 
         if (_vault.balance > 0) {
-            require(IERC20(_vault.asset).balanceOf(address(this)).sub(preBalance) == _vault.balance, "IM:Escrow: must have transferred the tokens");
+            uint256 balanceDelta = IERC20(_vault.asset).balanceOf(address(this)).sub(preBalance);
+            require(balanceDelta == _vault.balance, "IM:Escrow: must have transferred the tokens");
         } else if (_vault.tokenIDs.length > 0) {
             require(_areAllInListEscrowed(_vault), "IM:Escrow: list must now be owned by escrow contract");
         } else if (_vault.highTokenID.sub(_vault.lowTokenID) > 0) {

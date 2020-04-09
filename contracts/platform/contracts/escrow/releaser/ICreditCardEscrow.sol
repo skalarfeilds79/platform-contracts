@@ -16,8 +16,9 @@ abstract contract ICreditCardEscrow {
      * @dev Request that a custodial escrow account's assets be marked for release
      *
      * @param _id The ID of the escrow account to be marked
+     * @param _to The account to which to release the assets
      */
-    function requestRelease(uint _id) public virtual;
+    function requestRelease(uint _id, address _to) public virtual;
 
     /**
      * @dev Cancel a release request

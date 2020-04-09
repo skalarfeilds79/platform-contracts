@@ -35,9 +35,7 @@ contract TestCreditCardPack {
             tokenIDs: new uint256[](0)
         });
 
-        purchases.push(Purchase({
-            count: count
-        }));
+        purchases.push(Purchase({ count: count }));
 
         uint256 id = purchases.length - 1;
 

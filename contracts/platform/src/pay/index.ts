@@ -1,13 +1,19 @@
 
+
+
 import { keccak256 } from 'ethers/utils';
-import { Pay } from '../../src/contracts';
 import { ethers, Wallet } from 'ethers';
+
+export enum Currency {
+    ETH,
+    USDCents
+}
 
 export interface Order {
     user: string;
     sku: string;
     quantity: number;
-    currency: number;
+    currency: Currency;
     totalPrice: number;
 }
 
@@ -17,7 +23,17 @@ export interface PaymentParams {
     value: number;
 }
 
-export function getETHPayment() {
+export interface Payment {
+    currency: Currency;
+    escrowFor: number;
+    value: number;
+    nonce: number;
+    v: number;
+    r: string;
+    s: string;
+}
+
+export function getETHPayment(): Payment {
     return {
         currency: 0,
         escrowFor: 0,
@@ -29,10 +45,10 @@ export function getETHPayment() {
     };
 }
 
-export async function getUSDPayment(pay: Pay, signer: Wallet, seller: string, order: Order, payment: PaymentParams) {
+export async function getSignedPayment(signer: Wallet, processor: string, seller: string, order: Order, payment: PaymentParams): Promise<Payment> {
 
     let types = ['address', 'address', 'address', 'bytes32', 'uint256', 'uint256', 'uint256', 'uint256', 'uint8'];
-    let values = [pay.address, seller, order.user, order.sku, order.quantity, payment.nonce, payment.escrowFor, payment.value, 1];
+    let values = [processor, seller, order.user, order.sku, order.quantity, payment.nonce, payment.escrowFor, payment.value, Currency.USDCents];
 
     let hash = ethers.utils.solidityKeccak256(types, values);
     let signature = await signer.signMessage(ethers.utils.arrayify(hash));

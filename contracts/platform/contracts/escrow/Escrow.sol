@@ -31,10 +31,14 @@ contract Escrow is IEscrow, Ownable {
      * @dev Create an escrow account where assets will be pushed into escrow by another contract
      *
      * @param _vault the details of the new escrow vault
-     * @param _cbTo the address to use for the callback transaction
-     * @param _cbData the data to pass to the callback transaction
+     * @param _callbackTo the address to use for the callback transaction
+     * @param _callbackData the data to pass to the callback transaction
      */
-    function callbackEscrow(Vault memory _vault, address _cbTo, bytes memory _cbData) public returns (uint256) {
+    function callbackEscrow(
+        Vault memory _vault,
+        address _callbackTo,
+        bytes memory _callbackData
+    ) public returns (uint256) {
 
         require(!mutexLocked, "IM:Escrow: mutex must be unlocked");
         require(_vault.asset != address(0), "IM:Escrow: must be a non-null asset");
@@ -54,7 +58,7 @@ contract Escrow is IEscrow, Ownable {
 
         mutexLocked = true;
         // solium-disable-next-line security/no-low-level-calls
-        _cbTo.call(_cbData);
+        _callbackTo.call(_callbackData);
         mutexLocked = false;
 
         if (_vault.balance > 0) {

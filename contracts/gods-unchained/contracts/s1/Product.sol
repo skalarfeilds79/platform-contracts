@@ -57,40 +57,48 @@ contract Product is Ownable {
 
     /** @dev Purchase assets
      *
-     * @param _qty the number of this product to purchase
+     * @param _quantity the number of this product to purchase
      * @param _payment the details of the method by which payment will be made
      * @param _referrer the address of the user who made this referral
      */
     function purchase(
+<<<<<<< HEAD
         uint256 _qty,
         IPay.Payment memory _payment,
         address payable _referrer
     ) public {
         purchaseFor(msg.sender, _qty, _payment, _referrer);
+=======
+        uint256 _quantity,
+        IPay.Payment memory _payment,
+        address payable _referrer
+    ) public {
+        purchaseFor(msg.sender, _quantity, _payment, _referrer);
+>>>>>>> 2258662f1e28484cd2aedc8a2c03ad3bc36cdd57
     }
 
     /** @dev Purchase assets for a user
      *
      * @param _user the user who will receive the assets
-     * @param _qty the number of this product to purchase
+     * @param _quantity the number of this product to purchase
      * @param _payment the details of the method by which payment will be made
      * @param _referrer the address of the user who made this referral
      */
     function purchaseFor(
         address payable _user,
-        uint256 _qty,
+        uint256 _quantity,
         IPay.Payment memory _payment,
         address payable _referrer
     ) public {
         require(!paused, "GU:S1:Product: must be unpaused");
-        require(saleCap == 0 || saleCap >= sold + _qty, "GU:S1:Product: product cap has been exhausted");
-        uint totalPrice = price.mul(_qty);
+        require(saleCap == 0 || saleCap >= sold + _quantity, "GU:S1:Product: product cap has been exhausted");
+        uint totalPrice = price.mul(_quantity);
 
         IPay.Order memory order = IPay.Order({
             currency: IPay.Currency.USDCents,
             totalPrice: totalPrice,
             sku: sku,
-            quantity: _qty,
+            quantity: _quantity,
             user: _user
         });
 
@@ -105,7 +113,7 @@ contract Product is Ownable {
             valueToSend = totalPrice;
         }
         processor.process.value(valueToSend)(order, _payment);
-        sold += _qty;
+        sold += _quantity;
     }
 
     /** @dev Returns whether this asset is still available */

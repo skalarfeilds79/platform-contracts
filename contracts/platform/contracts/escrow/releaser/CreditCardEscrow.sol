@@ -245,14 +245,14 @@ contract CreditCardEscrow is Ownable {
      * @dev Escrow some amount of ERC20 tokens
      *
      * @param _vault the details of the escrow vault
-     * @param _cbTo the address to use for the callback transaction
-     * @param _cbData the data to pass to the callback transaction
+     * @param _callbackTo the address to use for the callback transaction
+     * @param _callbackData the data to pass to the callback transaction
      * @param _duration the duration of the escrow
      */
     function escrow(
         IEscrow.Vault memory _vault,
-        address _cbTo,
-        bytes memory _cbData,
+        address _callbackTo,
+        bytes memory _callbackData,
         uint256 _duration
     ) public returns (uint) {
 
@@ -260,7 +260,7 @@ contract CreditCardEscrow is Ownable {
         require(_vault.releaser == address(this), "IM:CreditCardEscrow: must be releasable by this contract");
 
         // escrow the assets with this contract as the releaser
-        uint id = escrowProtocol.callbackEscrow(_vault, _cbTo, _cbData);
+        uint id = escrowProtocol.callbackEscrow(_vault, _callbackTo, _callbackData);
 
         _lock(id, _duration, _vault.player);
 

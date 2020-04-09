@@ -11,7 +11,7 @@ const blockchain = new Blockchain();
 
 const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
-describe('Processor', () => {
+describe('Pay', () => {
 
   const [user, other] = generatedWallets(provider);
 
@@ -60,7 +60,7 @@ describe('Processor', () => {
     let sku = keccak256('0x00');
 
     beforeEach(async () => {
-      processor = await new PayFactory(user).deploy();
+        processor = await new PayFactory(user).deploy();
     });
 
     async function setSellerApproval(sender: Wallet, seller: string, shouldApprove: boolean) {

@@ -11,9 +11,9 @@ contract Pack is Ownable, Product, RarityProvider {
 
     struct Purchase {
         uint256 commitBlock;
-        uint32 qty;
-        address user;
+        uint256 quantity;
         uint256 escrowFor;
+        address user;
     }
 
     // All purchases recorded by this pack
@@ -46,7 +46,7 @@ contract Pack is Ownable, Product, RarityProvider {
      * @param _chest the chest contract for this pack
      */
     function setChest(address _chest) public onlyOwner {
-        require(chest == address(0), "must not have already set chest");
+        require(chest == address(0), "GU:S1:Pack: must not have already set chest");
         chest = _chest;
     }
 
@@ -55,7 +55,7 @@ contract Pack is Ownable, Product, RarityProvider {
      * @param _id the ID of the purchase
      */
     function createCards(uint256 _id) public {
-        require(_id < purchases.length, "purchase ID invalid");
+        require(_id < purchases.length, "GU:S1:Pack: purchase ID invalid");
         Purchase memory purchase = purchases[_id];
         if (purchase.escrowFor == 0) {
             _createCards(purchase, purchase.user);
@@ -68,7 +68,7 @@ contract Pack is Ownable, Product, RarityProvider {
 
         Purchase memory purchase = purchases[_id];
 
-        uint cardCount = purchase.qty * 5;
+        uint cardCount = purchase.quantity * 5;
         uint low = cards.nextBatch();
         uint high = low + cardCount;
 
@@ -89,7 +89,7 @@ contract Pack is Ownable, Product, RarityProvider {
 
     function escrowHook(uint256 id) public {
         address protocol = address(fiatEscrow.getProtocol());
-        require(msg.sender == protocol, "must be core escrow");
+        require(msg.sender == protocol, "GU:S1:Pack: must be core escrow");
         Purchase memory purchase = purchases[id];
         _createCards(purchase, protocol);
         delete purchases[id];
@@ -98,23 +98,27 @@ contract Pack is Ownable, Product, RarityProvider {
     /** @dev Purchase packs for a user
      *
      * @param _user the user who will receive the packs
-     * @param _qty the number of packs to purchase
+     * @param _quantity the number of packs to purchase
      * @param _payment the details of the method by which payment will be made
      * @param _referrer the address of the user who made this referral
      */
     function purchaseFor(
         address payable _user,
-        uint256 _qty,
+        uint256 _quantity,
         IPay.Payment memory _payment,
         address payable _referrer
     ) public {
-        super.purchaseFor(_user, _qty, _payment, _referrer);
-        _createPurchase(_user, _qty, _payment.escrowFor);
+        super.purchaseFor(_user, _quantity, _payment, _referrer);
+        if (_payment.currency == IPay.Currency.ETH) {
+            _createPurchase(_user, _quantity, 0);
+        } else {
+            _createPurchase(_user, _quantity, _payment.escrowFor);
+        }
     }
 
     function _createCards(Purchase memory _purchase, address _user) internal {
         uint256 randomness = uint256(beacon.randomness(_purchase.commitBlock));
-        uint cardCount = _purchase.qty * 5;
+        uint cardCount = _purchase.quantity * 5;
         uint16[] memory protos = new uint16[](cardCount);
         uint8[] memory qualities = new uint8[](cardCount);
         for (uint i = 0; i < cardCount; i++) {
@@ -123,19 +127,19 @@ contract Pack is Ownable, Product, RarityProvider {
         cards.mintCards(_user, protos, qualities);
     }
 
-    function openChests(address _user, uint256 _qty) public {
-        require(msg.sender == chest, "must be the chest contract");
-        _createPurchase(_user, _qty, 0);
+    function openChests(address _user, uint256 _quantity) public {
+        require(msg.sender == chest, "GU:S1:Pack: must be the chest contract");
+        _createPurchase(_user, _quantity * 6, 0);
     }
 
     function _createPurchase(
         address _user,
-        uint256 _qty,
+        uint256 _quantity,
         uint256 _escrowFor
     ) internal returns (uint256) {
         return purchases.push(Purchase({
             commitBlock: beacon.commit(0),
-            qty: uint32(_qty),
+            quantity: _quantity,
             user: _user,
             escrowFor: _escrowFor
         })) - 1;

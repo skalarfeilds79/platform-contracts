@@ -1,5 +1,4 @@
-pragma solidity 0.5.11;
-pragma experimental ABIEncoderV2;
+pragma solidity 0.6.6;
 
 import "../IEscrow.sol";
 import "./TestERC721Token.sol";
@@ -36,9 +35,11 @@ contract TestBatchPack {
             tokenIDs: new uint256[](0)
         });
 
-        uint256 id = purchases.push(Purchase({
+        purchases.push(Purchase({
             count: count
-        })) - 1;
+        }));
+
+        uint256 id = purchases.length - 1;
 
         bytes memory data = abi.encodeWithSignature("escrowHook(uint256)", id);
 

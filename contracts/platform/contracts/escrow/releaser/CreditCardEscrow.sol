@@ -1,10 +1,11 @@
-pragma solidity 0.5.11;
+pragma solidity 0.6.6;
 pragma experimental ABIEncoderV2;
 
 import "../IEscrow.sol";
+import "./ICreditCardEscrow.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";
 
-contract CreditCardEscrow is Ownable {
+contract CreditCardEscrow is ICreditCardEscrow, Ownable {
 
     // Emitted when assets are escrowed
     event Escrowed(uint indexed id, address indexed owner, uint256 endBlock);
@@ -120,7 +121,7 @@ contract CreditCardEscrow is Ownable {
      *
      * @param _id The ID of the escrow account to be released
      */
-    function release(uint _id) public {
+    function release(uint _id) public override {
 
         Lock memory lock = locks[_id];
 
@@ -254,7 +255,7 @@ contract CreditCardEscrow is Ownable {
         address _callbackTo,
         bytes memory _callbackData,
         uint256 _duration
-    ) public returns (uint) {
+    ) public override returns (uint) {
 
         require(_duration > 0, "IM:CreditCardEscrow: must be locked for a number of blocks");
         require(_vault.releaser == address(this), "IM:CreditCardEscrow: must be releasable by this contract");
@@ -267,7 +268,7 @@ contract CreditCardEscrow is Ownable {
         return id;
     }
 
-    function getProtocol() public view returns (IEscrow) {
+    function getProtocol() public override view returns (IEscrow) {
         return escrowProtocol;
     }
 

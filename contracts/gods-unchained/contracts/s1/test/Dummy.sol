@@ -1,4 +1,4 @@
-pragma solidity 0.5.11;
+pragma solidity 0.6.6;
 
 // hack to force imports
 import "@imtbl/platform/contracts/escrow/Escrow.sol";

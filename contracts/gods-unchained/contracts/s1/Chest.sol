@@ -1,5 +1,5 @@
-pragma solidity 0.5.11;
-pragma experimental ABIEncoderV2;
+pragma solidity 0.6.6;
+
 
 import "@openzeppelin/contracts/token/ERC20/ERC20Burnable.sol";
 import "@imtbl/platform/contracts/token/TradeToggleERC20.sol";

@@ -1,4 +1,4 @@
-pragma solidity 0.5.11;
+pragma solidity 0.6.6;
 pragma experimental ABIEncoderV2;
 
 import "../IEscrow.sol";
@@ -24,9 +24,11 @@ contract MaliciousBatchPack {
 
         IEscrow.Vault memory vault = _createVault(count);
 
-        uint256 id = purchases.push(Purchase({
+        purchases.push(Purchase({
             count: count
-        })) - 1;
+        }));
+
+        uint256 id = purchases.length - 1;
 
         bytes memory data = abi.encodeWithSignature("pushAttackHook(uint256)", id);
 
@@ -37,9 +39,11 @@ contract MaliciousBatchPack {
 
         IEscrow.Vault memory vault = _createVault(count);
 
-        uint256 id = purchases.push(Purchase({
+        purchases.push(Purchase({
             count: count
-        })) - 1;
+        }));
+
+        uint256 id = purchases.length - 1;
 
         bytes memory data = abi.encodeWithSignature("pullAttackHook(uint256)", id);
 

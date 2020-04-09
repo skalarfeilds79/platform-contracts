@@ -65,7 +65,7 @@ describe('Pay', () => {
 
     async function setSellerApproval(sender: Wallet, seller: string, shouldApprove: boolean) {
         const p = Pay.at(sender, processor.address);
-        await p.functions.setSellerApproval(seller, [sku], shouldApprove);
+        await p.setSellerApproval(seller, [sku], shouldApprove);
     }
 
 

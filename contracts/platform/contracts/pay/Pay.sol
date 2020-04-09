@@ -58,7 +58,7 @@ contract Pay is IPay, Ownable {
 
     }
 
-    function _validateOrderPaymentMatch(Order memory order, Payment memory payment) internal {
+    function _validateOrderPaymentMatch(Order memory order, Payment memory payment) internal pure {
         require(payment.value >= order.totalPrice, "receipt value must be sufficient");
         require(payment.currency == Currency.USDCents, "receipt currency must match");
     }

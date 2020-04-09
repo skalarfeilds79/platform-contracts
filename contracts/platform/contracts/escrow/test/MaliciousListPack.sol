@@ -60,7 +60,7 @@ contract MaliciousListPack {
         delete purchases[purchaseID];
     }
 
-    function emptyHook() public {
+    function emptyHook() public view {
         require(msg.sender == address(escrow), "must be the escrow contract");
     }
 
@@ -78,7 +78,7 @@ contract MaliciousListPack {
         delete purchases[purchaseID];
     }
 
-    function _createVault(uint256 count) internal returns (IEscrow.Vault memory) {
+    function _createVault(uint256 count) internal view returns (IEscrow.Vault memory) {
 
         // predict token IDs
 

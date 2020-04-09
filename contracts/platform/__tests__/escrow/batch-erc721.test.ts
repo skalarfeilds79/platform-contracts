@@ -4,12 +4,13 @@ import { Escrow, TestERC721Token, MaliciousBatchPack, TestBatchPack } from '../.
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
-import { BigNumberish } from 'ethers/utils';
 
 const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();
 
 const ZERO_EX = '0x0000000000000000000000000000000000000000';
+
+ethers.errors.setLogLevel("error");
 
 describe('BatchERC271Escrow', () => {
 

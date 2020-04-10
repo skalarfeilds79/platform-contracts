@@ -162,7 +162,7 @@ describe('Referral', () => {
     });
 
     async function purchasePacks(quantity: number) {
-      let order = { quantity: quantity, sku: rarePackSKU, user: owner.address, totalPrice: cost * quantity, currency: Currency.USDCents };
+      let order = { quantity: quantity, sku: rarePackSKU, recipient: owner.address, totalPrice: cost * quantity, currency: Currency.USDCents };
       let params = { escrowFor: 0, nonce: 0, value: cost * quantity };
       let payment = await getSignedPayment(owner, pay.address, rare.address, order, params);
       await rare.purchase(quantity, payment, ZERO_EX)
@@ -218,7 +218,7 @@ describe('Referral', () => {
     });
 
     async function purchaseAndCallback(quantity: number, escrowFor: number) {
-      let order = { quantity: quantity, sku: rarePackSKU, user: owner.address, totalPrice: cost * quantity, currency: Currency.USDCents };
+      let order = { quantity: quantity, sku: rarePackSKU, recipient: owner.address, totalPrice: cost * quantity, currency: Currency.USDCents };
       let params = { escrowFor: escrowFor, nonce: 0, value: cost * quantity };
       let payment = await getSignedPayment(owner, pay.address, rare.address, order, params);
       let tx = await rare.purchase(quantity, payment, ZERO_EX);
@@ -308,7 +308,7 @@ describe('Referral', () => {
       await pay.setSignerLimit(owner.address, 10000000000);	
       await pay.setSellerApproval(chest.address, [rareChestSKU], true);	
       const value = rareChestPrice * quantity;	
-      const order = { sku: rareChestSKU, user: owner.address, currency: Currency.USDCents, quantity: quantity, totalPrice: value };	
+      const order = { sku: rareChestSKU, recipient: owner.address, currency: Currency.USDCents, quantity: quantity, totalPrice: value };	
       const params = { value: value, escrowFor: 0, nonce: 0 };	
       const payment = await getSignedPayment(owner, pay.address, chest.address, order, params);	
       await chest.purchase(quantity, payment, ZERO_EX);	

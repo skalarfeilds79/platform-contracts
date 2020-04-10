@@ -130,7 +130,7 @@ describe('Chest', () => {
       await pay.setSignerLimit(owner.address, 10000000000);
       await pay.setSellerApproval(chest.address, [rareChestSKU], true);
       const value = rareChestPrice * quantity;
-      const order = { sku: rareChestSKU, user: owner.address, currency: Currency.USDCents, quantity: quantity, totalPrice: value };
+      const order = { sku: rareChestSKU, recipient: owner.address, currency: Currency.USDCents, quantity: quantity, totalPrice: value };
       const params = { value: value, escrowFor: escrowFor, nonce: 0 };
       const payment = await getSignedPayment(owner, pay.address, chest.address, order, params);
       await chest.purchase(quantity, payment, ZERO_EX);

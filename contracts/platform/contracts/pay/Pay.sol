@@ -78,7 +78,7 @@ contract Pay is IPay, Ownable {
         bytes32 sigHash = keccak256(abi.encodePacked(
             address(this),
             msg.sender,
-            order.user,
+            order.recipient,
             order.sku,
             order.quantity,
             payment.nonce,

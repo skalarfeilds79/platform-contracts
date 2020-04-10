@@ -10,7 +10,7 @@ contract IPay {
     }
 
     struct Order {
-        address user;
+        address recipient;
         bytes32 sku;
         uint256 quantity;
         Currency currency;

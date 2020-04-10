@@ -47,7 +47,7 @@ describe('Vendor', () => {
     async function processETHPayment(approved: boolean, qty: number, totalPrice: number, value: number) {
         await pay.setSellerApproval(vendor.address, [sku], approved);
         await vendor.processPayment(
-            { user: user.address, sku: sku, quantity: qty, totalPrice: totalPrice, currency: 0 },
+            { recipient: user.address, sku: sku, quantity: qty, totalPrice: totalPrice, currency: 0 },
             getETHPayment(),
             { value: value }
         );
@@ -81,7 +81,7 @@ describe('Vendor', () => {
     });
 
     function getSimpleOrder(price: number): Order {
-        return { quantity: 1, totalPrice: price, currency: 1, sku: sku, user: user.address };
+        return { quantity: 1, totalPrice: price, currency: 1, sku: sku, recipient: user.address };
     }
 
     async function processUSDPayment(order: Order, payment: PaymentParams) {

@@ -10,7 +10,7 @@ export enum Currency {
 }
 
 export interface Order {
-    user: string;
+    recipient: string;
     sku: string;
     quantity: number;
     currency: Currency;
@@ -48,14 +48,14 @@ export function getETHPayment(): Payment {
 export async function getSignedPayment(signer: Wallet, processor: string, seller: string, order: Order, payment: PaymentParams): Promise<Payment> {
 
     let types = ['address', 'address', 'address', 'bytes32', 'uint256', 'uint256', 'uint256', 'uint256', 'uint8'];
-    let values = [processor, seller, order.user, order.sku, order.quantity, payment.nonce, payment.escrowFor, payment.value, Currency.USDCents];
+    let values = [processor, seller, order.recipient, order.sku, order.quantity, payment.nonce, payment.escrowFor, payment.value, Currency.USDCents];
 
     let hash = ethers.utils.solidityKeccak256(types, values);
     let signature = await signer.signMessage(ethers.utils.arrayify(hash));
     var sig = ethers.utils.splitSignature(signature);
 
     return {
-        currency: 1,
+        currency: Currency.USDCents,
         escrowFor: payment.escrowFor,
         value: payment.value,
         nonce: payment.nonce,

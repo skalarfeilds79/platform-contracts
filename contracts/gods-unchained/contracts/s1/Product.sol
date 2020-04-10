@@ -71,13 +71,13 @@ contract Product is Ownable {
 
     /** @dev Purchase assets for a user
      *
-     * @param _user the user who will receive the assets
+     * @param _recipient the user who will receive the assets
      * @param _quantity the number of this product to purchase
      * @param _payment the details of the method by which payment will be made
      * @param _referrer the address of the user who made this referral
      */
     function purchaseFor(
-        address payable _user,
+        address payable _recipient,
         uint256 _quantity,
         IPay.Payment memory _payment,
         address payable _referrer
@@ -91,7 +91,7 @@ contract Product is Ownable {
             totalPrice: totalPrice,
             sku: sku,
             quantity: _quantity,
-            user: _user
+            recipient: _recipient
         });
 
         uint valueToSend = 0;
@@ -99,7 +99,7 @@ contract Product is Ownable {
         if (_payment.currency == IPay.Currency.ETH) {
             if (_referrer != address(0)) {
                 uint toReferrer;
-                (totalPrice, toReferrer) = referral.getSplit(msg.sender, totalPrice, _referrer);
+                (totalPrice, toReferrer) = referral.getSplit(_recipient, totalPrice, _referrer);
                 _referrer.transfer(toReferrer);
             }
             valueToSend = totalPrice;

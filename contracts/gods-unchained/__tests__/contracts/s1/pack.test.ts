@@ -11,7 +11,8 @@ import {
   LegendaryPack,
   ShinyPack, 
   Cards, 
-  Pay
+  Pay,
+  Chest
 } from '../../../src/contracts';
 import { Wallet, ethers } from 'ethers';
 import { keccak256 } from 'ethers/utils';
@@ -252,5 +253,85 @@ describe('Referral', () => {
     });
   
   });
+
+  describe('openChest', () => {	}); 
+
+    let beacon: Beacon;	
+    let referral: Referral;	
+    let pay: Pay;	
+
+    let escrow: Escrow;	
+    let cc: CreditCardEscrow;	
+    let rarePackSKU = keccak256('0x00');	
+    let rareChestSKU = keccak256('0x01');	
+    let cards: Cards;	
+    let chest: Chest;
+    let rareChestPrice = 100;	
+
+    let rare: RarePack;	
+
+    beforeEach(async() => {	
+      escrow = await Escrow.deploy(owner);	
+      cc = await CreditCardEscrow.deploy(	
+        owner,
+        escrow.address, owner.address, 100, owner.address, 100	
+      );	
+      beacon = await Beacon.deploy(owner);	
+      referral = await Referral.deploy(owner);	
+      pay = await Pay(owner).deploy();	
+      cards = await Cards.deploy(owner, 1250, "Cards", "CARD");	
+      rare = await RarePack.deploy(	
+        owner,
+        beacon.address, cards.address, rarePackSKU, 	
+        referral.address, cc.address, pay.address	
+      );	
+      chest = await Chest.deploy(	
+        owner,
+        "GU: S1 Rare Chest",	
+        "GU:1:RC",	
+        0,	
+        rare.address,	
+        rareChestSKU,	
+        0,	
+        rareChestPrice,	
+        referral.address,	
+        cc.address,	
+        pay.address	
+      );	
+      await rare.setChest(chest.address);	
+    });	
+
+    async function purchaseAndOpenChests(quantity: number) {	
+      await pay.setSellerApproval(chest.address, [rareChestSKU], true);	
+      let balance = await chest.balanceOf(owner.address);	
+      expect(balance.toNumber()).toBe(0);	
+      await pay.setSignerLimit(owner.address, 10000000000);	
+      await pay.setSellerApproval(chest.address, [rareChestSKU], true);	
+      const value = rareChestPrice * quantity;	
+      const order = { sku: rareChestSKU, user: owner.address, currency: Currency.USDCents, quantity: quantity, totalPrice: value };	
+      const params = { value: value, escrowFor: 0, nonce: 0 };	
+      const payment = await getSignedPayment(owner, pay.address, chest.address, order, params);	
+      await chest.purchase(quantity, payment, ZERO_EX);	
+      await chest.open(quantity);	
+      const purchase = await rare.purchases(0);	
+      expect(purchase.quantity.toNumber()).toBe(quantity * 6);	
+    }	
+
+    it('should create a valid purchase from an opened chest', async () => {	
+        await purchaseAndOpenChests(1);	
+    });	
+
+    it('should create a valid purchase from 6 chests', async () => {	
+        await purchaseAndOpenChests(6);	
+    });	
+
+    it('should create cards from an opened chest', async () => {	
+      await purchaseAndOpenChests(1);	
+      await cards.startSeason("S1", 1, 10000);	
+      await cards.addFactory(rare.address, 1);	
+      await rare.createCards(0);	
+    });	
+
+  });	
 
 });

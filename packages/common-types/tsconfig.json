@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "baseUrl": "./src",
+    "outDir": "./dist",
     "typeRoots": [
       "node_modules/@types",
       "./src/generated"

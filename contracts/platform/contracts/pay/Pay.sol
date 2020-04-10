@@ -2,9 +2,12 @@ pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/ownership/Ownable.sol";
+import "@openzeppelin/contracts/math/SafeMath.sol";
 import "./IPay.sol";
 
 contract Pay is IPay, Ownable {
+
+    using SafeMath for uint256;
 
     event SellerApprovalChanged(bytes32 indexed sku, address indexed seller, bool approved);
     event SignerLimitChanged(address indexed signer, uint256 usdCentsLimit);
@@ -92,7 +95,7 @@ contract Pay is IPay, Ownable {
     }
 
     function setSignerLimit(address signer, uint256 usdCentsLimit) public onlyOwner {
-        signerLimits[signer].limit = usdCentsLimit;
+        signerLimits[signer].total = usdCentsLimit;
         emit SignerLimitChanged(signer, usdCentsLimit);
     }
 

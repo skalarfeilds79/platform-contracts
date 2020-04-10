@@ -6,6 +6,7 @@ import 'jest';
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { Wallet, ethers } from 'ethers';
 
+import { parseLogs } from '@imtbl/utils';
 
 const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();
@@ -54,7 +55,8 @@ describe('Genesis Board', () => {
 
     async function subject() {
       const contract = GenesisBoard.at(callerWallet, genesisBoard.address);
-      await contract.mint(callerDestination, callerLevel);
+      const tx = await contract.mint(callerDestination, callerLevel);
+      return tx.wait();
     }
 
     it('should not be able to mint as an unauthorised user', async () => {
@@ -62,7 +64,7 @@ describe('Genesis Board', () => {
       await expectRevert(subject());
     });
 
-    it('should not be able to mint as a valid minter', async () => {
+    it('should be able to mint as a valid minter', async () => {
       await subject();
       const supply = await genesisBoard.totalSupply();
       expect(supply.toNumber()).toBe(1);
@@ -79,9 +81,15 @@ describe('Genesis Board', () => {
         'GU: Board',
         'GU:GENESISBOARD',
       );
-      await genesisBoard.setMinterStatus(minterWallet.address, true);
-      await genesisBoard.mint(userWallet.address, 1);
       callerWallet = userWallet;
+      const tx1 = await genesisBoard.setMinterStatus(minterWallet.address, true);
+      await tx1.wait();
+
+      const tx2 = await genesisBoard.mint(userWallet.address, 1);
+      const receipt = await tx2.wait();
+
+      const parsed = parseLogs(receipt.logs, GenesisBoard.ABI);
+      console.log(parsed[1].values.tokenId.toNumber());
     });
 
     async function subject() {

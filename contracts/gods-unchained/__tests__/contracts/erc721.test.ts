@@ -4,6 +4,7 @@ import { Cards } from '../../src/contracts';
 
 import { ethers } from 'ethers';
 import { generatedWallets } from '@imtbl/test-utils';
+import { parseLogs } from '@imtbl/utils';
 
 const provider = new ethers.providers.JsonRpcProvider();
 
@@ -37,29 +38,6 @@ describe('ERC721', () => {
     await cards.unlockTrading(3);
   });
 
-  function parseLogs(logs: ethers.providers.Log[]): any[] {
-    const iface = new ethers.utils.Interface(Cards.ABI);
-    return logs
-      .map((log) => iface.parseLog(log))
-      .map((item) => {
-        const result = {
-          name: item.name,
-          signature: item.signature,
-          values: {},
-        };
-
-        const keys = Object.keys(item.values);
-        const values = Object.values(item.values);
-        const start = item.values.length;
-
-        for (let i = start; i < start * 2 - 1; i++) {
-          result.values[keys[i]] = values[i];
-        }
-
-        return result;
-      });
-  }
-
   it('should mint cards and return the correct ids', async () => {
     const tx = await cards.mintCards(
       ownerWallet.address,
@@ -68,7 +46,7 @@ describe('ERC721', () => {
     );
 
     const receipt = await tx.wait();
-    const parsed = parseLogs(receipt.logs);
+    const parsed = parseLogs(receipt.logs, Cards.ABI);
 
     start = parsed[5].values.start;
 
@@ -91,7 +69,7 @@ describe('ERC721', () => {
     );
 
     const receipt = await transferTx.wait();
-    const parsed = parseLogs(receipt.logs);
+    const parsed = parseLogs(receipt.logs, Cards.ABI);
 
     expect(parsed.length).toBe(1);
     expect(parsed[0].name).toBe('Transfer');
@@ -102,7 +80,7 @@ describe('ERC721', () => {
   it('should be able to give approval', async () => {
     const approvalTx = await cards.approve(userWallet.address, 1);
     const receipt = await approvalTx.wait();
-    const parsed = parseLogs(receipt.logs);
+    const parsed = parseLogs(receipt.logs, Cards.ABI);
 
     expect(parsed.length).toBe(1);
     expect(parsed[0].name).toBe('Approval');
@@ -117,7 +95,7 @@ describe('ERC721', () => {
     const transferTx = await Cards.at(userWallet, cards.address).transferFrom(ownerWallet.address, userWallet.address, 1);
 
     const receipt = await transferTx.wait();
-    const parsed = parseLogs(receipt.logs);
+    const parsed = parseLogs(receipt.logs, Cards.ABI);
 
     expect(parsed.length).toBe(1);
     expect(parsed[0].name).toBe('Transfer');
@@ -128,7 +106,7 @@ describe('ERC721', () => {
   it('should be able to burn cards', async () => {
     const burnTx = await cards.burn(2);
     const receipt = await burnTx.wait();
-    const parsed = parseLogs(receipt.logs);
+    const parsed = parseLogs(receipt.logs, Cards.ABI);
 
     expect(parsed.length).toBe(1);
     expect(parsed[0].name).toBe('Transfer');

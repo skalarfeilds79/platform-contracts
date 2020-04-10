@@ -63,7 +63,7 @@ describe('Hydra Trinket', () => {
 
   describe('#transferFrom', () => {
     let hydraTrinket: HydraTrinket;
-    let callerWallet;
+    let callerWallet: Wallet;
 
     beforeEach(async () => {
       hydraTrinket = await HydraTrinket.deploy(ownerWallet, 'GU: Hydra', 'GU:HYDRA');
@@ -73,7 +73,7 @@ describe('Hydra Trinket', () => {
     });
 
     async function subject() {
-      const contract = await HydraTrinket.at(callerWallet, hydraTrinket.address);
+      const contract = HydraTrinket.at(callerWallet, hydraTrinket.address);
       await contract.transferFrom(userWallet.address, ownerWallet.address, 1);
     }
 

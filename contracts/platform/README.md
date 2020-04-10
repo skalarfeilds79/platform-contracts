@@ -7,3 +7,4 @@ Contracts for developers on the Immutable Platform.
 
 - Randomness
 - Escrow
+- Pay

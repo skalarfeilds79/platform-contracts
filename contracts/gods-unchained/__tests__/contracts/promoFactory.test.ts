@@ -267,7 +267,7 @@ describe('Core', () => {
       async function removeAndCheckRemoving(removeAdmin: string, id: number) {
         const beforeAllAdmins = await promoFactory.getAdminMinters();
 
-        let beforeAllIds: number[] = [];
+        const beforeAllIds: number[] = [];
         await asyncForEach(beforeAllAdmins, async (address) => {
           const id = await promoFactory.adminMintersMapping(address);
           beforeAllIds.push(id.toNumber());
@@ -277,7 +277,7 @@ describe('Core', () => {
 
         const afterAllAdmins = await promoFactory.getAdminMinters();
 
-        let afterAllIds: number[] = [];
+        const afterAllIds: number[] = [];
         await asyncForEach(afterAllAdmins, async (address) => {
           const id = await promoFactory.adminMintersMapping(address);
           afterAllIds.push(id.toNumber());

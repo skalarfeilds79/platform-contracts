@@ -13,12 +13,13 @@
     "lint:sol": "yarn solhint \"contracts/**/*.sol\" --config solhint.json",
     "lint:ts": "tslint -t verbose '__tests__/**/*.ts'",
     "lint": "yarn lint:ts && yarn lint:sol",
-    "generate-typings": "node scripts/generate-typings.js",
+    "generate-typings": "npx @imtbl/isaac build -o src/contracts",
     "build": "yarn lint:sol && yarn truffle compile --all && yarn generate-typings && yarn tsc",
     "deploy": "yarn ts-node deployment/deploy.ts",
     "test": "yarn build && yarn reset-test-evm && yarn jest __tests__/ --runInBand",
     "test:watch": "yarn reset-test-evm && yarn jest __tests__/ --runInBand --watch",
-    "reset-test-evm": "node scripts/reset-test-evm.js"
+    "reset-test-evm": "node scripts/reset-test-evm.js",
+    "postinstall": "yarn truffle compile --all && yarn generate-typings"
   },
   "author": "",
   "license": "MIT",
@@ -41,6 +42,7 @@
     "@imtbl/test-utils": "^1.0.11",
     "@types/jest": "^24.0.21",
     "@types/node": "^12.12.3",
+    "@imtbl/isaac": "0.0.4",
     "dotenv": "^8.2.0",
     "fs-readdir-recursive": "^1.1.0",
     "jest": "^24.9.0",

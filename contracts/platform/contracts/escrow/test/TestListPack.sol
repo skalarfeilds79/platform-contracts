@@ -40,7 +40,7 @@ contract TestListPack {
         delete purchases[purchaseID];
     }
 
-    function _createVault(uint256 count) internal returns (IEscrow.Vault memory) {
+    function _createVault(uint256 count) internal view returns (IEscrow.Vault memory) {
 
         // predict token IDs
         uint[] memory ids = new uint[](count);

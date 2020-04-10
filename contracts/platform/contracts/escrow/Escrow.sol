@@ -173,7 +173,7 @@ contract Escrow is IEscrow, Ownable {
         return false;
     }
 
-    function _areAllInListEscrowed(Vault memory _vault) internal returns (bool) {
+    function _areAllInListEscrowed(Vault memory _vault) internal view returns (bool) {
         for (uint i = 0; i < _vault.tokenIDs.length; i++) {
             if (IERC721(_vault.asset).ownerOf(_vault.tokenIDs[i]) != address(this)) {
                 return false;
@@ -191,7 +191,7 @@ contract Escrow is IEscrow, Ownable {
         return false;
     }
 
-    function _areAllInBatchEscrowed(Vault memory _vault) internal returns (bool) {
+    function _areAllInBatchEscrowed(Vault memory _vault) internal view returns (bool) {
         for (uint i = _vault.lowTokenID; i < _vault.highTokenID; i++) {
             if (IERC721(_vault.asset).ownerOf(i) != address(this)) {
                 return false;

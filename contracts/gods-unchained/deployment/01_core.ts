@@ -1,9 +1,9 @@
-import { CardsFactory, PromoFactory } from '../src';
+
 import { Wallet, ethers } from 'ethers';
 
+import { Cards, Fusing } from '../src/contracts';
 import { CardsWrapper } from './../src/wrappers/cardsWrapper';
 import { DeploymentStage } from '@imtbl/deployment-utils';
-import { FusingFactory } from './../src/generated/FusingFactory';
 import { asyncForEach } from '@imtbl/utils';
 
 export class CoreStage implements DeploymentStage {
@@ -27,7 +27,7 @@ export class CoreStage implements DeploymentStage {
     const cards = (await findInstance('Cards')) || (await this.deployCards(cardWrapper));
     await onDeployment('Cards', cards, false);
 
-    cardWrapper.instance = await new CardsFactory(this.wallet).attach(cards);
+    cardWrapper.instance = await Cards.at(this.wallet, cards);
 
     const openMinter =
       (await findInstance('OpenMinter')) || (await this.deployOpenMinter(cardWrapper, cards));
@@ -166,7 +166,7 @@ export class CoreStage implements DeploymentStage {
     console.log('Adding Fusing Minter..');
 
     try {
-      const fusingContract = await new FusingFactory(this.wallet).attach(fusing);
+      const fusingContract = await Fusing.at(this.wallet, fusing);
       await fusingContract.functions.addMinter(minter);
     } catch {
       console.log('!!! Failed to add Fusing Minter');

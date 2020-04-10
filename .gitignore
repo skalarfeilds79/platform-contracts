@@ -10,3 +10,5 @@ dist
 snapshots
 *.test.js
 yarn-error.log
+.DS_Store
+contracts/.DS_Store

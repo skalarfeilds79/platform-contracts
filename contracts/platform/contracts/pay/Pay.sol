@@ -65,13 +65,14 @@ contract Pay is IPay, Ownable {
 
     function _updateSignerLimit(address signer, uint256 amount) internal {
         Limit storage limit = signerLimits[signer];
-        require(limit.limit > 0, "invalid signer");
+        require(limit.total > 0, "invalid signer");
         if (limit.periodEnd < block.timestamp) {
             limit.periodEnd = block.timestamp + 1 days;
-            limit.processed = 0;
+            limit.used = 0;
         }
-        require (limit.limit >= limit.processed + amount, "exceeds signing limit for this address");
-        limit.processed += amount;
+        uint nextUsed = limit.used.add(amount);
+        require (limit.total >= nextUsed, "exceeds signing limit for this address");
+        limit.used = nextUsed;
     }
 
     function _getSigner(Order memory order, Payment memory payment) internal view returns (address) {

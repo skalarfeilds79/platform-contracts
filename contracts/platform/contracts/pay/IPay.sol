@@ -29,8 +29,8 @@ contract IPay {
 
     struct Limit {
         uint256 periodEnd;
-        uint256 limit;
-        uint256 processed;
+        uint256 total;
+        uint256 used;
     }
 
     function process(Order memory order, Payment memory payment) public payable returns (uint);

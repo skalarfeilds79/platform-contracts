@@ -1,6 +1,6 @@
 pragma solidity 0.5.11;
 
-interface BatchTransfer {
+interface IBatchTransfer {
 
     function transferBatch(
         address from,

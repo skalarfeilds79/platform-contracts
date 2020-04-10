@@ -1,6 +1,6 @@
 pragma solidity 0.5.11;
 
-interface ListTransfer {
+interface IListTransfer {
 
     function safeTransferAllFrom(
         address from,

@@ -6,7 +6,6 @@ import 'jest';
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { Wallet, ethers } from 'ethers';
 
-import { parseLogs } from '@imtbl/utils';
 
 const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();
@@ -72,7 +71,7 @@ describe('Genesis Board', () => {
 
   describe('#transferFrom', () => {
     let genesisBoard: GenesisBoard;
-    let callerWallet;
+    let callerWallet: Wallet;
 
     beforeEach(async () => {
       genesisBoard = await GenesisBoard.deploy(

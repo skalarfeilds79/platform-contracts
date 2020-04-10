@@ -6,8 +6,8 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "./IEscrow.sol";
-import "../token/BatchTransfer.sol";
-import "../token/ListTransfer.sol";
+import "../token/IBatchTransfer.sol";
+import "../token/IListTransfer.sol";
 
 contract Escrow is IEscrow, Ownable {
 
@@ -146,7 +146,7 @@ contract Escrow is IEscrow, Ownable {
 
     function _transferList(Vault memory _vault, address _from, address _to) internal {
         if (listTransferEnabled[_vault.asset]) {
-            ListTransfer(_vault.asset).transferAllFrom(_from, _to, _vault.tokenIDs);
+            IListTransfer(_vault.asset).transferAllFrom(_from, _to, _vault.tokenIDs);
         } else {
             for (uint i = 0; i < _vault.tokenIDs.length; i++) {
                 IERC721(_vault.asset).transferFrom(_from, _to, _vault.tokenIDs[i]);
@@ -156,7 +156,7 @@ contract Escrow is IEscrow, Ownable {
 
     function _transferBatch(Vault memory _vault, address _from, address _to) internal {
         if (batchTransferEnabled[_vault.asset]) {
-            BatchTransfer(_vault.asset).transferBatch(_from, _to, _vault.lowTokenID, _vault.highTokenID);
+            IBatchTransfer(_vault.asset).transferBatch(_from, _to, _vault.lowTokenID, _vault.highTokenID);
         } else {
             for (uint i = _vault.lowTokenID; i < _vault.highTokenID; i++) {
                 IERC721(_vault.asset).transferFrom(_from, _to, i);

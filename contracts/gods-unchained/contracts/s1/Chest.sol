@@ -8,14 +8,6 @@ import "./Product.sol";
 import "./IPack.sol";
 
 contract Chest is Product, TradeToggleERC20, ERC20Burnable {
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-    IPack public pack;
-=======
->>>>>>> 2258662f1e28484cd2aedc8a2c03ad3bc36cdd57
-=======
->>>>>>> a4473d8581231b6ec0a5dddd866b70e3c83fce9b
 
     struct Purchase {
         address user;

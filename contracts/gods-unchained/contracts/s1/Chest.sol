@@ -26,11 +26,15 @@ contract Chest is Product, TradeToggleERC20, ERC20Burnable {
         IPack _pack,
         bytes32 _sku,
         uint256 _saleCap,
+        uint256 _maxQuantity,
         uint256 _price,
         IReferral _referral,
         ICreditCardEscrow _escrow,
         IPay _pay
-    ) public Product(_sku, _saleCap, _price, _referral, _escrow, _pay) TradeToggleERC20(_name, _symbol, _decimals) {
+    ) public
+        Product(_sku, _saleCap, _maxQuantity, _price, _referral, _escrow, _pay)
+        TradeToggleERC20(_name, _symbol, _decimals)
+    {
         require(address(_pack) != address(0), "GU:S1:Chest: pack must be set on construction");
         pack = _pack;
     }
@@ -47,9 +51,9 @@ contract Chest is Product, TradeToggleERC20, ERC20Burnable {
         uint256 _quantity,
         IPay.Payment memory _payment,
         address payable _referrer
-    ) public {
+    ) public returns (uint256) {
 
-        super.purchaseFor(_user, _quantity, _payment, _referrer);
+        uint256 purchaseID = super.purchaseFor(_user, _quantity, _payment, _referrer);
 
         if (_payment.currency == IPay.Currency.ETH || _payment.escrowFor == 0) {
             _mint(_user, _quantity);
@@ -69,8 +73,12 @@ contract Chest is Product, TradeToggleERC20, ERC20Burnable {
 
             bytes memory data = abi.encodeWithSignature("mintTokens()");
 
-            fiatEscrow.escrow(vault, address(this), data, _payment.escrowFor);
+            uint256 escrowID = fiatEscrow.escrow(vault, address(this), data, _payment.escrowFor);
+
+            emit ProductEscrowed(purchaseID, escrowID);
         }
+
+        return purchaseID;
     }
 
     function mintTokens() public {

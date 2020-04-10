@@ -9,15 +9,20 @@ import "@openzeppelin/contracts/ownership/Ownable.sol";
 
 contract Pack is Ownable, Product, RarityProvider {
 
+    // Emitted when the cards from a purchase are actually minted
+    event PurchaseCardsMinted(uint256 indexed purchaseID, uint256 lowTokenID, uint256 highTokenID);
+    // Emitted when a card purchase is recorded (either purchase or opening a chest)
+    event CardPurchaseRecorded(uint256 indexed purchaseID, uint256 indexed callbackBlock);
+
     struct Purchase {
         uint256 commitBlock;
         uint256 quantity;
         uint256 escrowFor;
-        address user;
+        address recipient;
     }
 
     // All purchases recorded by this pack
-    Purchase[] public purchases;
+    mapping(uint256 => Purchase) public purchases;
     // The randomness beacon used by this pack
     IBeacon public beacon;
     // The core cards contract
@@ -30,12 +35,13 @@ contract Pack is Ownable, Product, RarityProvider {
         ICards _cards,
         bytes32 _sku,
         uint256 _saleCap,
+        uint256 _maxQuantity,
         uint256 _price,
         IReferral _referral,
         ICreditCardEscrow _fiatEscrow,
         IPay _processor
     ) public Product(
-        _sku, _saleCap, _price, _referral, _fiatEscrow, _processor
+        _sku, _saleCap, _maxQuantity, _price, _referral, _fiatEscrow, _processor
     ) {
         beacon = _beacon;
         cards = _cards;
@@ -52,28 +58,26 @@ contract Pack is Ownable, Product, RarityProvider {
 
     /** @dev Create cards from a purchase
      *
-     * @param _id the ID of the purchase
+     * @param _purchaseID the ID of the purchase
      */
-    function createCards(uint256 _id) public {
-        require(_id < purchases.length, "GU:S1:Pack: purchase ID invalid");
-        Purchase memory purchase = purchases[_id];
+    function createCards(uint256 _purchaseID) public {
+        Purchase memory purchase = purchases[_purchaseID];
+        require(purchase.recipient != address(0), "GU:S1:Pack: must be a valid purchase");
         if (purchase.escrowFor == 0) {
-            _createCards(purchase, purchase.user);
+            _createCards(_purchaseID, purchase, purchase.recipient);
         } else {
-            _escrowCards(_id);
+            _escrowCards(_purchaseID, purchase);
         }
     }
 
-    function _escrowCards(uint256 _id) internal {
+    function _escrowCards(uint256 _purchaseID, Purchase memory _purchase) internal {
 
-        Purchase memory purchase = purchases[_id];
-
-        uint cardCount = purchase.quantity * 5;
+        uint cardCount = _purchase.quantity * 5;
         uint low = cards.nextBatch();
         uint high = low + cardCount;
 
         IEscrow.Vault memory vault = IEscrow.Vault({
-            player: purchase.user,
+            player: _purchase.recipient,
             releaser: address(fiatEscrow),
             asset: address(cards),
             balance: 0,
@@ -82,42 +86,45 @@ contract Pack is Ownable, Product, RarityProvider {
             tokenIDs: new uint256[](0)
         });
 
-        bytes memory data = abi.encodeWithSignature("escrowHook(uint256)", _id);
+        bytes memory data = abi.encodeWithSignature("escrowHook(uint256)", _purchaseID);
 
-        fiatEscrow.escrow(vault, address(this), data, purchase.escrowFor);
+        uint256 escrowID = fiatEscrow.escrow(vault, address(this), data, _purchase.escrowFor);
+
+        emit ProductEscrowed(_purchaseID, escrowID);
     }
 
-    function escrowHook(uint256 id) public {
+    function escrowHook(uint256 _purchaseID) public {
         address protocol = address(fiatEscrow.getProtocol());
         require(msg.sender == protocol, "GU:S1:Pack: must be core escrow");
-        Purchase memory purchase = purchases[id];
+        Purchase memory purchase = purchases[_purchaseID];
         require(purchase.quantity > 0, "GU:S1:Pack: must have cards available");
-        _createCards(purchase, protocol);
-        delete purchases[id];
+        _createCards(_purchaseID, purchase, protocol);
+        delete purchases[_purchaseID];
     }
 
     /** @dev Purchase packs for a user
      *
-     * @param _user the user who will receive the packs
+     * @param _recipient the user who will receive the packs
      * @param _quantity the number of packs to purchase
      * @param _payment the details of the method by which payment will be made
      * @param _referrer the address of the user who made this referral
      */
     function purchaseFor(
-        address payable _user,
+        address payable _recipient,
         uint256 _quantity,
         IPay.Payment memory _payment,
         address payable _referrer
-    ) public {
-        super.purchaseFor(_user, _quantity, _payment, _referrer);
+    ) public returns (uint256 purchaseID) {
+        purchaseID = super.purchaseFor(_recipient, _quantity, _payment, _referrer);
         if (_payment.currency == IPay.Currency.ETH) {
-            _createPurchase(_user, _quantity, 0);
+            _createPurchase(purchaseID, _recipient, _quantity, 0);
         } else {
-            _createPurchase(_user, _quantity, _payment.escrowFor);
+            _createPurchase(purchaseID, _recipient, _quantity, _payment.escrowFor);
         }
+        return purchaseID;
     }
 
-    function _createCards(Purchase memory _purchase, address _user) internal {
+    function _createCards(uint256 _purchaseID, Purchase memory _purchase, address _owner) internal {
         uint256 randomness = uint256(beacon.randomness(_purchase.commitBlock));
         uint cardCount = _purchase.quantity * 5;
         uint16[] memory protos = new uint16[](cardCount);
@@ -125,25 +132,43 @@ contract Pack is Ownable, Product, RarityProvider {
         for (uint i = 0; i < cardCount; i++) {
             (protos[i], qualities[i]) = _getCardDetails(i, randomness);
         }
-        cards.mintCards(_user, protos, qualities);
+        uint256 lowTokenID = cards.mintCards(_owner, protos, qualities);
+
+        emit PurchaseCardsMinted(_purchaseID, lowTokenID, lowTokenID + protos.length);
     }
 
-    function openChests(address _user, uint256 _quantity) public {
+    function openChests(address _owner, uint256 _quantity) public {
         require(msg.sender == chest, "GU:S1:Pack: must be the chest contract");
-        _createPurchase(_user, _quantity * 6, 0);
+        // skip emitting product purchased
+        uint256 purchaseID = purchaseCount++;
+        uint256 commitBlock = beacon.commit(0);
+        purchases[purchaseID] = Purchase({
+            commitBlock: commitBlock,
+            quantity: _quantity * 6,
+            recipient: _owner,
+            escrowFor: 0
+        });
+
+        emit CardPurchaseRecorded(purchaseID, commitBlock);
     }
 
     function _createPurchase(
-        address _user,
+        uint256 _purchaseID,
+        address _recipient,
         uint256 _quantity,
         uint256 _escrowFor
     ) internal returns (uint256) {
-        return purchases.push(Purchase({
-            commitBlock: beacon.commit(0),
+
+        uint256 commitBlock = beacon.commit(0);
+
+        purchases[_purchaseID] = Purchase({
+            commitBlock: commitBlock,
             quantity: _quantity,
-            user: _user,
+            recipient: _recipient,
             escrowFor: _escrowFor
-        })) - 1;
+        });
+
+        emit CardPurchaseRecorded(_purchaseID, commitBlock);
     }
 
     function _getCardDetails(uint _index, uint _random) internal view returns (uint16 proto, uint8 quality);

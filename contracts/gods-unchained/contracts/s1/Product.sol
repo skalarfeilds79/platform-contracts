@@ -11,36 +11,44 @@ contract Product is Ownable {
 
     using SafeMath for uint256;
 
-    event ProductPurchased(uint256 indexed paymentID, uint256 indexed saleID);
-    event ProductEscrowed(uint256 indexed saleID, address indexed escrow, uint256 indexed escrowID);
+    // Emitted when a product is purchased
+    event ProductPurchased(uint256 indexed purchaseID, uint256 indexed paymentID);
+    // Emitted when as product is escrowed
+    event ProductEscrowed(uint256 indexed purchaseID, uint256 indexed escrowID);
 
     // Total number of this product which this contract can sell
-    uint256 saleCap;
+    uint256 public saleCap;
     // Total number of this product sold by this contract
-    uint256 sold;
+    uint256 public sold;
     // Price of each product sold by this contract
-    uint256 price;
+    uint256 public price;
     // SKU of the product sold by this contract
-    bytes32 sku;
+    bytes32 public sku;
     // Referral contract
-    IReferral referral;
+    IReferral public referral;
     // Escrow contract
-    ICreditCardEscrow fiatEscrow;
+    ICreditCardEscrow public fiatEscrow;
     // Payment processor
-    IPay processor;
+    IPay public processor;
+    // Maximum number of this item which can be purchase in one tx. 0 if no restriction
+    uint256 public maxQuantity;
     // Whether the contract is paused
-    bool paused;
+    bool public paused;
+    // Total number of purchases processed through this contract
+    uint256 public purchaseCount;
 
     constructor(
         bytes32 _sku,
         uint256 _saleCap,
-        uint _price,
+        uint256 _maxQuantity,
+        uint256 _price,
         IReferral _referral,
         ICreditCardEscrow _fiatEscrow,
         IPay _processor
     ) public {
         sku = _sku;
         saleCap = _saleCap;
+        maxQuantity = _maxQuantity;
         price = _price;
         referral = _referral;
         fiatEscrow = _fiatEscrow;
@@ -65,8 +73,8 @@ contract Product is Ownable {
         uint256 _quantity,
         IPay.Payment memory _payment,
         address payable _referrer
-    ) public {
-        purchaseFor(msg.sender, _quantity, _payment, _referrer);
+    ) public returns (uint256 purchaseID) {
+        return purchaseFor(msg.sender, _quantity, _payment, _referrer);
     }
 
     /** @dev Purchase assets for a user
@@ -81,9 +89,14 @@ contract Product is Ownable {
         uint256 _quantity,
         IPay.Payment memory _payment,
         address payable _referrer
-    ) public {
+    ) public returns (uint256 purchaseID) {
+
         require(!paused, "GU:S1:Product: must be unpaused");
         require(saleCap == 0 || saleCap >= sold + _quantity, "GU:S1:Product: product cap has been exhausted");
+        require(maxQuantity == 0 || _quantity < maxQuantity, "GU:S1:Product: exceeds product max quantity");
+        require(_recipient != address(0), "GU:S1:Product: must be a valid recipient");
+        require(_quantity > 0, "GU:S1:Product: must be a valid quantity");
+
         uint totalPrice = price.mul(_quantity);
 
         IPay.Order memory order = IPay.Order({
@@ -104,8 +117,13 @@ contract Product is Ownable {
             }
             valueToSend = totalPrice;
         }
-        processor.process.value(valueToSend)(order, _payment);
         sold += _quantity;
+
+        uint256 paymentID = processor.process.value(valueToSend)(order, _payment);
+        purchaseID = purchaseCount++;
+        emit ProductPurchased(purchaseID, paymentID);
+
+        return purchaseID;
     }
 
     /** @dev Returns whether this asset is still available */

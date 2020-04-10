@@ -18,9 +18,7 @@ contract Sale {
         IPay.Payment[] memory _payments,
         address payable _referrer
     ) public {
-        for (uint i = 0; i < _products.length; i++) {
-            _products[i].purchase(_quantities[i], _payments[i], _referrer);
-        }
+        purchaseFor(msg.sender, _products, _quantities, _payments, _referrer);
     }
 
     /** @dev Purchase assets from a number of products

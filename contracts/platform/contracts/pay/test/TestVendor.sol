@@ -12,7 +12,7 @@ contract TestVendor {
     }
 
     function processPayment(IPay.Order memory order, IPay.Payment memory payment) public payable {
-        pay.process(order, payment, {value: msg.value});
+        pay.process.value(msg.value)(order, payment);
     }
 
 }

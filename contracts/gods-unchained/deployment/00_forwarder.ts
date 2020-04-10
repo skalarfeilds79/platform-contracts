@@ -1,7 +1,6 @@
 import { Wallet, ethers } from 'ethers';
-
+import { Forwarder } from '../src/contracts';
 import { DeploymentStage } from '@imtbl/deployment-utils';
-import { ForwarderFactory } from '../src/generated/ForwarderFactory';
 
 export class ForwarderStage implements DeploymentStage {
   private wallet: Wallet;
@@ -22,7 +21,8 @@ export class ForwarderStage implements DeploymentStage {
 
     const weth = await findInstance('WETH');
 
-    const unsignedTx = await new ForwarderFactory(this.wallet).getDeployTransaction(
+    const unsignedTx = await Forwarder.getDeployTransaction(
+      this.wallet,
       exchange,
       erc20Proxy,
       weth,

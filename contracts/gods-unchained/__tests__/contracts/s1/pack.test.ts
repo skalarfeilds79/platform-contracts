@@ -254,7 +254,7 @@ describe('Referral', () => {
   
   });
 
-  describe('openChest', () => {	}); 
+  describe('openChest', () => { 
 
     let beacon: Beacon;	
     let referral: Referral;	
@@ -278,7 +278,7 @@ describe('Referral', () => {
       );	
       beacon = await Beacon.deploy(owner);	
       referral = await Referral.deploy(owner);	
-      pay = await Pay(owner).deploy();	
+      pay = await Pay.deploy(owner);	
       cards = await Cards.deploy(owner, 1250, "Cards", "CARD");	
       rare = await RarePack.deploy(	
         owner,

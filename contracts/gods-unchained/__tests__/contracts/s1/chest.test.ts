@@ -5,6 +5,7 @@ import {
   Chest, Referral, Pay, CreditCardEscrow, TestPack, Escrow
 } from '../../../src/contracts';
 
+
 import { ethers } from 'ethers';
 import { keccak256 } from 'ethers/utils';
 import { getETHPayment, getSignedPayment, Currency } from '@imtbl/platform/src/pay';
@@ -40,7 +41,6 @@ describe('Chest', () => {
 
     beforeEach(async () => {
       referral = await Referral.deploy(owner);
-      chest = await Chest.deploy(owner);
       pay = await Pay.deploy(owner);
       referral = await Referral.deploy(owner);
       pack = await TestPack.deploy(owner);
@@ -53,7 +53,7 @@ describe('Chest', () => {
         ZERO_EX, 
         100
       );
-      chest = await new Chest.deploy(
+      chest = await Chest.deploy(
         owner,
         "GU: S1 Rare Chest",
         "GU:1:RC",
@@ -189,7 +189,7 @@ describe('Chest', () => {
         ZERO_EX, 
         100
       );
-      chest = await new Chest.deploy(
+      chest = await Chest.deploy(
         owner,
         "GU: S1 Rare Chest",
         "GU:1:RC",
@@ -231,4 +231,5 @@ describe('Chest', () => {
     });
 
   });
+
 });

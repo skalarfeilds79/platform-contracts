@@ -6,8 +6,9 @@ import "./RarityProvider.sol";
 import "../../ICards.sol";
 import "@imtbl/platform/contracts/randomness/IBeacon.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";
+import "./IPack.sol";
 
-contract Pack is Ownable, Product, RarityProvider {
+contract Pack is IPack, Ownable, Product, RarityProvider {
 
     // Emitted when the cards from a purchase are actually minted
     event PurchaseCardsMinted(uint256 indexed purchaseID, uint256 lowTokenID, uint256 highTokenID);

@@ -4,10 +4,11 @@ pragma experimental ABIEncoderV2;
 import "@openzeppelin/contracts/token/ERC20/ERC20Burnable.sol";
 import "@imtbl/platform/contracts/token/TradeToggleERC20.sol";
 import "@imtbl/platform/contracts/escrow/IEscrow.sol";
-import "../Product.sol";
+import "@imtbl/platform/contracts/product/CappedProduct.sol";
+import "../S1Product.sol";
 import "../pack/IPack.sol";
 
-contract Chest is Product, TradeToggleERC20, ERC20Burnable {
+contract Chest is S1Product, CappedProduct, TradeToggleERC20, ERC20Burnable {
 
     struct Purchase {
         address user;
@@ -22,18 +23,17 @@ contract Chest is Product, TradeToggleERC20, ERC20Burnable {
     constructor(
         string memory _name,
         string memory _symbol,
-        uint8 _decimals,
         IPack _pack,
-        bytes32 _sku,
         uint256 _saleCap,
-        uint256 _maxQuantity,
-        uint256 _usdCentsPrice,
         IReferral _referral,
+        bytes32 _sku,
+        uint256 _price,
         ICreditCardEscrow _escrow,
         IPay _pay
     ) public
-        Product(_sku, _saleCap, _maxQuantity, _usdCentsPrice, _referral, _escrow, _pay)
-        TradeToggleERC20(_name, _symbol, _decimals)
+        S1Product(_referral, _sku, _price, _escrow, _pay)
+        CappedProduct(_saleCap, _referral, _sku, _price, _escrow, _pay)
+        TradeToggleERC20(_name, _symbol, 0)
     {
         require(address(_pack) != address(0), "GU:S1:Chest: pack must be set on construction");
         pack = _pack;

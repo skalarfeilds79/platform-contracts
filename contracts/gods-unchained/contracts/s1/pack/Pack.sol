@@ -1,15 +1,15 @@
 pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
-import "../Product.sol";
 import "./RarityProvider.sol";
 import "../../ICards.sol";
 import "@imtbl/platform/contracts/randomness/IBeacon.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "./IPack.sol";
 import "../raffle/IRaffle.sol";
+import "../S1Product.sol";
 
-contract Pack is IPack, Ownable, Product, RarityProvider {
+contract Pack is IPack, S1Product, RarityProvider {
 
     // Emitted when the cards from a purchase are actually minted
     event PurchaseCardsMinted(uint256 indexed purchaseID, uint256 lowTokenID, uint256 highTokenID);
@@ -38,15 +38,13 @@ contract Pack is IPack, Ownable, Product, RarityProvider {
         IRaffle _raffle,
         IBeacon _beacon,
         ICards _cards,
-        bytes32 _sku,
-        uint256 _saleCap,
-        uint256 _maxQuantity,
-        uint256 _usdCentsPrice,
         IReferral _referral,
-        ICreditCardEscrow _fiatEscrow,
-        IPay _processor
-    ) public Product(
-        _sku, _saleCap, _maxQuantity, _usdCentsPrice, _referral, _fiatEscrow, _processor
+        bytes32 _sku,
+        uint256 _price,
+        ICreditCardEscrow _escrow,
+        IPay _pay
+    ) public S1Product(
+        _referral, _sku, _price, _escrow, _pay
     ) {
         raffle = _raffle;
         beacon = _beacon;

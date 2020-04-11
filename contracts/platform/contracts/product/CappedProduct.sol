@@ -1,0 +1,55 @@
+pragma solidity 0.5.11;
+pragma experimental ABIEncoderV2;
+
+import "./SimpleProduct.sol";
+
+contract CappedProduct is SimpleProduct {
+
+    using SafeMath for uint256;
+
+    // Total number of this product which this contract can sell. 0 = no restriction
+    uint256 public saleCap;
+    // Total number of this product sold by this contract
+    uint256 public sold;
+
+    constructor(
+        bytes32 _sku,
+        IPay.Currency _currency,
+        uint256 _price,
+        ICreditCardEscrow _escrow,
+        IPay _pay,
+        uint256 _saleCap
+    ) public SimpleProduct(_sku, _currency, _price, _escrow, _pay) {
+        saleCap = _saleCap;
+    }
+
+    /** @dev Purchase assets for a user
+     *
+     * @param _recipient the user who will receive the assets
+     * @param _quantity the number of this product to purchase
+     * @param _payment the details of the method by which payment will be made
+     */
+    function purchaseFor(
+        address payable _recipient,
+        uint256 _quantity,
+        IPay.Payment memory _payment
+    ) public payable returns (uint256 purchaseID) {
+
+        require(saleCap == 0 || saleCap >= sold + _quantity, "IM:CappedProduct: product cap has been exhausted");
+
+        purchaseID = super.purchaseFor(_recipient, _quantity, _payment);
+
+        sold += _quantity;
+        return purchaseID;
+    }
+
+    /** @dev Returns whether this asset is still available */
+    function available() public view returns (bool) {
+        if (saleCap == 0) {
+            return true;
+        }
+        return saleCap > sold;
+    }
+
+
+}

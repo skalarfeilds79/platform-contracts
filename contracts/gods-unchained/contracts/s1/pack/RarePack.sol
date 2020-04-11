@@ -9,12 +9,14 @@ contract RarePack is Pack {
         IRaffle _raffle,
         IBeacon _beacon,
         ICards _cards,
-        bytes32 _sku,
         IReferral _referral,
-        ICreditCardEscrow _fiatEscrow,
-        IPay _processor
+        bytes32 _sku,
+        ICreditCardEscrow _escrow,
+        IPay _pay
     ) public Pack(
-        _raffle, _beacon, _cards, _sku, 0, 100, 249, _referral, _fiatEscrow, _processor
+        _raffle, _beacon, _cards,
+        _referral, _sku, Currency.USDCents,
+        249, _escrow, _pay
     ) {}
 
     function _getCardDetails(uint _index, uint _random) internal view returns (uint16 proto, uint8 quality) {

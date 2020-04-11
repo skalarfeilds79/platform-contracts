@@ -1,19 +1,10 @@
 pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
-import "./IProduct.sol";
 import "@imtbl/platform/contracts/pay/IPay.sol";
+import "@imtbl/platform/contracts/product/MultiVendor.sol";
 
-contract Sale {
-
-    struct Purchase {
-        // the product this user is purchasing
-        IProduct product;
-        // the quantity this user is purchasing
-        uint256 quantity;
-        // the details of the method by which payments will be made
-        IPay.Payment payment;
-    }
+contract S1Sale is MultiVendor {
 
     /** @dev Purchase assets from a number of products
      *
@@ -38,14 +29,6 @@ contract Sale {
         Purchase[] memory _purchases,
         address payable _referrer
     ) public payable {
-        for (uint i = 0; i < _purchases.length; i++) {
-            Purchase memory p = _purchases[i];
-            p.product.purchaseFor(
-                _recipient,
-                p.quantity,
-                p.payment,
-                _referrer
-            );
-        }
+        super.purchaseFor(_recipient, _purchases);
     }
 }

@@ -15,6 +15,8 @@ contract Product is Ownable {
     event ProductPurchased(uint256 indexed purchaseID, uint256 indexed paymentID);
     // Emitted when as product is escrowed
     event ProductEscrowed(uint256 indexed purchaseID, uint256 indexed escrowID);
+    // Emitted when a referral has been made
+    event PurchaseReferred(uint256 indexed purchaseID, address indexed referrer);
 
     // Total number of this product which this contract can sell
     uint256 public saleCap;
@@ -73,7 +75,7 @@ contract Product is Ownable {
         uint256 _quantity,
         IPay.Payment memory _payment,
         address payable _referrer
-    ) public returns (uint256 purchaseID) {
+    ) public payable returns (uint256 purchaseID) {
         return purchaseFor(msg.sender, _quantity, _payment, _referrer);
     }
 
@@ -89,7 +91,7 @@ contract Product is Ownable {
         uint256 _quantity,
         IPay.Payment memory _payment,
         address payable _referrer
-    ) public returns (uint256 purchaseID) {
+    ) public payable returns (uint256 purchaseID) {
 
         require(!paused, "GU:S1:Product: must be unpaused");
         require(saleCap == 0 || saleCap >= sold + _quantity, "GU:S1:Product: product cap has been exhausted");
@@ -107,20 +109,21 @@ contract Product is Ownable {
             recipient: _recipient
         });
 
-        uint valueToSend = 0;
+        purchaseID = purchaseCount++;
+
         // if the user is paying in ETH, we can pay affiliate fees instantly!
         if (_payment.currency == IPay.Currency.ETH) {
             if (_referrer != address(0)) {
                 uint toReferrer;
                 (totalPrice, toReferrer) = referral.getSplit(_recipient, totalPrice, _referrer);
-                _referrer.transfer(toReferrer);
+                order.totalPrice = totalPrice;
+                // TODO: pay the referrer
+                emit PurchaseReferred(purchaseID, _referrer);
             }
-            valueToSend = totalPrice;
         }
         sold += _quantity;
+        uint256 paymentID = processor.process.value(msg.value)(order, _payment);
 
-        uint256 paymentID = processor.process.value(valueToSend)(order, _payment);
-        purchaseID = purchaseCount++;
         emit ProductPurchased(purchaseID, paymentID);
 
         return purchaseID;

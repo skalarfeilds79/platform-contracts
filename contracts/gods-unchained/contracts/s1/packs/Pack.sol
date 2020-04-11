@@ -114,7 +114,7 @@ contract Pack is Ownable, Product, RarityProvider {
         uint256 _quantity,
         IPay.Payment memory _payment,
         address payable _referrer
-    ) public returns (uint256 purchaseID) {
+    ) public payable returns (uint256 purchaseID) {
         purchaseID = super.purchaseFor(_recipient, _quantity, _payment, _referrer);
         if (_payment.currency == IPay.Currency.ETH) {
             _createPurchase(purchaseID, _recipient, _quantity, 0);

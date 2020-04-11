@@ -17,7 +17,7 @@ contract Sale {
         uint256[] memory _quantities,
         IPay.Payment[] memory _payments,
         address payable _referrer
-    ) public {
+    ) public payable {
         purchaseFor(msg.sender, _products, _quantities, _payments, _referrer);
     }
 
@@ -35,7 +35,7 @@ contract Sale {
         uint256[] memory _quantities,
         IPay.Payment[] memory _payments,
         address payable _referrer
-    ) public {
+    ) public payable {
         for (uint i = 0; i < _products.length; i++) {
             _products[i].purchaseFor(_recipient, _quantities[i], _payments[i], _referrer);
         }

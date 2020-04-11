@@ -51,7 +51,7 @@ contract Chest is Product, TradeToggleERC20, ERC20Burnable {
         uint256 _quantity,
         IPay.Payment memory _payment,
         address payable _referrer
-    ) public returns (uint256) {
+    ) public payable returns (uint256) {
 
         uint256 purchaseID = super.purchaseFor(_user, _quantity, _payment, _referrer);
 

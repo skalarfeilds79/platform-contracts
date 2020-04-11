@@ -12,7 +12,8 @@ import {
   ShinyPack, 
   Cards, 
   Pay,
-  Chest
+  Chest, 
+  Raffle
 } from '../../../src/contracts';
 import { Wallet, ethers } from 'ethers';
 import { keccak256 } from 'ethers/utils';
@@ -45,6 +46,8 @@ describe('Referral', () => {
     let referral: Referral;
     let processor: Pay;
 
+    let raffle: Raffle;
+
     let escrow: Escrow;
     let cc: CreditCardEscrow;
     let sku = keccak256('0x00');
@@ -72,6 +75,7 @@ describe('Referral', () => {
     it('should deploy rare pack', async () => {
         await RarePack.deploy(
           owner,
+          raffle.address,
           beacon.address,
           ZERO_EX,
           sku, 
@@ -84,6 +88,7 @@ describe('Referral', () => {
     it('should deploy epic pack', async () => {
         await EpicPack.deploy(
           owner,
+          raffle.address,
           beacon.address,
           ZERO_EX,
           sku, 
@@ -96,6 +101,7 @@ describe('Referral', () => {
     it('should deploy legendary pack', async () => {
         await LegendaryPack.deploy(
           owner,
+          raffle.address,
           beacon.address,
           ZERO_EX,
           sku, 
@@ -108,6 +114,7 @@ describe('Referral', () => {
     it('should deploy shiny pack', async () => {
         await ShinyPack.deploy(
           owner,
+          raffle.address,
           beacon.address,
           ZERO_EX,
           sku, 
@@ -124,6 +131,7 @@ describe('Referral', () => {
     let beacon: Beacon;
     let referral: Referral;
     let pay: Pay;
+    let raffle: Raffle;
 
     let escrow: Escrow;
     let cc: CreditCardEscrow;
@@ -137,11 +145,11 @@ describe('Referral', () => {
       escrow = await Escrow.deploy(owner);
       cc = await CreditCardEscrow.deploy(
         owner,
-          escrow.address,
-          owner.address, 
-          100,
-          owner.address,
-          100
+        escrow.address,
+        owner.address, 
+        100,
+        owner.address,
+        100
       );
       beacon = await Beacon.deploy(owner);
       referral = await Referral.deploy(owner);
@@ -149,6 +157,7 @@ describe('Referral', () => {
       cards = await Cards.deploy(owner, 1250, "Cards", "CARD");
       rare = await RarePack.deploy(
         owner,
+        raffle.address,
         beacon.address,
         cards.address,
         rarePackSKU, 
@@ -186,6 +195,7 @@ describe('Referral', () => {
     let beacon: Beacon;
     let referral: Referral;
     let pay: Pay;
+    let raffle: Raffle;
 
     let escrow: Escrow;
     let cc: CreditCardEscrow;
@@ -207,6 +217,7 @@ describe('Referral', () => {
       cards = await Cards.deploy(owner, 1250, "Cards", "CARD");
       rare = await RarePack.deploy(
         owner,
+        raffle.address,
         beacon.address, cards.address, rarePackSKU, 
         referral.address, cc.address, pay.address
       );
@@ -257,7 +268,8 @@ describe('Referral', () => {
 
     let beacon: Beacon;	
     let referral: Referral;	
-    let pay: Pay;	
+    let pay: Pay;
+    let raffle: Raffle;	
 
     let escrow: Escrow;	
     let cc: CreditCardEscrow;	
@@ -281,6 +293,7 @@ describe('Referral', () => {
       cards = await Cards.deploy(owner, 1250, "Cards", "CARD");	
       rare = await RarePack.deploy(	
         owner,
+        raffle.address,
         beacon.address, cards.address, rarePackSKU, 	
         referral.address, cc.address, pay.address	
       );	
@@ -292,6 +305,7 @@ describe('Referral', () => {
         rare.address,	
         rareChestSKU,	
         0,	
+        0,
         rareChestPrice,	
         referral.address,	
         cc.address,	

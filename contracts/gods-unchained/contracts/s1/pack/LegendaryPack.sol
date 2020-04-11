@@ -3,9 +3,10 @@ pragma experimental ABIEncoderV2;
 
 import "./Pack.sol";
 
-contract EpicPack is Pack {
+contract LegendaryPack is Pack {
 
     constructor(
+        IRaffle _raffle,
         IBeacon _beacon,
         ICards _cards,
         bytes32 _sku,
@@ -13,12 +14,19 @@ contract EpicPack is Pack {
         ICreditCardEscrow _fiatEscrow,
         IPay _processor
     ) public Pack(
-        _beacon, _cards, _sku, 0, 100, 699, _referral, _fiatEscrow, _processor
+        _raffle, _beacon, _cards, _sku, 0, 100, 2499, _referral, _fiatEscrow, _processor
     ) {}
 
     function _getCardDetails(uint _index, uint _random) internal view returns (uint16 proto, uint8 quality) {
         Components memory rc = _getComponents(_index, _random);
-        Rarity rarity = (_index % 5 == 0) ? _getEpicPlusRarity(rc.rarity) : _getCommonPlusRarity(rc.rarity);
+        Rarity rarity;
+        if (_index % 5 == 0) {
+            rarity = Rarity.Legendary;
+        } else if (_index % 5 == 1) {
+            rarity = _getRarePlusRarity(rc.rarity);
+        } else {
+            rarity = _getCommonPlusRarity(rc.rarity);
+        }
         return (_getRandomCard(rarity, rc.proto), _getQuality(rc.quality));
     }
 

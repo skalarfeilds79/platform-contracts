@@ -6,8 +6,10 @@ import "./RarityProvider.sol";
 import "../../ICards.sol";
 import "@imtbl/platform/contracts/randomness/IBeacon.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";
+import "./IPack.sol";
+import "../raffle/IRaffle.sol";
 
-contract Pack is Ownable, Product, RarityProvider {
+contract Pack is IPack, Ownable, Product, RarityProvider {
 
     // Emitted when the cards from a purchase are actually minted
     event PurchaseCardsMinted(uint256 indexed purchaseID, uint256 lowTokenID, uint256 highTokenID);
@@ -27,10 +29,13 @@ contract Pack is Ownable, Product, RarityProvider {
     IBeacon public beacon;
     // The core cards contract
     ICards public cards;
+    // The raffle ticket contract
+    IRaffle public raffle;
     // The address of the chest linked to this pack
     address public chest;
 
     constructor(
+        IRaffle _raffle,
         IBeacon _beacon,
         ICards _cards,
         bytes32 _sku,
@@ -43,6 +48,7 @@ contract Pack is Ownable, Product, RarityProvider {
     ) public Product(
         _sku, _saleCap, _maxQuantity, _usdCentsPrice, _referral, _fiatEscrow, _processor
     ) {
+        raffle = _raffle;
         beacon = _beacon;
         cards = _cards;
     }

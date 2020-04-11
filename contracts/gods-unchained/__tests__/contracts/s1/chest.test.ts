@@ -40,9 +40,8 @@ describe('Chest', () => {
     const rareChestPrice = 100;
 
     beforeEach(async () => {
-      referral = await Referral.deploy(owner);
+      referral = await Referral.deploy(owner, 90, 10);
       pay = await Pay.deploy(owner);
-      referral = await Referral.deploy(owner);
       pack = await TestPack.deploy(owner);
       escrowProtocol = await Escrow.deploy(owner);
       escrow = await CreditCardEscrow.deploy(
@@ -101,7 +100,7 @@ describe('Chest', () => {
 
     beforeEach(async () => {
       pay = await Pay.deploy(owner);
-      referral = await Referral.deploy(owner);
+      referral = await Referral.deploy(owner, 90, 10);
       pack = await TestPack.deploy(owner);
       escrowProtocol = await Escrow.deploy(owner);
       escrow = await CreditCardEscrow.deploy(
@@ -180,7 +179,7 @@ describe('Chest', () => {
 
     beforeEach(async () => {
       pay = await Pay.deploy(owner);
-      referral = await Referral.deploy(owner);
+      referral = await Referral.deploy(owner, 90, 10);
       pack = await TestPack.deploy(owner);
       escrowProtocol = await Escrow.deploy(owner);
       escrow = await CreditCardEscrow.deploy(

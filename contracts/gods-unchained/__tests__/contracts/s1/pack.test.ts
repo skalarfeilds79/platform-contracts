@@ -68,7 +68,7 @@ describe('Referral', () => {
           100
         );
         beacon = await Beacon.deploy(owner);
-        referral = await Referral.deploy(owner);
+        referral = await Referral.deploy(owner, 90, 10);
         processor = await Pay.deploy(owner);
     });
 
@@ -152,7 +152,7 @@ describe('Referral', () => {
         100
       );
       beacon = await Beacon.deploy(owner);
-      referral = await Referral.deploy(owner);
+      referral = await Referral.deploy(owner, 90, 10);
       pay = await Pay.deploy(owner);
       cards = await Cards.deploy(owner, 1250, "Cards", "CARD");
       rare = await RarePack.deploy(
@@ -212,7 +212,7 @@ describe('Referral', () => {
         escrow.address, owner.address, 100, owner.address, 100
       );
       beacon = await Beacon.deploy(owner);
-      referral = await Referral.deploy(owner);
+      referral = await Referral.deploy(owner, 90, 10);
       pay = await Pay.deploy(owner);
       cards = await Cards.deploy(owner, 1250, "Cards", "CARD");
       rare = await RarePack.deploy(
@@ -288,7 +288,7 @@ describe('Referral', () => {
         escrow.address, owner.address, 100, owner.address, 100	
       );	
       beacon = await Beacon.deploy(owner);	
-      referral = await Referral.deploy(owner);	
+      referral = await Referral.deploy(owner, 90, 10);	
       pay = await Pay.deploy(owner);	
       cards = await Cards.deploy(owner, 1250, "Cards", "CARD");	
       rare = await RarePack.deploy(	

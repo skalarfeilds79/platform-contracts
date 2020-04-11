@@ -61,7 +61,7 @@ describe('Sale', () => {
           100
         );
         beacon = await Beacon.deploy(owner);
-        referral = await Referral.deploy(owner);
+        referral = await Referral.deploy(owner, 90, 10);
         processor = await Pay.deploy(owner);
         sale = await Sale.deploy(owner);
         rare = await RarePack.deploy(

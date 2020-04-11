@@ -11,6 +11,15 @@ contract Referral {
 
     using SafeMath for uint256;
 
+    uint8 vendorPercentage;
+    uint8 referrerPercentage;
+
+    constructor(uint8 _vendorPercentage, uint8 _referrerPercentage) public {
+        vendorPercentage = _vendorPercentage;
+        referrerPercentage = _referrerPercentage;
+        require(vendorPercentage + referrerPercentage == 100, "GU:S1:Referral: invalid constructor params");
+    }
+
     /**
      * @dev Get the split of cost between purchaser/referrer
      *
@@ -23,8 +32,8 @@ contract Referral {
     ) external view returns (
         uint256 toVendor, uint256 toReferrer
     ) {
-        toVendor = _getVendorPercentage(_value, 90);
-        toReferrer = _getReferrerPercentage(_value, 10);
+        toVendor = _getVendorPercentage(_value, vendorPercentage);
+        toReferrer = _getReferrerPercentage(_value, referrerPercentage);
         require(toVendor.add(toReferrer) == _value, "wrong sum value");
         return (toVendor, toReferrer);
     }
@@ -50,4 +59,4 @@ contract Referral {
         return (b % 2 == 0) ? b.div(2) : (b.div(2)).add(1);
     }
 
-} 
+}

@@ -6,6 +6,7 @@ import "./Pack.sol";
 contract EpicPack is Pack {
 
     constructor(
+        IRaffle _raffle,
         IBeacon _beacon,
         ICards _cards,
         bytes32 _sku,
@@ -13,7 +14,7 @@ contract EpicPack is Pack {
         ICreditCardEscrow _fiatEscrow,
         IPay _processor
     ) public Pack(
-        _beacon, _cards, _sku, 0, 100, 699, _referral, _fiatEscrow, _processor
+        _raffle, _beacon, _cards, _sku, 0, 100, 699, _referral, _fiatEscrow, _processor
     ) {}
 
     function _getCardDetails(uint _index, uint _random) internal view returns (uint16 proto, uint8 quality) {

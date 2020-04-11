@@ -9,6 +9,7 @@ import {
   Referral, 
   RarePack,
   Pay, 
+  Raffle
 } from '../../../src/contracts';
 import { Wallet, ethers } from 'ethers';
 import { keccak256 } from 'ethers/utils';
@@ -40,6 +41,7 @@ describe('Sale', () => {
     let beacon: Beacon;
     let referral: Referral;
     let processor: Pay;
+    let raffle: Raffle;
 
     let escrow: Escrow;
     let cc: CreditCardEscrow;
@@ -64,6 +66,7 @@ describe('Sale', () => {
         sale = await Sale.deploy(owner);
         rare = await RarePack.deploy(
           owner,
+          raffle.address,
           beacon.address,
           ZERO_EX,
           rarePackSKU,
@@ -79,7 +82,7 @@ describe('Sale', () => {
 
         const pr = Promise.all(quantities.map(async (quantity, i) => {
             const cost = prices[i];
-            let order = { quantity: quantity, sku: rarePackSKU, user: owner.address, totalPrice: cost * quantity, currency: Currency.USDCents };
+            let order = { quantity: quantity, sku: rarePackSKU, recipient: owner.address, totalPrice: cost * quantity, currency: Currency.USDCents };
             let params = { escrowFor: 0, nonce: i, value: cost * quantity };
             return await getSignedPayment(owner, processor.address, rare.address, order, params);
         }));

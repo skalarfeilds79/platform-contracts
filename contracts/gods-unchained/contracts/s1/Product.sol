@@ -23,7 +23,7 @@ contract Product is Ownable {
     // Total number of this product sold by this contract
     uint256 public sold;
     // Price of each product sold by this contract
-    uint256 public price;
+    uint256 public usdCentsPrice;
     // SKU of the product sold by this contract
     bytes32 public sku;
     // Referral contract
@@ -43,7 +43,7 @@ contract Product is Ownable {
         bytes32 _sku,
         uint256 _saleCap,
         uint256 _maxQuantity,
-        uint256 _price,
+        uint256 _usdCentsPrice,
         IReferral _referral,
         ICreditCardEscrow _fiatEscrow,
         IPay _processor
@@ -51,7 +51,7 @@ contract Product is Ownable {
         sku = _sku;
         saleCap = _saleCap;
         maxQuantity = _maxQuantity;
-        price = _price;
+        usdCentsPrice = _usdCentsPrice;
         referral = _referral;
         fiatEscrow = _fiatEscrow;
         processor = _processor;
@@ -99,7 +99,7 @@ contract Product is Ownable {
         require(_recipient != address(0), "GU:S1:Product: must be a valid recipient");
         require(_quantity > 0, "GU:S1:Product: must be a valid quantity");
 
-        uint totalPrice = price.mul(_quantity);
+        uint totalPrice = usdCentsPrice.mul(_quantity);
 
         IPay.Order memory order = IPay.Order({
             currency: IPay.Currency.USDCents,

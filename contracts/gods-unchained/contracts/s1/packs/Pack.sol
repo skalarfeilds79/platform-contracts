@@ -36,12 +36,12 @@ contract Pack is Ownable, Product, RarityProvider {
         bytes32 _sku,
         uint256 _saleCap,
         uint256 _maxQuantity,
-        uint256 _price,
+        uint256 _usdCentsPrice,
         IReferral _referral,
         ICreditCardEscrow _fiatEscrow,
         IPay _processor
     ) public Product(
-        _sku, _saleCap, _maxQuantity, _price, _referral, _fiatEscrow, _processor
+        _sku, _saleCap, _maxQuantity, _usdCentsPrice, _referral, _fiatEscrow, _processor
     ) {
         beacon = _beacon;
         cards = _cards;

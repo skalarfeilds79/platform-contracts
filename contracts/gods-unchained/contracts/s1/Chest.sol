@@ -27,12 +27,12 @@ contract Chest is Product, TradeToggleERC20, ERC20Burnable {
         bytes32 _sku,
         uint256 _saleCap,
         uint256 _maxQuantity,
-        uint256 _price,
+        uint256 _usdCentsPrice,
         IReferral _referral,
         ICreditCardEscrow _escrow,
         IPay _pay
     ) public
-        Product(_sku, _saleCap, _maxQuantity, _price, _referral, _escrow, _pay)
+        Product(_sku, _saleCap, _maxQuantity, _usdCentsPrice, _referral, _escrow, _pay)
         TradeToggleERC20(_name, _symbol, _decimals)
     {
         require(address(_pack) != address(0), "GU:S1:Chest: pack must be set on construction");

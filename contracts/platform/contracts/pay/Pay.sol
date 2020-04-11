@@ -9,11 +9,14 @@ contract Pay is IPay, Ownable {
 
     using SafeMath for uint256;
 
+    // Emitted when a seller's approval to sell a particular product is changed
     event SellerApprovalChanged(bytes32 indexed sku, address indexed seller, bool approved);
+    // Emitted when a signer's limit is changed
     event SignerLimitChanged(address indexed signer, uint256 usdCentsLimit);
+    // Emitted when a payment has been processed
     event PaymentProcessed(uint256 indexed id, Order order, Payment payment);
 
-    // Stores the nonce mapping
+    // Stores whether a nonce has been used by a particular signer
     mapping(address => mapping(uint256 => bool)) public receiptNonces;
     // Track whether a contract can sell through this processor
     mapping(bytes32 => mapping(address => bool)) public sellerApproved;
@@ -63,7 +66,7 @@ contract Pay is IPay, Ownable {
 
     function _validateOrderPaymentMatch(Order memory order, Payment memory payment) internal pure {
         require(payment.value >= order.totalPrice, "receipt value must be sufficient");
-        require(payment.currency == Currency.USDCents, "receipt currency must match");
+        require(order.currency == Currency.USDCents, "receipt currency must match");
     }
 
     function _updateSignerLimit(address signer, uint256 amount) internal {

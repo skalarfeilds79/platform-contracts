@@ -122,13 +122,13 @@ describe('CreditCardEscrow', () => {
 
     it('should be able to release an ERC20 token vault after the time period', async () => {
         await pack.purchaseERC20(user.address, 1, 10);
-        await blockchain.waitBlocksAsync(10);
+        await blockchain.increaseTimeAsync(100);
         await cc.release(0);
     });
 
     it('should be able to release an ERC721 token vault after the time period', async () => {
       await pack.purchaseERC721(user.address, 1, 10);
-      await blockchain.waitBlocksAsync(10);
+      await blockchain.increaseTimeAsync(100);
       await cc.release(0);
     });
 
@@ -144,7 +144,7 @@ describe('CreditCardEscrow', () => {
 
     it('should not be able to directly release a custodial vault', async () => {
       await pack.purchaseERC721(ZERO_EX, 1, 10);
-      await blockchain.waitBlocksAsync(10);
+      await blockchain.increaseTimeAsync(10);
       await expectRevert(cc.release(0));
     });
 
@@ -211,14 +211,14 @@ describe('CreditCardEscrow', () => {
     it('should be able to release after successful request', async () => {
       await pack.purchaseERC20(ZERO_EX, 1, 10)
       await cc.requestDestruction(0);
-      await blockchain.waitBlocksAsync(destructionDelay);
+      await blockchain.increaseTimeAsync(destructionDelay);
       await cc.destroy(0);
     });
 
     it('should be destroyed successfully', async () => {
       await pack.purchaseERC20(ZERO_EX, 1, 10);
       await cc.requestDestruction(0);
-      await blockchain.waitBlocksAsync(destructionDelay);
+      await blockchain.increaseTimeAsync(destructionDelay);
       await cc.destroy(0);
       let balance = await erc20.balanceOf(escrow.address);
       expect(balance.toNumber()).toBe(1);
@@ -227,7 +227,7 @@ describe('CreditCardEscrow', () => {
     it('should not be able to be destroyed twice', async () => {
       await pack.purchaseERC20(ZERO_EX, 1, 10);
       await cc.requestDestruction(0);
-      await blockchain.waitBlocksAsync(destructionDelay);
+      await blockchain.increaseTimeAsync(destructionDelay);
       await cc.destroy(0);
       await expectRevert(cc.destroy(0));
     });
@@ -403,17 +403,17 @@ describe('CreditCardEscrow', () => {
 
     it('should be able to release after successful request', async () => {
       await pack.purchaseERC20(ZERO_EX, 1, 10);
-      await blockchain.waitBlocksAsync(10);
+      await blockchain.increaseTimeAsync(10);
       await cc.requestRelease(0, user.address);
-      await blockchain.waitBlocksAsync(releaseDelay);
+      await blockchain.increaseTimeAsync(releaseDelay);
       await cc.release(0);
     });
 
     it('should be released to the correct user after a successful request', async () => {
       await pack.purchaseERC20(ZERO_EX, 1, 10);
-      await blockchain.waitBlocksAsync(10);
+      await blockchain.increaseTimeAsync(10);
       await cc.requestRelease(0, user.address);
-      await blockchain.waitBlocksAsync(releaseDelay);
+      await blockchain.increaseTimeAsync(releaseDelay);
       await cc.release(0);
       let balance = await erc20.balanceOf(user.address);
       expect(balance.toNumber()).toBe(1);
@@ -421,9 +421,9 @@ describe('CreditCardEscrow', () => {
 
     it('should not be able to release twice after successful request', async () => {
       await pack.purchaseERC20(ZERO_EX, 1, 10);
-      await blockchain.waitBlocksAsync(10);
+      await blockchain.increaseTimeAsync(10);
       await cc.requestRelease(0, user.address);
-      await blockchain.waitBlocksAsync(releaseDelay);
+      await blockchain.increaseTimeAsync(releaseDelay);
       await cc.release(0);
       await expectRevert(cc.release(0));
     });

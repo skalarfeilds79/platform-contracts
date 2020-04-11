@@ -17,7 +17,7 @@
     "build": "yarn lint:sol && yarn truffle compile --all && yarn generate-typings && yarn tsc",
     "deploy": "yarn ts-node deployment/deploy.ts",
     "test": "yarn build && yarn reset-test-evm && yarn jest __tests__/ --runInBand",
-    "test:watch": "yarn reset-test-evm && yarn jest __tests__/ --runInBand --watch",
+    "test:watch": "yarn reset-test-evm && yarn jest __tests__/escrow/releaser/ --runInBand --watch",
     "reset-test-evm": "node scripts/reset-test-evm.js",
     "postinstall": "yarn truffle compile --all && yarn generate-typings"
   },
@@ -29,6 +29,7 @@
     "@imtbl/deployment-utils": "^1.0.10",
     "@imtbl/utils": "^1.0.10",
     "@openzeppelin/contracts": "^2.3.0",
+    "bignumber.js": "^9.0.0",
     "dotenv": "^8.2.0",
     "ethers": "4.0.42",
     "minimist": "^1.2.0",

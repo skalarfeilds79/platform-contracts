@@ -15,7 +15,7 @@ contract LegendaryPack is Pack {
         IPay _pay
     ) public Pack(
         _raffle, _beacon, _cards,
-        _referral, _sku, Currency.USDCents,
+        _referral, _sku,
         649, _escrow, _pay
     ) {}
 

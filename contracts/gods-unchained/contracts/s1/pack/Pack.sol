@@ -82,7 +82,7 @@ contract Pack is IPack, S1Product, RarityProvider {
 
         IEscrow.Vault memory vault = IEscrow.Vault({
             player: _purchase.recipient,
-            releaser: address(fiatEscrow),
+            releaser: address(escrow),
             asset: address(cards),
             balance: 0,
             lowTokenID: low,
@@ -92,13 +92,13 @@ contract Pack is IPack, S1Product, RarityProvider {
 
         bytes memory data = abi.encodeWithSignature("escrowHook(uint256)", _purchaseID);
 
-        uint256 escrowID = fiatEscrow.escrow(vault, address(this), data, _purchase.escrowFor);
+        uint256 escrowID = escrow.escrow(vault, address(this), data, _purchase.escrowFor);
 
-        emit ProductEscrowed(_purchaseID, escrowID);
+        emit PurchaseEscrowed(_purchaseID, escrowID);
     }
 
     function escrowHook(uint256 _purchaseID) public {
-        address protocol = address(fiatEscrow.getProtocol());
+        address protocol = address(escrow.getProtocol());
         require(msg.sender == protocol, "GU:S1:Pack: must be core escrow");
         Purchase memory purchase = purchases[_purchaseID];
         require(purchase.quantity > 0, "GU:S1:Pack: must have cards available");

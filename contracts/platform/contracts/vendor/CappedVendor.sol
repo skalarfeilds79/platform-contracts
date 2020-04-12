@@ -1,9 +1,9 @@
 pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
-import "./SimpleProduct.sol";
+import "./SimpleVendor.sol";
 
-contract CappedProduct is SimpleProduct {
+contract CappedVendor is SimpleVendor {
 
     using SafeMath for uint256;
 
@@ -19,7 +19,7 @@ contract CappedProduct is SimpleProduct {
         ICreditCardEscrow _escrow,
         IPay _pay,
         uint256 _saleCap
-    ) public SimpleProduct(_sku, _currency, _price, _escrow, _pay) {
+    ) public SimpleVendor(_sku, _currency, _price, _escrow, _pay) {
         saleCap = _saleCap;
     }
 
@@ -29,15 +29,15 @@ contract CappedProduct is SimpleProduct {
      * @param _quantity the number of this product to purchase
      * @param _payment the details of the method by which payment will be made
      */
-    function purchaseFor(
+    function _purchaseFor(
         address payable _recipient,
         uint256 _quantity,
         IPay.Payment memory _payment
-    ) public payable returns (uint256 purchaseID) {
+    ) internal returns (uint256 purchaseID) {
 
-        require(saleCap == 0 || saleCap >= sold + _quantity, "IM:CappedProduct: product cap has been exhausted");
+        require(saleCap == 0 || saleCap >= sold + _quantity, "IM:CappedVendor: product cap has been exhausted");
 
-        purchaseID = super.purchaseFor(_recipient, _quantity, _payment);
+        purchaseID = super._purchaseFor(_recipient, _quantity, _payment);
 
         sold += _quantity;
         return purchaseID;

@@ -3,11 +3,11 @@ pragma experimental ABIEncoderV2;
 
 import "../escrow/releaser/ICreditCardEscrow.sol";
 import "../pay/IPay.sol";
+import "./IVendor.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";
-import "./IProduct.sol";
 
-contract SimpleProduct is IProduct, Ownable {
+contract SimpleVendor is IVendor, Ownable {
 
     using SafeMath for uint256;
 
@@ -52,11 +52,11 @@ contract SimpleProduct is IProduct, Ownable {
      * @param _quantity the number of this product to purchase
      * @param _payment the details of the method by which payment will be made
      */
-    function purchase(
+    function _purchase(
         uint256 _quantity,
         IPay.Payment memory _payment
-    ) public payable returns (uint256 purchaseID) {
-        return purchaseFor(msg.sender, _quantity, _payment);
+    ) internal returns (uint256 purchaseID) {
+        return _purchaseFor(msg.sender, _quantity, _payment);
     }
 
     /** @dev Purchase assets for a user
@@ -65,11 +65,11 @@ contract SimpleProduct is IProduct, Ownable {
      * @param _quantity the number of this product to purchase
      * @param _payment the details of the method by which payment will be made
      */
-    function purchaseFor(
+    function _purchaseFor(
         address payable _recipient,
         uint256 _quantity,
         IPay.Payment memory _payment
-    ) public payable returns (uint256 purchaseID) {
+    ) internal returns (uint256 purchaseID) {
 
         require(!paused, "IM:SimpleProduct: must be unpaused");
         require(_recipient != address(0), "IM:SimpleProduct: must be a valid recipient");

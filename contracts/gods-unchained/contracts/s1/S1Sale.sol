@@ -2,9 +2,8 @@ pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
 import "@imtbl/platform/contracts/pay/IPay.sol";
-import "@imtbl/platform/contracts/product/MultiVendor.sol";
 
-contract S1Sale is MultiVendor {
+contract S1Vendor {
 
     /** @dev Purchase assets from a number of products
      *

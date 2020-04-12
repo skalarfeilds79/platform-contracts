@@ -4,16 +4,14 @@ pragma experimental ABIEncoderV2;
 import "./referral/IReferral.sol";
 import "@imtbl/platform/contracts/escrow/releaser/ICreditCardEscrow.sol";
 import "@imtbl/platform/contracts/pay/IPay.sol";
-import "@imtbl/platform/contracts/product/SimpleProduct.sol";
+import "@imtbl/platform/contracts/vendor/SimpleVendor.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";
 
-contract S1Product is SimpleProduct {
+contract S1Product is SimpleVendor {
 
     // Referral contract
     IReferral public referral;
-    // Total number of purchases processed through this contract
-    uint256 public purchaseCount;
 
     constructor(
         IReferral _referral,
@@ -21,12 +19,8 @@ contract S1Product is SimpleProduct {
         uint256 _price,
         ICreditCardEscrow _escrow,
         IPay _pay
-    ) public {
-        sku = _sku;
-        price = _price;
+    ) public SimpleVendor(_sku, IPay.Currency.USDCents, _price, _escrow, _pay) {
         referral = _referral;
-        escrow = _escrow;
-        pay = _pay;
     }
 
     /** @dev Purchase assets

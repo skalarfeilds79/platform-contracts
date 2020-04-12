@@ -8,7 +8,7 @@ import "@imtbl/platform/contracts/product/CappedProduct.sol";
 import "../S1Product.sol";
 import "../pack/IPack.sol";
 
-contract Chest is S1Product, CappedProduct, TradeToggleERC20, ERC20Burnable {
+contract Chest is CappedVendor, S1Vendor, TradeToggleERC20, ERC20Burnable {
 
     struct Purchase {
         address user;
@@ -32,7 +32,7 @@ contract Chest is S1Product, CappedProduct, TradeToggleERC20, ERC20Burnable {
         IPay _pay
     ) public
         S1Product(_referral, _sku, _price, _escrow, _pay)
-        CappedProduct(_saleCap, _referral, _sku, _price, _escrow, _pay)
+        CappedProduct(_sku, IPay.Currency.USDCents, _price, _escrow, _pay)
         TradeToggleERC20(_name, _symbol, 0)
     {
         require(address(_pack) != address(0), "GU:S1:Chest: pack must be set on construction");
@@ -61,7 +61,7 @@ contract Chest is S1Product, CappedProduct, TradeToggleERC20, ERC20Burnable {
             // escrow the chests
             IEscrow.Vault memory vault = IEscrow.Vault({
                 player: _user,
-                releaser: address(fiatEscrow),
+                releaser: address(escrow),
                 asset: address(this),
                 balance: _quantity,
                 lowTokenID: 0,
@@ -73,16 +73,16 @@ contract Chest is S1Product, CappedProduct, TradeToggleERC20, ERC20Burnable {
 
             bytes memory data = abi.encodeWithSignature("mintTokens()");
 
-            uint256 escrowID = fiatEscrow.escrow(vault, address(this), data, _payment.escrowFor);
+            uint256 escrowID = escrow.escrow(vault, address(this), data, _payment.escrowFor);
 
-            emit ProductEscrowed(purchaseID, escrowID);
+            emit PurchaseEscrowed(purchaseID, escrowID);
         }
 
         return purchaseID;
     }
 
     function mintTokens() public {
-        address protocol = address(fiatEscrow.getProtocol());
+        address protocol = address(escrow.getProtocol());
         require(msg.sender == protocol, "GU:S1:Chest: minter must be core escrow contract");
         require(temporaryCount > 0, "GU:S1:Chest: must create some tokens");
         _mint(protocol, temporaryCount);

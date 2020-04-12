@@ -7,9 +7,9 @@ import "@imtbl/platform/contracts/randomness/IBeacon.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "./IPack.sol";
 import "../raffle/IRaffle.sol";
-import "../S1Product.sol";
+import "../S1Vendor.sol";
 
-contract Pack is IPack, S1Product, RarityProvider {
+contract Pack is IPack, S1Vendor, RarityProvider {
 
     // Emitted when the cards from a purchase are actually minted
     event PurchaseCardsMinted(uint256 indexed purchaseID, uint256 lowTokenID, uint256 highTokenID);
@@ -43,9 +43,7 @@ contract Pack is IPack, S1Product, RarityProvider {
         uint256 _price,
         ICreditCardEscrow _escrow,
         IPay _pay
-    ) public S1Product(
-        _referral, _sku, _price, _escrow, _pay
-    ) {
+    ) public S1Vendor(_referral, _sku, _price, _escrow, _pay) {
         raffle = _raffle;
         beacon = _beacon;
         cards = _cards;
@@ -94,7 +92,7 @@ contract Pack is IPack, S1Product, RarityProvider {
 
         uint256 escrowID = escrow.escrow(vault, address(this), data, _purchase.escrowFor);
 
-        emit PurchaseEscrowed(_purchaseID, escrowID);
+        emit ProductEscrowed(_purchaseID, escrowID);
     }
 
     function escrowHook(uint256 _purchaseID) public {

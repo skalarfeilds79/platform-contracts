@@ -4,8 +4,8 @@ pragma experimental ABIEncoderV2;
 import "@openzeppelin/contracts/token/ERC20/ERC20Burnable.sol";
 import "@imtbl/platform/contracts/token/TradeToggleERC20.sol";
 import "@imtbl/platform/contracts/escrow/IEscrow.sol";
-import "@imtbl/platform/contracts/product/CappedProduct.sol";
-import "../S1Product.sol";
+import "@imtbl/platform/contracts/vendor/CappedVendor.sol";
+import "../S1Vendor.sol";
 import "../pack/IPack.sol";
 
 contract Chest is CappedVendor, S1Vendor, TradeToggleERC20, ERC20Burnable {
@@ -31,8 +31,8 @@ contract Chest is CappedVendor, S1Vendor, TradeToggleERC20, ERC20Burnable {
         ICreditCardEscrow _escrow,
         IPay _pay
     ) public
-        S1Product(_referral, _sku, _price, _escrow, _pay)
-        CappedProduct(_sku, IPay.Currency.USDCents, _price, _escrow, _pay)
+        S1Vendor(_referral, _sku, _price, _escrow, _pay)
+        CappedVendor(_sku, IPay.Currency.USDCents, _price, _escrow, _pay)
         TradeToggleERC20(_name, _symbol, 0)
     {
         require(address(_pack) != address(0), "GU:S1:Chest: pack must be set on construction");
@@ -75,7 +75,7 @@ contract Chest is CappedVendor, S1Vendor, TradeToggleERC20, ERC20Burnable {
 
             uint256 escrowID = escrow.escrow(vault, address(this), data, _payment.escrowFor);
 
-            emit PurchaseEscrowed(purchaseID, escrowID);
+            emit ProductEscrowed(purchaseID, escrowID);
         }
 
         return purchaseID;

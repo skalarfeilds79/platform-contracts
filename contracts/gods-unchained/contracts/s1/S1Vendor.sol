@@ -8,7 +8,7 @@ import "@imtbl/platform/contracts/vendor/SimpleVendor.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";
 
-contract S1Product is SimpleVendor {
+contract S1Vendor is SimpleVendor {
 
     // Referral contract
     IReferral public referral;
@@ -51,7 +51,7 @@ contract S1Product is SimpleVendor {
         address payable _referrer
     ) public payable returns (uint256 purchaseID) {
 
-        purchaseID = super.purchaseFor(_recipient, _quantity, _payment);
+        purchaseID = super._purchaseFor(_recipient, _quantity, _payment);
 
         // if the user is paying in ETH, we can pay affiliate fees instantly!
         // if (_payment.currency == IPay.Currency.ETH) {

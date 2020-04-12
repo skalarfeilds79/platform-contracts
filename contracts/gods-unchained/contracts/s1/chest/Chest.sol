@@ -8,7 +8,7 @@ import "@imtbl/platform/contracts/vendor/CappedVendor.sol";
 import "../S1Vendor.sol";
 import "../pack/IPack.sol";
 
-contract Chest is CappedVendor, S1Vendor, TradeToggleERC20, ERC20Burnable {
+contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
 
     struct Purchase {
         address user;
@@ -32,7 +32,6 @@ contract Chest is CappedVendor, S1Vendor, TradeToggleERC20, ERC20Burnable {
         IPay _pay
     ) public
         S1Vendor(_referral, _sku, _price, _escrow, _pay)
-        CappedVendor(_sku, IPay.Currency.USDCents, _price, _escrow, _pay)
         TradeToggleERC20(_name, _symbol, 0)
     {
         require(address(_pack) != address(0), "GU:S1:Chest: pack must be set on construction");

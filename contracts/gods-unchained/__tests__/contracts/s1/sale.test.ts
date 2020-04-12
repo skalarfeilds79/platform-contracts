@@ -11,7 +11,7 @@ import {
   Pay, 
   Raffle
 } from '../../../src/contracts';
-import { Wallet, ethers } from 'ethers';
+import { ethers } from 'ethers';
 import { keccak256 } from 'ethers/utils';
 
 import { getSignedPayment, Currency } from '@imtbl/platform/src/pay';
@@ -64,13 +64,14 @@ describe('Sale', () => {
         referral = await Referral.deploy(owner, 90, 10);
         processor = await Pay.deploy(owner);
         sale = await Sale.deploy(owner);
+        raffle = await Raffle.deploy(owner);
         rare = await RarePack.deploy(
           owner,
           raffle.address,
           beacon.address,
           ZERO_EX,
-          rarePackSKU,
           referral.address,
+          rarePackSKU,
           cc.address,
           processor.address
         );

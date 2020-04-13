@@ -88,9 +88,9 @@ contract Pack is IPack, S1Vendor, RarityProvider {
             tokenIDs: new uint256[](0)
         });
 
-        bytes memory data = abi.encodeWithSignature("escrowHook(uint256)", _purchaseID);
+        bytes memory data = abi.encodeWithSignature("escrowHook(uint256)", _paymentID);
 
-        uint256 escrowID = escrow.escrow(vault, address(this), data, _purchase.escrowFor);
+        uint256 escrowID = escrow.escrow(vault, address(this), data, _paymentID, _purchase.escrowFor);
 
         emit ProductEscrowed(_purchaseID, escrowID);
     }

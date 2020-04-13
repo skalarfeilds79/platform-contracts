@@ -49,9 +49,9 @@ contract S1Vendor is SimpleVendor {
         uint256 _quantity,
         IPay.Payment memory _payment,
         address payable _referrer
-    ) public payable returns (uint256 purchaseID) {
+    ) public payable returns (uint256 paymentID) {
 
-        purchaseID = super._purchaseFor(_recipient, _quantity, _payment);
+        paymentID = super._purchaseFor(_recipient, _quantity, _payment);
 
         // if the user is paying in ETH, we can pay affiliate fees instantly!
         // if (_payment.currency == IPay.Currency.ETH) {
@@ -64,7 +64,7 @@ contract S1Vendor is SimpleVendor {
         //     }
         // }
 
-        return purchaseID;
+        return paymentID;
     }
 
 }

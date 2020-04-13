@@ -23,7 +23,7 @@ contract S1MultiVendor is IMultiVendor {
     function purchase(
         Purchase[] memory _purchases,
         address payable _referrer
-    ) public payable returns (uint256, IMultiVendor.Receipt[] memory) {
+    ) public payable returns (uint256, uint256[] memory) {
         return purchaseFor(msg.sender, _purchases, _referrer);
     }
 
@@ -37,23 +37,20 @@ contract S1MultiVendor is IMultiVendor {
         address payable _recipient,
         Purchase[] memory _purchases,
         address payable _referrer
-    ) public payable returns (uint256, IMultiVendor.Receipt[] memory){
-        IMultiVendor.Receipt[] memory receipts = new IMultiVendor.Receipt[](_purchases.length);
+    ) public payable returns (uint256, uint256[] memory){
+        uint256[] memory paymentIDs = new uint256[](_purchases.length);
         for (uint i = 0; i < _purchases.length; i++) {
             Purchase memory p = _purchases[i];
-            uint256 purchaseID = p.vendor.purchaseFor.value(msg.value)(
+            uint256 paymentID = p.vendor.purchaseFor.value(msg.value)(
                 _recipient,
                 p.quantity,
                 p.payment,
                 _referrer
             );
-            receipts[i] = IMultiVendor.Receipt({
-                vendor: address(p.vendor),
-                purchaseID: purchaseID
-            });
+            paymentIDs[i] = paymentID;
         }
         uint256 id = incrementingID++;
-        emit ProductsPurchased(id, receipts);
-        return (id, receipts);
+        emit ProductsPurchased(id, paymentIDs);
+        return (id, paymentIDs);
     }
 }

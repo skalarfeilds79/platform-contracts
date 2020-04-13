@@ -1,8 +1,8 @@
 pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
-import "../escrow/releaser/ICreditCardEscrow.sol";
-import "../pay/IPay.sol";
+import "../../escrow/releaser/ICreditCardEscrow.sol";
+import "../IPay.sol";
 import "./IVendor.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";
@@ -22,8 +22,6 @@ contract SimpleVendor is IVendor, Ownable {
     IPay public pay;
     // Whether the contract is paused
     bool public paused;
-    // Total number of purchases processed through this contract
-    uint256 public purchaseCount;
 
     constructor(
         bytes32 _sku,
@@ -69,7 +67,7 @@ contract SimpleVendor is IVendor, Ownable {
         address payable _recipient,
         uint256 _quantity,
         IPay.Payment memory _payment
-    ) internal returns (uint256 purchaseID) {
+    ) internal returns (uint256 paymentID) {
 
         require(!paused, "IM:SimpleProduct: must be unpaused");
         require(_recipient != address(0), "IM:SimpleProduct: must be a valid recipient");
@@ -85,13 +83,9 @@ contract SimpleVendor is IVendor, Ownable {
             recipient: _recipient
         });
 
-        purchaseID = purchaseCount++;
-
         uint256 paymentID = pay.process.value(msg.value)(order, _payment);
 
-        emit ProductPurchased(purchaseID, paymentID);
-
-        return purchaseID;
+        return paymentID;
     }
 
 }

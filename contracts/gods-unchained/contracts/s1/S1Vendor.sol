@@ -4,7 +4,7 @@ pragma experimental ABIEncoderV2;
 import "./referral/IReferral.sol";
 import "@imtbl/platform/contracts/escrow/releaser/ICreditCardEscrow.sol";
 import "@imtbl/platform/contracts/pay/IPay.sol";
-import "@imtbl/platform/contracts/vendor/SimpleVendor.sol";
+import "@imtbl/platform/contracts/pay/vendor/SimpleVendor.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";
 

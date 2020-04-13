@@ -4,7 +4,7 @@ pragma experimental ABIEncoderV2;
 import "@openzeppelin/contracts/token/ERC20/ERC20Burnable.sol";
 import "@imtbl/platform/contracts/token/TradeToggleERC20.sol";
 import "@imtbl/platform/contracts/escrow/IEscrow.sol";
-import "@imtbl/platform/contracts/vendor/CappedVendor.sol";
+import "@imtbl/platform/contracts/pay/vendor/CappedVendor.sol";
 import "../S1Vendor.sol";
 import "../pack/IPack.sol";
 
@@ -52,7 +52,7 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
         address payable _referrer
     ) public payable returns (uint256) {
 
-        uint256 purchaseID = super.purchaseFor(_user, _quantity, _payment, _referrer);
+        uint256 paymentID = super.purchaseFor(_user, _quantity, _payment, _referrer);
 
         if (_payment.currency == IPay.Currency.ETH || _payment.escrowFor == 0) {
             _mint(_user, _quantity);
@@ -72,12 +72,11 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
 
             bytes memory data = abi.encodeWithSignature("mintTokens()");
 
-            uint256 escrowID = escrow.escrow(vault, address(this), data, _payment.escrowFor);
+            escrow.callbackEscrow(vault, address(this), data, paymentID, _payment.escrowFor);
 
-            emit ProductEscrowed(purchaseID, escrowID);
         }
 
-        return purchaseID;
+        return paymentID;
     }
 
     function mintTokens() public {

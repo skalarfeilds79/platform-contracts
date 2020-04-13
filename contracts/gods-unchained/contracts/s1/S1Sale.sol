@@ -2,10 +2,10 @@ pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
 import "@imtbl/platform/contracts/pay/IPay.sol";
-import "@imtbl/platform/contracts/vendor/IMultiVendor.sol";
+import "@imtbl/platform/contracts/pay/vendor/IMultiVendor.sol";
 import "./IS1Vendor.sol";
 
-contract S1MultiVendor is IMultiVendor {
+contract S1Sale is IMultiVendor {
 
     struct Purchase {
         uint256 quantity;

@@ -83,7 +83,7 @@ contract SimpleVendor is IVendor, Ownable {
             recipient: _recipient
         });
 
-        uint256 paymentID = pay.process.value(msg.value)(order, _payment);
+        paymentID = pay.process.value(msg.value)(order, _payment);
 
         return paymentID;
     }

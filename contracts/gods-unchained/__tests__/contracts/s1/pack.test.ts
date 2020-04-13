@@ -70,18 +70,15 @@ describe('Referral', () => {
         beacon = await Beacon.deploy(owner);
         referral = await Referral.deploy(owner, 90, 10);
         processor = await Pay.deploy(owner);
+        raffle = await Raffle.deploy(owner);
     });
 
     it('should deploy rare pack', async () => {
         await RarePack.deploy(
           owner,
           raffle.address,
-          beacon.address,
-          ZERO_EX,
-          sku, 
-          referral.address,
-          cc.address,
-          processor.address
+          beacon.address, ZERO_EX, referral.address, sku, 	
+          cc.address, processor.address	
         );
     });
 
@@ -89,12 +86,8 @@ describe('Referral', () => {
         await EpicPack.deploy(
           owner,
           raffle.address,
-          beacon.address,
-          ZERO_EX,
-          sku, 
-          referral.address,
-          cc.address,
-          processor.address
+          beacon.address, ZERO_EX, referral.address, sku, 	
+          cc.address, processor.address	
         );
     });
 
@@ -102,12 +95,8 @@ describe('Referral', () => {
         await LegendaryPack.deploy(
           owner,
           raffle.address,
-          beacon.address,
-          ZERO_EX,
-          sku, 
-          referral.address,
-          cc.address,
-          processor.address
+          beacon.address, ZERO_EX, referral.address, sku, 	
+          cc.address, processor.address	
         );
     });
 
@@ -115,12 +104,8 @@ describe('Referral', () => {
         await ShinyPack.deploy(
           owner,
           raffle.address,
-          beacon.address,
-          ZERO_EX,
-          sku, 
-          referral.address,
-          cc.address,
-          processor.address
+          beacon.address, ZERO_EX, referral.address, sku, 	
+          cc.address, processor.address	
         );
     });
 
@@ -155,15 +140,12 @@ describe('Referral', () => {
       referral = await Referral.deploy(owner, 90, 10);
       pay = await Pay.deploy(owner);
       cards = await Cards.deploy(owner, 1250, "Cards", "CARD");
+      raffle = await Raffle.deploy(owner);
       rare = await RarePack.deploy(
         owner,
         raffle.address,
-        beacon.address,
-        cards.address,
-        rarePackSKU, 
-        referral.address,
-        cc.address,
-        pay.address
+        beacon.address, cards.address, referral.address, rarePackSKU, 	
+        cc.address, pay.address	
       );
       await pay.setSellerApproval(rare.address, [rarePackSKU], true);
       await pay.setSignerLimit(owner.address, 1000000000000000);
@@ -215,11 +197,12 @@ describe('Referral', () => {
       referral = await Referral.deploy(owner, 90, 10);
       pay = await Pay.deploy(owner);
       cards = await Cards.deploy(owner, 1250, "Cards", "CARD");
+      raffle = await Raffle.deploy(owner);
       rare = await RarePack.deploy(
         owner,
         raffle.address,
-        beacon.address, cards.address, rarePackSKU, 
-        referral.address, cc.address, pay.address
+        beacon.address, cards.address, referral.address, rarePackSKU, 	
+        cc.address, pay.address	
       );
       await pay.setSellerApproval(rare.address, [rarePackSKU], true);
       await pay.setSignerLimit(owner.address, 1000000000000000);
@@ -291,25 +274,24 @@ describe('Referral', () => {
       referral = await Referral.deploy(owner, 90, 10);	
       pay = await Pay.deploy(owner);	
       cards = await Cards.deploy(owner, 1250, "Cards", "CARD");	
+      raffle = await Raffle.deploy(owner);
       rare = await RarePack.deploy(	
         owner,
         raffle.address,
-        beacon.address, cards.address, rarePackSKU, 	
-        referral.address, cc.address, pay.address	
+        beacon.address, cards.address, referral.address, rarePackSKU, 	
+        cc.address, pay.address	
       );	
-      chest = await Chest.deploy(	
+      chest = await Chest.deploy(
         owner,
-        "GU: S1 Rare Chest",	
-        "GU:1:RC",	
-        0,	
-        rare.address,	
-        rareChestSKU,	
-        0,	
+        "GU: S1 Rare Chest",
+        "GU:1:RC",
+        rare.address,
         0,
-        rareChestPrice,	
-        referral.address,	
-        cc.address,	
-        pay.address	
+        referral.address,
+        rareChestSKU,
+        rareChestPrice,
+        escrow.address,
+        pay.address
       );	
       await rare.setChest(chest.address);	
     });	

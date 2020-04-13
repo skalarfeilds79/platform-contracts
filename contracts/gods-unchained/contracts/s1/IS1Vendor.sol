@@ -3,7 +3,7 @@ pragma experimental ABIEncoderV2;
 
 import "@imtbl/platform/contracts/pay/IPay.sol";
 
-interface IProduct {
+interface IS1Vendor {
 
     /** @dev Purchase assets
      *
@@ -15,7 +15,7 @@ interface IProduct {
         uint256 _quantity,
         IPay.Payment calldata _payment,
         address payable _referrer
-    ) external payable returns (uint256 purchaseID);
+    ) external payable returns (uint256 paymentID);
 
     /** @dev Purchase assets for a user
      *
@@ -29,7 +29,6 @@ interface IProduct {
         uint256 _quantity,
         IPay.Payment calldata _payment,
         address payable _referrer
-    ) external payable returns (uint256 purchaseID);
-
+    ) external payable returns (uint256 paymentID);
 
 }

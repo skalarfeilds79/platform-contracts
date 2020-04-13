@@ -73,7 +73,7 @@ describe('Beacon', () => {
 
   });
 
-  describe('#callback', () => {
+  describe('#randomness', () => {
 
     let beacon: Beacon;
     let consumer: Consumer;
@@ -88,7 +88,7 @@ describe('Beacon', () => {
       let receipt = await tx.wait();
       await blockchain.waitBlocksAsync(wait);
       let commitBlock = offset + receipt.blockNumber;
-      tx = await beacon.callback(commitBlock);
+      tx = await beacon.randomness(commitBlock);
       receipt = await tx.wait();
       const parsed = parseLogs(Beacon.ABI, receipt.logs);
       expect(parsed.length).toBe(1);
@@ -102,7 +102,7 @@ describe('Beacon', () => {
     });
 
     it('should not be able to callback without a commit', async () => {
-      await expectRevert(beacon.callback(0));
+      await expectRevert(beacon.randomness(0));
     });
 
     it('should not be able to callback on the same block', async () => {
@@ -177,7 +177,7 @@ describe('Beacon', () => {
       receipt = await tx.wait();
       let committed = await beacon.commitRequested(receipt.blockNumber);
       expect(committed).toBeTruthy();
-      await beacon.callback(receipt.blockNumber)
+      await beacon.randomness(receipt.blockNumber)
     });
 
   });
@@ -196,10 +196,6 @@ describe('Beacon', () => {
       await expectRevert(beacon.randomness(0));
     });
 
-    it('should not be able to get randomness on the same block', async () => {
-      await expectRevert(consumer.sameBlockRandomness(beacon.address));
-    });
-
     it('should be able to get randomness after recommit', async () => {
       let tx = await beacon.commit(0);
       let receipt = await tx.wait();
@@ -214,7 +210,6 @@ describe('Beacon', () => {
       let tx = await beacon.commit(0);
       let receipt = await tx.wait();
       await blockchain.waitBlocksAsync(1);
-      await beacon.callback(receipt.blockNumber);
       await beacon.randomness(receipt.blockNumber);
     });
 

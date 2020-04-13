@@ -39,12 +39,7 @@ contract Beacon is IBeacon {
         return commitBlock;
     }
 
-    /**
-     * @dev Record the randomness result for a particular block
-     *
-     * @param _commitBlock the block in question
-     */
-    function callback(uint256 _commitBlock) public {
+    function _callback(uint256 _commitBlock) internal {
 
         require(commitRequested[_commitBlock], "IM:Beacon: must have requested a callback on this block");
         require(block.number > _commitBlock, "IM:Beacon: cannot callback on the same block");
@@ -66,7 +61,7 @@ contract Beacon is IBeacon {
     function randomness(uint256 _commitBlock) public returns (bytes32) {
         uint256 currentBlock = getCurrentBlock(_commitBlock);
         if (blockHashes[currentBlock] == bytes32(0)) {
-            callback(_commitBlock);
+            _callback(_commitBlock);
         }
         return blockHashes[currentBlock];
     }

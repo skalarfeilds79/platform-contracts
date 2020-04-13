@@ -1,19 +1,19 @@
 pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
-import "./IProduct.sol";
 import "@imtbl/platform/contracts/pay/IPay.sol";
+import "@imtbl/platform/contracts/pay/vendor/IMultiVendor.sol";
+import "./IS1Vendor.sol";
 
-contract Sale {
+contract S1Sale is IMultiVendor {
 
     struct Purchase {
-        // the product this user is purchasing
-        IProduct product;
-        // the quantity this user is purchasing
         uint256 quantity;
-        // the details of the method by which payments will be made
+        IS1Vendor vendor;
         IPay.Payment payment;
     }
+
+    uint256 public incrementingID;
 
     /** @dev Purchase assets from a number of products
      *
@@ -23,8 +23,8 @@ contract Sale {
     function purchase(
         Purchase[] memory _purchases,
         address payable _referrer
-    ) public payable {
-        purchaseFor(msg.sender, _purchases, _referrer);
+    ) public payable returns (uint256, uint256[] memory) {
+        return purchaseFor(msg.sender, _purchases, _referrer);
     }
 
     /** @dev Purchase assets from a number of products
@@ -37,15 +37,20 @@ contract Sale {
         address payable _recipient,
         Purchase[] memory _purchases,
         address payable _referrer
-    ) public payable {
+    ) public payable returns (uint256, uint256[] memory){
+        uint256[] memory paymentIDs = new uint256[](_purchases.length);
         for (uint i = 0; i < _purchases.length; i++) {
             Purchase memory p = _purchases[i];
-            p.product.purchaseFor(
+            uint256 paymentID = p.vendor.purchaseFor.value(msg.value)(
                 _recipient,
                 p.quantity,
                 p.payment,
                 _referrer
             );
+            paymentIDs[i] = paymentID;
         }
+        uint256 id = incrementingID++;
+        emit ProductsPurchased(id, paymentIDs);
+        return (id, paymentIDs);
     }
 }

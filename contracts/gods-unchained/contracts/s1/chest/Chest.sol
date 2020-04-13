@@ -4,10 +4,11 @@ pragma experimental ABIEncoderV2;
 import "@openzeppelin/contracts/token/ERC20/ERC20Burnable.sol";
 import "@imtbl/platform/contracts/token/TradeToggleERC20.sol";
 import "@imtbl/platform/contracts/escrow/IEscrow.sol";
-import "../Product.sol";
+import "@imtbl/platform/contracts/pay/vendor/CappedVendor.sol";
+import "../S1Vendor.sol";
 import "../pack/IPack.sol";
 
-contract Chest is Product, TradeToggleERC20, ERC20Burnable {
+contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
 
     struct Purchase {
         address user;
@@ -22,18 +23,16 @@ contract Chest is Product, TradeToggleERC20, ERC20Burnable {
     constructor(
         string memory _name,
         string memory _symbol,
-        uint8 _decimals,
         IPack _pack,
-        bytes32 _sku,
         uint256 _saleCap,
-        uint256 _maxQuantity,
-        uint256 _usdCentsPrice,
         IReferral _referral,
+        bytes32 _sku,
+        uint256 _price,
         ICreditCardEscrow _escrow,
         IPay _pay
     ) public
-        Product(_sku, _saleCap, _maxQuantity, _usdCentsPrice, _referral, _escrow, _pay)
-        TradeToggleERC20(_name, _symbol, _decimals)
+        S1Vendor(_referral, _sku, _price, _escrow, _pay)
+        TradeToggleERC20(_name, _symbol, 0)
     {
         require(address(_pack) != address(0), "GU:S1:Chest: pack must be set on construction");
         pack = _pack;
@@ -53,7 +52,7 @@ contract Chest is Product, TradeToggleERC20, ERC20Burnable {
         address payable _referrer
     ) public payable returns (uint256) {
 
-        uint256 purchaseID = super.purchaseFor(_user, _quantity, _payment, _referrer);
+        uint256 paymentID = super.purchaseFor(_user, _quantity, _payment, _referrer);
 
         if (_payment.currency == IPay.Currency.ETH || _payment.escrowFor == 0) {
             _mint(_user, _quantity);
@@ -61,7 +60,7 @@ contract Chest is Product, TradeToggleERC20, ERC20Burnable {
             // escrow the chests
             IEscrow.Vault memory vault = IEscrow.Vault({
                 player: _user,
-                releaser: address(fiatEscrow),
+                releaser: address(escrow),
                 asset: address(this),
                 balance: _quantity,
                 lowTokenID: 0,
@@ -73,16 +72,15 @@ contract Chest is Product, TradeToggleERC20, ERC20Burnable {
 
             bytes memory data = abi.encodeWithSignature("mintTokens()");
 
-            uint256 escrowID = fiatEscrow.escrow(vault, address(this), data, _payment.escrowFor);
+            escrow.callbackEscrow(vault, address(this), data, paymentID, _payment.escrowFor);
 
-            emit ProductEscrowed(purchaseID, escrowID);
         }
 
-        return purchaseID;
+        return paymentID;
     }
 
     function mintTokens() public {
-        address protocol = address(fiatEscrow.getProtocol());
+        address protocol = address(escrow.getProtocol());
         require(msg.sender == protocol, "GU:S1:Chest: minter must be core escrow contract");
         require(temporaryCount > 0, "GU:S1:Chest: must create some tokens");
         _mint(protocol, temporaryCount);

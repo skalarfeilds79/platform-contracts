@@ -2,7 +2,7 @@ import 'jest';
 
 import { Blockchain, generatedWallets } from '@imtbl/test-utils';
 import {
-  Sale,
+  S1Sale,
   Escrow, 
   Beacon,
   CreditCardEscrow, 
@@ -11,7 +11,7 @@ import {
   Pay, 
   Raffle
 } from '../../../src/contracts';
-import { Wallet, ethers } from 'ethers';
+import { ethers } from 'ethers';
 import { keccak256 } from 'ethers/utils';
 
 import { getSignedPayment, Currency } from '@imtbl/platform/src/pay';
@@ -47,7 +47,7 @@ describe('Sale', () => {
     let cc: CreditCardEscrow;
     let rarePackSKU = keccak256('0x00');
 
-    let sale: Sale;
+    let sale: S1Sale;
     let rare: RarePack;
 
     beforeEach(async() => {
@@ -63,14 +63,15 @@ describe('Sale', () => {
         beacon = await Beacon.deploy(owner);
         referral = await Referral.deploy(owner, 90, 10);
         processor = await Pay.deploy(owner);
-        sale = await Sale.deploy(owner);
+        sale = await S1Sale.deploy(owner);
+        raffle = await Raffle.deploy(owner);
         rare = await RarePack.deploy(
           owner,
           raffle.address,
           beacon.address,
           ZERO_EX,
-          rarePackSKU,
           referral.address,
+          rarePackSKU,
           cc.address,
           processor.address
         );
@@ -80,16 +81,18 @@ describe('Sale', () => {
 
     async function purchasePacks(products: Array<string>, quantities: Array<number>, prices: Array<number>) {
 
-        const pr = Promise.all(quantities.map(async (quantity, i) => {
+        const payments = await Promise.all(quantities.map(async (quantity, i) => {
             const cost = prices[i];
             let order = { quantity: quantity, sku: rarePackSKU, recipient: owner.address, totalPrice: cost * quantity, currency: Currency.USDCents };
             let params = { escrowFor: 0, nonce: i, value: cost * quantity };
-            return await getSignedPayment(owner, processor.address, rare.address, order, params);
+            return {
+              payment: await getSignedPayment(owner, processor.address, rare.address, order, params),
+              quantity: quantity,
+              vendor: products[i]
+            };
         }));
 
-        const payments = await pr;
-
-        await sale.purchaseFor(owner.address, products, quantities, payments, ZERO_EX);
+        await sale.purchaseFor(owner.address, payments, ZERO_EX);
       }
 
     it('should purchase one item', async () => {

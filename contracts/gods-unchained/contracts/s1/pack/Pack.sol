@@ -1,30 +1,33 @@
 pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
-import "../Product.sol";
-import "./RarityProvider.sol";
-import "../../ICards.sol";
 import "@imtbl/platform/contracts/randomness/IBeacon.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";
+import "./RarityProvider.sol";
 import "./IPack.sol";
+import "../../ICards.sol";
 import "../raffle/IRaffle.sol";
+import "../S1Vendor.sol";
 
-contract Pack is IPack, Ownable, Product, RarityProvider {
+contract Pack is IPack, S1Vendor, RarityProvider {
 
-    // Emitted when the cards from a purchase are actually minted
-    event PurchaseCardsMinted(uint256 indexed purchaseID, uint256 lowTokenID, uint256 highTokenID);
-    // Emitted when a card purchase is recorded (either purchase or opening a chest)
-    event CardPurchaseRecorded(uint256 indexed purchaseID, uint256 indexed callbackBlock);
+    // Emitted when the cards from a commitment are actually minted
+    event CommitmentMinted(uint256 indexed commitmentID, uint256 lowTokenID, uint256 highTokenID);
+    // Emitted when a card commitment is recorded (either purchase or opening a chest)
+    event CommitmentRecorded(uint256 indexed commitmentID, uint256 indexed callbackBlock);
 
-    struct Purchase {
+    // A commitment to generating a certain number of packs for a certain user
+    // Prefer commitment to purchase (for cards opened from chests)
+    struct Commitment {
+        uint256 paymentID;
         uint256 commitBlock;
         uint256 quantity;
         uint256 escrowFor;
         address recipient;
     }
 
-    // All purchases recorded by this pack
-    mapping(uint256 => Purchase) public purchases;
+    // All commitments recorded by this pack
+    mapping(uint256 => Commitment) public commitments;
     // The randomness beacon used by this pack
     IBeacon public beacon;
     // The core cards contract
@@ -33,27 +36,25 @@ contract Pack is IPack, Ownable, Product, RarityProvider {
     IRaffle public raffle;
     // The address of the chest linked to this pack
     address public chest;
+    // The number of commitments
+    uint256 public commitmentCount;
 
     constructor(
         IRaffle _raffle,
         IBeacon _beacon,
         ICards _cards,
-        bytes32 _sku,
-        uint256 _saleCap,
-        uint256 _maxQuantity,
-        uint256 _usdCentsPrice,
         IReferral _referral,
-        ICreditCardEscrow _fiatEscrow,
-        IPay _processor
-    ) public Product(
-        _sku, _saleCap, _maxQuantity, _usdCentsPrice, _referral, _fiatEscrow, _processor
-    ) {
+        bytes32 _sku,
+        uint256 _price,
+        ICreditCardEscrow _escrow,
+        IPay _pay
+    ) public S1Vendor(_referral, _sku, _price, _escrow, _pay) {
         raffle = _raffle;
         beacon = _beacon;
         cards = _cards;
     }
 
-    /** @dev Purchase packs for a user
+    /** @dev Set the chest address for this contract
      *
      * @param _chest the chest contract for this pack
      */
@@ -62,29 +63,32 @@ contract Pack is IPack, Ownable, Product, RarityProvider {
         chest = _chest;
     }
 
-    /** @dev Create cards from a purchase
+    /** @dev Create cards from a commitment
      *
-     * @param _purchaseID the ID of the purchase
+     * @param _commitmentID the ID of the commitment
      */
-    function createCards(uint256 _purchaseID) public {
-        Purchase memory purchase = purchases[_purchaseID];
-        require(purchase.recipient != address(0), "GU:S1:Pack: must be a valid purchase");
-        if (purchase.escrowFor == 0) {
-            _createCards(_purchaseID, purchase, purchase.recipient);
+    function createCards(uint256 _commitmentID) public {
+        Commitment memory commitment = commitments[_commitmentID];
+        require(commitment.recipient != address(0), "GU:S1:Pack: must be a valid commitment");
+        if (commitment.escrowFor == 0) {
+            _createCards(_commitmentID, commitment, commitment.recipient);
         } else {
-            _escrowCards(_purchaseID, purchase);
+            _escrowCards(_commitmentID, commitment);
         }
     }
 
-    function _escrowCards(uint256 _purchaseID, Purchase memory _purchase) internal {
+    function _escrowCards(
+        uint256 _commitmentID,
+        Commitment memory _commitment
+    ) internal {
 
-        uint cardCount = _purchase.quantity * 5;
+        uint cardCount = _commitment.quantity * 5;
         uint low = cards.nextBatch();
         uint high = low + cardCount;
 
         IEscrow.Vault memory vault = IEscrow.Vault({
-            player: _purchase.recipient,
-            releaser: address(fiatEscrow),
+            player: _commitment.recipient,
+            releaser: address(escrow),
             asset: address(cards),
             balance: 0,
             lowTokenID: low,
@@ -92,20 +96,18 @@ contract Pack is IPack, Ownable, Product, RarityProvider {
             tokenIDs: new uint256[](0)
         });
 
-        bytes memory data = abi.encodeWithSignature("escrowHook(uint256)", _purchaseID);
+        bytes memory data = abi.encodeWithSignature("escrowHook(uint256)", _commitmentID);
 
-        uint256 escrowID = fiatEscrow.escrow(vault, address(this), data, _purchase.escrowFor);
-
-        emit ProductEscrowed(_purchaseID, escrowID);
+        escrow.callbackEscrow(vault, address(this), data, _commitment.paymentID, _commitment.escrowFor);
     }
 
-    function escrowHook(uint256 _purchaseID) public {
-        address protocol = address(fiatEscrow.getProtocol());
+    function escrowHook(uint256 _commitmentID) public {
+        address protocol = address(escrow.getProtocol());
         require(msg.sender == protocol, "GU:S1:Pack: must be core escrow");
-        Purchase memory purchase = purchases[_purchaseID];
-        require(purchase.quantity > 0, "GU:S1:Pack: must have cards available");
-        _createCards(_purchaseID, purchase, protocol);
-        delete purchases[_purchaseID];
+        Commitment memory commitment = commitments[_commitmentID];
+        require(commitment.quantity > 0, "GU:S1:Pack: must have cards available");
+        _createCards(_commitmentID, commitment, protocol);
+        delete commitments[_commitmentID];
     }
 
     /** @dev Purchase packs for a user
@@ -120,19 +122,19 @@ contract Pack is IPack, Ownable, Product, RarityProvider {
         uint256 _quantity,
         IPay.Payment memory _payment,
         address payable _referrer
-    ) public payable returns (uint256 purchaseID) {
-        purchaseID = super.purchaseFor(_recipient, _quantity, _payment, _referrer);
+    ) public payable returns (uint256 paymentID) {
+        paymentID = super.purchaseFor(_recipient, _quantity, _payment, _referrer);
         if (_payment.currency == IPay.Currency.ETH) {
-            _createPurchase(purchaseID, _recipient, _quantity, 0);
+            _createCommitment(paymentID, _recipient, _quantity, 0);
         } else {
-            _createPurchase(purchaseID, _recipient, _quantity, _payment.escrowFor);
+            _createCommitment(paymentID, _recipient, _quantity, _payment.escrowFor);
         }
-        return purchaseID;
+        return paymentID;
     }
 
-    function _createCards(uint256 _purchaseID, Purchase memory _purchase, address _owner) internal {
-        uint256 randomness = uint256(beacon.randomness(_purchase.commitBlock));
-        uint cardCount = _purchase.quantity * 5;
+    function _createCards(uint256 _commitmentID, Commitment memory _commitment, address _owner) internal {
+        uint256 randomness = uint256(beacon.randomness(_commitment.commitBlock));
+        uint cardCount = _commitment.quantity * 5;
         uint16[] memory protos = new uint16[](cardCount);
         uint8[] memory qualities = new uint8[](cardCount);
         for (uint i = 0; i < cardCount; i++) {
@@ -140,26 +142,27 @@ contract Pack is IPack, Ownable, Product, RarityProvider {
         }
         uint256 lowTokenID = cards.mintCards(_owner, protos, qualities);
 
-        emit PurchaseCardsMinted(_purchaseID, lowTokenID, lowTokenID + protos.length);
+        emit CommitmentMinted(_commitmentID, lowTokenID, lowTokenID + protos.length);
     }
 
     function openChests(address _owner, uint256 _quantity) public {
         require(msg.sender == chest, "GU:S1:Pack: must be the chest contract");
-        // skip emitting product purchased
-        uint256 purchaseID = purchaseCount++;
+
+        uint256 commitmentID = commitmentCount++;
         uint256 commitBlock = beacon.commit(0);
-        purchases[purchaseID] = Purchase({
+        commitments[commitmentID] = Commitment({
             commitBlock: commitBlock,
             quantity: _quantity * 6,
             recipient: _owner,
-            escrowFor: 0
+            escrowFor: 0,
+            paymentID: 0
         });
 
-        emit CardPurchaseRecorded(purchaseID, commitBlock);
+        emit CommitmentRecorded(commitmentID, commitBlock);
     }
 
-    function _createPurchase(
-        uint256 _purchaseID,
+    function _createCommitment(
+        uint256 _paymentID,
         address _recipient,
         uint256 _quantity,
         uint256 _escrowFor
@@ -167,14 +170,17 @@ contract Pack is IPack, Ownable, Product, RarityProvider {
 
         uint256 commitBlock = beacon.commit(0);
 
-        purchases[_purchaseID] = Purchase({
+        uint256 commitmentID = commitmentCount++;
+
+        commitments[commitmentID] = Commitment({
             commitBlock: commitBlock,
             quantity: _quantity,
             recipient: _recipient,
-            escrowFor: _escrowFor
+            escrowFor: _escrowFor,
+            paymentID: _paymentID
         });
 
-        emit CardPurchaseRecorded(_purchaseID, commitBlock);
+        emit CommitmentRecorded(commitmentID, commitBlock);
     }
 
     function _getCardDetails(uint _index, uint _random) internal view returns (uint16 proto, uint8 quality);

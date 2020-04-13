@@ -16,8 +16,9 @@ contract ICreditCardEscrow {
      * @dev Request that a custodial escrow account's assets be marked for release
      *
      * @param _id The ID of the escrow account to be marked
+     * @param _to The new owner of tese assets
      */
-    function requestRelease(uint _id) public;
+    function requestRelease(uint _id, address _to) public;
 
     /**
      * @dev Cancel a release request
@@ -53,12 +54,14 @@ contract ICreditCardEscrow {
      * @param _vault The vault details of this escrow
      * @param _callbackTo The address on which to callback
      * @param _callbackData The data to pass to the callback function
+     * @param _paymentID The ID of the payment
      * @param _duration The duration of the escrow
      */
-    function escrow(
+    function callbackEscrow(
         IEscrow.Vault memory _vault,
         address _callbackTo,
         bytes memory _callbackData,
+        uint256 _paymentID,
         uint256 _duration
     ) public returns (uint);
 

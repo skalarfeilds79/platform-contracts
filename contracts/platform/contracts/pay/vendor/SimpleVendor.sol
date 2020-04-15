@@ -52,7 +52,10 @@ contract SimpleVendor is Ownable {
     function _purchase(
         uint256 _quantity,
         IPay.Payment memory _payment
-    ) internal returns (uint256 purchaseID) {
+    )
+        internal
+        returns (uint256 purchaseID)
+    {
         return _purchaseFor(msg.sender, _quantity, _payment);
     }
 
@@ -66,7 +69,10 @@ contract SimpleVendor is Ownable {
         address payable _recipient,
         uint256 _quantity,
         IPay.Payment memory _payment
-    ) internal returns (uint256 paymentID) {
+    )
+        internal
+        returns (uint256 paymentID)
+    {
 
         require(!paused, "IM:SimpleProduct: must be unpaused");
         require(_recipient != address(0), "IM:SimpleProduct: must be a valid recipient");

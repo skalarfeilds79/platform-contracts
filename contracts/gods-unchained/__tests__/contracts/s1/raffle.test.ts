@@ -27,7 +27,7 @@ const blockchain = new Blockchain();
 
 const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
-describe('Referral', () => {
+describe('Raffle', () => {
 
   const [owner] = generatedWallets(provider);
   
@@ -42,71 +42,14 @@ describe('Referral', () => {
 
   describe('deployment', () => {
 
-    let beacon: Beacon;
-    let referral: Referral;
-    let processor: Pay;
-
     let raffle: Raffle;
 
-    let escrow: Escrow;
-    let cc: CreditCardEscrow;
-    let sku = keccak256('0x00');
-
-    let rare: RarePack;
-    let epic: EpicPack;
-    let legendary: LegendaryPack;
-    let shiny: ShinyPack;
-
     beforeEach(async() => {
-        escrow = await Escrow.deploy(owner);
-        cc = await CreditCardEscrow.deploy(
-          owner,
-          escrow.address,
-          ZERO_EX, 
-          100,
-          ZERO_EX,
-          100
-        );
-        beacon = await Beacon.deploy(owner);
-        referral = await Referral.deploy(owner, 90, 10);
-        processor = await Pay.deploy(owner);
         raffle = await Raffle.deploy(owner);
     });
 
-    it('should deploy rare pack', async () => {
-        await RarePack.deploy(
-          owner,
-          raffle.address,
-          beacon.address, ZERO_EX, referral.address, sku, 	
-          cc.address, processor.address	
-        );
-    });
-
-    it('should deploy epic pack', async () => {
-        await EpicPack.deploy(
-          owner,
-          raffle.address,
-          beacon.address, ZERO_EX, referral.address, sku, 	
-          cc.address, processor.address	
-        );
-    });
-
-    it('should deploy legendary pack', async () => {
-        await LegendaryPack.deploy(
-          owner,
-          raffle.address,
-          beacon.address, ZERO_EX, referral.address, sku, 	
-          cc.address, processor.address	
-        );
-    });
-
-    it('should deploy shiny pack', async () => {
-        await ShinyPack.deploy(
-          owner,
-          raffle.address,
-          beacon.address, ZERO_EX, referral.address, sku, 	
-          cc.address, processor.address	
-        );
+    it('should deploy raffle contract', async () => {
+        
     });
 
   });
@@ -160,14 +103,23 @@ describe('Referral', () => {
 
     it('should purchase one pack with USD', async () => {
       await purchasePacks(1);
+      const commitment = await rare.commitments(0);
+      const q = commitment.ticketQuantity.toNumber();
+      expect(q).toBe(1);
     });
 
     it('should purchase five packs with USD', async () => {
       await purchasePacks(5);
+      const commitment = await rare.commitments(0);
+      const q = commitment.ticketQuantity.toNumber();
+      expect(q).toBe(5);
     });
 
     it('should purchase 100 packs with USD', async () => {
       await purchasePacks(100);
+      const commitment = await rare.commitments(0);
+      const q = commitment.ticketQuantity.toNumber();
+      expect(q).toBe(100);
     });
   
   });
@@ -204,6 +156,7 @@ describe('Referral', () => {
         beacon.address, cards.address, referral.address, rarePackSKU, 	
         cc.address, pay.address	
       );
+      await raffle.setMinterApproval(rare.address, true);
       await pay.setSellerApproval(rare.address, [rarePackSKU], true);
       await pay.setSignerLimit(owner.address, 1000000000000000);
       await cards.startSeason("S1", 1, 10000);
@@ -227,21 +180,29 @@ describe('Referral', () => {
     it('should create cards from 1 pack', async () => {
       await purchaseAndCallback(1, 100);
       await rare.mint(0);
+      const balance = await raffle.balanceOf(owner.address);
+      expect(balance).toBeGreaterThan(0);
     });
 
     it('should create cards from 5 packs', async () => {
       await purchaseAndCallback(5, 100);
       await rare.mint(0);
+      const balance = await raffle.balanceOf(owner.address);
+      expect(balance).toBeGreaterThan(0);
     });
 
     it('should create cards from 1 packs with no escrow', async () => {
       await purchaseAndCallback(1, 0);
       await mintTrackGas(0, "1 pack no escrow");
+      const balance = await raffle.balanceOf(ZERO_EX);
+      expect(balance).toBeGreaterThan(0);
     });
 
     it('should create cards from 6 packs with no escrow', async () => {
       await purchaseAndCallback(6, 0);
       await mintTrackGas(0, "6 packs no escrow");
+      const balance = await raffle.balanceOf(escrow.address);
+      expect(balance).toBeGreaterThan(0);
     });
   
   });
@@ -280,7 +241,7 @@ describe('Referral', () => {
         beacon.address, cards.address, referral.address, rarePackSKU, 	
         cc.address, pay.address	
       );	
-      await raffle.setMinterApproval(raffle.address, true);
+      await raffle.setMinterApproval(rare.address, true);
       chest = await Chest.deploy(
         owner,
         "GU: S1 Rare Chest",
@@ -294,9 +255,14 @@ describe('Referral', () => {
         pay.address
       );	
       await rare.setChest(chest.address);	
+      await cards.startSeason("S1", 1, 10000);	
+      await cards.addFactory(rare.address, 1);
     });	
 
-    async function purchaseAndOpenChests(quantity: number) {	
+    async function purchaseAndOpenChests(quantity: number, pause = false) {	
+      if (pause) {
+        await rare.setPaused(true);
+      }
       await pay.setSellerApproval(chest.address, [rareChestSKU], true);	
       let balance = await chest.balanceOf(owner.address);	
       expect(balance.toNumber()).toBe(0);	
@@ -312,19 +278,18 @@ describe('Referral', () => {
       expect(purchase.packQuantity.toNumber()).toBe(quantity * 6);	
     }	
 
-    it('should create a valid purchase from an opened chest', async () => {	
-        await purchaseAndOpenChests(1);	
-    });	
-
-    it('should create a valid purchase from 6 chests', async () => {	
-        await purchaseAndOpenChests(6);	
-    });	
-
-    it('should create cards from an opened chest', async () => {	
-      await purchaseAndOpenChests(1);	
-      await cards.startSeason("S1", 1, 10000);	
-      await cards.addFactory(rare.address, 1);	
+    it('should create raffle tickets when contract unpaused', async () => {	
+      await purchaseAndOpenChests(1, false);		
       await rare.mint(0);	
+      const balance = await raffle.balanceOf(owner.address);
+      expect(balance).toBeGreaterThan(0);
+    });	
+
+    it('should not create raffle tickets when contract paused', async () => {	
+      await purchaseAndOpenChests(1, true);		
+      await rare.mint(0);	
+      const balance = await raffle.balanceOf(owner.address);
+      expect(balance).toBe(0);
     });	
 
   });	

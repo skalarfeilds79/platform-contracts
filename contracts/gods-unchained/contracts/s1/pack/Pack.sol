@@ -12,7 +12,13 @@ import "../S1Vendor.sol";
 contract Pack is IPack, S1Vendor, RarityProvider {
 
     // Emitted when the cards from a commitment are actually minted
-    event CardsMinted(uint256 indexed commitmentID, uint256 lowTokenID, uint256 highTokenID);
+    event CardsMinted(
+        uint256 indexed commitmentID,
+        uint256 lowTokenID,
+        uint256 highTokenID,
+        uint16[] protos,
+        uint8[] qualities
+    );
     // Emitted when a card commitment is recorded (either purchase or opening a chest)
     event CommitmentRecorded(uint256 indexed commitmentID, Commitment commitment);
     // Emitted when the tickets from a commitment are actually minted
@@ -204,7 +210,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
             totalTickets += qty;
             ticketQuantities[i] = qty;
         }
-        raffle.mint(_owner, totalTickets);
+        // raffle.mint(_owner, totalTickets);
         emit TicketsMinted(_commitmentID, ticketQuantities);
     }
 
@@ -221,7 +227,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
             (protos[i], qualities[i]) = _getCardDetails(i, randomness);
         }
         uint256 lowTokenID = cards.mintCards(_owner, protos, qualities);
-        emit CardsMinted(_commitmentID, lowTokenID, lowTokenID + protos.length);
+        emit CardsMinted(_commitmentID, lowTokenID, lowTokenID + protos.length, protos, qualities);
     }
 
     function openChests(address _owner, uint256 _quantity) public {

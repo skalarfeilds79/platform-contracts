@@ -12,19 +12,21 @@ import "../S1Vendor.sol";
 contract Pack is IPack, S1Vendor, RarityProvider {
 
     // Emitted when the cards from a commitment are actually minted
-    event CommitmentMinted(uint256 indexed commitmentID, uint256 lowTokenID, uint256 highTokenID, uint256 raffleTokenCount);
+    event CardsMinted(uint256 indexed commitmentID, uint256 lowTokenID, uint256 highTokenID);
     // Emitted when a card commitment is recorded (either purchase or opening a chest)
-    event CommitmentRecorded(uint256 indexed commitmentID, uint256 indexed callbackBlock);
+    event CommitmentRecorded(uint256 indexed commitmentID, Commitment commitment);
+    // Emitted when the tickets from a commitment are actually minted
+    event TicketsMinted(uint256 indexed commitmentID, uint16[] ticketCounts);
 
     // A commitment to generating a certain number of packs for a certain user
     // Prefer commitment to purchase (includes cards opened from chests)
     struct Commitment {
         uint256 paymentID;
         uint256 commitBlock;
-        uint256 quantity;
+        uint256 packQuantity;
+        uint256 ticketQuantity;
         uint256 escrowFor;
         address recipient;
-        bool mintTickets;
     }
 
     // All commitments recorded by this pack
@@ -68,22 +70,21 @@ contract Pack is IPack, S1Vendor, RarityProvider {
      *
      * @param _commitmentID the ID of the commitment
      */
-    function createCards(uint256 _commitmentID) public {
+    function mint(uint256 _commitmentID) public {
         Commitment memory commitment = commitments[_commitmentID];
         require(commitment.recipient != address(0), "GU:S1:Pack: must be a valid commitment");
         if (commitment.escrowFor == 0) {
             _createCards(_commitmentID, commitment, commitment.recipient);
+            _createTickets(_commitmentID, commitment, commitment.recipient);
         } else {
             _escrowCards(_commitmentID, commitment);
+            _escrowTickets(_commitmentID, commitment);
         }
     }
 
-    function _escrowCards(
-        uint256 _commitmentID,
-        Commitment memory _commitment
-    ) internal {
+    function _escrowCards(uint256 _commitmentID, Commitment memory _commitment) internal {
 
-        uint cardCount = _commitment.quantity * 5;
+        uint cardCount = _commitment.packQuantity * 5;
         uint low = cards.nextBatch();
         uint high = low + cardCount;
 
@@ -102,42 +103,65 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         escrow.callbackEscrow(vault, address(this), data, _commitment.paymentID, _commitment.escrowFor);
     }
 
-    function _escrowTickets(
-        uint256 _commitmentID,
-        Commitment memory _commitment
-    ) internal {
+    function _escrowTickets(uint256 _commitmentID, Commitment memory _commitment) internal {
+
+        if (_commitment.ticketQuantity == 0) {
+            return;
+        }
+
+        uint256 randomness = uint256(beacon.randomness(_commitment.commitBlock));
+        uint16[] memory ticketQuantities = new uint16[](_commitment.ticketQuantity);
+        uint totalTickets = 0;
+        for (uint i = 0; i < _commitment.ticketQuantity; i++) {
+            uint16 qty = _getTicketsInPack(i, randomness);
+            totalTickets += qty;
+        }
 
         IEscrow.Vault memory vault = IEscrow.Vault({
             player: _commitment.recipient,
             releaser: address(escrow),
             asset: address(referral),
-            balance: _commitment.ticketCount,
+            balance: totalTickets,
             lowTokenID: 0,
             highTokenID: 0,
             tokenIDs: new uint256[](0)
         });
 
-        bytes memory data = abi.encodeWithSignature("escrowHook(uint256)", _commitmentID);
+        bytes memory data = abi.encodeWithSignature("ticketsEscrowHook(uint256)", _commitmentID);
 
-        escrow.callbackEscrow(vault, address(this), data, _commitment.paymentID, _commitment.escrowFor);
+        escrow.callbackEscrow(
+            vault,
+            address(this),
+            data,
+            _commitment.paymentID,
+            _commitment.escrowFor
+        );
     }
 
     function ticketsEscrowHook(uint256 _commitmentID) public {
         address protocol = address(escrow.getProtocol());
         require(msg.sender == protocol, "GU:S1:Pack: must be core escrow");
         Commitment memory commitment = commitments[_commitmentID];
-        require(commitment.quantity > 0, "GU:S1:Pack: must have cards available");
-        _createCards(_commitmentID, commitment, protocol);
-        delete commitments[_commitmentID];
+        require(commitment.ticketQuantity > 0, "GU:S1:Pack: must have tickets available");
+        _createTickets(_commitmentID, commitment, protocol);
+        commitments[_commitmentID].ticketQuantity = 0;
+        // if there's nothing left to do on this purchase, clear it
+        if (commitments[_commitmentID].packQuantity == 0) {
+            delete commitments[_commitmentID];
+        }
     }
 
     function cardsEscrowHook(uint256 _commitmentID) public {
         address protocol = address(escrow.getProtocol());
         require(msg.sender == protocol, "GU:S1:Pack: must be core escrow");
         Commitment memory commitment = commitments[_commitmentID];
-        require(commitment.quantity > 0, "GU:S1:Pack: must have cards available");
+        require(commitment.packQuantity > 0, "GU:S1:Pack: must have cards available");
         _createCards(_commitmentID, commitment, protocol);
-        delete commitments[_commitmentID];
+        commitments[_commitmentID].packQuantity = 0;
+        // if there's nothing left to do on this purchase, clear it
+        if (commitments[_commitmentID].ticketQuantity == 0) {
+            delete commitments[_commitmentID];
+        }
     }
 
     /** @dev Purchase packs for a user
@@ -162,21 +186,42 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         return paymentID;
     }
 
-    function _createCards(uint256 _commitmentID, Commitment memory _commitment, address _owner) internal {
+    function _createTickets(
+        uint256 _commitmentID,
+        Commitment memory _commitment,
+        address _owner
+    ) internal {
+
+        if (_commitment.ticketQuantity == 0) {
+            return;
+        }
+
         uint256 randomness = uint256(beacon.randomness(_commitment.commitBlock));
-        uint cardCount = _commitment.quantity * 5;
+        uint16[] memory ticketQuantities = new uint16[](_commitment.ticketQuantity);
+        uint totalTickets = 0;
+        for (uint i = 0; i < _commitment.ticketQuantity; i++) {
+            uint16 qty = _getTicketsInPack(i, randomness);
+            totalTickets += qty;
+            ticketQuantities[i] = qty;
+        }
+        raffle.mint(_owner, totalTickets);
+        emit TicketsMinted(_commitmentID, ticketQuantities);
+    }
+
+    function _createCards(
+        uint256 _commitmentID,
+        Commitment memory _commitment,
+        address _owner
+    ) internal {
+        uint256 randomness = uint256(beacon.randomness(_commitment.commitBlock));
+        uint cardCount = _commitment.packQuantity * 5;
         uint16[] memory protos = new uint16[](cardCount);
         uint8[] memory qualities = new uint8[](cardCount);
         for (uint i = 0; i < cardCount; i++) {
             (protos[i], qualities[i]) = _getCardDetails(i, randomness);
         }
         uint256 lowTokenID = cards.mintCards(_owner, protos, qualities);
-
-        uint ticketsPerPack = _getTicketsPerPack(randomness);
-        uint totalTickets = ticketsPerPack.mul(_purchase.quantity);
-        raffle.mint(_owner, totalTickets);
-
-        emit CommitmentMinted(_commitmentID, lowTokenID, lowTokenID + protos.length, totalTickets);
+        emit CardsMinted(_commitmentID, lowTokenID, lowTokenID + protos.length);
     }
 
     function openChests(address _owner, uint256 _quantity) public {
@@ -184,16 +229,17 @@ contract Pack is IPack, S1Vendor, RarityProvider {
 
         uint256 commitmentID = commitmentCount++;
         uint256 commitBlock = beacon.commit(0);
-        commitments[commitmentID] = Commitment({
+        Commitment memory commitment = Commitment({
             commitBlock: commitBlock,
-            quantity: _quantity * 6,
+            packQuantity: _quantity * 6,
             recipient: _owner,
             escrowFor: 0,
             paymentID: 0,
-            mintTickets: !paused,
+            ticketQuantity: paused ? 0 : _quantity * 6
         });
 
-        emit CommitmentRecorded(commitmentID, commitBlock);
+        commitments[commitmentID] = commitment;
+        emit CommitmentRecorded(commitmentID, commitment);
     }
 
     function _createCommitment(
@@ -204,23 +250,23 @@ contract Pack is IPack, S1Vendor, RarityProvider {
     ) internal returns (uint256) {
 
         uint256 commitBlock = beacon.commit(0);
-
         uint256 commitmentID = commitmentCount++;
-
-        commitments[commitmentID] = Commitment({
+        Commitment memory commitment = Commitment({
             commitBlock: commitBlock,
-            quantity: _quantity,
+            packQuantity: _quantity,
             recipient: _recipient,
             escrowFor: _escrowFor,
             paymentID: _paymentID,
-            mintTickets: true
+            ticketQuantity: _quantity
         });
 
-        emit CommitmentRecorded(commitmentID, commitBlock);
+        commitments[commitmentID] = commitment;
+
+        emit CommitmentRecorded(commitmentID, commitment);
     }
 
     function _getCardDetails(uint _index, uint _random) internal view returns (uint16 proto, uint8 quality);
 
-    function _getTicketsPerPack(uint _random) internal view returns (uint);
+    function _getTicketsInPack(uint _index, uint _random) internal pure returns (uint16);
 
 }

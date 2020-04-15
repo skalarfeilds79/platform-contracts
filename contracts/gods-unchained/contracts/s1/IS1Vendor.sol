@@ -15,7 +15,10 @@ interface IS1Vendor {
         uint256 _quantity,
         IPay.Payment calldata _payment,
         address payable _referrer
-    ) external payable returns (uint256 paymentID);
+    )
+        external
+        payable
+        returns (uint256 paymentID);
 
     /** @dev Purchase assets for a user
      *

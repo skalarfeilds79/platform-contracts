@@ -14,9 +14,14 @@ contract ShinyPack is Pack {
         ICreditCardEscrow _escrow,
         IPay _pay
     ) public Pack(
-        _raffle, _beacon, _cards,
-        _referral, _sku,
-        649, _escrow, _pay
+        _raffle,
+        _beacon,
+        _cards,
+        _referral,
+        _sku,
+        14999,
+        _escrow,
+        _pay
     ) {}
 
     function _getCardDetails(uint _index, uint _random) internal view returns (uint16 proto, uint8 quality) {

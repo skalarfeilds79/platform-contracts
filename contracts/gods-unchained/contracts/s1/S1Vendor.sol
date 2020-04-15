@@ -19,7 +19,13 @@ contract S1Vendor is SimpleVendor {
         uint256 _price,
         ICreditCardEscrow _escrow,
         IPay _pay
-    ) public SimpleVendor(_sku, IPay.Currency.USDCents, _price, _escrow, _pay) {
+    ) public SimpleVendor(
+        _sku,
+        IPay.Currency.USDCents,
+        _price,
+        _escrow,
+        _pay
+    ) {
         referral = _referral;
     }
 

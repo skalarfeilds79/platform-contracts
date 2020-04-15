@@ -4,18 +4,19 @@ pragma experimental ABIEncoderV2;
 // solium-disable security/no-block-members
 
 import "../IEscrow.sol";
+import "./ICreditCardEscrow.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 
-contract CreditCardEscrow is Ownable {
+contract CreditCardEscrow is Ownable, ICreditCardEscrow {
 
     using SafeMath for uint256;
 
     // Emitted when assets are escrowed
-    event Escrowed(uint indexed id, address indexed owner, uint256 endTimestamp);
+    event Escrowed(uint indexed id, uint indexed paymentID, address indexed owner, uint256 endTimestamp);
 
     // Emitted when the release of the assets in a custodial escrow account is successfully requested
-    event ReleaseRequested(uint indexed id, uint256 endTimestamp, address releaseTo);
+    event ReleaseRequested(uint indexed id, uint256 releaseTimestamp, address releaseTo);
 
     // Emitted when the release of the assets in a custodial escrow account is cancelled
     event ReleaseCancelled(uint indexed id);
@@ -24,7 +25,7 @@ contract CreditCardEscrow is Ownable {
     event Released(uint indexed id);
 
     // Emitted when the destruction of the assets in an escrow account is successfully requested
-    event DestructionRequested(uint indexed id, uint256 endTimestamp);
+    event DestructionRequested(uint indexed id, uint256 destructionTimestamp);
 
     // Emitted when the destruction of the assets in an escrow account is cancelled
     event DestructionCancelled(uint indexed id);
@@ -148,6 +149,7 @@ contract CreditCardEscrow is Ownable {
      * @dev Request that a custodial escrow account's assets be marked for release
      *
      * @param _id The ID of the escrow account to be marked
+     * @param _to The new owner of tese assets
      */
     function requestRelease(uint _id, address _to) public onlyCustodian {
 
@@ -250,12 +252,14 @@ contract CreditCardEscrow is Ownable {
      * @param _vault the details of the escrow vault
      * @param _callbackTo the address to use for the callback transaction
      * @param _callbackData the data to pass to the callback transaction
+     * @param _paymentID The ID of the payment
      * @param _duration the duration of the escrow
      */
-    function escrow(
+    function callbackEscrow(
         IEscrow.Vault memory _vault,
         address _callbackTo,
         bytes memory _callbackData,
+        uint256 _paymentID,
         uint256 _duration
     ) public returns (uint) {
 
@@ -263,22 +267,22 @@ contract CreditCardEscrow is Ownable {
         require(_vault.releaser == address(this), "IM:CreditCardEscrow: must be releasable by this contract");
 
         // escrow the assets with this contract as the releaser
-        uint id = escrowProtocol.callbackEscrow(_vault, _callbackTo, _callbackData);
+        uint escrowID = escrowProtocol.callbackEscrow(_vault, _callbackTo, _callbackData);
 
-        _lock(id, _duration, _vault.player);
+        _lock(escrowID, _paymentID, _duration, _vault.player);
 
-        return id;
+        return escrowID;
     }
 
     function getProtocol() public view returns (IEscrow) {
         return escrowProtocol;
     }
 
-    function _lock(uint _id, uint256 _duration, address _owner) internal {
+    function _lock(uint _escrowID, uint _paymentID, uint256 _duration, address _owner) internal {
 
         uint256 endTimestamp = block.timestamp.add(_duration);
 
-        locks[_id] = Lock({
+        locks[_escrowID] = Lock({
             owner: _owner,
             endTimestamp: endTimestamp,
             destructionTimestamp: 0,
@@ -286,6 +290,6 @@ contract CreditCardEscrow is Ownable {
             releaseTo: address(0)
         });
 
-        emit Escrowed(_id, _owner, endTimestamp);
+        emit Escrowed(_escrowID, _paymentID, _owner, endTimestamp);
     }
 }

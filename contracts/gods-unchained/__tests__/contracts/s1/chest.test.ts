@@ -40,9 +40,8 @@ describe('Chest', () => {
     const rareChestPrice = 100;
 
     beforeEach(async () => {
-      referral = await Referral.deploy(owner);
+      referral = await Referral.deploy(owner, 90, 10);
       pay = await Pay.deploy(owner);
-      referral = await Referral.deploy(owner);
       pack = await TestPack.deploy(owner);
       escrowProtocol = await Escrow.deploy(owner);
       escrow = await CreditCardEscrow.deploy(
@@ -57,13 +56,11 @@ describe('Chest', () => {
         owner,
         "GU: S1 Rare Chest",
         "GU:1:RC",
-        0,
         pack.address,
-        rareChestSKU,
         0,
-        0,
-        rareChestPrice,
         referral.address,
+        rareChestSKU,
+        rareChestPrice,
         escrow.address,
         pay.address
       );
@@ -101,7 +98,7 @@ describe('Chest', () => {
 
     beforeEach(async () => {
       pay = await Pay.deploy(owner);
-      referral = await Referral.deploy(owner);
+      referral = await Referral.deploy(owner, 90, 10);
       pack = await TestPack.deploy(owner);
       escrowProtocol = await Escrow.deploy(owner);
       escrow = await CreditCardEscrow.deploy(
@@ -116,13 +113,11 @@ describe('Chest', () => {
         owner,
         "GU: S1 Rare Chest",
         "GU:1:RC",
-        0,
         pack.address,
-        rareChestSKU,
         0,
-        0,
-        rareChestPrice,
         referral.address,
+        rareChestSKU,
+        rareChestPrice,
         escrow.address,
         pay.address
       );
@@ -176,11 +171,11 @@ describe('Chest', () => {
     let escrow: CreditCardEscrow;
     let referral: Referral;
     let pack: TestPack;
-    const rarePackSKU = keccak256('0x00');
+    const rareChestSKU = keccak256('0x00');
 
     beforeEach(async () => {
       pay = await Pay.deploy(owner);
-      referral = await Referral.deploy(owner);
+      referral = await Referral.deploy(owner, 90, 10);
       pack = await TestPack.deploy(owner);
       escrowProtocol = await Escrow.deploy(owner);
       escrow = await CreditCardEscrow.deploy(
@@ -195,13 +190,11 @@ describe('Chest', () => {
         owner,
         "GU: S1 Rare Chest",
         "GU:1:RC",
-        0,
         pack.address,
-        rarePackSKU,
         0,
-        0,
-        100,
         referral.address,
+        rareChestSKU,
+        0,
         escrow.address,
         pay.address
       );
@@ -220,14 +213,14 @@ describe('Chest', () => {
     });
 
     it('should be able to open 1 chest', async() => {
-      await pay.setSellerApproval(chest.address, [rarePackSKU], true);
+      await pay.setSellerApproval(chest.address, [rareChestSKU], true);
       const payment = getETHPayment();
       await chest.purchase(1, payment, ZERO_EX);
       await openChests(1);
     });
 
     it('should be able to open 5 chests', async() => {
-      await pay.setSellerApproval(chest.address, [rarePackSKU], true);
+      await pay.setSellerApproval(chest.address, [rareChestSKU], true);
       const payment = getETHPayment();
       await chest.purchase(5, payment, ZERO_EX);
       await openChests(5);

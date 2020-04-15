@@ -14,7 +14,7 @@ contract Pay is IPay, Ownable {
     // Emitted when a signer's limit is changed
     event SignerLimitChanged(address indexed signer, uint256 usdCentsLimit);
     // Emitted when a payment has been processed
-    event PaymentProcessed(uint256 indexed id, Order order, Payment payment);
+    event PaymentProcessed(uint256 indexed id, address indexed vendor, Order order, Payment payment);
 
     // Stores whether a nonce has been used by a particular signer
     mapping(address => mapping(uint256 => bool)) public receiptNonces;
@@ -46,7 +46,7 @@ contract Pay is IPay, Ownable {
 
         uint id = count++;
 
-        emit PaymentProcessed(id, order, payment);
+        emit PaymentProcessed(id, msg.sender, order, payment);
 
         return id;
     }

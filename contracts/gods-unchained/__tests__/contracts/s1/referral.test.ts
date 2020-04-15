@@ -25,7 +25,7 @@ describe('Referral', () => {
     let referral: Referral;
 
     beforeEach(async () => {
-      referral = await Referral.deploy(ownerWallet);
+      referral = await Referral.deploy(ownerWallet, 90, 10);
     });
 
     async function expectSplit(total: number, toVendor: number, toReferrer: number) {

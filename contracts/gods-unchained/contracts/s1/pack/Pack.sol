@@ -140,6 +140,10 @@ contract Pack is IPack, Ownable, Product, RarityProvider {
         }
         uint256 lowTokenID = cards.mintCards(_owner, protos, qualities);
 
+        uint tokensPerPack = _getTokensPerPack(randomness);
+
+        raffle.mint(_owner, tokensPerPack.mul(_purchase.quantity));
+
         emit PurchaseCardsMinted(_purchaseID, lowTokenID, lowTokenID + protos.length);
     }
 
@@ -178,5 +182,7 @@ contract Pack is IPack, Ownable, Product, RarityProvider {
     }
 
     function _getCardDetails(uint _index, uint _random) internal view returns (uint16 proto, uint8 quality);
+
+    function _getTokensPerPack(uint _random) internal view returns (uint);
 
 }

@@ -30,4 +30,16 @@ contract LegendaryPack is Pack {
         return (_getRandomCard(rarity, rc.proto), _getQuality(rc.quality));
     }
 
+    function _getTokenCount(uint _random) internal view returns (uint) {
+        uint modded = random % 1000;
+        if (modded >= 975) {
+            return 3000;
+        } else if (modded >= 900) {
+            return 2000;
+        } else if (modded >= 725) {
+            return 1000;
+        }
+        return 500;
+    }
+
 }

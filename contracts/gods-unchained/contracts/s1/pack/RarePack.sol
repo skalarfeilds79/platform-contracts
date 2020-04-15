@@ -23,4 +23,14 @@ contract RarePack is Pack {
         return (_getRandomCard(rarity, rc.proto), _getQuality(rc.quality));
     }
 
+    function _getTokenCount(uint _random) internal view returns (uint) {
+        uint modded = random % 1000;
+        if (modded >= 975) {
+            return 500;
+        } else if (modded >= 850) {
+            return 150;
+        }
+        return 50;
+    }
+
 }

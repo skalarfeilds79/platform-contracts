@@ -36,4 +36,16 @@ contract ShinyPack is Pack {
         return (proto, quality);
     }
 
+    function _getTokenCount(uint _random) internal view returns (uint) {
+        uint modded = random % 1000;
+        if (modded >= 975) {
+            return 20000;
+        } else if (modded >= 850) {
+            return 8000;
+        } else if (modded >= 600) {
+            return 5000;
+        }
+        return 3000;
+    }
+
 }

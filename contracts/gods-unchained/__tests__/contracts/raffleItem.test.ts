@@ -3,6 +3,8 @@ import { RaffleItem } from '../../src/contracts';
 
 import 'jest';
 
+jest.setTimeout(30000);
+
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { Wallet, ethers } from 'ethers';
 
@@ -73,7 +75,8 @@ describe('Raffle Item', () => {
 
     async function subject() {
       const contract = RaffleItem.at(callerWallet, raffleItem.address);
-      await contract.transferFrom(userWallet.address, ownerWallet.address, 1);
+      const tx = await contract.transferFrom(userWallet.address, ownerWallet.address, 1);
+      return tx.wait();
     }
 
     it('should not be able to transfer if trading has not been unlocked', async () => {

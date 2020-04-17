@@ -2,6 +2,8 @@ import { Address } from '@imtbl/common-types';
 import { GenericAsset } from './../../src/contracts';
 import 'jest';
 
+jest.setTimeout(30000);
+
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { Wallet, ethers } from 'ethers';
 
@@ -73,7 +75,8 @@ describe('Generic Asset', () => {
 
     async function subject() {
       const contract = GenericAsset.at(callerWallet, genericAsset.address);
-      await contract.setTradabilityStatus(callerStatus);
+      const tx = await contract.setTradabilityStatus(callerStatus);
+      return tx.wait();
     }
 
     it('should not be able to set trading status an unauthorised user', async () => {
@@ -87,7 +90,7 @@ describe('Generic Asset', () => {
     });
 
     it('should be able to set trading status as the owner', async () => {
-      callerWallet = userWallet;
+      callerWallet = ownerWallet;
       await subject();
       const tradingStatus = await genericAsset.isTradable();
       expect(tradingStatus).toBeTruthy();

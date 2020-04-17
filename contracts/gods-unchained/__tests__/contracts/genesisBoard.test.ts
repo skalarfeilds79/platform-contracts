@@ -2,6 +2,7 @@ import { Address } from '@imtbl/common-types';
 import { GenesisBoard } from '../../src/contracts';
 
 import 'jest';
+jest.setTimeout(30000);
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { Wallet, ethers } from 'ethers';

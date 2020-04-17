@@ -1,5 +1,6 @@
 import { Address } from '@imtbl/common-types';
 import 'jest';
+jest.setTimeout(30000);
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { HydraTrinket } from '../../src/contracts';
@@ -74,7 +75,8 @@ describe('Hydra Trinket', () => {
 
     async function subject() {
       const contract = HydraTrinket.at(callerWallet, hydraTrinket.address);
-      await contract.transferFrom(userWallet.address, ownerWallet.address, 1);
+      const tx = await contract.transferFrom(userWallet.address, ownerWallet.address, 1);
+      return tx.wait();
     }
 
     it('should not be able to transfer if trading has not been unlocked', async () => {

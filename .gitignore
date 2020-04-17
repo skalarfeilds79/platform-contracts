@@ -10,3 +10,4 @@ dist
 snapshots
 *.test.js
 yarn-error.log
+lerna-debug.log

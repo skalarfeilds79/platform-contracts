@@ -10,3 +10,6 @@ dist
 snapshots
 *.test.js
 yarn-error.log
+lerna-debug.log
+.DS_Store
+contracts/.DS_Store

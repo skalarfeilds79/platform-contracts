@@ -11,7 +11,7 @@ contract Raffle is Ownable, TradeToggleERC20 {
     // Records which contracts are approved to mint raffle tickets
     mapping(address => bool) public isApprovedMinter;
 
-    constructor() public {
+    constructor() public TradeToggleERC20("GU:S1:Raffle", "GU:S1:R", 0) {
         tradable = true;
     }
 

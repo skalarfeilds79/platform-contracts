@@ -83,7 +83,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
             _createCards(_commitmentID, commitment, commitment.recipient);
             _createTickets(_commitmentID, commitment, commitment.recipient);
         } else {
-           //  _escrowCards(_commitmentID, commitment);
+            _escrowCards(_commitmentID, commitment);
             _escrowTickets(_commitmentID, commitment);
         }
     }
@@ -132,13 +132,13 @@ contract Pack is IPack, S1Vendor, RarityProvider {
             player: _commitment.recipient,
             releaser: address(escrow),
             asset: address(raffle),
-            balance: 1000,
+            balance: totalTickets,
             lowTokenID: 0,
             highTokenID: 0,
             tokenIDs: new uint256[](0)
         });
 
-        bytes memory data = abi.encodeWithSignature("raffleEscrowHook(uint256)", _commitmentID);
+        bytes memory data = abi.encodeWithSignature("ticketsEscrowHook(uint256)", _commitmentID);
 
         escrow.callbackEscrow(
             vault,
@@ -149,7 +149,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         );
     }
 
-    function raffleEscrowHook(uint256 _commitmentID) public {
+    function ticketsEscrowHook(uint256 _commitmentID) public {
         address protocol = address(escrow.getProtocol());
         require(msg.sender == protocol, "GU:S1:Pack: must be core escrow");
         Commitment memory commitment = commitments[_commitmentID];
@@ -215,7 +215,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
             totalTickets += qty;
             ticketQuantities[i] = qty;
         }
-        // raffle.mint(_owner, totalTickets);
+        raffle.mint(_owner, totalTickets);
         emit TicketsMinted(_commitmentID, ticketQuantities);
     }
 

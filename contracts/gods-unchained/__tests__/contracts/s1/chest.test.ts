@@ -15,6 +15,8 @@ const ZERO_EX = '0x0000000000000000000000000000000000000000';
 const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();
 
+ethers.errors.setLogLevel('error');
+
 describe('Chest', () => {
 
   const [owner, other] = generatedWallets(provider);

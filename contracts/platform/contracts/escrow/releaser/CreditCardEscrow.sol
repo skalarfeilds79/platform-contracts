@@ -266,7 +266,7 @@ contract CreditCardEscrow is Ownable, ICreditCardEscrow {
         require(_duration > 0, "IM:CreditCardEscrow: must be locked for a number of blocks");
         require(_vault.releaser == address(this), "IM:CreditCardEscrow: must be releasable by this contract");
 
-        // escrow the assets with this contract as the releaser
+        // // escrow the assets with this contract as the releaser
         uint escrowID = escrowProtocol.callbackEscrow(_vault, _callbackTo, _callbackData);
 
         _lock(escrowID, _paymentID, _duration, _vault.player);

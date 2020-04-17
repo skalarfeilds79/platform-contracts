@@ -30,4 +30,15 @@ contract EpicPack is Pack {
         return (_getRandomCard(rarity, rc.proto), _getQuality(rc.quality));
     }
 
+    function _getTicketsInPack(uint _index, uint _random) internal pure returns (uint16) {
+        uint seed = uint(keccak256(abi.encodePacked(_random, _index)));
+        uint modded = seed % 1000;
+        if (modded >= 975) {
+            return 1000;
+        } else if (modded >= 850) {
+            return 500;
+        }
+        return 150;
+    }
+
 }

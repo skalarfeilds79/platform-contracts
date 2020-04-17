@@ -27,6 +27,8 @@ const blockchain = new Blockchain();
 
 const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
+ethers.errors.setLogLevel('error');
+
 describe('Referral', () => {
 
   const [owner] = generatedWallets(provider);
@@ -172,7 +174,7 @@ describe('Referral', () => {
   
   });
 
-  describe('createCards', () => {
+  describe('mint', () => {
 
     let beacon: Beacon;
     let referral: Referral;
@@ -216,33 +218,32 @@ describe('Referral', () => {
       let payment = await getSignedPayment(owner, pay.address, rare.address, order, params);
       let tx = await rare.purchase(quantity, payment, ZERO_EX);
       let receipt = await tx.wait();
-      await beacon.callback(receipt.blockNumber);
     }
 
-    async function createCardsTrackGas(id: number, description: string) {
-      let tx = await rare.createCards(id);
+    async function mintTrackGas(id: number, description: string) {
+      let tx = await rare.mint(id);
       let receipt = await tx.wait();
       console.log(description, receipt.gasUsed.toNumber());
     }
 
     it('should create cards from 1 pack', async () => {
       await purchaseAndCallback(1, 100);
-      await rare.createCards(0);
+      await rare.mint(0);
     });
 
     it('should create cards from 5 packs', async () => {
       await purchaseAndCallback(5, 100);
-      await rare.createCards(0);
+      await rare.mint(0);
     });
 
     it('should create cards from 1 packs with no escrow', async () => {
       await purchaseAndCallback(1, 0);
-      await createCardsTrackGas(0, "1 pack no escrow");
+      await mintTrackGas(0, "1 pack no escrow");
     });
 
     it('should create cards from 6 packs with no escrow', async () => {
       await purchaseAndCallback(6, 0);
-      await createCardsTrackGas(0, "6 packs no escrow");
+      await mintTrackGas(0, "6 packs no escrow");
     });
   
   });
@@ -281,6 +282,7 @@ describe('Referral', () => {
         beacon.address, cards.address, referral.address, rarePackSKU, 	
         cc.address, pay.address	
       );	
+      await raffle.setMinterApproval(raffle.address, true);
       chest = await Chest.deploy(
         owner,
         "GU: S1 Rare Chest",
@@ -308,8 +310,8 @@ describe('Referral', () => {
       const payment = await getSignedPayment(owner, pay.address, chest.address, order, params);	
       await chest.purchase(quantity, payment, ZERO_EX);	
       await chest.open(quantity);	
-      const purchase = await rare.purchases(0);	
-      expect(purchase.quantity.toNumber()).toBe(quantity * 6);	
+      const purchase = await rare.commitments(0);	
+      expect(purchase.packQuantity.toNumber()).toBe(quantity * 6);	
     }	
 
     it('should create a valid purchase from an opened chest', async () => {	
@@ -324,7 +326,7 @@ describe('Referral', () => {
       await purchaseAndOpenChests(1);	
       await cards.startSeason("S1", 1, 10000);	
       await cards.addFactory(rare.address, 1);	
-      await rare.createCards(0);	
+      await rare.mint(0);	
     });	
 
   });	

@@ -83,7 +83,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
             _createCards(_commitmentID, commitment, commitment.recipient);
             _createTickets(_commitmentID, commitment, commitment.recipient);
         } else {
-            _escrowCards(_commitmentID, commitment);
+           //  _escrowCards(_commitmentID, commitment);
             _escrowTickets(_commitmentID, commitment);
         }
     }
@@ -104,7 +104,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
             tokenIDs: new uint256[](0)
         });
 
-        bytes memory data = abi.encodeWithSignature("escrowHook(uint256)", _commitmentID);
+        bytes memory data = abi.encodeWithSignature("cardsEscrowHook(uint256)", _commitmentID);
 
         escrow.callbackEscrow(vault, address(this), data, _commitment.paymentID, _commitment.escrowFor);
     }
@@ -116,7 +116,6 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         }
 
         uint256 randomness = uint256(beacon.randomness(_commitment.commitBlock));
-        uint16[] memory ticketQuantities = new uint16[](_commitment.ticketQuantity);
         uint totalTickets = 0;
         for (uint i = 0; i < _commitment.ticketQuantity; i++) {
             uint16 qty = _getTicketsInPack(i, randomness);
@@ -126,14 +125,14 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         IEscrow.Vault memory vault = IEscrow.Vault({
             player: _commitment.recipient,
             releaser: address(escrow),
-            asset: address(referral),
-            balance: totalTickets,
+            asset: address(raffle),
+            balance: 1000,
             lowTokenID: 0,
             highTokenID: 0,
             tokenIDs: new uint256[](0)
         });
 
-        bytes memory data = abi.encodeWithSignature("ticketsEscrowHook(uint256)", _commitmentID);
+        bytes memory data = abi.encodeWithSignature("raffleEscrowHook(uint256)", _commitmentID);
 
         escrow.callbackEscrow(
             vault,
@@ -144,7 +143,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         );
     }
 
-    function ticketsEscrowHook(uint256 _commitmentID) public {
+    function raffleEscrowHook(uint256 _commitmentID) public {
         address protocol = address(escrow.getProtocol());
         require(msg.sender == protocol, "GU:S1:Pack: must be core escrow");
         Commitment memory commitment = commitments[_commitmentID];
@@ -274,5 +273,9 @@ contract Pack is IPack, S1Vendor, RarityProvider {
     function _getCardDetails(uint _index, uint _random) internal view returns (uint16 proto, uint8 quality);
 
     function _getTicketsInPack(uint _index, uint _random) internal pure returns (uint16);
+
+    function() external {
+
+    }
 
 }

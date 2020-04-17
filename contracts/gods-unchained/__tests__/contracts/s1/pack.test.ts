@@ -27,6 +27,8 @@ const blockchain = new Blockchain();
 
 const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
+ethers.errors.setLogLevel('error');
+
 describe('Referral', () => {
 
   const [owner] = generatedWallets(provider);

@@ -11,14 +11,14 @@ import "../pack/IPack.sol";
 contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
 
     struct Purchase {
-        address user;
+        uint256 paymentID;
         uint256 count;
     }
 
     // Pack contract in which these chests can be opened
     IPack public pack;
     // Temporary variable to hold purchase details before the escrow callback
-    uint256 internal temporaryCount;
+    Purchase internal tempPurchase;
 
     constructor(
         string memory _name,
@@ -55,7 +55,7 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
         uint256 paymentID = super.purchaseFor(_user, _quantity, _payment, _referrer);
 
         if (_payment.currency == IPay.Currency.ETH || _payment.escrowFor == 0) {
-            _mint(_user, _quantity);
+            _mintChests(_user, _quantity, paymentID);
         } else {
             // escrow the chests
             IEscrow.Vault memory vault = IEscrow.Vault({
@@ -68,7 +68,10 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
                 tokenIDs: new uint256[](0)
             });
 
-            temporaryCount = _quantity;
+            tempPurchase = Purchase({
+                count: _quantity,
+                paymentID: paymentID
+            });
 
             bytes memory data = abi.encodeWithSignature("mintTokens()");
 
@@ -82,9 +85,18 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
     function mintTokens() public {
         address protocol = address(escrow.getProtocol());
         require(msg.sender == protocol, "GU:S1:Chest: minter must be core escrow contract");
-        require(temporaryCount > 0, "GU:S1:Chest: must create some tokens");
-        _mint(protocol, temporaryCount);
-        temporaryCount = 0;
+        Purchase memory temp = tempPurchase;
+        require(temp.count > 0, "GU:S1:Chest: must create some tokens");
+        _mintChests(protocol, temp.count, temp.paymentID);
+        tempPurchase = Purchase({
+            count: 0,
+            paymentID: 0
+        });
+    }
+
+    function _mintChests(address _to, uint256 _count, uint256 _paymentID) internal {
+        _mint(_to, _count);
+        emit PaymentERC20Minted(_paymentID, address(this), _count);
     }
 
     /** @dev Open a number of chests

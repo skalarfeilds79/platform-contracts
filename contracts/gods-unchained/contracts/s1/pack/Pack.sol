@@ -217,6 +217,11 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         }
         raffle.mint(_owner, totalTickets);
         emit TicketsMinted(_commitmentID, ticketQuantities);
+        emit PaymentERC20Minted(
+            _commitment.paymentID,
+            address(raffle),
+            totalTickets
+        );
     }
 
     function _createCards(
@@ -232,7 +237,14 @@ contract Pack is IPack, S1Vendor, RarityProvider {
             (protos[i], qualities[i]) = _getCardDetails(i, randomness);
         }
         uint256 lowTokenID = cards.mintCards(_owner, protos, qualities);
-        emit CardsMinted(_commitmentID, lowTokenID, lowTokenID + protos.length, protos, qualities);
+        uint256 highTokenID = lowTokenID + protos.length;
+        emit CardsMinted(_commitmentID, lowTokenID, highTokenID, protos, qualities);
+        emit PaymentERC721RangeMinted(
+            _commitment.paymentID,
+            address(cards),
+            lowTokenID,
+            highTokenID
+        );
     }
 
     function openChests(address _owner, uint256 _quantity) public {

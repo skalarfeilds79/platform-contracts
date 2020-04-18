@@ -3,10 +3,11 @@ pragma experimental ABIEncoderV2;
 
 import "../../escrow/releaser/ICreditCardEscrow.sol";
 import "../IPay.sol";
+import "./IVendor.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";
 
-contract SimpleVendor is Ownable {
+contract SimpleVendor is IVendor, Ownable {
 
     using SafeMath for uint256;
 

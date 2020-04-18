@@ -1,9 +1,9 @@
 import 'jest';
 
-import { 
+import {
     Escrow,
-    TestERC20Token, 
-    CreditCardEscrow, 
+    TestERC20Token,
+    CreditCardEscrow,
     TestERC721Token,
     TestCreditCardPack
 } from '../../../src/contracts';
@@ -16,7 +16,7 @@ const blockchain = new Blockchain();
 
 const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
-ethers.errors.setLogLevel("error");
+ethers.errors.setLogLevel('error');
 
 describe('CreditCardEscrow', () => {
 
@@ -32,7 +32,7 @@ describe('CreditCardEscrow', () => {
   });
 
   async function checkBalance(erc20: TestERC20Token, address: string, expected: number) {
-    let balance = await erc20.balanceOf(address);
+    const balance = await erc20.balanceOf(address);
     expect(balance.toNumber()).toBe(expected);
   }
 
@@ -48,7 +48,7 @@ describe('CreditCardEscrow', () => {
         protocol.address,
         destroyer,
         destructionDelay,
-        custodian, 
+        custodian,
         releaseDelay
       );
     });
@@ -63,31 +63,31 @@ describe('CreditCardEscrow', () => {
     let pack: TestCreditCardPack;
 
     beforeEach(async() => {
-        erc20 = await TestERC20Token.deploy(user);
-        erc721 = await TestERC721Token.deploy(user);
-        escrow = await Escrow.deploy(user);
-        cc = await CreditCardEscrow.deploy(
-          user,
-          escrow.address,
-          ZERO_EX, 
-          100,
-          ZERO_EX,
-          100
-        );
-        pack = await TestCreditCardPack.deploy(
-          user,
-          cc.address,
-          erc20.address,
-          erc721.address
-        );
-    })
+      erc20 = await TestERC20Token.deploy(user);
+      erc721 = await TestERC721Token.deploy(user);
+      escrow = await Escrow.deploy(user);
+      cc = await CreditCardEscrow.deploy(
+        user,
+        escrow.address,
+        ZERO_EX,
+        100,
+        ZERO_EX,
+        100
+      );
+      pack = await TestCreditCardPack.deploy(
+        user,
+        cc.address,
+        erc20.address,
+        erc721.address
+      );
+    });
 
     it('should be able to escrow an erc20 token', async () => {
-        await pack.purchaseERC20(user.address, 10, 10);
+      await pack.purchaseERC20(user.address, 10, 10);
     });
 
     it('should be able to escrow an erc721 token', async () => {
-        await pack.purchaseERC721(user.address, 10, 10);
+      await pack.purchaseERC721(user.address, 10, 10);
     });
 
   });
@@ -104,26 +104,26 @@ describe('CreditCardEscrow', () => {
       erc20 = await TestERC20Token.deploy(user);
       erc721 = await TestERC721Token.deploy(user);
       escrow = await Escrow.deploy(user);
-        cc = await CreditCardEscrow.deploy(
-          user,
-          escrow.address,
-          ZERO_EX, 
-          100,
-          ZERO_EX,
-          100
-        );
-        pack = await TestCreditCardPack.deploy(
-          user,
-          cc.address,
-          erc20.address,
-          erc721.address
-        );
-    })
+      cc = await CreditCardEscrow.deploy(
+        user,
+        escrow.address,
+        ZERO_EX,
+        100,
+        ZERO_EX,
+        100
+      );
+      pack = await TestCreditCardPack.deploy(
+        user,
+        cc.address,
+        erc20.address,
+        erc721.address
+      );
+    });
 
     it('should be able to release an ERC20 token vault after the time period', async () => {
-        await pack.purchaseERC20(user.address, 1, 10);
-        await blockchain.increaseTimeAsync(100);
-        await cc.release(0);
+      await pack.purchaseERC20(user.address, 1, 10);
+      await blockchain.increaseTimeAsync(100);
+      await cc.release(0);
     });
 
     it('should be able to release an ERC721 token vault after the time period', async () => {
@@ -166,25 +166,25 @@ describe('CreditCardEscrow', () => {
       erc20 = await TestERC20Token.deploy(user);
       erc721 = await TestERC721Token.deploy(user);
       escrow = await Escrow.deploy(user);
-        cc = await CreditCardEscrow.deploy(
-          user,
-          escrow.address,
-          destroyer.address, 
-          100,
-          custodian.address,
-          100
-        );
-        pack = await TestCreditCardPack.deploy(
-          user,
-          cc.address,
-          erc20.address,
-          erc721.address
-        );
-    })
+      cc = await CreditCardEscrow.deploy(
+        user,
+        escrow.address,
+        destroyer.address,
+        100,
+        custodian.address,
+        100
+      );
+      pack = await TestCreditCardPack.deploy(
+        user,
+        cc.address,
+        erc20.address,
+        erc721.address
+      );
+    });
 
     it('should be able to request destroy immediately', async () => {
-        await pack.purchaseERC20(ZERO_EX, 1, 10);
-        await cc.requestDestruction(0);
+      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await cc.requestDestruction(0);
     });
 
     it('should not be able to request rescission twice', async () => {
@@ -209,7 +209,7 @@ describe('CreditCardEscrow', () => {
     });
 
     it('should be able to release after successful request', async () => {
-      await pack.purchaseERC20(ZERO_EX, 1, 10)
+      await pack.purchaseERC20(ZERO_EX, 1, 10);
       await cc.requestDestruction(0);
       await blockchain.increaseTimeAsync(destructionDelay);
       await cc.destroy(0);
@@ -220,7 +220,7 @@ describe('CreditCardEscrow', () => {
       await cc.requestDestruction(0);
       await blockchain.increaseTimeAsync(destructionDelay);
       await cc.destroy(0);
-      let balance = await erc20.balanceOf(escrow.address);
+      const balance = await erc20.balanceOf(escrow.address);
       expect(balance.toNumber()).toBe(1);
     });
 
@@ -250,26 +250,26 @@ describe('CreditCardEscrow', () => {
       erc20 = await TestERC20Token.deploy(user);
       erc721 = await TestERC721Token.deploy(user);
       escrow = await Escrow.deploy(user);
-        cc = await CreditCardEscrow.deploy(
-          user,
-          escrow.address,
-          destroyer.address, 
-          destructionDelay,
-          custodian.address,
-          releaseDelay
-        );
-        pack = await TestCreditCardPack.deploy(
-          user,
-          cc.address,
-          erc20.address,
-          erc721.address
-        );
-    })
+      cc = await CreditCardEscrow.deploy(
+        user,
+        escrow.address,
+        destroyer.address,
+        destructionDelay,
+        custodian.address,
+        releaseDelay
+      );
+      pack = await TestCreditCardPack.deploy(
+        user,
+        cc.address,
+        erc20.address,
+        erc721.address
+      );
+    });
 
     it('should be able to cancel a destruction request immediately', async () => {
-        await pack.purchaseERC20(ZERO_EX, 1, 10);
-        await cc.requestDestruction(0);
-        await cc.cancelDestruction(0);
+      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await cc.requestDestruction(0);
+      await cc.cancelDestruction(0);
     });
 
     it('should not be able to cancel a destruction request which is not in progress', async () => {
@@ -315,26 +315,26 @@ describe('CreditCardEscrow', () => {
       erc20 = await TestERC20Token.deploy(user);
       erc721 = await TestERC721Token.deploy(user);
       escrow = await Escrow.deploy(user);
-        cc = await CreditCardEscrow.deploy(
-          user,
-          escrow.address,
-          destroyer.address, 
-          destructionDelay,
-          custodian.address,
-          releaseDelay
-        );
-        pack = await TestCreditCardPack.deploy(
-          user,
-          cc.address,
-          erc20.address,
-          erc721.address
-        );
-    })
+      cc = await CreditCardEscrow.deploy(
+        user,
+        escrow.address,
+        destroyer.address,
+        destructionDelay,
+        custodian.address,
+        releaseDelay
+      );
+      pack = await TestCreditCardPack.deploy(
+        user,
+        cc.address,
+        erc20.address,
+        erc721.address
+      );
+    });
 
     it('should be able to cancel a release request immediately', async () => {
-        await pack.purchaseERC20(ZERO_EX, 1, 10);
-        await cc.requestRelease(0, user.address);
-        await cc.cancelRelease(0);
+      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await cc.requestRelease(0, user.address);
+      await cc.cancelRelease(0);
     });
 
     it('should not be able to cancel a destruction request which is not in progress', async () => {
@@ -375,9 +375,9 @@ describe('CreditCardEscrow', () => {
       erc721 = await TestERC721Token.deploy(user);
       escrow = await Escrow.deploy(user);
       cc = await CreditCardEscrow.deploy(
-        user, 
+        user,
         escrow.address,
-        destroyer.address, 
+        destroyer.address,
         100,
         custodian.address,
         100
@@ -388,11 +388,11 @@ describe('CreditCardEscrow', () => {
         erc20.address,
         erc721.address
       );
-    })
+    });
 
     it('should be able to request release immediately', async () => {
-        await pack.purchaseERC20(ZERO_EX, 1, 10);
-        await cc.requestRelease(0, user.address);
+      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await cc.requestRelease(0, user.address);
     });
 
     it('should not be able to request release twice', async () => {
@@ -415,7 +415,7 @@ describe('CreditCardEscrow', () => {
       await cc.requestRelease(0, user.address);
       await blockchain.increaseTimeAsync(releaseDelay);
       await cc.release(0);
-      let balance = await erc20.balanceOf(user.address);
+      const balance = await erc20.balanceOf(user.address);
       expect(balance.toNumber()).toBe(1);
     });
 

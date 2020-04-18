@@ -24,7 +24,6 @@ describe('Pay', () => {
     await blockchain.revertAsync();
   });
 
-
   describe('#constructor', () => {
     it('should be able to deploy the processor contract', async () => {
       const processor = await Pay.deploy(user);
@@ -57,17 +56,16 @@ describe('Pay', () => {
   describe('#setSellerApproval', () => {
 
     let processor: Pay;
-    let sku = keccak256('0x00');
+    const sku = keccak256('0x00');
 
     beforeEach(async () => {
-        processor = await Pay.deploy(user);
+      processor = await Pay.deploy(user);
     });
 
     async function setSellerApproval(sender: Wallet, seller: string, shouldApprove: boolean) {
-        const p = Pay.at(sender, processor.address);
-        await p.setSellerApproval(seller, [sku], shouldApprove);
+      const p = Pay.at(sender, processor.address);
+      await p.setSellerApproval(seller, [sku], shouldApprove);
     }
-
 
     it('should not be able to set seller approval as non-owner', async () => {
       await expectRevert(setSellerApproval(other, user.address, true));
@@ -75,8 +73,8 @@ describe('Pay', () => {
     });
 
     it('should be able to set seller approval as owner', async () => {
-        await setSellerApproval(user, user.address, true);
-        await setSellerApproval(user, user.address, false);
+      await setSellerApproval(user, user.address, true);
+      await setSellerApproval(user, user.address, false);
     });
 
   });

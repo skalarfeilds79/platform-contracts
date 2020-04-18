@@ -34,7 +34,7 @@ describe('Genesis Board', () => {
         'GU:GENESISBOARD',
       );
     });
-  })
+  });
 
   describe('#mint', () => {
     let genesisBoard: GenesisBoard;

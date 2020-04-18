@@ -31,7 +31,7 @@ describe('Raffle Item', () => {
     it('should be able to deploy', async () => {
       const raffleItem = await RaffleItem.deploy(ownerWallet, 'GU: Item', 'GU:ITEM');
     });
-  })
+  });
 
   describe('#mint', () => {
     let raffleItem: RaffleItem;

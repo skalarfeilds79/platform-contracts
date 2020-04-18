@@ -1,10 +1,9 @@
 import 'jest';
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
-import { 
+import {
   Chest, Referral, Pay, CreditCardEscrow, TestPack, Escrow
 } from '../../../src/contracts';
-
 
 import { ethers } from 'ethers';
 import { keccak256 } from 'ethers/utils';
@@ -20,7 +19,7 @@ ethers.errors.setLogLevel('error');
 describe('Chest', () => {
 
   const [owner, other] = generatedWallets(provider);
-  
+
   beforeEach(async () => {
     await blockchain.resetAsync();
     await blockchain.saveSnapshotAsync();
@@ -51,13 +50,13 @@ describe('Chest', () => {
         escrowProtocol.address,
         ZERO_EX,
         100,
-        ZERO_EX, 
+        ZERO_EX,
         100
       );
       chest = await Chest.deploy(
         owner,
-        "GU: S1 Rare Chest",
-        "GU:1:RC",
+        'GU: S1 Rare Chest',
+        'GU:1:RC',
         pack.address,
         0,
         referral.address,
@@ -108,13 +107,13 @@ describe('Chest', () => {
         escrowProtocol.address,
         ZERO_EX,
         100,
-        ZERO_EX, 
+        ZERO_EX,
         100
       );
       chest = await Chest.deploy(
         owner,
-        "GU: S1 Rare Chest",
-        "GU:1:RC",
+        'GU: S1 Rare Chest',
+        'GU:1:RC',
         pack.address,
         0,
         referral.address,
@@ -129,11 +128,15 @@ describe('Chest', () => {
       await pay.setSignerLimit(owner.address, 10000000000);
       await pay.setSellerApproval(chest.address, [rareChestSKU], true);
       const value = rareChestPrice * quantity;
-      const order = { sku: rareChestSKU, recipient: owner.address, currency: Currency.USDCents, quantity: quantity, totalPrice: value };
-      const params = { value: value, escrowFor: escrowFor, nonce: 0 };
+      const order = {
+        quantity, sku: rareChestSKU, recipient: owner.address,
+        currency: Currency.USDCents, totalPrice: value
+      };
+      const params = { value, escrowFor, nonce: 0 };
       const payment = await getSignedPayment(owner, pay.address, chest.address, order, params);
       await chest.purchase(quantity, payment, ZERO_EX);
-      let expectedUserBalance: number, expectedEscrowBalance : number;
+      let expectedUserBalance: number;
+      let expectedEscrowBalance : number;
       if (escrowFor > 0) {
         expectedUserBalance = 0;
         expectedEscrowBalance = quantity;
@@ -152,7 +155,7 @@ describe('Chest', () => {
     });
 
     it('should purchase 5 chests using USD with no escrow', async() => {
-      await purchaseChests(5, 0)
+      await purchaseChests(5, 0);
     });
 
     it('should purchase 1 chest using USD with escrow', async() => {
@@ -160,7 +163,7 @@ describe('Chest', () => {
     });
 
     it('should purchase 5 chests using USD with escrow', async() => {
-      await purchaseChests(5, 10000)
+      await purchaseChests(5, 10000);
     });
 
   });
@@ -185,13 +188,13 @@ describe('Chest', () => {
         escrowProtocol.address,
         ZERO_EX,
         100,
-        ZERO_EX, 
+        ZERO_EX,
         100
       );
       chest = await Chest.deploy(
         owner,
-        "GU: S1 Rare Chest",
-        "GU:1:RC",
+        'GU: S1 Rare Chest',
+        'GU:1:RC',
         pack.address,
         0,
         referral.address,

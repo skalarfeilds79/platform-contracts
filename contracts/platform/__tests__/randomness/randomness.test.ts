@@ -49,21 +49,21 @@ describe('Beacon', () => {
     beforeEach(async() => {
       beacon = await Beacon.deploy(provider.getSigner());
       consumer = await Consumer.deploy(provider.getSigner());
-    })
+    });
 
     async function commit(offset: BigNumberish) {
-      let tx = await beacon.commit(offset);
-      let receipt = await tx.wait();
+      const tx = await beacon.commit(offset);
+      const receipt = await tx.wait();
       const parsed = parseLogs(Beacon.ABI, receipt.logs);
       expect(parsed.length).toBe(1);
       expect(parsed[0].name).toBe('Commit');
       expect(parsed[0].values.commitBlock.toNumber()).toBe(receipt.blockNumber + Number(offset));
-      let committed = await beacon.commitRequested(receipt.blockNumber);
+      const committed = await beacon.commitRequested(receipt.blockNumber);
       expect(committed).toBeTruthy();
     }
 
-    it ('should not be able to force an overflow', async () => {
-      const MAX_UINT = new BigNumber("0x" + 'F'.repeat(64));
+    it('should not be able to force an overflow', async () => {
+      const MAX_UINT = new BigNumber(`0x${'F'.repeat(64)}`);
       await expectRevert(commit(MAX_UINT));
     });
 
@@ -87,7 +87,7 @@ describe('Beacon', () => {
       let tx = await beacon.commit(offset);
       let receipt = await tx.wait();
       await blockchain.waitBlocksAsync(wait);
-      let commitBlock = offset + receipt.blockNumber;
+      const commitBlock = offset + receipt.blockNumber;
       tx = await beacon.randomness(commitBlock);
       receipt = await tx.wait();
       const parsed = parseLogs(Beacon.ABI, receipt.logs);
@@ -138,35 +138,35 @@ describe('Beacon', () => {
     });
 
     it('should be able to make a successful recommit', async () => {
-      let receipt = await beacon.commit(0);
+      const receipt = await beacon.commit(0);
       await blockchain.waitBlocksAsync(256);
       await beacon.recommit(receipt.blockNumber, 0);
     });
 
     it('should not be able to recommit inside first 256 blocks', async () => {
-        let receipt = await beacon.commit(0);
-        await expectRevert(beacon.recommit(receipt.blockNumber, 0));
+      const receipt = await beacon.commit(0);
+      await expectRevert(beacon.recommit(receipt.blockNumber, 0));
     });
 
     it('should not be able to recommit uncommited block', async () => {
-      let committed = await beacon.commitRequested(0);
+      const committed = await beacon.commitRequested(0);
       expect(committed).toBeFalsy();
       await expectRevert(beacon.recommit(0, 0));
     });
 
     it('should be able to recommit twice', async () => {
-        let receipt = await beacon.commit(0);
-        await blockchain.waitBlocksAsync(256);
-        await beacon.recommit(receipt.blockNumber, 0);
-        await blockchain.waitBlocksAsync(256);
-        await beacon.recommit(receipt.blockNumber, 0);
+      const receipt = await beacon.commit(0);
+      await blockchain.waitBlocksAsync(256);
+      await beacon.recommit(receipt.blockNumber, 0);
+      await blockchain.waitBlocksAsync(256);
+      await beacon.recommit(receipt.blockNumber, 0);
     });
 
     it('should not be able to recommit twice too quickly', async () => {
-        let receipt = await beacon.commit(0);
-        await blockchain.waitBlocksAsync(256);
-        await beacon.recommit(receipt.blockNumber, 0);
-        await expectRevert(beacon.recommit(receipt.blockNumber, 0));
+      const receipt = await beacon.commit(0);
+      await blockchain.waitBlocksAsync(256);
+      await beacon.recommit(receipt.blockNumber, 0);
+      await expectRevert(beacon.recommit(receipt.blockNumber, 0));
     });
 
     it('should be able to make a successful callback after a recommit', async () => {
@@ -175,9 +175,9 @@ describe('Beacon', () => {
       await blockchain.waitBlocksAsync(256);
       tx = await beacon.recommit(receipt.blockNumber, 0);
       receipt = await tx.wait();
-      let committed = await beacon.commitRequested(receipt.blockNumber);
+      const committed = await beacon.commitRequested(receipt.blockNumber);
       expect(committed).toBeTruthy();
-      await beacon.randomness(receipt.blockNumber)
+      await beacon.randomness(receipt.blockNumber);
     });
 
   });
@@ -207,15 +207,15 @@ describe('Beacon', () => {
     });
 
     it('should be able to get randomness after callback', async () => {
-      let tx = await beacon.commit(0);
-      let receipt = await tx.wait();
+      const tx = await beacon.commit(0);
+      const receipt = await tx.wait();
       await blockchain.waitBlocksAsync(1);
       await beacon.randomness(receipt.blockNumber);
     });
 
     it('should be able to get randomness without callback', async () => {
-      let tx = await beacon.commit(0);
-      let receipt = await tx.wait();
+      const tx = await beacon.commit(0);
+      const receipt = await tx.wait();
       await blockchain.waitBlocksAsync(1);
       await beacon.randomness(receipt.blockNumber);
     });

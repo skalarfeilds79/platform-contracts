@@ -94,7 +94,8 @@ describe('ERC721', () => {
   });
 
   it('should be able to spend approval', async () => {
-    const transferTx = await Cards.at(userWallet, cards.address).transferFrom(ownerWallet.address, userWallet.address, 1);
+    const core = Cards.at(userWallet, cards.address);
+    const transferTx = await core.transferFrom(ownerWallet.address, userWallet.address, 1);
 
     const receipt = await transferTx.wait();
     const parsed = parseLogs(receipt.logs, Cards.ABI);

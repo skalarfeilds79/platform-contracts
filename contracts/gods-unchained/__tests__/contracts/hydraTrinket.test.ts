@@ -29,7 +29,7 @@ describe('Hydra Trinket', () => {
     it('should be able to deploy', async () => {
       const hydraTrinket = await HydraTrinket.deploy(ownerWallet, 'GU: Hydra', 'GU:HYDRA');
     });
-  })
+  });
 
   describe('#mint', () => {
     let hydraTrinket: HydraTrinket;

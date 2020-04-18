@@ -44,7 +44,7 @@ contract ShinyPack is Pack {
     }
 
     function _getTicketsPerPack(uint _index, uint _random) internal pure returns (uint16) {
-        uint seed = uint(keccak256(abi.encodePacked(_random, _index)));
+        uint seed = uint(keccak256(abi.encodePacked(_index, _random)));
         uint modded = seed % 1000;
         if (modded >= 975) {
             return 20000;

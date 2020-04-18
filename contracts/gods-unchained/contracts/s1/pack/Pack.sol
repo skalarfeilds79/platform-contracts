@@ -12,13 +12,7 @@ import "../S1Vendor.sol";
 contract Pack is IPack, S1Vendor, RarityProvider {
 
     // Emitted when the cards from a commitment are actually minted
-    event CardsMinted(
-        uint256 indexed commitmentID,
-        uint256 lowTokenID,
-        uint256 highTokenID,
-        uint16[] protos,
-        uint8[] qualities
-    );
+    event CardsMinted(uint256 indexed commitmentID, uint256 lowTokenID, uint256 highTokenID);
     // Emitted when a card commitment is recorded (either purchase or opening a chest)
     event CommitmentRecorded(uint256 indexed commitmentID, Commitment commitment);
     // Emitted when the tickets from a commitment are actually minted
@@ -115,13 +109,19 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         );
     }
 
+    function _getRandomness(uint256 _commitmentID, Commitment memory _commitment) internal returns (uint256) {
+        bytes32 base = beacon.randomness(_commitment.commitBlock);
+        bytes32 hashed = keccak256(abi.encodePacked(base, _commitmentID));
+        return uint256(hashed);
+    }
+
     function _escrowTickets(uint256 _commitmentID, Commitment memory _commitment) internal {
 
         if (_commitment.ticketQuantity == 0) {
             return;
         }
 
-        uint256 randomness = uint256(beacon.randomness(_commitment.commitBlock));
+        uint randomness = _getRandomness(_commitmentID, _commitment);
         uint totalTickets = 0;
         for (uint i = 0; i < _commitment.ticketQuantity; i++) {
             uint16 qty = _getTicketsInPack(i, randomness);
@@ -207,7 +207,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
             return;
         }
 
-        uint256 randomness = uint256(beacon.randomness(_commitment.commitBlock));
+        uint randomness = _getRandomness(_commitmentID, _commitment);
         uint16[] memory ticketQuantities = new uint16[](_commitment.ticketQuantity);
         uint totalTickets = 0;
         for (uint i = 0; i < _commitment.ticketQuantity; i++) {
@@ -229,7 +229,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         Commitment memory _commitment,
         address _owner
     ) internal {
-        uint256 randomness = uint256(beacon.randomness(_commitment.commitBlock));
+        uint256 randomness = _getRandomness(_commitmentID, _commitment);
         uint cardCount = _commitment.packQuantity * 5;
         uint16[] memory protos = new uint16[](cardCount);
         uint8[] memory qualities = new uint8[](cardCount);
@@ -238,7 +238,8 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         }
         uint256 lowTokenID = cards.mintCards(_owner, protos, qualities);
         uint256 highTokenID = lowTokenID + protos.length;
-        emit CardsMinted(_commitmentID, lowTokenID, highTokenID, protos, qualities);
+
+        emit CardsMinted(_commitmentID, lowTokenID, highTokenID);
         emit PaymentERC721RangeMinted(
             _commitment.paymentID,
             address(cards),
@@ -291,9 +292,5 @@ contract Pack is IPack, S1Vendor, RarityProvider {
     function _getCardDetails(uint _index, uint _random) internal view returns (uint16 proto, uint8 quality);
 
     function _getTicketsInPack(uint _index, uint _random) internal pure returns (uint16);
-
-    function() external {
-
-    }
 
 }

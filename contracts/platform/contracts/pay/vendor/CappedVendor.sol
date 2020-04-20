@@ -1,9 +1,9 @@
 pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
-import "./SimpleVendor.sol";
+import "./SingleItemVendor.sol";
 
-contract CappedVendor is SimpleVendor {
+contract CappedVendor is SingleItemVendor {
 
     using SafeMath for uint256;
 

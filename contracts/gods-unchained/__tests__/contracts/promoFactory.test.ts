@@ -5,6 +5,7 @@ jest.setTimeout(30000);
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { Cards, PromoFactory } from '../../src/contracts';
 import { Wallet, ethers } from 'ethers';
+ethers.errors.setLogLevel('error');
 
 import { Address } from '@imtbl/common-types';
 import { asyncForEach } from '@imtbl/utils';
@@ -165,7 +166,6 @@ describe('Core', () => {
 
       const minters = await promoFactory.validMinters(callerProto);
       expect(minters.length).toBe(1);
-      console.log(minters);
 
       const isValidMinter = await promoFactory.isValidMinter(
         callerMinter.address,

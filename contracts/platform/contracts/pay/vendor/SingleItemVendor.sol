@@ -7,7 +7,7 @@ import "./IVendor.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";
 
-contract SimpleVendor is IVendor, Ownable {
+contract SingleItemVendor is IVendor, Ownable {
 
     using SafeMath for uint256;
 

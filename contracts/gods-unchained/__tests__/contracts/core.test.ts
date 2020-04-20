@@ -1,6 +1,7 @@
 import 'jest';
 
 jest.setTimeout(30000);
+ethers.errors.setLogLevel('error');
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { Cards } from '../../src/contracts';

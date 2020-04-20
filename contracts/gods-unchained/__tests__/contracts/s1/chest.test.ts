@@ -1,12 +1,11 @@
 import 'jest';
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
-import {
-  Chest, Referral, PurchaseProcessor, CreditCardEscrow, TestPack, Escrow
-} from '../../../src/contracts';
+import { Chest, Referral, TestPack, Escrow } from '../../../src/contracts';
 
 import { ethers } from 'ethers';
 import { keccak256 } from 'ethers/utils';
+import { PurchaseProcessor, CreditCardEscrow } from '@imtbl/platform/src/contracts';
 import { getETHPayment, getSignedPayment, Currency } from '@imtbl/platform/src/pay';
 
 const ZERO_EX = '0x0000000000000000000000000000000000000000';
@@ -76,13 +75,13 @@ describe('Chest', () => {
       expect(balance.toNumber()).toBe(quantity);
     }
 
-    it('should purchase 1 chest using ETH', async() => {
-      await purchaseChests(1);
-    });
+    // it('should purchase 1 chest using ETH', async() => {
+    //   await purchaseChests(1);
+    // });
 
-    it('should purchase 5 chests using ETH', async() => {
-      await purchaseChests(5);
-    });
+    // it('should purchase 5 chests using ETH', async() => {
+    //   await purchaseChests(5);
+    // });
 
   });
 

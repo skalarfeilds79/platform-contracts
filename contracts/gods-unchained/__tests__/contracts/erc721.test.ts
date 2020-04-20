@@ -3,6 +3,7 @@ import 'jest';
 import { Cards } from '../../src/contracts';
 
 jest.setTimeout(30000);
+ethers.errors.setLogLevel('error');
 
 import { ethers } from 'ethers';
 import { generatedWallets } from '@imtbl/test-utils';

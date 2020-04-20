@@ -2,19 +2,15 @@ import 'jest';
 
 import { Blockchain, generatedWallets } from '@imtbl/test-utils';
 import {
-  Escrow,
-  Beacon,
-  CreditCardEscrow,
   Referral,
   RarePack,
   Cards,
-  Pay,
   Chest,
   Raffle
 } from '../../../src/contracts';
 import { Wallet, ethers } from 'ethers';
 import { keccak256 } from 'ethers/utils';
-
+import { PurchaseProcessor, CreditCardEscrow, Escrow, Beacon } from '@imtbl/platform/src/contracts';
 import { getSignedPayment, Currency } from '@imtbl/platform/src/pay';
 
 jest.setTimeout(600000);
@@ -57,7 +53,7 @@ describe('Raffle', () => {
 
     let beacon: Beacon;
     let referral: Referral;
-    let pay: Pay;
+    let processor: PurchaseProcessor;
     let raffle: Raffle;
 
     let escrow: Escrow;
@@ -80,17 +76,17 @@ describe('Raffle', () => {
       );
       beacon = await Beacon.deploy(owner);
       referral = await Referral.deploy(owner, 90, 10);
-      pay = await Pay.deploy(owner);
+      processor = await PurchaseProcessor.deploy(owner);
       cards = await Cards.deploy(owner, 1250, 'Cards', 'CARD');
       raffle = await Raffle.deploy(owner);
       rare = await RarePack.deploy(
         owner,
         raffle.address,
         beacon.address, cards.address, referral.address, rarePackSKU,
-        cc.address, pay.address
+        cc.address, processor.address
       );
-      await pay.setSellerApproval(rare.address, [rarePackSKU], true);
-      await pay.setSignerLimit(owner.address, 1000000000000000);
+      await processor.setSellerApproval(rare.address, [rarePackSKU], true);
+      await processor.setSignerLimit(owner.address, 1000000000000000);
     });
 
     async function purchasePacks(quantity: number) {
@@ -99,7 +95,7 @@ describe('Raffle', () => {
         currency: Currency.USDCents
       };
       const params = { escrowFor: 0, nonce: 0, value: cost * quantity };
-      const payment = await getSignedPayment(owner, pay.address, rare.address, order, params);
+      const payment = await getSignedPayment(owner, processor.address, rare.address, order, params);
       await rare.purchase(quantity, payment, ZERO_EX);
     }
 
@@ -130,7 +126,7 @@ describe('Raffle', () => {
 
     let beacon: Beacon;
     let referral: Referral;
-    let pay: Pay;
+    let processor: PurchaseProcessor;
     let raffle: Raffle;
 
     let escrow: Escrow;
@@ -149,18 +145,18 @@ describe('Raffle', () => {
       );
       beacon = await Beacon.deploy(owner);
       referral = await Referral.deploy(owner, 90, 10);
-      pay = await Pay.deploy(owner);
+      processor = await PurchaseProcessor.deploy(owner);
       cards = await Cards.deploy(owner, 1250, 'Cards', 'CARD');
       raffle = await Raffle.deploy(owner);
       rare = await RarePack.deploy(
         owner,
         raffle.address,
         beacon.address, cards.address, referral.address, rarePackSKU,
-        cc.address, pay.address
+        cc.address, processor.address
       );
       await raffle.setMinterApproval(rare.address, true);
-      await pay.setSellerApproval(rare.address, [rarePackSKU], true);
-      await pay.setSignerLimit(owner.address, 1000000000000000);
+      await processor.setSellerApproval(rare.address, [rarePackSKU], true);
+      await processor.setSignerLimit(owner.address, 1000000000000000);
       await cards.startSeason('S1', 1, 10000);
       await cards.addFactory(rare.address, 1);
     });
@@ -171,7 +167,7 @@ describe('Raffle', () => {
         totalPrice: cost * quantity, currency: Currency.USDCents
       };
       const params = { escrowFor, nonce: 0, value: cost * quantity };
-      const payment = await getSignedPayment(owner, pay.address, rare.address, order, params);
+      const payment = await getSignedPayment(owner, processor.address, rare.address, order, params);
       await rare.purchase(quantity, payment, ZERO_EX);
     }
 
@@ -223,7 +219,7 @@ describe('Raffle', () => {
 
     let beacon: Beacon;
     let referral: Referral;
-    let pay: Pay;
+    let processor: PurchaseProcessor;
     let raffle: Raffle;
 
     let escrow: Escrow;
@@ -244,14 +240,14 @@ describe('Raffle', () => {
       );
       beacon = await Beacon.deploy(owner);
       referral = await Referral.deploy(owner, 90, 10);
-      pay = await Pay.deploy(owner);
+      processor = await PurchaseProcessor.deploy(owner);
       cards = await Cards.deploy(owner, 1250, 'Cards', 'CARD');
       raffle = await Raffle.deploy(owner);
       rare = await RarePack.deploy(
         owner,
         raffle.address,
         beacon.address, cards.address, referral.address, rarePackSKU,
-        cc.address, pay.address
+        cc.address, processor.address
       );
       await raffle.setMinterApproval(rare.address, true);
       chest = await Chest.deploy(
@@ -264,7 +260,7 @@ describe('Raffle', () => {
         rareChestSKU,
         rareChestPrice,
         escrow.address,
-        pay.address
+        processor.address
       );
       await rare.setChest(chest.address);
       await cards.startSeason('S1', 1, 10000);
@@ -275,18 +271,18 @@ describe('Raffle', () => {
       if (pause) {
         await rare.setPaused(true);
       }
-      await pay.setSellerApproval(chest.address, [rareChestSKU], true);
+      await processor.setSellerApproval(chest.address, [rareChestSKU], true);
       const balance = await chest.balanceOf(owner.address);
       expect(balance.toNumber()).toBe(0);
-      await pay.setSignerLimit(owner.address, 10000000000);
-      await pay.setSellerApproval(chest.address, [rareChestSKU], true);
+      await processor.setSignerLimit(owner.address, 10000000000);
+      await processor.setSellerApproval(chest.address, [rareChestSKU], true);
       const value = rareChestPrice * quantity;
       const order = {
         quantity, sku: rareChestSKU, recipient: owner.address,
         currency: Currency.USDCents, totalPrice: value
       };
       const params = { value, escrowFor: 0, nonce: 0 };
-      const payment = await getSignedPayment(owner, pay.address, chest.address, order, params);
+      const payment = await getSignedPayment(owner, processor.address, chest.address, order, params);
       await chest.purchase(quantity, payment, ZERO_EX);
       await chest.open(quantity);
       const purchase = await rare.commitments(0);

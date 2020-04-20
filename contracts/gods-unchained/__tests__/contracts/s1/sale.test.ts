@@ -3,17 +3,13 @@ import 'jest';
 import { Blockchain, generatedWallets } from '@imtbl/test-utils';
 import {
   S1Sale,
-  Escrow,
-  Beacon,
-  CreditCardEscrow,
   Referral,
   RarePack,
-  Pay,
   Raffle
 } from '../../../src/contracts';
 import { ethers } from 'ethers';
 import { keccak256 } from 'ethers/utils';
-
+import { PurchaseProcessor, CreditCardEscrow, Escrow, Beacon } from '@imtbl/platform/src/contracts';
 import { getSignedPayment, Currency } from '@imtbl/platform/src/pay';
 
 jest.setTimeout(600000);
@@ -40,7 +36,7 @@ describe('Sale', () => {
 
     let beacon: Beacon;
     let referral: Referral;
-    let processor: Pay;
+    let processor: PurchaseProcessor;
     let raffle: Raffle;
 
     let escrow: Escrow;
@@ -62,7 +58,7 @@ describe('Sale', () => {
       );
       beacon = await Beacon.deploy(owner);
       referral = await Referral.deploy(owner, 90, 10);
-      processor = await Pay.deploy(owner);
+      processor = await PurchaseProcessor.deploy(owner);
       sale = await S1Sale.deploy(owner);
       raffle = await Raffle.deploy(owner);
       rare = await RarePack.deploy(

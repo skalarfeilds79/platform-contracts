@@ -7,6 +7,8 @@ jest.setTimeout(30000);
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { Wallet, ethers } from 'ethers';
 
+ethers.errors.setLogLevel('error');
+
 import { parseLogs } from '@imtbl/utils';
 
 const provider = new ethers.providers.JsonRpcProvider();

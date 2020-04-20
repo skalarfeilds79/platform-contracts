@@ -32,7 +32,7 @@ describe('Vendor', () => {
     });
   });
 
-  describe('#processPurchaseProcessorment in ETH', () => {
+  describe('#processPayment in ETH', () => {
 
     let pay: PurchaseProcessor;
     let vendor: TestVendor;
@@ -43,11 +43,11 @@ describe('Vendor', () => {
       vendor = await TestVendor.deploy(user, pay.address);
     });
 
-    async function processETHPurchaseProcessorment(
+    async function processETHPayment(
         approved: boolean, quantity: number, totalPrice: number, value: number
     ) {
       await pay.setSellerApproval(vendor.address, [sku], approved);
-      await vendor.processPurchaseProcessorment(
+      await vendor.processPayment(
         { sku, totalPrice, quantity, recipient: user.address, currency: 0 },
         getETHPayment(),
         { value }
@@ -55,20 +55,20 @@ describe('Vendor', () => {
     }
 
     it('should not be able to process an insufficient ETH payment', async () => {
-      await expectRevert(processETHPurchaseProcessorment(true, 1, 100, 99));
+      await expectRevert(processETHPayment(true, 1, 100, 99));
     });
 
     it('should not be able to process an ETH payment for an unapproved item', async () => {
-      await expectRevert(processETHPurchaseProcessorment(false, 1, 100, 100));
+      await expectRevert(processETHPayment(false, 1, 100, 100));
     });
 
     it('should be able to process an ETH payment', async () => {
-      await processETHPurchaseProcessorment(true, 1, 100, 100);
+      await processETHPayment(true, 1, 100, 100);
     });
 
   });
 
-  describe('#processPurchaseProcessorment in USD', () => {
+  describe('#processPayment in USD', () => {
 
     let pay: PurchaseProcessor;
     let vendor: TestVendor;
@@ -85,9 +85,9 @@ describe('Vendor', () => {
       return { sku, quantity: 1, totalPrice: price, currency: 1, recipient: user.address };
     }
 
-    async function processUSDPurchaseProcessorment(order: Order, payment: PaymentParams) {
+    async function processUSDPayment(order: Order, payment: PaymentParams) {
       await pay.setSellerApproval(vendor.address, [sku], true);
-      await vendor.processPurchaseProcessorment(
+      await vendor.processPayment(
         order,
         await getSignedPayment(user, pay.address, vendor.address, order, payment)
       );
@@ -100,7 +100,7 @@ describe('Vendor', () => {
         user, pay.address, vendor.address, order,
         { nonce: 0, escrowFor: 10, value: 100 }
       );
-      await processUSDPurchaseProcessorment(order, payment);
+      await processUSDPayment(order, payment);
     });
 
     it('should not be able to process an insufficient USD payment', async () => {
@@ -110,7 +110,7 @@ describe('Vendor', () => {
         user, pay.address, vendor.address, order,
         { nonce: 0, escrowFor: 10, value: 99 }
       );
-      await expectRevert(processUSDPurchaseProcessorment(order, payment));
+      await expectRevert(processUSDPayment(order, payment));
     });
 
     it('should not be able to exceed seller limit in one tx', async () => {
@@ -120,7 +120,7 @@ describe('Vendor', () => {
         user, pay.address, vendor.address, order,
         { nonce: 0, escrowFor: 10, value: 101 }
       );
-      await expectRevert(processUSDPurchaseProcessorment(order, payment));
+      await expectRevert(processUSDPayment(order, payment));
     });
 
     it('should not be able to exceed seller limit in two txs', async () => {
@@ -130,8 +130,8 @@ describe('Vendor', () => {
         user, pay.address, vendor.address, order,
         { nonce: 0, escrowFor: 10, value: 99 }
       );
-      await processUSDPurchaseProcessorment(order, payment);
-      await expectRevert(vendor.processPurchaseProcessorment(
+      await processUSDPayment(order, payment);
+      await expectRevert(vendor.processPayment(
         getSimpleOrder(99),
         await getSignedPayment(
           user, pay.address, vendor.address, order,
@@ -146,7 +146,7 @@ describe('Vendor', () => {
         user, pay.address, vendor.address, order,
         { nonce: 0, escrowFor: 10, value: 99 }
       );
-      await expectRevert(processUSDPurchaseProcessorment(order, payment));
+      await expectRevert(processUSDPayment(order, payment));
     });
 
   });

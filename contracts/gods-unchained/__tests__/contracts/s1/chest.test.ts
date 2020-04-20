@@ -132,7 +132,9 @@ describe('Chest', () => {
         currency: Currency.USDCents, totalPrice: value
       };
       const params = { value, escrowFor, nonce: 0 };
-      const payment = await getSignedPayment(owner, processor.address, chest.address, order, params);
+      const payment = await getSignedPayment(
+        owner, processor.address, chest.address, order, params
+      );
       await chest.purchase(quantity, payment, ZERO_EX);
       let expectedUserBalance: number;
       let expectedEscrowBalance : number;

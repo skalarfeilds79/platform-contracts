@@ -282,7 +282,9 @@ describe('Raffle', () => {
         currency: Currency.USDCents, totalPrice: value
       };
       const params = { value, escrowFor: 0, nonce: 0 };
-      const payment = await getSignedPayment(owner, processor.address, chest.address, order, params);
+      const payment = await getSignedPayment(
+        owner, processor.address, chest.address, order, params
+      );
       await chest.purchase(quantity, payment, ZERO_EX);
       await chest.open(quantity);
       const purchase = await rare.commitments(0);

@@ -19,7 +19,7 @@ contract CappedVendor is SingleItemVendor {
         ICreditCardEscrow _escrow,
         IPurchaseProcessor _pay,
         uint256 _saleCap
-    ) public SimpleVendor(_sku, _currency, _price, _escrow, _pay) {
+    ) public SingleItemVendor(_sku, _currency, _price, _escrow, _pay) {
         saleCap = _saleCap;
     }
 

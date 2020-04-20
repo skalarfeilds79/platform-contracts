@@ -4,11 +4,11 @@ pragma experimental ABIEncoderV2;
 import "./referral/IReferral.sol";
 import "@imtbl/platform/contracts/escrow/releaser/ICreditCardEscrow.sol";
 import "@imtbl/platform/contracts/pay/IPurchaseProcessor.sol";
-import "@imtbl/platform/contracts/pay/vendor/SimpleVendor.sol";
+import "@imtbl/platform/contracts/pay/vendor/SingleItemVendor.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";
 
-contract S1Vendor is SimpleVendor {
+contract S1Vendor is SingleItemVendor {
 
     // Referral contract
     IReferral public referral;
@@ -19,7 +19,7 @@ contract S1Vendor is SimpleVendor {
         uint256 _price,
         ICreditCardEscrow _escrow,
         IPurchaseProcessor _pay
-    ) public SimpleVendor(
+    ) public SingleItemVendor(
         _sku,
         IPurchaseProcessor.Currency.USDCents,
         _price,

@@ -52,7 +52,7 @@ export class ZeroExWrapper {
     wethAddress: string,
   ): Promise<SignedOrder> {
     const erc721Contract = ERC721.at(this.wallet, cardsAddress);
-    const isApproved = await erc721Contract.functions.isApprovedForAll(
+    const isApproved = await erc721Contract.isApprovedForAll(
       this.wallet.address,
       zeroExERC721ProxyAddress,
     );
@@ -110,7 +110,7 @@ export class ZeroExWrapper {
 
   async giveApproval(cardsAddress: string, zeroExERC721ProxyAddress: string) {
     const erc721Contract = ERC721.at(this.wallet, cardsAddress);
-    return await erc721Contract.functions.setApprovalForAll(zeroExERC721ProxyAddress, true);
+    return await erc721Contract.setApprovalForAll(zeroExERC721ProxyAddress, true);
   }
 
   convert0xOrderToEthersOrder(order: Order): EthersOrder {

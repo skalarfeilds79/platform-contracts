@@ -74,14 +74,14 @@ export class CardsWrapper {
         throw 'Season must be greater than 0';
       }
 
-      const tx = await this.instance.functions.startSeason(season.name, season.low, season.high);
+      const tx = await this.instance.startSeason(season.name, season.low, season.high);
       await tx.wait();
     });
   }
 
   async addFactories(factories: Factory[]) {
     await asyncForEach(factories, async (factory) => {
-      const tx = await this.instance.functions.addFactory(factory.minter, factory.season);
+      const tx = await this.instance.addFactory(factory.minter, factory.season);
       await tx.wait();
     });
   }
@@ -95,7 +95,7 @@ export class CardsWrapper {
       qualities.push(quality);
     }
 
-    const tx = await this.instance.functions.mintCards(to, protos, qualities);
+    const tx = await this.instance.mintCards(to, protos, qualities);
     const receipt = await tx.wait();
     const logs = parseLogs(receipt.logs, Cards.ABI);
 
@@ -147,8 +147,8 @@ export class CardsWrapper {
 
   async unlockTrading(seasons: number[]): Promise<boolean> {
     try {
-      await asyncForEach(seasons, async (season) => {
-        const tx = await this.instance.functions.unlockTrading(season);
+      await asyncForEach(seasons, async (season: number) => {
+        const tx = await this.instance.unlockTrading(season);
         await tx.wait();
       });
       return true;

@@ -2,7 +2,7 @@ pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
 import "../../escrow/releaser/ICreditCardEscrow.sol";
-import "../IPay.sol";
+import "../IPurchaseProcessor.sol";
 import "./IVendor.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";
@@ -11,7 +11,7 @@ contract SimpleVendor is IVendor, Ownable {
 
     using SafeMath for uint256;
 
-    IPay.Currency public currency;
+    IPurchaseProcessor.Currency public currency;
     // Price of each product sold by this contract
     uint256 public price;
     // SKU of the product sold by this contract
@@ -19,16 +19,16 @@ contract SimpleVendor is IVendor, Ownable {
     // Escrow contract
     ICreditCardEscrow public escrow;
     // Payment processor
-    IPay public pay;
+    IPurchaseProcessor public pay;
     // Whether the contract is paused
     bool public paused;
 
     constructor(
         bytes32 _sku,
-        IPay.Currency _currency,
+        IPurchaseProcessor.Currency _currency,
         uint256 _price,
         ICreditCardEscrow _escrow,
-        IPay _pay
+        IPurchaseProcessor _pay
     ) public {
         sku = _sku;
         currency = _currency;
@@ -52,7 +52,7 @@ contract SimpleVendor is IVendor, Ownable {
      */
     function _purchase(
         uint256 _quantity,
-        IPay.Payment memory _payment
+        IPurchaseProcessor.PaymentParams memory _payment
     )
         internal
         returns (uint256 purchaseID)
@@ -69,7 +69,7 @@ contract SimpleVendor is IVendor, Ownable {
     function _purchaseFor(
         address payable _recipient,
         uint256 _quantity,
-        IPay.Payment memory _payment
+        IPurchaseProcessor.PaymentParams memory _payment
     )
         internal
         returns (uint256 paymentID)
@@ -81,7 +81,7 @@ contract SimpleVendor is IVendor, Ownable {
 
         uint totalPrice = price.mul(_quantity);
 
-        IPay.Order memory order = IPay.Order({
+        IPurchaseProcessor.Order memory order = IPurchaseProcessor.Order({
             currency: currency,
             totalPrice: totalPrice,
             sku: sku,

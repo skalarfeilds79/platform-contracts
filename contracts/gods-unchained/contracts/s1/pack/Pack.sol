@@ -50,7 +50,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         bytes32 _sku,
         uint256 _price,
         ICreditCardEscrow _escrow,
-        IPay _pay
+        IPurchaseProcessor _pay
     ) public S1Vendor(_referral, _sku, _price, _escrow, _pay) {
         raffle = _raffle;
         beacon = _beacon;
@@ -185,11 +185,11 @@ contract Pack is IPack, S1Vendor, RarityProvider {
     function purchaseFor(
         address payable _recipient,
         uint256 _quantity,
-        IPay.Payment memory _payment,
+        IPurchaseProcessor.PaymentParams memory _payment,
         address payable _referrer
     ) public payable returns (uint256 paymentID) {
         paymentID = super.purchaseFor(_recipient, _quantity, _payment, _referrer);
-        if (_payment.currency == IPay.Currency.ETH) {
+        if (_payment.currency == IPurchaseProcessor.Currency.ETH) {
             _createCommitment(paymentID, _recipient, _quantity, 0);
         } else {
             _createCommitment(paymentID, _recipient, _quantity, _payment.escrowFor);

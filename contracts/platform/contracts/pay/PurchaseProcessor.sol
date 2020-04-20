@@ -3,9 +3,9 @@ pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
-import "./IPay.sol";
+import "./IPurchaseProcessor.sol";
 
-contract Pay is IPay, Ownable {
+contract PurchaseProcessor is IPurchaseProcessor, Ownable {
 
     using SafeMath for uint256;
 
@@ -14,7 +14,7 @@ contract Pay is IPay, Ownable {
     // Emitted when a signer's limit is changed
     event SignerLimitChanged(address indexed signer, uint256 usdCentsLimit);
     // Emitted when a payment has been processed
-    event PaymentProcessed(uint256 indexed id, address indexed vendor, Order order, Payment payment);
+    event PaymentProcessed(uint256 indexed id, address indexed vendor, Order order, PaymentParams payment);
 
     // Stores whether a nonce has been used by a particular signer
     mapping(address => mapping(uint256 => bool)) public receiptNonces;
@@ -30,7 +30,7 @@ contract Pay is IPay, Ownable {
      * @param order the details of the order, supplied by an authorised seller
      * @param payment the details of the user's proposed payment
      */
-    function process(Order memory order, Payment memory payment) public payable returns (uint) {
+    function process(Order memory order, PaymentParams memory payment) public payable returns (uint) {
 
         require(order.sku != bytes32(0), "must have a set SKU");
         require(order.quantity > 0, "must have a valid quality");
@@ -51,7 +51,7 @@ contract Pay is IPay, Ownable {
         return id;
     }
 
-    function _checkReceiptAndUpdateSignerLimit(Order memory order, Payment memory payment) internal {
+    function _checkReceiptAndUpdateSignerLimit(Order memory order, PaymentParams memory payment) internal {
 
         address signer = _getSigner(order, payment);
 
@@ -64,7 +64,7 @@ contract Pay is IPay, Ownable {
 
     }
 
-    function _validateOrderPaymentMatch(Order memory order, Payment memory payment) internal pure {
+    function _validateOrderPaymentMatch(Order memory order, PaymentParams memory payment) internal pure {
         require(payment.value >= order.totalPrice, "receipt value must be sufficient");
         require(order.currency == Currency.USDCents, "receipt currency must match");
     }
@@ -81,7 +81,7 @@ contract Pay is IPay, Ownable {
         limit.used = nextUsed;
     }
 
-    function _getSigner(Order memory order, Payment memory payment) internal view returns (address) {
+    function _getSigner(Order memory order, PaymentParams memory payment) internal view returns (address) {
         bytes32 sigHash = keccak256(abi.encodePacked(
             address(this),
             msg.sender,

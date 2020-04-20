@@ -1,17 +1,17 @@
 pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
-import "../IPay.sol";
+import "../IPurchaseProcessor.sol";
 
 contract TestVendor {
 
-    IPay pay;
+    IPurchaseProcessor pay;
 
-    constructor(IPay _pay) public {
+    constructor(IPurchaseProcessor _pay) public {
         pay = _pay;
     }
 
-    function processPayment(IPay.Order memory order, IPay.Payment memory payment) public payable {
+    function processPayment(IPurchaseProcessor.Order memory order, IPurchaseProcessor.PaymentParams memory payment) public payable {
         pay.process.value(msg.value)(order, payment);
     }
 

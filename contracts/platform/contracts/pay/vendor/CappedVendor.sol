@@ -14,10 +14,10 @@ contract CappedVendor is SimpleVendor {
 
     constructor(
         bytes32 _sku,
-        IPay.Currency _currency,
+        IPurchaseProcessor.Currency _currency,
         uint256 _price,
         ICreditCardEscrow _escrow,
-        IPay _pay,
+        IPurchaseProcessor _pay,
         uint256 _saleCap
     ) public SimpleVendor(_sku, _currency, _price, _escrow, _pay) {
         saleCap = _saleCap;
@@ -32,7 +32,7 @@ contract CappedVendor is SimpleVendor {
     function _purchaseFor(
         address payable _recipient,
         uint256 _quantity,
-        IPay.Payment memory _payment
+        IPurchaseProcessor.PaymentParams memory _payment
     ) internal returns (uint256 purchaseID) {
 
         require(saleCap == 0 || saleCap >= sold + _quantity, "IM:CappedVendor: product cap has been exhausted");

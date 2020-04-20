@@ -12,7 +12,7 @@ contract EpicPack is Pack {
         IReferral _referral,
         bytes32 _sku,
         ICreditCardEscrow _escrow,
-        IPay _pay
+        IPurchaseProcessor _pay
     ) public Pack(
         _raffle,
         _beacon,

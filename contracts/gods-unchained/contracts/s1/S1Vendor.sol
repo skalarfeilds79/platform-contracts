@@ -3,7 +3,7 @@ pragma experimental ABIEncoderV2;
 
 import "./referral/IReferral.sol";
 import "@imtbl/platform/contracts/escrow/releaser/ICreditCardEscrow.sol";
-import "@imtbl/platform/contracts/pay/IPay.sol";
+import "@imtbl/platform/contracts/pay/IPurchaseProcessor.sol";
 import "@imtbl/platform/contracts/pay/vendor/SimpleVendor.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";
@@ -18,10 +18,10 @@ contract S1Vendor is SimpleVendor {
         bytes32 _sku,
         uint256 _price,
         ICreditCardEscrow _escrow,
-        IPay _pay
+        IPurchaseProcessor _pay
     ) public SimpleVendor(
         _sku,
-        IPay.Currency.USDCents,
+        IPurchaseProcessor.Currency.USDCents,
         _price,
         _escrow,
         _pay
@@ -37,7 +37,7 @@ contract S1Vendor is SimpleVendor {
      */
     function purchase(
         uint256 _quantity,
-        IPay.Payment memory _payment,
+        IPurchaseProcessor.PaymentParams memory _payment,
         address payable _referrer
     ) public payable returns (uint256 purchaseID) {
         return purchaseFor(msg.sender, _quantity, _payment, _referrer);
@@ -53,14 +53,14 @@ contract S1Vendor is SimpleVendor {
     function purchaseFor(
         address payable _recipient,
         uint256 _quantity,
-        IPay.Payment memory _payment,
+        IPurchaseProcessor.PaymentParams memory _payment,
         address payable _referrer
     ) public payable returns (uint256 paymentID) {
 
         paymentID = super._purchaseFor(_recipient, _quantity, _payment);
 
         // if the user is paying in ETH, we can pay affiliate fees instantly!
-        // if (_payment.currency == IPay.Currency.ETH) {
+        // if (_payment.currency == IPurchaseProcessor.Currency.ETH) {
         //     if (_referrer != address(0)) {
         //         uint toReferrer;
         //         (totalPrice, toReferrer) = referral.getSplit(_recipient, totalPrice, _referrer);

@@ -2,7 +2,7 @@ import 'jest';
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import {
-  Chest, Referral, Pay, CreditCardEscrow, TestPack, Escrow
+  Chest, Referral, PurchaseProcessor, CreditCardEscrow, TestPack, Escrow
 } from '../../../src/contracts';
 
 import { ethers } from 'ethers';
@@ -32,7 +32,7 @@ describe('Chest', () => {
   describe('#purchase ETH', () => {
 
     let chest: Chest;
-    let pay: Pay;
+    let processor: PurchaseProcessor;
     let escrowProtocol: Escrow;
     let escrow: CreditCardEscrow;
     let referral: Referral;
@@ -42,7 +42,7 @@ describe('Chest', () => {
 
     beforeEach(async () => {
       referral = await Referral.deploy(owner, 90, 10);
-      pay = await Pay.deploy(owner);
+      processor = await PurchaseProcessor.deploy(owner);
       pack = await TestPack.deploy(owner);
       escrowProtocol = await Escrow.deploy(owner);
       escrow = await CreditCardEscrow.deploy(
@@ -63,12 +63,12 @@ describe('Chest', () => {
         rareChestSKU,
         rareChestPrice,
         escrow.address,
-        pay.address
+        processor.address
       );
     });
 
     async function purchaseChests(quantity: number) {
-      await pay.setSellerApproval(chest.address, [rareChestSKU], true);
+      await processor.setSellerApproval(chest.address, [rareChestSKU], true);
       let balance = await chest.balanceOf(owner.address);
       expect(balance.toNumber()).toBe(0);
       await chest.purchase(quantity, getETHPayment(), ZERO_EX);
@@ -89,7 +89,7 @@ describe('Chest', () => {
   describe('#purchase USD', () => {
 
     let chest: Chest;
-    let pay: Pay;
+    let processor: PurchaseProcessor;
     let escrowProtocol: Escrow;
     let escrow: CreditCardEscrow;
     let referral: Referral;
@@ -98,7 +98,7 @@ describe('Chest', () => {
     const rareChestPrice = 100;
 
     beforeEach(async () => {
-      pay = await Pay.deploy(owner);
+      processor = await PurchaseProcessor.deploy(owner);
       referral = await Referral.deploy(owner, 90, 10);
       pack = await TestPack.deploy(owner);
       escrowProtocol = await Escrow.deploy(owner);
@@ -120,20 +120,20 @@ describe('Chest', () => {
         rareChestSKU,
         rareChestPrice,
         escrow.address,
-        pay.address
+        processor.address
       );
     });
 
     async function purchaseChests(quantity: number, escrowFor: number) {
-      await pay.setSignerLimit(owner.address, 10000000000);
-      await pay.setSellerApproval(chest.address, [rareChestSKU], true);
+      await processor.setSignerLimit(owner.address, 10000000000);
+      await processor.setSellerApproval(chest.address, [rareChestSKU], true);
       const value = rareChestPrice * quantity;
       const order = {
         quantity, sku: rareChestSKU, recipient: owner.address,
         currency: Currency.USDCents, totalPrice: value
       };
       const params = { value, escrowFor, nonce: 0 };
-      const payment = await getSignedPayment(owner, pay.address, chest.address, order, params);
+      const payment = await getSignedPayment(owner, processor.address, chest.address, order, params);
       await chest.purchase(quantity, payment, ZERO_EX);
       let expectedUserBalance: number;
       let expectedEscrowBalance : number;
@@ -171,7 +171,7 @@ describe('Chest', () => {
   describe('#open', () => {
 
     let chest: Chest;
-    let pay: Pay;
+    let processor: PurchaseProcessor;
     let escrowProtocol: Escrow;
     let escrow: CreditCardEscrow;
     let referral: Referral;
@@ -179,7 +179,7 @@ describe('Chest', () => {
     const rareChestSKU = keccak256('0x00');
 
     beforeEach(async () => {
-      pay = await Pay.deploy(owner);
+      processor = await PurchaseProcessor.deploy(owner);
       referral = await Referral.deploy(owner, 90, 10);
       pack = await TestPack.deploy(owner);
       escrowProtocol = await Escrow.deploy(owner);
@@ -201,7 +201,7 @@ describe('Chest', () => {
         rareChestSKU,
         0,
         escrow.address,
-        pay.address
+        processor.address
       );
     });
 
@@ -218,14 +218,14 @@ describe('Chest', () => {
     });
 
     it('should be able to open 1 chest', async() => {
-      await pay.setSellerApproval(chest.address, [rareChestSKU], true);
+      await processor.setSellerApproval(chest.address, [rareChestSKU], true);
       const payment = getETHPayment();
       await chest.purchase(1, payment, ZERO_EX);
       await openChests(1);
     });
 
     it('should be able to open 5 chests', async() => {
-      await pay.setSellerApproval(chest.address, [rareChestSKU], true);
+      await processor.setSellerApproval(chest.address, [rareChestSKU], true);
       const payment = getETHPayment();
       await chest.purchase(5, payment, ZERO_EX);
       await openChests(5);

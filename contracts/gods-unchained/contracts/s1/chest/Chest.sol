@@ -29,7 +29,7 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
         bytes32 _sku,
         uint256 _price,
         ICreditCardEscrow _escrow,
-        IPay _pay
+        IPurchaseProcessor _pay
     ) public
         S1Vendor(_referral, _sku, _price, _escrow, _pay)
         TradeToggleERC20(_name, _symbol, 0)
@@ -48,13 +48,13 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
     function purchaseFor(
         address payable _user,
         uint256 _quantity,
-        IPay.Payment memory _payment,
+        IPurchaseProcessor.PaymentParams memory _payment,
         address payable _referrer
     ) public payable returns (uint256) {
 
         uint256 paymentID = super.purchaseFor(_user, _quantity, _payment, _referrer);
 
-        if (_payment.currency == IPay.Currency.ETH || _payment.escrowFor == 0) {
+        if (_payment.currency == IPurchaseProcessor.Currency.ETH || _payment.escrowFor == 0) {
             _mintChests(_user, _quantity, paymentID);
         } else {
             // escrow the chests

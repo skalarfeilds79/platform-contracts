@@ -1,7 +1,7 @@
 pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
-import "@imtbl/platform/contracts/pay/IPay.sol";
+import "@imtbl/platform/contracts/pay/IPurchaseProcessor.sol";
 
 interface IS1Vendor {
 
@@ -13,7 +13,7 @@ interface IS1Vendor {
      */
     function purchase(
         uint256 _quantity,
-        IPay.Payment calldata _payment,
+        IPurchaseProcessor.PaymentParams calldata _payment,
         address payable _referrer
     )
         external
@@ -30,7 +30,7 @@ interface IS1Vendor {
     function purchaseFor(
         address payable _recipient,
         uint256 _quantity,
-        IPay.Payment calldata _payment,
+        IPurchaseProcessor.PaymentParams calldata _payment,
         address payable _referrer
     ) external payable returns (uint256 paymentID);
 

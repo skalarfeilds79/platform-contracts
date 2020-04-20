@@ -1,6 +1,6 @@
 import 'jest';
 
-import { TestVendor, Pay } from '../../src/contracts';
+import { TestVendor, PurchaseProcessor } from '../../src/contracts';
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
@@ -27,27 +27,27 @@ describe('Vendor', () => {
 
   describe('#constructor', () => {
     it('should be able to deploy the vendor', async () => {
-      const pay = await Pay.deploy(user);
+      const pay = await PurchaseProcessor.deploy(user);
       const vendor = await TestVendor.deploy(user, pay.address);
     });
   });
 
-  describe('#processPayment in ETH', () => {
+  describe('#processPurchaseProcessorment in ETH', () => {
 
-    let pay: Pay;
+    let pay: PurchaseProcessor;
     let vendor: TestVendor;
     const sku = keccak256('0x00');
 
     beforeEach(async () => {
-      pay = await Pay.deploy(user);
+      pay = await PurchaseProcessor.deploy(user);
       vendor = await TestVendor.deploy(user, pay.address);
     });
 
-    async function processETHPayment(
+    async function processETHPurchaseProcessorment(
         approved: boolean, quantity: number, totalPrice: number, value: number
     ) {
       await pay.setSellerApproval(vendor.address, [sku], approved);
-      await vendor.processPayment(
+      await vendor.processPurchaseProcessorment(
         { sku, totalPrice, quantity, recipient: user.address, currency: 0 },
         getETHPayment(),
         { value }
@@ -55,29 +55,29 @@ describe('Vendor', () => {
     }
 
     it('should not be able to process an insufficient ETH payment', async () => {
-      await expectRevert(processETHPayment(true, 1, 100, 99));
+      await expectRevert(processETHPurchaseProcessorment(true, 1, 100, 99));
     });
 
     it('should not be able to process an ETH payment for an unapproved item', async () => {
-      await expectRevert(processETHPayment(false, 1, 100, 100));
+      await expectRevert(processETHPurchaseProcessorment(false, 1, 100, 100));
     });
 
     it('should be able to process an ETH payment', async () => {
-      await processETHPayment(true, 1, 100, 100);
+      await processETHPurchaseProcessorment(true, 1, 100, 100);
     });
 
   });
 
-  describe('#processPayment in USD', () => {
+  describe('#processPurchaseProcessorment in USD', () => {
 
-    let pay: Pay;
+    let pay: PurchaseProcessor;
     let vendor: TestVendor;
     const sku = keccak256('0x00');
     let nonce = 0;
 
     beforeEach(async () => {
       nonce = 0;
-      pay = await Pay.deploy(user);
+      pay = await PurchaseProcessor.deploy(user);
       vendor = await TestVendor.deploy(user, pay.address);
     });
 
@@ -85,9 +85,9 @@ describe('Vendor', () => {
       return { sku, quantity: 1, totalPrice: price, currency: 1, recipient: user.address };
     }
 
-    async function processUSDPayment(order: Order, payment: PaymentParams) {
+    async function processUSDPurchaseProcessorment(order: Order, payment: PaymentParams) {
       await pay.setSellerApproval(vendor.address, [sku], true);
-      await vendor.processPayment(
+      await vendor.processPurchaseProcessorment(
         order,
         await getSignedPayment(user, pay.address, vendor.address, order, payment)
       );
@@ -100,7 +100,7 @@ describe('Vendor', () => {
         user, pay.address, vendor.address, order,
         { nonce: 0, escrowFor: 10, value: 100 }
       );
-      await processUSDPayment(order, payment);
+      await processUSDPurchaseProcessorment(order, payment);
     });
 
     it('should not be able to process an insufficient USD payment', async () => {
@@ -110,7 +110,7 @@ describe('Vendor', () => {
         user, pay.address, vendor.address, order,
         { nonce: 0, escrowFor: 10, value: 99 }
       );
-      await expectRevert(processUSDPayment(order, payment));
+      await expectRevert(processUSDPurchaseProcessorment(order, payment));
     });
 
     it('should not be able to exceed seller limit in one tx', async () => {
@@ -120,7 +120,7 @@ describe('Vendor', () => {
         user, pay.address, vendor.address, order,
         { nonce: 0, escrowFor: 10, value: 101 }
       );
-      await expectRevert(processUSDPayment(order, payment));
+      await expectRevert(processUSDPurchaseProcessorment(order, payment));
     });
 
     it('should not be able to exceed seller limit in two txs', async () => {
@@ -130,8 +130,8 @@ describe('Vendor', () => {
         user, pay.address, vendor.address, order,
         { nonce: 0, escrowFor: 10, value: 99 }
       );
-      await processUSDPayment(order, payment);
-      await expectRevert(vendor.processPayment(
+      await processUSDPurchaseProcessorment(order, payment);
+      await expectRevert(vendor.processPurchaseProcessorment(
         getSimpleOrder(99),
         await getSignedPayment(
           user, pay.address, vendor.address, order,
@@ -146,7 +146,7 @@ describe('Vendor', () => {
         user, pay.address, vendor.address, order,
         { nonce: 0, escrowFor: 10, value: 99 }
       );
-      await expectRevert(processUSDPayment(order, payment));
+      await expectRevert(processUSDPurchaseProcessorment(order, payment));
     });
 
   });

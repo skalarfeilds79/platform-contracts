@@ -227,12 +227,17 @@ describe('Pack', () => {
 
     it('should create cards from 1 pack', async () => {
       await purchaseAndCallback(1, 100);
-      await rare.mint(0);
+      await mintTrackGas(0, '1 pack no escrow');
     });
 
-    it('should create cards from 5 packs', async () => {
-      await purchaseAndCallback(5, 100);
-      await rare.mint(0);
+    it('should create cards from 6 packs', async () => {
+      await purchaseAndCallback(6, 100);
+      await mintTrackGas(0, '6 pack no escrow');
+    });
+
+    it('should create cards from 18 packs', async () => {
+      await purchaseAndCallback(18, 100);
+      await mintTrackGas(0, '18 packs no escrow');
     });
 
     it('should create cards from 1 packs with no escrow', async () => {
@@ -240,9 +245,9 @@ describe('Pack', () => {
       await mintTrackGas(0, '1 pack no escrow');
     });
 
-    it('should create cards from 6 packs with no escrow', async () => {
-      await purchaseAndCallback(6, 0);
-      await mintTrackGas(0, '6 packs no escrow');
+    it('should create cards from 18 packs with no escrow', async () => {
+      await purchaseAndCallback(18, 0);
+      await mintTrackGas(0, '18 packs no escrow');
     });
 
   });
@@ -281,7 +286,7 @@ describe('Pack', () => {
         beacon.address, cards.address, referral.address, rarePackSKU,
         cc.address, processor.address
       );
-      await raffle.setMinterApproval(raffle.address, true);
+      await raffle.setMinterApproval(rare.address, true);
       chest = await Chest.deploy(
         owner,
         'GU: S1 Rare Chest',

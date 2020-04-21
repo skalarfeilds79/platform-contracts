@@ -92,7 +92,6 @@ describe('Genesis Board', () => {
       const receipt = await tx2.wait();
 
       const parsed = parseLogs(receipt.logs, GenesisBoard.ABI);
-      console.log(parsed[1].values.tokenId.toNumber());
     });
 
     async function subject() {

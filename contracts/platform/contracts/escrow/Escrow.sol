@@ -48,8 +48,11 @@ contract Escrow is IEscrow, Ownable {
 
         if (_vault.balance > 0) {
             preBalance = IERC20(_vault.asset).balanceOf(address(this));
+            require(_vault.tokenIDs.length == 0, "IMEscrow: must not supply balance and list");
+            require(_vault.lowTokenID == 0 && _vault.highTokenID == 0, "IMEscrow: must not supply balance and range");
         } else if (_vault.tokenIDs.length > 0) {
             require(!_areAnyInListEscrowed(_vault), "IM:Escrow: list must not be already escrowed");
+            require(_vault.lowTokenID == 0 && _vault.highTokenID == 0, "IMEscrow: must not supply list and range");
         } else if (_vault.highTokenID.sub(_vault.lowTokenID) > 0) {
             require(!_areAnyInBatchEscrowed(_vault), "IM:Escrow: batch must not be already escrowed");
         } else {
@@ -84,8 +87,11 @@ contract Escrow is IEscrow, Ownable {
         require(_vault.releaser != address(0), "IM:Escrow: must have a releaser");
 
         if (_vault.balance > 0) {
+            require(_vault.tokenIDs.length == 0, "IMEscrow: must not supply balance and list");
+            require(_vault.lowTokenID == 0 && _vault.highTokenID == 0, "IMEscrow: must not supply balance and range");
             IERC20(_vault.asset).transferFrom(_from, address(this), _vault.balance);
         } else if (_vault.tokenIDs.length > 0) {
+            require(_vault.lowTokenID == 0 && _vault.highTokenID == 0, "IMEscrow: must not supply list and range");
             _transferList(_vault, _from, address(this));
         } else if (_vault.highTokenID.sub(_vault.lowTokenID) > 0) {
             _transferBatch(_vault, _from, address(this));

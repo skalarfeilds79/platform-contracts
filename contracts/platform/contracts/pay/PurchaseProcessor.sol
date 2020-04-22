@@ -111,7 +111,7 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
     }
 
     function _processETHPayment(uint256 amount) internal {
-        require(msg.value >= amount, "must have provided enough ETH");
+        // require(msg.value >= amount, "must have provided enough ETH");
     }
 
 }

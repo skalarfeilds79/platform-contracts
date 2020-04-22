@@ -1,6 +1,8 @@
 pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
+// solium-disable security/no-block-members
+
 import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "./IPurchaseProcessor.sol";
@@ -25,6 +27,23 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
     // The number of payments this contract has processed
     uint256 public count;
 
+    function setSignerLimit(address signer, uint256 usdCentsLimit) public onlyOwner {
+        signerLimits[signer].total = usdCentsLimit;
+        emit SignerLimitChanged(signer, usdCentsLimit);
+    }
+
+    function setSellerApproval(
+        address seller,
+        bytes32[] memory skus,
+        bool approved
+    ) public onlyOwner {
+        for (uint i = 0; i < skus.length; i++) {
+            bytes32 sku = skus[i];
+            sellerApproved[sku][seller] = approved;
+            emit SellerApprovalChanged(sku, seller, approved);
+        }
+    }
+
     /** @dev Process an order
      *
      * @param order the details of the order, supplied by an authorised seller
@@ -36,12 +55,18 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
         require(order.quantity > 0, "must have a valid quality");
         require(sellerApproved[order.sku][msg.sender], "must be approved to sell this product");
 
-        if (payment.currency == Currency.USDCents) {
-            _checkReceiptAndUpdateSignerLimit(order, payment);
-        } else if (payment.currency == Currency.ETH) {
-            _processETHPayment(order.totalPrice);
+        if (order.currency == Currency.USDCents) {
+            if (payment.currency == Currency.USDCents) {
+                _priceUSDPayUSD(order, payment);
+            } else {
+                _priceUSDPayETH(order, payment);
+            }
         } else {
-            require(false, "unsupported payment type");
+            if (payment.currency == Currency.ETH) {
+                _priceETHPayETH(order, payment);
+            } else {
+                _priceETHPayUSD(order, payment);
+            }
         }
 
         uint id = count++;
@@ -49,19 +74,6 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
         emit PaymentProcessed(id, msg.sender, order, payment);
 
         return id;
-    }
-
-    function _checkReceiptAndUpdateSignerLimit(Order memory order, PaymentParams memory payment) internal {
-
-        address signer = _getSigner(order, payment);
-
-        _updateSignerLimit(signer, order.totalPrice);
-
-        require(!receiptNonces[signer][payment.nonce], "nonce must not be used");
-        receiptNonces[signer][payment.nonce] = true;
-
-        _validateOrderPaymentMatch(order, payment);
-
     }
 
     function _validateOrderPaymentMatch(Order memory order, PaymentParams memory payment) internal pure {
@@ -97,21 +109,27 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
         return ecrecover(recoveryHash, payment.v, payment.r, payment.s);
     }
 
-    function setSignerLimit(address signer, uint256 usdCentsLimit) public onlyOwner {
-        signerLimits[signer].total = usdCentsLimit;
-        emit SignerLimitChanged(signer, usdCentsLimit);
+    function _priceUSDPayETH(Order memory _order, PaymentParams memory _payment) internal {
+        // TODO:
     }
 
-    function setSellerApproval(address seller, bytes32[] memory skus, bool approved) public onlyOwner {
-        for (uint i = 0; i < skus.length; i++) {
-            bytes32 sku = skus[i];
-            sellerApproved[sku][seller] = approved;
-            emit SellerApprovalChanged(sku, seller, approved);
-        }
+    function _priceUSDPayUSD(Order memory _order, PaymentParams memory _payment) internal {
+        address signer = _getSigner(_order, _payment);
+
+        _updateSignerLimit(signer, _order.totalPrice);
+
+        require(!receiptNonces[signer][_payment.nonce], "nonce must not be used");
+        receiptNonces[signer][_payment.nonce] = true;
+
+        _validateOrderPaymentMatch(_order, _payment);
     }
 
-    function _processETHPayment(uint256 amount) internal {
-        // require(msg.value >= amount, "must have provided enough ETH");
+    function _priceETHPayETH(Order memory _order, PaymentParams memory _payment) internal {
+        // TODO:
+    }
+
+    function _priceETHPayUSD(Order memory _order, PaymentParams memory _payment) internal {
+        // TODO:
     }
 
 }

@@ -1,12 +1,13 @@
 import { Address } from '@imtbl/common-types';
-import { GenesisBoardFactory } from './../../src/generated/GenesisBoardFactory';
-import { GenesisBoard } from './../../src/generated/GenesisBoard';
+import { GenesisBoard } from '../../src/contracts';
 
 import 'jest';
 jest.setTimeout(30000);
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { Wallet, ethers } from 'ethers';
+
+ethers.errors.setLogLevel('error');
 
 import { parseLogs } from '@imtbl/utils';
 
@@ -27,6 +28,16 @@ describe('Genesis Board', () => {
     await blockchain.revertAsync();
   });
 
+  describe('#constructor', () => {
+    it('should be able to deploy', async () => {
+      const genesisBoard = await GenesisBoard.deploy(
+        ownerWallet,
+        'GU: Board',
+        'GU:GENESISBOARD',
+      );
+    });
+  });
+
   describe('#mint', () => {
     let genesisBoard: GenesisBoard;
     let callerDestination: Address;
@@ -34,7 +45,8 @@ describe('Genesis Board', () => {
     let callerWallet;
 
     beforeEach(async () => {
-      genesisBoard = await new GenesisBoardFactory(ownerWallet).deploy(
+      genesisBoard = await GenesisBoard.deploy(
+        ownerWallet,
         'GU: Board',
         'GU:GENESISBOARD',
       );
@@ -45,7 +57,7 @@ describe('Genesis Board', () => {
     });
 
     async function subject() {
-      const contract = await new GenesisBoardFactory(callerWallet).attach(genesisBoard.address);
+      const contract = GenesisBoard.at(callerWallet, genesisBoard.address);
       const tx = await contract.mint(callerDestination, callerLevel);
       return tx.wait();
     }
@@ -57,36 +69,34 @@ describe('Genesis Board', () => {
 
     it('should be able to mint as a valid minter', async () => {
       await subject();
-      const supply = await genesisBoard.functions.totalSupply();
+      const supply = await genesisBoard.totalSupply();
       expect(supply.toNumber()).toBe(1);
     });
   });
 
   describe('#transferFrom', () => {
     let genesisBoard: GenesisBoard;
-    let callerWallet;
+    let callerWallet: Wallet;
 
     beforeEach(async () => {
-      callerWallet = userWallet;
-
-      genesisBoard = await new GenesisBoardFactory(ownerWallet).deploy(
+      genesisBoard = await GenesisBoard.deploy(
+        ownerWallet,
         'GU: Board',
         'GU:GENESISBOARD',
       );
+      callerWallet = userWallet;
       const tx1 = await genesisBoard.setMinterStatus(minterWallet.address, true);
       await tx1.wait();
 
       const tx2 = await genesisBoard.mint(userWallet.address, 1);
       const receipt = await tx2.wait();
 
-      const parsed = parseLogs(receipt.logs, new GenesisBoardFactory().interface.abi);
-      console.log(parsed[1].values.tokenId.toNumber());
+      const parsed = parseLogs(receipt.logs, GenesisBoard.ABI);
     });
 
     async function subject() {
-      const contract = await new GenesisBoardFactory(callerWallet).attach(genesisBoard.address);
-      const tx = await contract.functions.transferFrom(userWallet.address, ownerWallet.address, 1);
-      return tx.wait();
+      const contract = GenesisBoard.at(callerWallet, genesisBoard.address);
+      await contract.transferFrom(userWallet.address, ownerWallet.address, 1);
     }
 
     it('should not be able to transfer if trading has not been unlocked', async () => {
@@ -94,11 +104,9 @@ describe('Genesis Board', () => {
     });
 
     it('should be able to trade if trading unlocked', async () => {
-      const tx = await genesisBoard.functions.setTradabilityStatus(true);
-      await tx.wait();
-
+      await genesisBoard.setTradabilityStatus(true);
       await subject();
-      const balance = await genesisBoard.functions.balanceOf(ownerWallet.address);
+      const balance = await genesisBoard.balanceOf(ownerWallet.address);
       expect(balance.toNumber()).toBe(1);
     });
   });

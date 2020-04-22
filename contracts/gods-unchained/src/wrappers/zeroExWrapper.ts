@@ -10,7 +10,7 @@ import {
 
 import * as ethUtil from 'ethereumjs-util';
 
-import { ERC721Factory } from '..';
+import { ERC721 } from '../contracts';
 import { BigNumberish, bigNumberify, Arrayish } from 'ethers/utils';
 import { BigNumber } from '@0x/utils';
 
@@ -51,8 +51,8 @@ export class ZeroExWrapper {
     zeroExERC721ProxyAddress: string,
     wethAddress: string,
   ): Promise<SignedOrder> {
-    const erc721Contract = new ERC721Factory(this.wallet).attach(cardsAddress);
-    const isApproved = await erc721Contract.functions.isApprovedForAll(
+    const erc721Contract = ERC721.at(this.wallet, cardsAddress);
+    const isApproved = await erc721Contract.isApprovedForAll(
       this.wallet.address,
       zeroExERC721ProxyAddress,
     );
@@ -109,8 +109,8 @@ export class ZeroExWrapper {
   }
 
   async giveApproval(cardsAddress: string, zeroExERC721ProxyAddress: string) {
-    const erc721Contract = new ERC721Factory(this.wallet).attach(cardsAddress);
-    return await erc721Contract.functions.setApprovalForAll(zeroExERC721ProxyAddress, true);
+    const erc721Contract = ERC721.at(this.wallet, cardsAddress);
+    return await erc721Contract.setApprovalForAll(zeroExERC721ProxyAddress, true);
   }
 
   convert0xOrderToEthersOrder(order: Order): EthersOrder {

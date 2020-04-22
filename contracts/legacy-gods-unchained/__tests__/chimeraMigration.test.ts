@@ -4,7 +4,8 @@ jest.setTimeout(30000);
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { CardIntegrationTwoFactory, ChimeraMigrationFactory } from '../src/contracts';
-import { CardsFactory, CardsWrapper, S3PromoFactoryFactory } from '@imtbl/gods-unchained';
+import { Cards, S3PromoFactory } from '@imtbl/gods-unchained/src/contracts';
+import { CardsWrapper } from '@imtbl/gods-unchained/src/wrappers';
 
 import { Address } from '@imtbl/common-types';
 import { asyncForEach } from '@imtbl/utils';
@@ -75,7 +76,8 @@ describe('Core', () => {
         { name: 'Promo', low: 400, high: 500 },
       ]);
 
-      const promoFactory = await new S3PromoFactoryFactory(ownerWallet).deploy(
+      const promoFactory = await S3PromoFactory.deploy(
+        ownerWallet,
         newCards.address,
         400,
         500,
@@ -98,7 +100,7 @@ describe('Core', () => {
     });
 
     async function subject() {
-      const chimera = await new ChimeraMigrationFactory(caller).attach(chimeraMigrationAddress);
+      const chimera = new ChimeraMigrationFactory(caller).attach(chimeraMigrationAddress);
       const tx = await chimera.functions.migrate(callerTokenId);
       return await tx.wait();
     }
@@ -127,8 +129,8 @@ describe('Core', () => {
     it('should be able to migrate as the migrator', async () => {
       caller = immutableWallet;
       await subject();
-      const newCards = await new CardsFactory(immutableWallet).attach(newCardsAddress);
-      const card = await newCards.functions.getDetails(0);
+      const newCards = Cards.at(immutableWallet, newCardsAddress);
+      const card = await newCards.getDetails(0);
       console.log(card);
       expect(card.proto).toBe(402);
     });
@@ -146,8 +148,8 @@ describe('Core', () => {
     it('should be able to migrate the card with the correct proto', async () => {
       await subject();
       console.log(newCardsAddress);
-      const newCards = await new CardsFactory(userWallet).attach(newCardsAddress);
-      const card = await newCards.functions.getDetails(0);
+      const newCards = Cards.at(userWallet, newCardsAddress);
+      const card = await newCards.getDetails(0);
       console.log(card);
       expect(card.proto).toBe(402);
     });

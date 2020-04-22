@@ -1,6 +1,6 @@
-import { BigNumber } from 'bignumber.js';
 import { JsonRpcProvider } from 'ethers/providers';
 import { ethers } from 'ethers';
+import { BigNumberish, BigNumber } from 'ethers/utils';
 
 export class Blockchain {
   private _snapshotId: number;
@@ -18,8 +18,14 @@ export class Blockchain {
     await this.sendJSONRpcRequestAsync('evm_revert', ['0x1']);
   }
 
-  public async increaseTimeAsync(duration: BigNumber): Promise<any> {
-    await this.sendJSONRpcRequestAsync('evm_increaseTime', [duration.toNumber()]);
+  public async increaseTimeAsync(duration: number): Promise<any> {
+    await this.sendJSONRpcRequestAsync('evm_increaseTime', [duration]);
+  }
+
+  public async waitBlocksAsync(count: number) {
+    for (let i = 0; i < count; i++) {
+      await this.sendJSONRpcRequestAsync('evm_mine', []);
+    }
   }
 
   private async sendJSONRpcRequestAsync(method: string, params: any[]): Promise<any> {

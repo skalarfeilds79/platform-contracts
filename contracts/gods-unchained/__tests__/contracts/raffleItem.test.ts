@@ -1,6 +1,5 @@
 import { Address } from '@imtbl/common-types';
-import { RaffleItemFactory } from './../../src/generated/RaffleItemFactory';
-import { RaffleItem } from './../../src/generated/RaffleItem';
+import { RaffleItem } from '../../src/contracts';
 
 import 'jest';
 
@@ -8,8 +7,7 @@ jest.setTimeout(30000);
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { Wallet, ethers } from 'ethers';
-
-import { parseLogs } from '@imtbl/utils';
+ethers.errors.setLogLevel('error');
 
 const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();
@@ -28,20 +26,26 @@ describe('Raffle Item', () => {
     await blockchain.revertAsync();
   });
 
+  describe('#constructor', () => {
+    it('should be able to deploy', async () => {
+      const raffleItem = await RaffleItem.deploy(ownerWallet, 'GU: Item', 'GU:ITEM');
+    });
+  });
+
   describe('#mint', () => {
     let raffleItem: RaffleItem;
     let callerDestination: Address;
     let callerWallet;
 
     beforeEach(async () => {
-      raffleItem = await new RaffleItemFactory(ownerWallet).deploy('GU: Item', 'GU:ITEM');
+      raffleItem = await RaffleItem.deploy(ownerWallet, 'GU: Item', 'GU:ITEM');
       await raffleItem.setMinterStatus(minterWallet.address, true);
       callerDestination = userWallet.address;
       callerWallet = minterWallet;
     });
 
     async function subject() {
-      const contract = await new RaffleItemFactory(callerWallet).attach(raffleItem.address);
+      const contract = RaffleItem.at(callerWallet, raffleItem.address);
       await contract.mint(callerDestination);
     }
 
@@ -52,7 +56,7 @@ describe('Raffle Item', () => {
 
     it('should be able to mint as a valid minter', async () => {
       await subject();
-      const supply = await raffleItem.functions.totalSupply();
+      const supply = await raffleItem.totalSupply();
       expect(supply.toNumber()).toBe(1);
     });
   });
@@ -62,15 +66,15 @@ describe('Raffle Item', () => {
     let callerWallet;
 
     beforeEach(async () => {
-      raffleItem = await new RaffleItemFactory(ownerWallet).deploy('GU: ITEM', 'GU:ITEM');
+      raffleItem = await RaffleItem.deploy(ownerWallet, 'GU: ITEM', 'GU:ITEM');
       await raffleItem.setMinterStatus(minterWallet.address, true);
       await raffleItem.mint(userWallet.address);
       callerWallet = userWallet;
     });
 
     async function subject() {
-      const contract = await new RaffleItemFactory(callerWallet).attach(raffleItem.address);
-      const tx = await contract.transferFrom(userWallet.address, ownerWallet.address, 0);
+      const contract = RaffleItem.at(callerWallet, raffleItem.address);
+      const tx = await contract.transferFrom(userWallet.address, ownerWallet.address, 1);
       return tx.wait();
     }
 
@@ -79,12 +83,10 @@ describe('Raffle Item', () => {
     });
 
     it('should be able to trade if trading unlocked', async () => {
-      //
-      // const tx = await raffleItem.functions.setTradabilityStatus(true);
-      // await tx.wait();
-      // await subject();
-      // const balance = await raffleItem.functions.ownerOf(ownerWallet.address);
-      // expect(balance).toBe(1);
+      await raffleItem.setTradabilityStatus(true);
+      await subject();
+      const balance = await raffleItem.balanceOf(ownerWallet.address);
+      expect(balance.toNumber()).toBe(1);
     });
   });
 });

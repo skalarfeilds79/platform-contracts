@@ -7,8 +7,8 @@ import { Wallet, ethers } from 'ethers';
 
 import { Address } from '@imtbl/gods-unchained/node_modules/@imtbl/common-types';
 import { CardIntegrationTwoFactory } from './../src/generated/CardIntegrationTwoFactory';
-import { CardsFactory } from '@imtbl/gods-unchained';
-import { CardsWrapper } from './../../gods-unchained/src/wrappers/cardsWrapper';
+import { Cards } from '@imtbl/gods-unchained/src/contracts';
+import { CardsWrapper } from '@imtbl/gods-unchained/src/wrappers';
 import { EtherbotsMigrationFactory } from './../src/generated/EtherbotsMigrationFactory';
 import { asyncForEach } from '@imtbl/utils';
 
@@ -130,7 +130,7 @@ describe('Core', () => {
 
     it('should be able to migrate the card with the correct proto', async () => {
       await subject();
-      const newCards = await new CardsFactory(userWallet).attach(newCardsAddress);
+      const newCards = Cards.at(userWallet, newCardsAddress);
       const card = await newCards.functions.getDetails(0);
       expect(card.proto).toBe(380);
     });
@@ -213,7 +213,7 @@ describe('Core', () => {
 
     it('should be able to migrate the card with the correct proto', async () => {
       await subject();
-      const newCards = await new CardsFactory(userWallet).attach(newCardsAddress);
+      const newCards = Cards.at(userWallet, newCardsAddress);
       const card = await newCards.functions.getDetails(0);
       expect(card.proto).toBe(380);
     });

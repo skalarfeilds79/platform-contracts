@@ -41,7 +41,9 @@ describe('Order Generator', () => {
     // const exchange = IExchange.at(makerWallet, addressBook.zeroExExchangeAddress);
 
     // const isValidSignature = await exchange.isValidSignature(
-    //   orderHashUtils.getOrderHashBuffer(zeroExWrapper.convertEthersOrderTo0xOrder(newOrder.order)),
+    //   orderHashUtils.getOrderHashBuffer(
+    //     zeroExWrapper.convertEthersOrderTo0xOrder(newOrder.order)
+    //    ),
     //   makerWallet.address,
     //   newOrder.signature,
     // );

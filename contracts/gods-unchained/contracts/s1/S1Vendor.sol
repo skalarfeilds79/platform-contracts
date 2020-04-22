@@ -39,7 +39,7 @@ contract S1Vendor is SingleItemVendor {
         uint256 _quantity,
         IPurchaseProcessor.PaymentParams memory _payment,
         address payable _referrer
-    ) public payable returns (uint256 purchaseID) {
+    ) public payable returns (uint256 paymentID) {
         return purchaseFor(msg.sender, _quantity, _payment, _referrer);
     }
 

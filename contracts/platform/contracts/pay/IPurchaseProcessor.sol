@@ -5,8 +5,7 @@ contract IPurchaseProcessor {
 
     enum Currency {
         ETH,
-        USDCents,
-        Token
+        USDCents
     }
 
     struct Order {

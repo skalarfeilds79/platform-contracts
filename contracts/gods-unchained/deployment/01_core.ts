@@ -1,4 +1,3 @@
-
 import { Wallet, ethers } from 'ethers';
 
 import { Cards, Fusing } from '../src/contracts';
@@ -24,29 +23,30 @@ export class CoreStage implements DeploymentStage {
 
     const cardWrapper = new CardsWrapper(this.wallet);
 
-    const cards = (await findInstance('Cards')) || (await this.deployCards(cardWrapper));
-    await onDeployment('Cards', cards, false);
+    const cards = (await findInstance('GU_Cards')) || (await this.deployCards(cardWrapper));
+    await onDeployment('GU_Cards', cards, false);
 
     cardWrapper.instance = await Cards.at(this.wallet, cards);
 
     const openMinter =
-      (await findInstance('OpenMinter')) || (await this.deployOpenMinter(cardWrapper, cards));
-    await onDeployment('OpenMinter', openMinter, false);
+      (await findInstance('GU_OpenMinter')) || (await this.deployOpenMinter(cardWrapper, cards));
+    await onDeployment('GU_OpenMinter', openMinter, false);
 
-    const fusing = (await findInstance('Fusing')) || (await this.deployFusing(cardWrapper, cards));
-    await onDeployment('Fusing', fusing, false);
+    const fusing =
+      (await findInstance('GU_Fusing')) || (await this.deployFusing(cardWrapper, cards));
+    await onDeployment('GU_Fusing', fusing, false);
 
     const promoFactory =
-      (await findInstance('PromoFactory')) ||
+      (await findInstance('GU_PromoFactory')) ||
       (await this.deployPromoFactory(cardWrapper, cards, 400, 999));
-    await onDeployment('PromoFactory', promoFactory, false);
+    await onDeployment('GU_PromoFactory', promoFactory, false);
 
     await this.authoriseFactories(cardWrapper, openMinter, fusing, promoFactory);
     await this.unlockTradingFor(cardWrapper, [1, 4]);
-    await this.addFusingMinter(fusing, await findInstance('FUSING_MINTER'));
+    await this.addFusingMinter(fusing, await findInstance('GU_FUSING_MINTER'));
 
     // TODO: Implement this
-    transferOwnership([cards, openMinter, fusing, promoFactory]);
+    // transferOwnership([cards, openMinter, fusing, promoFactory]);
   }
 
   async deployCards(cardWrapper: CardsWrapper): Promise<string> {

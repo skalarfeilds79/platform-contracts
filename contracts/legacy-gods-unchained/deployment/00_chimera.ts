@@ -15,12 +15,18 @@ export class ChimeraMigrationStage implements DeploymentStage {
     onDeployment: (name: string, address: string, dependency: boolean) => void,
     transferOwnership: (addresses: string[]) => void,
   ) {
-    const oldCardsAddress = await findInstance('LegacyCards');
-    const promoFactoryAddress = await findInstance('S3PromoFactory');
+    const oldCardsAddress = await findInstance('GU_LegacyCards');
+
+    if (!oldCardsAddress || oldCardsAddress.length == 0) {
+      throw '*** Must have legacy cards address ***';
+      return;
+    }
+
+    const promoFactoryAddress = await findInstance('GU_S3PromoFactory');
     const chimera =
-      (await findInstance('ChimeraMigration')) ||
+      (await findInstance('GU_ChimeraMigration')) ||
       (await this.deployChimeraMigration(oldCardsAddress, promoFactoryAddress));
-    onDeployment('ChimeraMigration', chimera, false);
+    onDeployment('GU_ChimeraMigration', chimera, false);
     transferOwnership([chimera]);
   }
 

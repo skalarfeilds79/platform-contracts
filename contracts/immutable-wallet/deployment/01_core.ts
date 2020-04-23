@@ -26,62 +26,64 @@ export class CoreStage implements DeploymentStage {
     await this.wallet.getTransactionCount();
 
     console.log('** Deploying Forwarder **');
-    const forwarderAddress = await findInstance('Forwarder');
+    const forwarderAddress = await findInstance('GU_Forwarder');
     if (!forwarderAddress) {
       throw 'Must deploy a valid forwarder before deploying the wallet';
+      return;
     }
 
     const wrapper = new DeploymentWrapper(this.wallet);
 
     console.log('** Deploying Wallet Implementation **');
     const walletImplementation =
-      (await findInstance('WalletImplementation')) ||
+      (await findInstance('IMW_WalletImplementation')) ||
       (await wrapper.deployWalletImplementation()).address;
 
-    await onDeployment('WalletImplementation', walletImplementation, false);
+    await onDeployment('IMW_WalletImplementation', walletImplementation, false);
 
     console.log('** Deploying Registry **');
-    const registry = (await findInstance('Registry')) || (await wrapper.deployRegistry(0)).address;
-    await onDeployment('Registry', registry, false);
+    const registry =
+      (await findInstance('IMW_Registry')) || (await wrapper.deployRegistry(0)).address;
+    await onDeployment('IMW_Registry', registry, false);
 
     console.log('** Deploying Purchase Module **');
     const purchaseModule =
-      (await findInstance('PurchaseModule')) ||
+      (await findInstance('IMW_PurchaseModule')) ||
       (await wrapper.deployPurchaseModule(forwarderAddress)).address;
-    await onDeployment('PurchaseModule', purchaseModule, false);
+    await onDeployment('IMW_PurchaseModule', purchaseModule, false);
 
     const registryContract = await new RegistryFactory(this.wallet).attach(registry);
     if (!(await registryContract.functions.isRegistered(registryContract.address))) {
       await wrapper.registerModules(registryContract, [
-        { name: 'PurchaseModule', address: purchaseModule },
+        { name: 'IMW_PurchaseModule', address: purchaseModule },
       ]);
     }
 
     console.log('** Deploying Limited Modules **');
     const limitedModule =
-      (await findInstance('LimitedModules')) ||
+      (await findInstance('IMW_LimitedModules')) ||
       (await wrapper.deployLimitedModules(registry)).address;
-    await onDeployment('LimitedModules', limitedModule, false);
+    await onDeployment('IMW_LimitedModules', limitedModule, false);
 
     console.log('** Deploying Simple Delegate **');
     const delegate =
-      (await findInstance('SimpleDelegate')) || (await wrapper.deploySimpleDelegate()).address;
-    await onDeployment('SimpleDelegate', delegate, false);
+      (await findInstance('IMW_SimpleDelegate')) || (await wrapper.deploySimpleDelegate()).address;
+    await onDeployment('IMW_SimpleDelegate', delegate, false);
 
     console.log('** Deploying Multi Limiter **');
     const limiter =
-      (await findInstance('MultiLimiter')) || (await wrapper.deployMultiLimiter()).address;
-    await onDeployment('MultiLimiter', limiter, false);
+      (await findInstance('IMW_MultiLimiter')) || (await wrapper.deployMultiLimiter()).address;
+    await onDeployment('IMW_MultiLimiter', limiter, false);
 
     console.log('** Deploying Factory **');
     const factory =
-      (await findInstance('WalletFactory')) ||
+      (await findInstance('IMW_WalletFactory')) ||
       (await wrapper.deployFactory(walletImplementation, limitedModule, delegate, limiter)).address;
-    await onDeployment('WalletFactory', factory, false);
+    await onDeployment('IMW_WalletFactory', factory, false);
 
     const testWallet = await this.deployTestWallet(wrapper, factory, purchaseModule);
     if (testWallet) {
-      await onDeployment('TestWallet', testWallet, false);
+      await onDeployment('IMW_TestWallet', testWallet, false);
     }
 
     await transferOwnership([

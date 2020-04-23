@@ -21,18 +21,22 @@ export class ForwarderStage implements DeploymentStage {
 
     const weth = await findInstance('WETH');
 
-    const unsignedTx = await Forwarder.getDeployTransaction(
-      this.wallet,
-      exchange,
-      erc20Proxy,
-      weth,
-    );
+    try {
+      const unsignedTx = await Forwarder.getDeployTransaction(
+        this.wallet,
+        exchange,
+        erc20Proxy,
+        weth,
+      );
 
-    unsignedTx.nonce = await this.wallet.getTransactionCount();
-    const signedTx = await this.wallet.sendTransaction(unsignedTx);
-    const receipt = await signedTx.wait();
+      unsignedTx.nonce = await this.wallet.getTransactionCount();
+      const signedTx = await this.wallet.sendTransaction(unsignedTx);
+      const receipt = await signedTx.wait();
 
-    await onDeployment('Forwarder', receipt.contractAddress, false);
+      await onDeployment('GU_Forwarder', receipt.contractAddress, false);
+    } catch (e) {
+      console.log('*** Failed to deploy forwarder ***');
+    }
 
     await onDeployment('ZERO_EX_EXCHANGE', exchange, true);
     await onDeployment('ZERO_EX_ERC20_PROXY', erc20Proxy, true);

@@ -17,12 +17,12 @@ export class EtherBotsMigrationStage implements DeploymentStage {
     onDeployment: (name: string, address: string, dependency: boolean) => void,
     transferOwnership: (addresses: string[]) => void,
   ) {
-    const oldCardsAddress = await findInstance('LegacyCards');
-    const newCardsAddress = await findInstance('Cards');
+    const oldCardsAddress = await findInstance('GU_LegacyCards');
+    const newCardsAddress = await findInstance('GU_Cards');
     const etherbots =
-      (await findInstance('EtherbotsMigration')) ||
+      (await findInstance('GU_EtherbotsMigration')) ||
       (await this.deployEtherbots(oldCardsAddress, newCardsAddress));
-    onDeployment('EtherbotsMigration', etherbots, false);
+    onDeployment('GU_EtherbotsMigration', etherbots, false);
     transferOwnership([etherbots]);
   }
 

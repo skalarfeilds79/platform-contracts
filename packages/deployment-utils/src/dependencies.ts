@@ -37,7 +37,7 @@ export default {
     3: '0xe654aac058bfbf9f83fcaee7793311dd82f6ddb4',
     50: '0x1d7022f5b17d2f8b695918fb48fa1089c9f85401',
   },
-  FUSING_MINTER: {
+  GU_FUSING_MINTER: {
     1: '',
     3: '0xA80E99f59cd0474F76754Ed5498F2Ef6D6f09951',
     50: '0x6Ecbe1DB9EF729CBe972C83Fb886247691Fb6beb',

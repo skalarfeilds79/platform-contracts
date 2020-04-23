@@ -11,10 +11,10 @@ export function getAddressBook(
   const dependencies = config['dependencies'];
 
   return {
-    cardsAddress: addresses['Cards'],
-    openMinterAddress: addresses['OpenMinter'],
-    forwarderAddress: addresses['Forwarder'],
-    fusingAddress: addresses['Fusing'],
+    cardsAddress: addresses['GU_Cards'],
+    openMinterAddress: addresses['GU_OpenMinter'],
+    forwarderAddress: addresses['GU_Forwarder'],
+    fusingAddress: addresses['GU_Fusing'],
     wethAddress: dependencies['WETH'],
     zeroExExchangeAddress: dependencies['ZERO_EX_EXCHANGE'],
     zeroExERC20ProxyAddress: dependencies['ZERO_EX_ERC20_PROXY'],

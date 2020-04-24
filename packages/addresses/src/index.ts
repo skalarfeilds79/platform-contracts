@@ -1,2 +1,2 @@
-export * as ouputs from './outputs.json';
+export const ouputs = require('./outputs.json');
 export * from './util/getAddressBook';

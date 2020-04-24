@@ -47,4 +47,28 @@ export default {
     3: '',
     50: '',
   },
+  IM_ESCROW_DESTROYER: {
+    1: '',
+    3: '',
+    50: '',
+  },
+  IM_ESCROW_DESTRUCTION_DELAY: {
+    1: '',
+    3: '',
+    50: '',
+  },
+  IM_ESCROW_CUSTODIAN: {
+    1: '',
+    3: '',
+    50: '',
+  },
+  IM_ESCROW_RELEASE_DELAY: {
+    1: '',
+    3: '',
+    50: '',
+  },
+  GU_S1_EPIC_PACK_SKU: 'epic.pack',
+  GU_S1_RARE_PACK_SKU: 'rare.pack',
+  GU_S1_SHINY_PACK_SKU: 'shiny.pack',
+  GU_S1_LEGENDARY_PACK_SKU: 'legendary.pack',
 };

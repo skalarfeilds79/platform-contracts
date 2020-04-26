@@ -2,7 +2,7 @@ import 'jest';
 
 import { Beacon, Consumer } from '../../src/contracts';
 
-import { Blockchain, expectRevert } from '@imtbl/test-utils';
+import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
 import { BigNumber, BigNumberish } from 'ethers/utils';
 
@@ -26,6 +26,8 @@ function parseLogs(abi: string, logs: ethers.providers.Log[]): any[] {
 
 describe('Beacon', () => {
 
+  const [user] = generatedWallets(provider);
+
   beforeEach(async () => {
     await blockchain.resetAsync();
     await blockchain.saveSnapshotAsync();
@@ -37,7 +39,7 @@ describe('Beacon', () => {
 
   describe('#constructor', () => {
     it('should be able to deploy the beacon contract', async () => {
-      const beacon = await Beacon.deploy(provider.getSigner());
+      const beacon = await Beacon.deploy(user);
     });
   });
 
@@ -47,8 +49,8 @@ describe('Beacon', () => {
     let consumer: Consumer;
 
     beforeEach(async() => {
-      beacon = await Beacon.deploy(provider.getSigner());
-      consumer = await Consumer.deploy(provider.getSigner());
+      beacon = await Beacon.deploy(user);
+      consumer = await Consumer.deploy(user, beacon.address);
     });
 
     async function commit(offset: BigNumberish) {
@@ -79,8 +81,8 @@ describe('Beacon', () => {
     let consumer: Consumer;
 
     beforeEach(async() => {
-      beacon = await Beacon.deploy(provider.getSigner());
-      consumer = await Consumer.deploy(provider.getSigner());
+      beacon = await Beacon.deploy(user);
+      consumer = await Consumer.deploy(user, beacon.address);
     });
 
     async function callback(offset: number, wait: number) {
@@ -106,18 +108,18 @@ describe('Beacon', () => {
     });
 
     it('should not be able to callback on the same block', async () => {
-      await expectRevert(consumer.sameBlockCallback(beacon.address));
+      await expectRevert(consumer.sameBlockCallback());
     });
 
     it('should not be able to callback multiple times', async () => {
-      await expectRevert(consumer.multiCallback(beacon.address, 0, 2));
+      await expectRevert(consumer.multiCallback(0, 2));
     });
 
     it('should not be able to callback after 256 blocks', async () => {
       await expectRevert(callback(0, 256));
     });
 
-    it('should not be able to callback after 250 blocks', async () => {
+    it('should be able to callback after 250 blocks', async () => {
       await callback(0, 250);
     });
 
@@ -133,18 +135,20 @@ describe('Beacon', () => {
     let consumer: Consumer;
 
     beforeEach(async() => {
-      beacon = await Beacon.deploy(provider.getSigner());
-      consumer = await Consumer.deploy(provider.getSigner());
+      beacon = await Beacon.deploy(user);
+      consumer = await Consumer.deploy(user, beacon.address);
     });
 
     it('should be able to make a successful recommit', async () => {
-      const receipt = await beacon.commit(0);
+      const tx = await beacon.commit(0);
+      const receipt = await tx.wait();
       await blockchain.waitBlocksAsync(256);
       await beacon.recommit(receipt.blockNumber, 0);
     });
 
     it('should not be able to recommit inside first 256 blocks', async () => {
-      const receipt = await beacon.commit(0);
+      const tx = await beacon.commit(0);
+      const receipt = await tx.wait();
       await expectRevert(beacon.recommit(receipt.blockNumber, 0));
     });
 
@@ -155,7 +159,8 @@ describe('Beacon', () => {
     });
 
     it('should be able to recommit twice', async () => {
-      const receipt = await beacon.commit(0);
+      const tx = await beacon.commit(0);
+      const receipt = await tx.wait();
       await blockchain.waitBlocksAsync(256);
       await beacon.recommit(receipt.blockNumber, 0);
       await blockchain.waitBlocksAsync(256);
@@ -163,7 +168,8 @@ describe('Beacon', () => {
     });
 
     it('should not be able to recommit twice too quickly', async () => {
-      const receipt = await beacon.commit(0);
+      const tx = await beacon.commit(0);
+      const receipt = await tx.wait();
       await blockchain.waitBlocksAsync(256);
       await beacon.recommit(receipt.blockNumber, 0);
       await expectRevert(beacon.recommit(receipt.blockNumber, 0));
@@ -188,8 +194,8 @@ describe('Beacon', () => {
     let consumer: Consumer;
 
     beforeEach(async() => {
-      beacon = await Beacon.deploy(provider.getSigner());
-      consumer = await Consumer.deploy(provider.getSigner());
+      beacon = await Beacon.deploy(user);
+      consumer = await Consumer.deploy(user, beacon.address);
     });
 
     it('should not be able to get randomness without a commit', async () => {
@@ -218,6 +224,85 @@ describe('Beacon', () => {
       const receipt = await tx.wait();
       await blockchain.waitBlocksAsync(1);
       await beacon.randomness(receipt.blockNumber);
+    });
+
+    it('should return the same randomness after a query', async () => {
+      let tx = await beacon.commit(0);
+      let receipt = await tx.wait();
+      const original = receipt.blockNumber;
+      await consumer.requireSameRandomness(original, original);
+    });
+
+    it('should return the same randomness after recommit', async () => {
+      let tx = await beacon.commit(0);
+      let receipt = await tx.wait();
+      const original = receipt.blockNumber;
+      await blockchain.waitBlocksAsync(256);
+      await expectRevert(beacon.randomness(original));
+      tx = await beacon.recommit(original, 0);
+      receipt = await tx.wait();
+      const recommitted = receipt.blockNumber;
+      const forward = await beacon.getCurrentBlock(original);
+      expect(forward.toNumber()).toBe(recommitted);
+      await blockchain.waitBlocksAsync(1);
+      await consumer.requireSameRandomness(original, recommitted);
+    });
+
+    it('should return the same randomness after double recommit', async () => {
+      let tx = await beacon.commit(0);
+      let receipt = await tx.wait();
+      const original = receipt.blockNumber;
+      await blockchain.waitBlocksAsync(256);
+
+      await expectRevert(beacon.randomness(original));
+      tx = await beacon.recommit(original, 0);
+      receipt = await tx.wait();
+      const firstRecommitBlock = receipt.blockNumber;
+      let forward = await beacon.getCurrentBlock(original);
+      expect(forward.toNumber()).toBe(firstRecommitBlock);
+      await blockchain.waitBlocksAsync(256);
+
+      await expectRevert(beacon.randomness(original));
+      tx = await beacon.recommit(firstRecommitBlock, 0);
+      receipt = await tx.wait();
+      const secondRecommitBlock = receipt.blockNumber;
+      forward = await beacon.getCurrentBlock(original);
+      expect(forward.toNumber()).toBe(secondRecommitBlock);
+
+      console.log('a');
+      await beacon.randomness(original);
+      console.log('b');
+      await beacon.randomness(firstRecommitBlock);
+      console.log('c');
+      await beacon.randomness(secondRecommitBlock);
+      
+      // await consumer.requireSameRandomness(original, firstRecommitBlock);
+      // await consumer.requireSameRandomness(firstRecommitBlock, secondRecommitBlock);
+    });
+
+    it('should return the same randomness after double recommit on intermediate block', async () => {
+      let tx = await beacon.commit(0);
+      let receipt = await tx.wait();
+      const original = receipt.blockNumber;
+      await blockchain.waitBlocksAsync(256);
+
+      await expectRevert(beacon.randomness(original));
+      tx = await beacon.recommit(original, 0);
+      receipt = await tx.wait();
+      const firstRecommitBlock = receipt.blockNumber;
+      let forward = await beacon.getCurrentBlock(original);
+      expect(forward.toNumber()).toBe(firstRecommitBlock);
+      await blockchain.waitBlocksAsync(256);
+
+      await expectRevert(beacon.randomness(firstRecommitBlock));
+      tx = await beacon.recommit(firstRecommitBlock, 0);
+      receipt = await tx.wait();
+      const secondRecommitBlock = receipt.blockNumber;
+      forward = await beacon.getCurrentBlock(firstRecommitBlock);
+      expect(forward.toNumber()).toBe(secondRecommitBlock);
+
+      await consumer.requireSameRandomness(original, firstRecommitBlock);
+      await consumer.requireSameRandomness(firstRecommitBlock, secondRecommitBlock);
     });
 
   });

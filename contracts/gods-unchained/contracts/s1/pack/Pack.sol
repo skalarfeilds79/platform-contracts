@@ -42,6 +42,16 @@ contract Pack is IPack, S1Vendor, RarityProvider {
     // The number of commitments
     uint256 public commitmentCount;
 
+    function _getCardDetails(uint _index, uint _random)
+        internal
+        view
+        returns (uint16 proto, uint8 quality);
+
+    function _getTicketsInPack(uint _index, uint _random)
+        internal
+        pure
+        returns (uint16);
+
     constructor(
         IRaffle _raffle,
         IBeacon _beacon,
@@ -62,7 +72,10 @@ contract Pack is IPack, S1Vendor, RarityProvider {
      * @param _chest the chest contract for this pack
      */
     function setChest(address _chest) public onlyOwner {
-        require(chest == address(0), "GU:S1:Pack: must not have already set chest");
+        require(
+            chest == address(0),
+            "S1Pack: must not have already set chest"
+        );
         chest = _chest;
     }
 
@@ -72,7 +85,11 @@ contract Pack is IPack, S1Vendor, RarityProvider {
      */
     function mint(uint256 _commitmentID) public {
         Commitment memory commitment = commitments[_commitmentID];
-        require(commitment.recipient != address(0), "GU:S1:Pack: must be a valid commitment");
+        require(
+            commitment.recipient != address(0),
+            "S1Pack: must be a valid commitment"
+        );
+
         if (commitment.escrowFor == 0) {
             _createCards(_commitmentID, commitment, commitment.recipient);
             _createTickets(_commitmentID, commitment, commitment.recipient);
@@ -109,13 +126,24 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         );
     }
 
-    function _getRandomness(uint256 _commitmentID, Commitment memory _commitment) internal returns (uint256) {
+    function _getRandomness(
+        uint256 _commitmentID,
+        Commitment memory _commitment
+    )
+        internal
+        returns (uint256)
+    {
         bytes32 base = beacon.randomness(_commitment.commitBlock);
         bytes32 hashed = keccak256(abi.encodePacked(base, _commitmentID));
         return uint256(hashed);
     }
 
-    function _escrowTickets(uint256 _commitmentID, Commitment memory _commitment) internal {
+    function _escrowTickets(
+        uint256 _commitmentID,
+        Commitment memory _commitment
+    )
+        internal
+    {
 
         if (_commitment.ticketQuantity == 0) {
             return;
@@ -151,9 +179,19 @@ contract Pack is IPack, S1Vendor, RarityProvider {
 
     function ticketsEscrowHook(uint256 _commitmentID) public {
         address protocol = address(escrow.getProtocol());
-        require(msg.sender == protocol, "GU:S1:Pack: must be core escrow");
+
+        require(
+            msg.sender == protocol,
+            "S1Pack: must be core escrow"
+        );
+
         Commitment memory commitment = commitments[_commitmentID];
-        require(commitment.ticketQuantity > 0, "GU:S1:Pack: must have tickets available");
+
+        require(
+            commitment.ticketQuantity > 0,
+            "S1Pack: must have tickets available"
+        );
+
         _createTickets(_commitmentID, commitment, protocol);
         commitments[_commitmentID].ticketQuantity = 0;
         // if there's nothing left to do on this purchase, clear it
@@ -164,9 +202,19 @@ contract Pack is IPack, S1Vendor, RarityProvider {
 
     function cardsEscrowHook(uint256 _commitmentID) public {
         address protocol = address(escrow.getProtocol());
-        require(msg.sender == protocol, "GU:S1:Pack: must be core escrow");
+
+        require(
+            msg.sender == protocol,
+            "S1Pack: must be core escrow"
+        );
+
         Commitment memory commitment = commitments[_commitmentID];
-        require(commitment.packQuantity > 0, "GU:S1:Pack: must have cards available");
+
+        require(
+            commitment.packQuantity > 0,
+            "S1Pack: must have cards available"
+        );
+
         _createCards(_commitmentID, commitment, protocol);
         commitments[_commitmentID].packQuantity = 0;
         // if there's nothing left to do on this purchase, clear it
@@ -187,7 +235,11 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         uint256 _quantity,
         IPurchaseProcessor.PaymentParams memory _payment,
         address payable _referrer
-    ) public payable returns (uint256 paymentID) {
+    )
+        public
+        payable
+        returns (uint256 paymentID)
+    {
         paymentID = super.purchaseFor(_recipient, _quantity, _payment, _referrer);
         if (_payment.currency == IPurchaseProcessor.Currency.ETH) {
             _createCommitment(paymentID, _recipient, _quantity, 0);
@@ -249,7 +301,10 @@ contract Pack is IPack, S1Vendor, RarityProvider {
     }
 
     function openChests(address _owner, uint256 _quantity) public {
-        require(msg.sender == chest, "GU:S1:Pack: must be the chest contract");
+        require(
+            msg.sender == chest,
+            "S1Pack: must be the chest contract"
+        );
 
         uint256 commitmentID = commitmentCount++;
         uint256 commitBlock = beacon.commit(0);
@@ -288,9 +343,5 @@ contract Pack is IPack, S1Vendor, RarityProvider {
 
         emit CommitmentRecorded(commitmentID, commitment);
     }
-
-    function _getCardDetails(uint _index, uint _random) internal view returns (uint16 proto, uint8 quality);
-
-    function _getTicketsInPack(uint _index, uint _random) internal pure returns (uint16);
 
 }

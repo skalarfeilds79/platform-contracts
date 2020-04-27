@@ -13,10 +13,19 @@ contract CreditCardEscrow is Ownable, ICreditCardEscrow {
     using SafeMath for uint256;
 
     // Emitted when assets are escrowed
-    event Escrowed(uint indexed id, uint indexed paymentID, address indexed owner, uint256 endTimestamp);
+    event Escrowed(
+        uint indexed id,
+        uint indexed paymentID,
+        address indexed owner,
+        uint256 endTimestamp
+    );
 
     // Emitted when the release of the assets in a custodial escrow account is successfully requested
-    event ReleaseRequested(uint indexed id, uint256 releaseTimestamp, address releaseTo);
+    event ReleaseRequested(
+        uint indexed id,
+        uint256 releaseTimestamp,
+        address releaseTo
+    );
 
     // Emitted when the release of the assets in a custodial escrow account is cancelled
     event ReleaseCancelled(uint indexed id);
@@ -74,12 +83,19 @@ contract CreditCardEscrow is Ownable, ICreditCardEscrow {
     }
 
     modifier onlyDestroyer {
-        require(msg.sender == destroyer, "IM:CreditCardEscrow: must be the destroyer");
+        require(
+            msg.sender == destroyer,
+            "IM:CreditCardEscrow: must be the destroyer"
+        );
+
         _;
     }
 
     modifier onlyCustodian {
-        require(msg.sender == custodian, "IM:CreditCardEscrow: must be the custodian");
+        require(
+            msg.sender == custodian,
+            "IM:CreditCardEscrow: must be the custodian"
+        );
         _;
     }
 
@@ -98,7 +114,11 @@ contract CreditCardEscrow is Ownable, ICreditCardEscrow {
      * @param _destroyer Address of the destroyer account
      */
     function setDestroyer(address _destroyer) public onlyOwner {
-        require(_destroyer != destroyer, "IM:CreditCardEscrow: must change existing destroyer");
+        require(
+            _destroyer != destroyer,
+            "IM:CreditCardEscrow: must change existing destroyer"
+        );
+
         destroyer = _destroyer;
     }
 
@@ -117,7 +137,11 @@ contract CreditCardEscrow is Ownable, ICreditCardEscrow {
      * @param _custodian Address of the custodian account
      */
     function setCustodian(address _custodian) public onlyOwner {
-        require(_custodian != custodian, "IM:CreditCardEscrow: must change existing custodian");
+        require(
+            _custodian != custodian,
+            "IM:CreditCardEscrow: must change existing custodian"
+        );
+
         custodian = _custodian;
     }
 
@@ -130,14 +154,29 @@ contract CreditCardEscrow is Ownable, ICreditCardEscrow {
 
         Lock memory lock = locks[_id];
 
-        require(lock.endTimestamp != 0, "IM:CreditCardEscrow: must have escrow period set");
-        require(block.timestamp >= lock.endTimestamp, "IM:CreditCardEscrow: escrow period must have expired");
+        require(
+            lock.endTimestamp != 0,
+            "IM:CreditCardEscrow: must have escrow period set"
+        );
+
+        require(
+            block.timestamp >= lock.endTimestamp,
+            "IM:CreditCardEscrow: escrow period must have expired"
+        );
 
         if (lock.owner != address(0)) {
             escrowProtocol.release(_id, lock.owner);
         } else {
-            require(lock.releaseTo != address(0), "IM:CreditCardEscrow: cannot burn assets");
-            require(block.timestamp >= lock.releaseTimestamp, "IM:CreditCardEscrow: release period must have expired");
+            require(
+                lock.releaseTo != address(0),
+                "IM:CreditCardEscrow: cannot burn assets"
+            );
+
+            require(
+                block.timestamp >= lock.releaseTimestamp,
+                "IM:CreditCardEscrow: release period must have expired"
+            );
+
             escrowProtocol.release(_id, lock.releaseTo);
         }
 
@@ -155,12 +194,34 @@ contract CreditCardEscrow is Ownable, ICreditCardEscrow {
 
         Lock storage lock = locks[_id];
 
-        require(lock.owner == address(0), "IM:CreditCardEscrow: escrow account is not custodial, call release directly");
-        require(lock.endTimestamp != 0, "IM:CreditCardEscrow: must be in escrow");
-        require(lock.destructionTimestamp == 0, "IM:CreditCardEscrow: must not be marked for destruction");
-        require(lock.releaseTimestamp == 0, "IM:CreditCardEscrow: must not be marked for release");
-        require(block.timestamp.add(releaseDelay) >= lock.endTimestamp, "IM:CreditCardEscrow: release period must end after escrow period");
-        require(_to != address(0), "IM:CreditCardEscrow: must release to a real user");
+        require(
+            lock.owner == address(0),
+            "IM:CreditCardEscrow: escrow account is not custodial, call release directly"
+        );
+
+        require(
+            lock.endTimestamp != 0, "IM:CreditCardEscrow: must be in escrow"
+        );
+
+        require(
+            lock.destructionTimestamp == 0,
+            "IM:CreditCardEscrow: must not be marked for destruction"
+        );
+
+        require(
+            lock.releaseTimestamp == 0,
+            "IM:CreditCardEscrow: must not be marked for release"
+        );
+
+        require(
+            block.timestamp.add(releaseDelay) >= lock.endTimestamp,
+            "IM:CreditCardEscrow: release period must end after escrow period"
+        );
+
+        require(
+            _to != address(0),
+            "IM:CreditCardEscrow: must release to a real user"
+        );
 
         uint256 releaseTimestamp = block.timestamp.add(releaseDelay);
 
@@ -179,9 +240,20 @@ contract CreditCardEscrow is Ownable, ICreditCardEscrow {
 
         Lock storage lock = locks[_id];
 
-        require(lock.owner == address(0), "IM:CreditCardEscrow: escrow account is not custodial, call release directly");
-        require(lock.releaseTimestamp != 0, "IM:CreditCardEscrow: must be marked for release");
-        require(lock.releaseTimestamp > block.timestamp, "IM:CreditCardEscrow: release period must not have expired");
+        require(
+            lock.owner == address(0),
+            "IM:CreditCardEscrow: escrow account is not custodial, call release directly"
+        );
+
+        require(
+            lock.releaseTimestamp != 0,
+            "IM:CreditCardEscrow: must be marked for release"
+        );
+
+        require(
+            lock.releaseTimestamp > block.timestamp,
+            "IM:CreditCardEscrow: release period must not have expired"
+        );
 
         lock.releaseTimestamp = 0;
         lock.releaseTo = address(0);
@@ -198,10 +270,25 @@ contract CreditCardEscrow is Ownable, ICreditCardEscrow {
 
         Lock storage lock = locks[_id];
 
-        require(lock.endTimestamp != 0, "IM:CreditCardEscrow: must be in escrow");
-        require(lock.destructionTimestamp == 0, "IM:CreditCardEscrow: must not be marked for destruction");
-        require(lock.endTimestamp > block.timestamp, "IM:CreditCardEscrow: escrow period must not have expired");
-        require(lock.owner == address(0), "IM:CreditCardEscrow: must be zero address");
+        require(
+            lock.endTimestamp != 0,
+            "IM:CreditCardEscrow: must be in escrow"
+        );
+
+        require(
+            lock.destructionTimestamp == 0,
+            "IM:CreditCardEscrow: must not be marked for destruction"
+        );
+
+        require(
+            lock.endTimestamp > block.timestamp,
+            "IM:CreditCardEscrow: escrow period must not have expired"
+        );
+
+        require(
+            lock.owner == address(0),
+            "IM:CreditCardEscrow: must be zero address"
+        );
 
         uint256 destructionTimestamp = block.timestamp.add(destructionDelay);
         lock.destructionTimestamp = destructionTimestamp;
@@ -218,8 +305,15 @@ contract CreditCardEscrow is Ownable, ICreditCardEscrow {
 
         Lock storage lock = locks[_id];
 
-        require(lock.destructionTimestamp != 0, "IM:CreditCardEscrow: must be marked for destruction");
-        require(lock.destructionTimestamp > block.timestamp, "IM:CreditCardEscrow: destruction period must not have expired");
+        require(
+            lock.destructionTimestamp != 0,
+            "IM:CreditCardEscrow: must be marked for destruction"
+        );
+
+        require(
+            lock.destructionTimestamp > block.timestamp,
+            "IM:CreditCardEscrow: destruction period must not have expired"
+        );
 
         lock.destructionTimestamp = 0;
 
@@ -235,8 +329,15 @@ contract CreditCardEscrow is Ownable, ICreditCardEscrow {
 
         Lock memory lock = locks[_id];
 
-        require(lock.destructionTimestamp != 0, "IM:CreditCardEscrow: must be marked for destruction");
-        require(block.timestamp >= lock.destructionTimestamp, "IM:CreditCardEscrow: destruction period must have expired");
+        require(
+            lock.destructionTimestamp != 0,
+            "IM:CreditCardEscrow: must be marked for destruction"
+        );
+
+        require(
+            block.timestamp >= lock.destructionTimestamp,
+            "IM:CreditCardEscrow: destruction period must have expired"
+        );
 
         // don't try to burn the assets
         // just leave in the contract
@@ -263,8 +364,15 @@ contract CreditCardEscrow is Ownable, ICreditCardEscrow {
         uint256 _duration
     ) public returns (uint) {
 
-        require(_duration > 0, "IM:CreditCardEscrow: must be locked for a number of blocks");
-        require(_vault.releaser == address(this), "IM:CreditCardEscrow: must be releasable by this contract");
+        require(
+            _duration > 0,
+            "IM:CreditCardEscrow: must be locked for a number of blocks"
+        );
+
+        require(
+            _vault.releaser == address(this),
+            "IM:CreditCardEscrow: must be releasable by this contract"
+        );
 
         // escrow the assets with this contract as the releaser
         uint escrowID = escrowProtocol.callbackEscrow(_vault, _callbackTo, _callbackData);
@@ -278,8 +386,14 @@ contract CreditCardEscrow is Ownable, ICreditCardEscrow {
         return escrowProtocol;
     }
 
-    function _lock(uint _escrowID, uint _paymentID, uint256 _duration, address _owner) internal {
-
+    function _lock(
+        uint _escrowID,
+        uint _paymentID,
+        uint256 _duration,
+        address _owner
+    )
+        internal
+    {
         uint256 endTimestamp = block.timestamp.add(_duration);
 
         locks[_escrowID] = Lock({

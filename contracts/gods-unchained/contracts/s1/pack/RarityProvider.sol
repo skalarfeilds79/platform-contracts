@@ -36,12 +36,27 @@ contract RarityProvider {
     }
 
     // return 'length' bytes of 'num' starting at 'start'
-    function extract(uint num, uint length, uint start) internal pure returns (uint) {
+    function extract(
+        uint num,
+        uint length,
+        uint start
+    )
+        internal
+        pure
+        returns (uint)
+    {
         return (((1 << (length * 8)) - 1) & (num >> ((start - 1) * 8)));
     }
 
     // divides the random seed into components
-    function _getComponents(uint _index, uint _rand) internal pure returns (Components memory) {
+    function _getComponents(
+        uint _index,
+        uint _rand
+    )
+        internal
+        pure
+        returns (Components memory)
+    {
         uint random = uint(keccak256(abi.encodePacked(_index, _rand)));
         return Components({
             rarity: uint32(extract(random, 4, 10) % 1000000),
@@ -50,7 +65,13 @@ contract RarityProvider {
         });
     }
 
-    function _getCommonPlusRarity(uint32 _rand) internal pure returns (Rarity) {
+    function _getCommonPlusRarity(
+        uint32 _rand
+    )
+        internal
+        pure
+        returns (Rarity)
+    {
         if (_rand >= 998345) {
             return Rarity.Legendary;
         } else if (_rand >= 986765) {
@@ -62,7 +83,13 @@ contract RarityProvider {
         }
     }
 
-    function _getRarePlusRarity(uint32 _rand) internal pure returns (Rarity) {
+    function _getRarePlusRarity(
+        uint32 _rand
+    )
+        internal
+        pure
+        returns (Rarity)
+    {
         if (_rand >= 981615) {
             return Rarity.Legendary;
         } else if (_rand >= 852940) {
@@ -72,7 +99,13 @@ contract RarityProvider {
         }
     }
 
-    function _getEpicPlusRarity(uint32 _rand) internal pure returns (Rarity) {
+    function _getEpicPlusRarity(
+        uint32 _rand
+    )
+        internal
+        pure
+        returns (Rarity)
+    {
         if (_rand >= 981615) {
             return Rarity.Legendary;
         } else {
@@ -80,7 +113,13 @@ contract RarityProvider {
         }
     }
 
-    function _getQuality(uint16 _rand) internal pure returns (uint8) {
+    function _getQuality(
+        uint16 _rand
+    )
+        internal
+        pure
+        returns (uint8)
+    {
         if (_rand >= 998) {
             return 1;
         } else if (_rand >= 988) {
@@ -92,7 +131,13 @@ contract RarityProvider {
         }
     }
 
-    function _getShinyQuality(uint16 _rand) internal pure returns (uint8) {
+    function _getShinyQuality(
+        uint16 _rand
+    )
+        internal
+        pure
+        returns (uint8)
+    {
         if (_rand >= 998) {
             return 1;
         } else if (_rand >= 748) {
@@ -102,7 +147,14 @@ contract RarityProvider {
         }
     }
 
-    function _getRandomCard(Rarity _rarity, uint16 _random) internal view returns (uint16) {
+    function _getRandomCard(
+        Rarity _rarity,
+        uint16 _random
+    )
+        internal
+        view
+        returns (uint16)
+    {
         // modulo bias is fine - creates rarity tiers etc
         // will obviously revert is there are no cards of that type: this is expected - should never happen
         if (_rarity == Rarity.Common) {

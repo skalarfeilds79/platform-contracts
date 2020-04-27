@@ -51,9 +51,20 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
      */
     function process(Order memory order, PaymentParams memory payment) public payable returns (uint) {
 
-        require(order.sku != bytes32(0), "must have a set SKU");
-        require(order.quantity > 0, "must have a valid quality");
-        require(sellerApproved[order.sku][msg.sender], "must be approved to sell this product");
+        require(
+            order.sku != bytes32(0),
+            "IM:PurchaseProcessor: must have a set SKU"
+        );
+
+        require(
+            order.quantity > 0,
+            "IM:PurchaseProcessor: must have a valid quality"
+        );
+
+        require(
+            sellerApproved[order.sku][msg.sender],
+            "IM:PurchaseProcessor: must be approved to sell this product"
+        );
 
         if (order.currency == Currency.USDCents) {
             if (payment.currency == Currency.USDCents) {
@@ -76,24 +87,53 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
         return id;
     }
 
-    function _validateOrderPaymentMatch(Order memory order, PaymentParams memory payment) internal pure {
-        require(payment.value >= order.totalPrice, "receipt value must be sufficient");
-        require(order.currency == Currency.USDCents, "receipt currency must match");
+    function _validateOrderPaymentMatch(
+        Order memory order,
+        PaymentParams memory payment
+    )
+        internal
+        pure
+    {
+        require(
+            payment.value >= order.totalPrice,
+            "IM:PurchaseProcessor: receipt value must be sufficient"
+        );
+
+        require(
+            order.currency == Currency.USDCents,
+            "IM:PurchaseProcessor: receipt currency must match"
+        );
     }
 
     function _updateSignerLimit(address signer, uint256 amount) internal {
         Limit storage limit = signerLimits[signer];
-        require(limit.total > 0, "invalid signer");
+        require(
+            limit.total > 0,
+            "IM:PurchaseProcessor: invalid signer"
+        );
+
         if (limit.periodEnd < block.timestamp) {
             limit.periodEnd = block.timestamp + 1 days;
             limit.used = 0;
         }
         uint nextUsed = limit.used.add(amount);
-        require (limit.total >= nextUsed, "exceeds signing limit for this address");
+
+        require (
+            limit.total >= nextUsed,
+            "IM:PurchaseProcessor: exceeds signing limit for this address"
+        );
+
         limit.used = nextUsed;
     }
 
-    function _getSigner(Order memory order, PaymentParams memory payment) internal view returns (address) {
+    function _getSigner(
+        Order memory order,
+        PaymentParams memory payment
+    )
+        internal
+        view
+        returns (address)
+    {
         bytes32 sigHash = keccak256(abi.encodePacked(
             address(this),
             msg.sender,
@@ -109,26 +149,50 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
         return ecrecover(recoveryHash, payment.v, payment.r, payment.s);
     }
 
-    function _priceUSDPayETH(Order memory _order, PaymentParams memory _payment) internal {
+    function _priceUSDPayETH(
+        Order memory _order,
+        PaymentParams memory _payment
+    )
+        internal
+    {
         // TODO:
     }
 
-    function _priceUSDPayUSD(Order memory _order, PaymentParams memory _payment) internal {
+    function _priceUSDPayUSD(
+        Order memory _order,
+        PaymentParams memory _payment
+    )
+        internal
+    {
         address signer = _getSigner(_order, _payment);
 
         _updateSignerLimit(signer, _order.totalPrice);
 
-        require(!receiptNonces[signer][_payment.nonce], "nonce must not be used");
+        require(
+            !receiptNonces[signer][_payment.nonce],
+            "IM:PurchaseProcessor: nonce must not be used"
+        );
+
         receiptNonces[signer][_payment.nonce] = true;
 
         _validateOrderPaymentMatch(_order, _payment);
     }
 
-    function _priceETHPayETH(Order memory _order, PaymentParams memory _payment) internal {
+    function _priceETHPayETH(
+        Order memory _order,
+        PaymentParams memory _payment
+    )
+        internal
+    {
         // TODO:
     }
 
-    function _priceETHPayUSD(Order memory _order, PaymentParams memory _payment) internal {
+    function _priceETHPayUSD(
+        Order memory _order,
+        PaymentParams memory _payment
+    )
+        internal
+    {
         // TODO:
     }
 

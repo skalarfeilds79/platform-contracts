@@ -17,7 +17,10 @@ contract Referral {
     constructor(uint8 _vendorPercentage, uint8 _referrerPercentage) public {
         vendorPercentage = _vendorPercentage;
         referrerPercentage = _referrerPercentage;
-        require(vendorPercentage + referrerPercentage == 100, "GU:S1:Referral: invalid constructor params");
+        require(
+            vendorPercentage + referrerPercentage == 100,
+            "GU:S1:Referral: invalid constructor params"
+        );
     }
 
     /**
@@ -34,7 +37,11 @@ contract Referral {
     ) {
         toVendor = _getVendorPercentage(_value, vendorPercentage);
         toReferrer = _getReferrerPercentage(_value, referrerPercentage);
-        require(toVendor.add(toReferrer) == _value, "wrong sum value");
+        require(
+            toVendor.add(toReferrer) == _value,
+            "Referral: wrong sum value"
+        );
+
         return (toVendor, toReferrer);
     }
 

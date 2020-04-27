@@ -40,23 +40,56 @@ contract Escrow is IEscrow, Ownable {
         bytes memory _callbackData
     ) public returns (uint256) {
 
-        require(!mutexLocked, "IM:Escrow: mutex must be unlocked");
-        require(_vault.asset != address(0), "IM:Escrow: must be a non-null asset");
-        require(_vault.releaser != address(0), "IM:Escrow: must have a releaser");
+        require(
+            !mutexLocked,
+            "IM:Escrow: mutex must be unlocked"
+        );
+
+        require(
+            _vault.asset != address(0),
+            "IM:Escrow: must be a non-null asset"
+        );
+
+        require(
+            _vault.releaser != address(0),
+            "IM:Escrow: must have a releaser"
+        );
 
         uint256 preBalance = 0;
 
         if (_vault.balance > 0) {
             preBalance = IERC20(_vault.asset).balanceOf(address(this));
-            require(_vault.tokenIDs.length == 0, "IMEscrow: must not supply balance and list");
-            require(_vault.lowTokenID == 0 && _vault.highTokenID == 0, "IMEscrow: must not supply balance and range");
+            require(
+                _vault.tokenIDs.length == 0,
+                "IMEscrow: must not supply balance and list"
+            );
+
+            require(
+                _vault.lowTokenID == 0 && _vault.highTokenID == 0,
+                "IMEscrow: must not supply balance and range"
+            );
+
         } else if (_vault.tokenIDs.length > 0) {
-            require(!_areAnyInListEscrowed(_vault), "IM:Escrow: list must not be already escrowed");
-            require(_vault.lowTokenID == 0 && _vault.highTokenID == 0, "IMEscrow: must not supply list and range");
+            require(
+                !_areAnyInListEscrowed(_vault),
+                "IM:Escrow: list must not be already escrowed"
+            );
+
+            require(
+                _vault.lowTokenID == 0 && _vault.highTokenID == 0,
+                "IMEscrow: must not supply list and range"
+            );
+
         } else if (_vault.highTokenID.sub(_vault.lowTokenID) > 0) {
-            require(!_areAnyInBatchEscrowed(_vault), "IM:Escrow: batch must not be already escrowed");
+            require(
+                !_areAnyInBatchEscrowed(_vault),
+                "IM:Escrow: batch must not be already escrowed"
+            );
         } else {
-            require(false, "IM:Escrow: invalid vault");
+            require(
+                false,
+                "IM:Escrow: invalid vault"
+            );
         }
 
         mutexLocked = true;
@@ -65,11 +98,21 @@ contract Escrow is IEscrow, Ownable {
         mutexLocked = false;
 
         if (_vault.balance > 0) {
-            require(IERC20(_vault.asset).balanceOf(address(this)).sub(preBalance) == _vault.balance, "IM:Escrow: must have transferred the tokens");
+            require(
+                IERC20(_vault.asset).balanceOf(address(this)).sub(preBalance) == _vault.balance,
+                "IM:Escrow: must have transferred the tokens"
+            );
         } else if (_vault.tokenIDs.length > 0) {
-            require(_areAllInListEscrowed(_vault), "IM:Escrow: list must now be owned by escrow contract");
+            require(
+                _areAllInListEscrowed(_vault),
+                "IM:Escrow: list must now be owned by escrow contract"
+            );
+
         } else if (_vault.highTokenID.sub(_vault.lowTokenID) > 0) {
-            require(_areAllInBatchEscrowed(_vault), "IM:Escrow: batch must not be owned by escrow contract");
+            require(
+                _areAllInBatchEscrowed(_vault),
+                "IM:Escrow: batch must not be owned by escrow contract"
+            );
         }
 
         return _escrow(_vault);
@@ -82,21 +125,47 @@ contract Escrow is IEscrow, Ownable {
      * @param _from the address from which to pull the tokens
      */
     function escrow(Vault memory _vault, address _from) public returns (uint256) {
-        require(!mutexLocked, "IM:Escrow: mutex must be unlocked");
-        require(_vault.asset != address(0), "IM:Escrow: must be a non-null asset");
-        require(_vault.releaser != address(0), "IM:Escrow: must have a releaser");
+        require(
+            !mutexLocked,
+            "IM:Escrow: mutex must be unlocked"
+        );
+
+        require(
+            _vault.asset != address(0),
+            "IM:Escrow: must be a non-null asset"
+        );
+
+        require(
+            _vault.releaser != address(0),
+            "IM:Escrow: must have a releaser"
+        );
 
         if (_vault.balance > 0) {
-            require(_vault.tokenIDs.length == 0, "IMEscrow: must not supply balance and list");
-            require(_vault.lowTokenID == 0 && _vault.highTokenID == 0, "IMEscrow: must not supply balance and range");
+            require(
+                _vault.tokenIDs.length == 0,
+                "IM:Escrow: must not supply balance and list"
+            );
+
+            require(
+                _vault.lowTokenID == 0 && _vault.highTokenID == 0,
+                "IM:Escrow: must not supply balance and range"
+            );
+
             IERC20(_vault.asset).transferFrom(_from, address(this), _vault.balance);
         } else if (_vault.tokenIDs.length > 0) {
-            require(_vault.lowTokenID == 0 && _vault.highTokenID == 0, "IMEscrow: must not supply list and range");
+            require(
+                _vault.lowTokenID == 0 && _vault.highTokenID == 0,
+                "IM:Escrow: must not supply list and range"
+            );
+
             _transferList(_vault, _from, address(this));
         } else if (_vault.highTokenID.sub(_vault.lowTokenID) > 0) {
             _transferBatch(_vault, _from, address(this));
         } else {
-            require(false, "IM:Escrow: invalid vault type");
+            require(
+                false,
+                "IM:Escrow: invalid vault type"
+            );
         }
 
         return _escrow(_vault);
@@ -110,7 +179,11 @@ contract Escrow is IEscrow, Ownable {
      */
     function release(uint256 _id, address _to) public {
         Vault memory vault = vaults[_id];
-        require(vault.releaser == msg.sender, "IM:Escrow: must be the releaser");
+
+        require(
+            vault.releaser == msg.sender,
+            "IM:Escrow: must be the releaser"
+        );
 
         if (vault.balance > 0) {
             IERC20(vault.asset).transfer(_to, vault.balance);

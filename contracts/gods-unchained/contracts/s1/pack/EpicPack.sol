@@ -24,13 +24,27 @@ contract EpicPack is Pack {
         _pay
     ) {}
 
-    function _getCardDetails(uint _index, uint _random) internal view returns (uint16 proto, uint8 quality) {
+    function _getCardDetails(
+        uint _index,
+        uint _random
+    )
+        internal
+        view
+        returns (uint16 proto, uint8 quality)
+    {
         Components memory rc = _getComponents(_index, _random);
         Rarity rarity = (_index % 5 == 0) ? _getEpicPlusRarity(rc.rarity) : _getCommonPlusRarity(rc.rarity);
         return (_getRandomCard(rarity, rc.proto), _getQuality(rc.quality));
     }
 
-    function _getTicketsInPack(uint _index, uint _random) internal pure returns (uint16) {
+    function _getTicketsInPack(
+        uint _index,
+        uint _random
+    )
+        internal
+        pure
+        returns (uint16)
+    {
         uint seed = uint(keccak256(abi.encodePacked(_index, _random)));
         uint modded = seed % 1000;
         if (modded >= 975) {

@@ -35,7 +35,7 @@ export class ForwarderStage implements DeploymentStage {
 
       await onDeployment('GU_Forwarder', receipt.contractAddress, false);
     } catch (e) {
-      console.log('*** Failed to deploy forwarder ***');
+      console.log('*** Non-critical: Failed to deploy forwarder ***');
     }
 
     await onDeployment('ZERO_EX_EXCHANGE', exchange, true);

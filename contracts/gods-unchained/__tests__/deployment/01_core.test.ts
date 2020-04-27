@@ -1,10 +1,6 @@
 import 'jest';
 
-import {
-  Cards,
-  Fusing,
-  OpenMinter
-} from '../../src/contracts';
+import { Cards, Fusing, OpenMinter } from '../../src/contracts';
 import { Wallet, ethers } from 'ethers';
 
 import { getAddressBook } from '@imtbl/addresses';
@@ -23,9 +19,9 @@ describe('01_core', () => {
   let fusing: Fusing;
 
   beforeAll(async () => {
-    cards = Cards.at(wallet, addressBook.cardsAddress);
-    openMinter = OpenMinter.at(wallet, addressBook.openMinterAddress);
-    fusing = Fusing.at(wallet, addressBook.fusingAddress);
+    cards = Cards.at(wallet, addressBook.godsUnchained.cardsAddress);
+    openMinter = OpenMinter.at(wallet, addressBook.godsUnchained.openMinterAddress);
+    fusing = Fusing.at(wallet, addressBook.godsUnchained.fusingAddress);
   });
 
   it('should have deployed cards', async () => {

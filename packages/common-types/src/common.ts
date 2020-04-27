@@ -21,13 +21,42 @@ export enum DeploymentEnvironment {
   Production = 'production',
 }
 
-export type AddressBook = {
+export declare type SeasonOneAddresses = {
+  vendorAddress?: string;
+  raffleAddress?: string;
+  saleAddress?: string;
+  referralAddress?: string;
+  epicPackAddress?: string;
+  rarePackAddress?: string;
+  shinyPackAddress?: string;
+  legendaryPackAddress?: string;
+};
+
+export declare type GodsUnchainedAddresses = {
   cardsAddress?: string;
   openMinterAddress?: string;
   forwarderAddress?: string;
   fusingAddress?: string;
+  seasonOne?: SeasonOneAddresses;
+};
+
+export declare type PlatformAddresses = {
+  beaconAddress?: string;
+  processorAddress?: string;
+  testVendorAddress?: string;
+  escrowAddress?: string;
+  creditCardAddress?: string;
+};
+
+export declare type WalletAddresses = {
   walletAddress?: string;
   walletDeployerAddress?: string;
+};
+
+export declare type AddressBook = {
+  platform?: PlatformAddresses;
+  godsUnchained?: GodsUnchainedAddresses;
+  wallet?: WalletAddresses;
   wethAddress?: string;
   zeroExExchangeAddress?: string;
   zeroExERC20ProxyAddress?: string;

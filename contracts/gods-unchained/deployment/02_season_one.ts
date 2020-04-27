@@ -4,6 +4,13 @@ import { Wallet, ethers } from 'ethers';
 import { DeploymentStage } from '@imtbl/deployment-utils';
 import { asyncForEach } from '@imtbl/utils';
 import {
+  GU_S1_EPIC_PACK_SKU,
+  GU_S1_RARE_PACK_SKU,
+  GU_S1_SHINY_PACK_SKU,
+  GU_S1_LEGENDARY_PACK_SKU,
+} from '@imtbl/addresses/src/constants';
+
+import {
   Raffle,
   S1Sale,
   Referral,
@@ -12,7 +19,9 @@ import {
   RarePack,
   ShinyPack,
   LegendaryPack,
+  PurchaseProcessor,
 } from '../src/contracts';
+import { setTimeout } from 'timers';
 
 export class SeasonOneStage implements DeploymentStage {
   private wallet: Wallet;
@@ -51,33 +60,80 @@ export class SeasonOneStage implements DeploymentStage {
     const escrow = await findInstance('IM_Escrow');
     const processor = await findInstance('IM_Processor');
 
-    const epicPackSku = await findInstance('GU_S1_EPIC_PACK_SKU');
-    const rarePackSku = await findInstance('GU_S1_RARE_PACK_SKU');
-    const shinyPackSku = await findInstance('GU_S1_SHINY_PACK_SKU');
-    const legendaryPackSku = await findInstance('GU_S1_LEGENDARY_PACK_SKU');
-
+    if (GU_S1_EPIC_PACK_SKU.length === 0) {
+      throw '*** No Epic Pack SKU set! Cannot deploy EpicPack. ***';
+    }
     const epicPack =
       (await findInstance('GU_S1_Epic_Pack')) ||
-      (await this.deployEpicPack(raffle, beacon, cards, referral, epicPackSku, escrow, processor));
+      (await this.deployEpicPack(
+        raffle,
+        beacon,
+        cards,
+        referral,
+        GU_S1_EPIC_PACK_SKU,
+        escrow,
+        processor,
+      ));
     await onDeployment('GU_S1_Epic_Pack', epicPack, false);
 
+    if (GU_S1_RARE_PACK_SKU.length === 0) {
+      throw '*** No Rare Pack SKU set! Cannot deploy RarePack. ***';
+    }
     const rarePack =
       (await findInstance('GU_S1_Rare_Pack')) ||
-      (await this.deployEpicPack(raffle, beacon, cards, referral, rarePackSku, escrow, processor));
+      (await this.deployRarePack(
+        raffle,
+        beacon,
+        cards,
+        referral,
+        GU_S1_RARE_PACK_SKU,
+        escrow,
+        processor,
+      ));
     await onDeployment('GU_S1_Rare_Pack', rarePack, false);
 
+    if (GU_S1_SHINY_PACK_SKU.length === 0) {
+      throw '*** No Shiny Pack SKU set! Cannot deploy ShinyPack. ***';
+    }
     const shinyPack =
       (await findInstance('GU_S1_Shiny_Pack')) ||
-      (await this.deployEpicPack(raffle, beacon, cards, referral, shinyPackSku, escrow, processor));
+      (await this.deployRarePack(
+        raffle,
+        beacon,
+        cards,
+        referral,
+        GU_S1_SHINY_PACK_SKU,
+        escrow,
+        processor,
+      ));
     await onDeployment('GU_S1_Shiny_Pack', shinyPack, false);
 
+    if (GU_S1_LEGENDARY_PACK_SKU.length === 0) {
+      throw '*** No Shiny Pack SKU set! Cannot deploy ShinyPack. ***';
+    }
     const legendaryPack =
       (await findInstance('GU_S1_Legendary_Pack')) ||
-      (await this.deployEpicPack(raffle, beacon, cards, referral, epicPackSku, escrow, processor));
+      (await this.deployLegendaryPack(
+        raffle,
+        beacon,
+        cards,
+        referral,
+        GU_S1_LEGENDARY_PACK_SKU,
+        escrow,
+        processor,
+      ));
     await onDeployment('GU_S1_Legendary_Pack', legendaryPack, false);
+
+    await this.setApprovedProcessorSellers(processor, [
+      { address: epicPack, sku: GU_S1_EPIC_PACK_SKU },
+      { address: rarePack, sku: GU_S1_RARE_PACK_SKU },
+      { address: shinyPack, sku: GU_S1_SHINY_PACK_SKU },
+      { address: legendaryPack, sku: GU_S1_LEGENDARY_PACK_SKU },
+    ]);
   }
 
   async deployVendor(processor: string): Promise<string> {
+    console.log('** Deploying S1Vendor **');
     const contract = await S1Vendor.deploy(
       this.wallet,
       ethers.constants.AddressZero,
@@ -90,16 +146,19 @@ export class SeasonOneStage implements DeploymentStage {
   }
 
   async deployRaffle(): Promise<string> {
+    console.log('** Deploying Raffle **');
     const contract = await Raffle.deploy(this.wallet);
     return contract.address;
   }
 
   async deploySale(): Promise<string> {
+    console.log('** Deploying S1Sale **');
     const contract = await S1Sale.deploy(this.wallet);
     return contract.address;
   }
 
   async deployReferral(): Promise<string> {
+    console.log('** Deploying Referral **');
     const contract = await Referral.deploy(this.wallet, 90, 10);
     return contract.address;
   }
@@ -113,13 +172,14 @@ export class SeasonOneStage implements DeploymentStage {
     escrow: string,
     processor: string,
   ): Promise<string> {
+    console.log('** Deploying EpicPack **');
     const contract = await EpicPack.deploy(
       this.wallet,
       raffle,
       beacon,
       cards,
       referral,
-      ethers.utils.formatBytes32String(sku),
+      sku,
       escrow,
       processor,
     );
@@ -135,13 +195,14 @@ export class SeasonOneStage implements DeploymentStage {
     escrow: string,
     processor: string,
   ): Promise<string> {
+    console.log('** Deploying RarePack **');
     const contract = await RarePack.deploy(
       this.wallet,
       raffle,
       beacon,
       cards,
       referral,
-      ethers.utils.formatBytes32String(sku),
+      sku,
       escrow,
       processor,
     );
@@ -157,13 +218,14 @@ export class SeasonOneStage implements DeploymentStage {
     escrow: string,
     processor: string,
   ): Promise<string> {
+    console.log('** Deploying ShinyPack **');
     const contract = await ShinyPack.deploy(
       this.wallet,
       raffle,
       beacon,
       cards,
       referral,
-      ethers.utils.formatBytes32String(sku),
+      sku,
       escrow,
       processor,
     );
@@ -179,16 +241,41 @@ export class SeasonOneStage implements DeploymentStage {
     escrow: string,
     processor: string,
   ): Promise<string> {
+    console.log('** Deploying LegendaryPack **');
     const contract = await LegendaryPack.deploy(
       this.wallet,
       raffle,
       beacon,
       cards,
       referral,
-      ethers.utils.formatBytes32String(sku),
+      sku,
       escrow,
       processor,
     );
     return contract.address;
+  }
+
+  async setApprovedProcessorSellers(processor: string, items: { address: string; sku: string }[]) {
+    console.log('*** Adding approved processor sellers *** ');
+    const contract = await PurchaseProcessor.at(this.wallet, processor);
+    await asyncForEach(items, async (item) => {
+      const isApproved = await contract.sellerApproved(item.sku, item.address);
+      if (!isApproved) {
+        console.log(`${item.address} | ${item.sku}`);
+        await contract.setSellerApproval(item.address, [item.sku], true);
+      }
+    });
+  }
+
+  async setApprovedRaffleMinters(raffle: string, minters: string[]) {
+    console.log('*** Adding approved raffle minters *** ');
+    const contract = await Raffle.at(this.wallet, raffle);
+    await asyncForEach(minters, async (minter) => {
+      const isApproved = await contract.isApprovedMinter(minter);
+      if (!isApproved) {
+        console.log(minter);
+        await contract.setMinterApproval(minter, true);
+      }
+    });
   }
 }

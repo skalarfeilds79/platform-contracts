@@ -73,7 +73,7 @@ export const outputs = {
       "GU_S1_Epic_Pack": "0xDc688D29394a3f1E6f1E5100862776691afAf3d2",
       "GU_S1_Rare_Pack": "0xb7C9b454221E26880Eb9C3101B3295cA7D8279EF",
       "GU_S1_Shiny_Pack": "0x6000EcA38b8B5Bba64986182Fe2a69c57f6b5414",
-      "GU_S1_Legendary_Pack": "0x6346e3A22D2EF8feE3B3c2171367490e52d81C52"
+      "GU_S1_Legendary_Pack": "0x32EeCaF51DFEA9618e9Bc94e9fBFDdB1bBdcbA15"
     },
     "dependencies": {
       "ZERO_EX_EXCHANGE": "0x48bacb9266a570d521063ef5dd96e61686dbe788",

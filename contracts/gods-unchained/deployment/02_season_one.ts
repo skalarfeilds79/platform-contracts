@@ -97,7 +97,7 @@ export class SeasonOneStage implements DeploymentStage {
     }
     const shinyPack =
       (await findInstance('GU_S1_Shiny_Pack')) ||
-      (await this.deployRarePack(
+      (await this.deployEpicPack(
         raffle,
         beacon,
         cards,

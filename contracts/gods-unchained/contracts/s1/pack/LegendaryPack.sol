@@ -37,7 +37,7 @@ contract LegendaryPack is Pack {
         return (_getRandomCard(rarity, rc.proto), _getQuality(rc.quality));
     }
 
-    function _getTicketsPerPack(uint _index, uint _random) internal pure returns (uint16) {
+    function _getTicketsInPack(uint _index, uint _random) internal pure returns (uint16) {
         uint seed = uint(keccak256(abi.encodePacked(_index, _random)));
         uint modded = seed % 1000;
         if (modded >= 975) {

@@ -268,16 +268,9 @@ describe('Beacon', () => {
       const secondRecommitBlock = receipt.blockNumber;
       forward = await beacon.getCurrentBlock(original);
       expect(forward.toNumber()).toBe(secondRecommitBlock);
-
-      console.log('a');
-      await beacon.randomness(original);
-      console.log('b');
-      await beacon.randomness(firstRecommitBlock);
-      console.log('c');
-      await beacon.randomness(secondRecommitBlock);
       
-      // await consumer.requireSameRandomness(original, firstRecommitBlock);
-      // await consumer.requireSameRandomness(firstRecommitBlock, secondRecommitBlock);
+      await consumer.requireSameRandomness(original, firstRecommitBlock);
+      await consumer.requireSameRandomness(firstRecommitBlock, secondRecommitBlock);
     });
 
     it('should return the same randomness after double recommit on intermediate block', async () => {

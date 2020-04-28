@@ -144,6 +144,10 @@ contract Escrow is IEscrow, Ownable {
         listTransferEnabled[_asset] = _enabled;
     }
 
+    function _checkVault(Vault memory _vault) internal {
+        
+    }
+
     function _escrow(Vault memory _vault) internal returns (uint256) {
         uint256 id = vaults.push(_vault) - 1;
         emit Escrowed(id, _vault);

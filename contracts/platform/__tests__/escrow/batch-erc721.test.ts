@@ -1,6 +1,6 @@
 import 'jest';
 
-import { Escrow, TestERC721Token, MaliciousBatchPack, TestBatchPack } from '../../src/contracts';
+import { Escrow, TestERC721Token, MaliciousBatchPack, TestBatchPack, TestERC20Token } from '../../src/contracts';
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
@@ -40,10 +40,12 @@ describe('BatchERC271Escrow', () => {
 
     let escrow: Escrow;
     let erc721: TestERC721Token;
+    let erc20: TestERC20Token;
 
     beforeEach(async() => {
       escrow = await Escrow.deploy(user);
       erc721 = await TestERC721Token.deploy(user);
+      erc20 = await TestERC20Token.deploy(user);
     });
 
     it('should be able able to escrow', async () => {
@@ -118,6 +120,41 @@ describe('BatchERC271Escrow', () => {
         lowTokenID: 0,
         highTokenID: 1,
         tokenIDs: []
+      };
+      await expectRevert(escrow.escrow(vault, user.address));
+    });
+
+    it('should not be able to escrow with erc20s', async () => {
+      const len = 10;
+      await erc721.mint(user.address, len);
+      await erc20.mint(user.address, 50);
+      await checkBalance(erc721, user.address, len);
+      await erc721.setApprovalForAll(escrow.address, true);
+      const vault = {
+        player: user.address,
+        releaser: user.address,
+        asset: erc721.address,
+        balance: 50,
+        lowTokenID: 0,
+        highTokenID: len,
+        tokenIDs: []
+      };
+      await expectRevert(escrow.escrow(vault, user.address));
+    });
+
+    it('should not be able to escrow with list', async () => {
+      const len = 10;
+      await erc721.mint(user.address, len);
+      await checkBalance(erc721, user.address, len);
+      await erc721.setApprovalForAll(escrow.address, true);
+      const vault = {
+        player: user.address,
+        releaser: user.address,
+        asset: erc721.address,
+        balance: 0,
+        lowTokenID: 0,
+        highTokenID: 5,
+        tokenIDs: [5, 6, 7, 8, 9]
       };
       await expectRevert(escrow.escrow(vault, user.address));
     });

@@ -94,12 +94,14 @@ describe('Pack', () => {
     });
 
     it('should deploy shiny pack', async () => {
-      await ShinyPack.deploy(
+      const shiny = await ShinyPack.deploy(
         owner,
         raffle.address,
         beacon.address, ZERO_EX, referral.address, sku,
         cc.address, processor.address
       );
+      const code = await provider.getCode(shiny.address);
+      expect(code.length).toBeGreaterThan(10);
     });
 
   });

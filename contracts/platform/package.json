@@ -1,6 +1,6 @@
 {
   "name": "@imtbl/platform",
-  "version": "2.0.0-alpha.0",
+  "version": "2.0.0-alpha.1",
   "description": "Solidity smart contracts for the Immutable platform",
   "main": "dist/src/index.js",
   "typings": "dist/src/index.d.ts",

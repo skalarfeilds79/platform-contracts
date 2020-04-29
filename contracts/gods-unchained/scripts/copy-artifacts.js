@@ -3,7 +3,7 @@ const path = require('path');
 const cwd = process.cwd();
 const mustache = require('mustache');
 
-const CONTRACT_NAMES = require('../../../packages/deployment/MAIN_CONTRACTS');
+const CONTRACT_NAMES = require('../../../packages/deployment-utils/MAIN_CONTRACTS');
 
 const TYPES_PATH = './build/contracts';
 const TS_PATH = '../../packages/artifacts/src/ts/';

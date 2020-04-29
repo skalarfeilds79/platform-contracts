@@ -16,4 +16,7 @@ module.exports = [
   'Factory',
   'Forge',
   'PromoFactory',
+  'S1Sale',
+  'PurchaseProcessor',
+  'CreditCardEscrow',
 ];

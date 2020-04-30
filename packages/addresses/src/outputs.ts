@@ -1,4 +1,6 @@
-{
+/* tslint:disable */
+
+export const outputs = {
   "1-production": {
     "human_friendly_name": "main-net-production",
     "addresses": {

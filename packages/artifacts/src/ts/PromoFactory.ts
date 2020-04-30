@@ -1,36 +1,6 @@
 export const PromoFactory = [
   {
     "constant": true,
-    "inputs": [],
-    "name": "maxProto",
-    "outputs": [
-      {
-        "internalType": "uint16",
-        "name": "",
-        "type": "uint16"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "minProto",
-    "outputs": [
-      {
-        "internalType": "uint16",
-        "name": "",
-        "type": "uint16"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
     "inputs": [
       {
         "internalType": "uint16",
@@ -44,11 +14,6 @@ export const PromoFactory = [
         "internalType": "bool",
         "name": "isLocked",
         "type": "bool"
-      },
-      {
-        "internalType": "address",
-        "name": "minter",
-        "type": "address"
       }
     ],
     "payable": false,
@@ -77,6 +42,27 @@ export const PromoFactory = [
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "adminMintersArray",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -110,6 +96,27 @@ export const PromoFactory = [
     "type": "function"
   },
   {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "adminMintersMapping",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "constant": false,
     "inputs": [
       {
@@ -130,21 +137,37 @@ export const PromoFactory = [
         "internalType": "contract ICards",
         "name": "_cards",
         "type": "address"
-      },
-      {
-        "internalType": "uint16",
-        "name": "_minProto",
-        "type": "uint16"
-      },
-      {
-        "internalType": "uint16",
-        "name": "_maxProto",
-        "type": "uint16"
       }
     ],
     "payable": false,
     "stateMutability": "nonpayable",
     "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "minter",
+        "type": "address"
+      }
+    ],
+    "name": "AdminMinterAdded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "minter",
+        "type": "address"
+      }
+    ],
+    "name": "AdminMinterRemoved",
+    "type": "event"
   },
   {
     "anonymous": false,
@@ -162,7 +185,26 @@ export const PromoFactory = [
         "type": "address"
       }
     ],
-    "name": "PromoAssigned",
+    "name": "PromoMinterAdded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "proto",
+        "type": "uint16"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "minter",
+        "type": "address"
+      }
+    ],
+    "name": "PromoMinterRemoved",
     "type": "event"
   },
   {
@@ -248,20 +290,178 @@ export const PromoFactory = [
     "type": "function"
   },
   {
-    "constant": false,
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "_proto",
+        "type": "uint16"
+      }
+    ],
+    "name": "validMinters",
+    "outputs": [
+      {
+        "internalType": "address[]",
+        "name": "",
+        "type": "address[]"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
     "inputs": [
       {
         "internalType": "address",
-        "name": "minter",
+        "name": "_minter",
         "type": "address"
       },
       {
         "internalType": "uint16",
-        "name": "proto",
+        "name": "_proto",
         "type": "uint16"
       }
     ],
-    "name": "assignPromoMinter",
+    "name": "isValidMinter",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "_proto",
+        "type": "uint16"
+      }
+    ],
+    "name": "isPromoLocked",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "getAdminMinters",
+    "outputs": [
+      {
+        "internalType": "address[]",
+        "name": "",
+        "type": "address[]"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_minter",
+        "type": "address"
+      }
+    ],
+    "name": "addAdminMinter",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_minter",
+        "type": "address"
+      }
+    ],
+    "name": "removeAdminMinter",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "internalType": "uint16[]",
+        "name": "_protos",
+        "type": "uint16[]"
+      },
+      {
+        "internalType": "uint8[]",
+        "name": "_qualities",
+        "type": "uint8[]"
+      }
+    ],
+    "name": "adminMintCards",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_minter",
+        "type": "address"
+      },
+      {
+        "internalType": "uint16",
+        "name": "_proto",
+        "type": "uint16"
+      }
+    ],
+    "name": "addPromoMinter",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_minter",
+        "type": "address"
+      },
+      {
+        "internalType": "uint16",
+        "name": "_proto",
+        "type": "uint16"
+      }
+    ],
+    "name": "removePromoMinter",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
@@ -272,7 +472,7 @@ export const PromoFactory = [
     "inputs": [
       {
         "internalType": "uint16",
-        "name": "proto",
+        "name": "_proto",
         "type": "uint16"
       }
     ],

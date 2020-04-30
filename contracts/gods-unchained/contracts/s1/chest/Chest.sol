@@ -5,6 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20Burnable.sol";
 import "@imtbl/platform/contracts/token/TradeToggleERC20.sol";
 import "@imtbl/platform/contracts/escrow/IEscrow.sol";
 import "@imtbl/platform/contracts/pay/vendor/CappedVendor.sol";
+
 import "../S1Vendor.sol";
 import "../pack/IPack.sol";
 
@@ -34,7 +35,11 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
         S1Vendor(_referral, _sku, _price, _escrow, _pay)
         TradeToggleERC20(_name, _symbol, 0)
     {
-        require(address(_pack) != address(0), "GU:S1:Chest: pack must be set on construction");
+        require(
+            address(_pack) != address(0),
+            "S1Chest: pack must be set on construction"
+        );
+
         pack = _pack;
     }
 
@@ -84,9 +89,19 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
 
     function mintTokens() public {
         address protocol = address(escrow.getProtocol());
-        require(msg.sender == protocol, "GU:S1:Chest: minter must be core escrow contract");
+
+        require(
+            msg.sender == protocol,
+            "S1Chest: minter must be core escrow contract"
+        );
+
         Purchase memory temp = tempPurchase;
-        require(temp.count > 0, "GU:S1:Chest: must create some tokens");
+
+        require(
+            temp.count > 0,
+            "S1Chest: must create some tokens"
+        );
+
         _mintChests(protocol, temp.count, temp.paymentID);
         tempPurchase = Purchase({
             count: 0,
@@ -110,7 +125,11 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
 
     /** @dev One way switch to enable trading */
     function makeTradable() external onlyOwner {
-        require(!tradable, "GU:S1:Chest: must not be already tradable");
+        require(
+            !tradable,
+            "S1Chest: must not be already tradable"
+        );
+
         tradable = true;
         emit TradabilityChanged(true);
     }

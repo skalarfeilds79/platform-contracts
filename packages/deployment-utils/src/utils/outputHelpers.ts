@@ -80,6 +80,16 @@ export async function writeContractToOutputs(
   await fs.outputFile(OUTPUTS_PATH, JSON.stringify(outputs, null, 2));
 }
 
+export async function writeTypescriptOutputs() {
+  const outputs = await returnOutputs();
+  const typescriptFile = `/* tslint:disable */\n\nexport const outputs = ${JSON.stringify(
+    outputs,
+    null,
+    2,
+  )}`;
+  await fs.outputFile(OUTPUTS_PATH.replace('.json', '.ts'), typescriptFile);
+}
+
 export async function removeNetwork(name: string) {
   const outputs: any = await returnOutputs();
   outputs[name] = undefined;

@@ -17,7 +17,7 @@ describe('00_forwarder', () => {
   let forwarder: Forwarder;
 
   beforeAll(async () => {
-    forwarder = Forwarder.at(wallet, addressBook.forwarderAddress);
+    forwarder = Forwarder.at(wallet, addressBook.godsUnchained.forwarderAddress);
   });
 
   it('should have a forwarder contract deployed', async () => {

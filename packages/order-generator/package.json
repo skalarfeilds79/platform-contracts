@@ -1,6 +1,6 @@
 {
 	"name": "@imtbl/order-generator",
-	"version": "1.0.13",
+	"version": "1.0.14",
 	"main": "dist/index.js",
 	"typings": "dist/index.d.ts",
 	"license": "MIT",
@@ -10,10 +10,10 @@
 	},
 	"dependencies": {
 		"0x.js": "7.0.2",
-		"@imtbl/addresses": "^1.0.10",
-		"@imtbl/common-types": "^1.0.10",
-		"@imtbl/gods-unchained": "^1.0.10",
-		"@imtbl/test-utils": "^1.0.10",
+		"@imtbl/addresses": "^2.0.0-alpha.0",
+		"@imtbl/common-types": "^2.0.0-alpha.0",
+		"@imtbl/gods-unchained": "^2.0.0-alpha.0",
+		"@imtbl/test-utils": "^1.1.0",
 		"axios": "^0.19.0",
 		"dotenv": "^8.2.0",
 		"ethers": "4.0.42",

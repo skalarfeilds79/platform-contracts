@@ -7,7 +7,7 @@ import {
   findDependency,
   getContractAddress,
   getContractCode,
-  getLastDeploymentStage,
+  writeTypescriptOutputs,
   isCorrectNetworkId,
   removeContractAddress,
   removeNetwork,
@@ -73,14 +73,13 @@ export class Manager {
       await this.checkInputParameters();
 
       await asyncForEach(this._stages, async (stage, index) => {
-        console.log(`Stage: ${index}/${Object.keys(this._stages).length}`);
+        console.log(`Stage: ${index + 1}/${Object.keys(this._stages).length}`);
 
         await stage.deploy(
           async (name) => {
             return this.contractExists(name);
           },
           async (name, address, dependency) => {
-            console.log(`${address}\n`);
             await writeContractToOutputs(name, address, dependency);
           },
           async (address) => {
@@ -102,6 +101,7 @@ export class Manager {
       });
 
       await sortOutputs();
+      await writeTypescriptOutputs();
     } catch (error) {
       console.log(error);
     }
@@ -147,11 +147,12 @@ export class Manager {
   async configureIfDevelopment() {
     const currentOutputs = await returnOutputs();
     const allKeys = Object.keys(currentOutputs[DEPLOYMENT_NETWORK_KEY]['addresses']);
+    await this._wallet.getTransactionCount();
 
     await asyncForEach(allKeys, async (name) => {
       const code = await getContractCode(name, this._wallet.provider);
       if (code.length < 3) {
-        console.log(`*** Removing ${name} as no instnace found ***`);
+        console.log(`*** Removing ${name} as no instanace found ***`);
         await removeContractAddress(name, false);
       }
     });
@@ -166,7 +167,6 @@ export class Manager {
   async contractExists(name: string) {
     try {
       const address = (await findDependency(name)) || (await getContractAddress(name, false));
-      console.log(`Found ${name}`);
       return address || '';
     } catch {
       return '';

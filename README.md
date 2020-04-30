@@ -65,7 +65,7 @@ We get it, you're just here to find the contract addresses. Luckily for you, the
 | `Cards` | [0xADC559D1afbCBBf427728577F40E7358D96F1209](https://ropsten.etherscan.io/address/0xADC559D1afbCBBf427728577F40E7358D96F1209) |
 | `OpenMinter` | [0x36F26280B80e609e347c843E2AE5351Ee4b5f7eD](https://ropsten.etherscan.io/address/0x36F26280B80e609e347c843E2AE5351Ee4b5f7eD) |
 | `Forwarder` | [0xc79C9c624ea8A3dEdfae0dbf9295Bfb159eE5F3b](https://ropsten.etherscan.io/address/0xc79C9c624ea8A3dEdfae0dbf9295Bfb159eE5F3b) |
-| `Fusing` | [0x82a92540aB10F484Bf11fB3bEd95CE35c370846E](https://ropsten.etherscan.io/address/0x82a92540aB10F484Bf11fB3bEd95CE35c370846E) |
+| `Fusing` | [0xFfFB48F70Dd10a468957cDD099047e046AdE8670](https://ropsten.etherscan.io/address/0xFfFB48F70Dd10a468957cDD099047e046AdE8670) |
 
 ### Dependencies (Ropsten)
 

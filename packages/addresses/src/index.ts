@@ -1,2 +1,3 @@
-export const ouputs = require('./outputs.json');
-export * from './util/getAddressBook';
+export * from './getAddressBook';
+export * from './outputs';
+export * from './constants';

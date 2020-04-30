@@ -50,25 +50,26 @@ export default {
   IM_ESCROW_DESTROYER: {
     1: '',
     3: '',
-    50: '',
+    50: '0x6Ecbe1DB9EF729CBe972C83Fb886247691Fb6beb',
   },
   IM_ESCROW_DESTRUCTION_DELAY: {
     1: '',
     3: '',
-    50: '',
+    50: '0',
   },
   IM_ESCROW_CUSTODIAN: {
     1: '',
     3: '',
-    50: '',
+    50: '0xE36Ea790bc9d7AB70C55260C66D52b1eca985f84',
   },
   IM_ESCROW_RELEASE_DELAY: {
     1: '',
     3: '',
-    50: '',
+    50: '0',
   },
-  GU_S1_EPIC_PACK_SKU: 'epic.pack',
-  GU_S1_RARE_PACK_SKU: 'rare.pack',
-  GU_S1_SHINY_PACK_SKU: 'shiny.pack',
-  GU_S1_LEGENDARY_PACK_SKU: 'legendary.pack',
+  IM_PROCESSOR_FIRST_SIGNER: {
+    1: '',
+    3: '',
+    50: '0x5409ED021D9299bf6814279A6A1411A7e866A631',
+  },
 };

@@ -21,7 +21,10 @@ contract Raffle is Ownable, TradeToggleERC20 {
     }
 
     function mint(address _user, uint256 _amount) public {
-        require(isApprovedMinter[msg.sender], "GU:S1:Raffle: must be approved minter");
+        require(
+            isApprovedMinter[msg.sender],
+            "Raffle: must be approved minter"
+        );
         _mint(_user, _amount);
     }
 
@@ -29,7 +32,10 @@ contract Raffle is Ownable, TradeToggleERC20 {
     * @dev One way switch to disable trading
     */
     function makeUntradable() external onlyOwner {
-        require(tradable, "GU:S1:Raffle: must be currently tradable");
+        require(
+            tradable,
+            "Raffle: must be currently tradable"
+        );
         tradable = false;
         emit TradabilityChanged(false);
     }

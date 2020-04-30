@@ -78,7 +78,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
             _createTickets(_commitmentID, commitment, commitment.recipient);
         } else {
             _escrowCards(_commitmentID, commitment);
-            // _escrowTickets(_commitmentID, commitment);
+            _escrowTickets(_commitmentID, commitment);
         }
     }
 

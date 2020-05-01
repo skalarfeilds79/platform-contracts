@@ -182,6 +182,11 @@ describe('02_season_one', () => {
       }
     });
 
+    receipts.forEach((receipt) => {
+      const log = parseLogs(receipt.logs, CreditCardEscrow.ABI);
+      console.log(log);
+    });
+
     const supply = await cards.totalSupply();
     expect(supply.toNumber()).toBe(20);
   });
@@ -205,7 +210,7 @@ describe('02_season_one', () => {
       currency: Currency.USDCents,
     };
 
-    const params = { escrowFor: 0, nonce: nonce, value: cost * quantity };
+    const params = { escrowFor: 60 * 60, nonce: nonce, value: cost * quantity };
     nonce = nonce + 1;
     const payment = await getSignedPayment(wallet, processor.address, packAddress, order, params);
 

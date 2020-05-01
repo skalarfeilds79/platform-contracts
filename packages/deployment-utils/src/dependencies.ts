@@ -55,7 +55,7 @@ export default {
   IM_ESCROW_DESTRUCTION_DELAY: {
     1: '',
     3: '',
-    50: '0',
+    50: '360',
   },
   IM_ESCROW_CUSTODIAN: {
     1: '',
@@ -65,7 +65,7 @@ export default {
   IM_ESCROW_RELEASE_DELAY: {
     1: '',
     3: '',
-    50: '0',
+    50: '360',
   },
   IM_PROCESSOR_FIRST_SIGNER: {
     1: '',

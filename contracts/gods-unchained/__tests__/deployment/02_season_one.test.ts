@@ -210,7 +210,7 @@ describe('02_season_one', () => {
       currency: Currency.USDCents,
     };
 
-    const params = { escrowFor: 60 * 60, nonce: nonce, value: cost * quantity };
+    const params = { escrowFor: 360, nonce: nonce, value: cost * quantity };
     nonce = nonce + 1;
     const payment = await getSignedPayment(wallet, processor.address, packAddress, order, params);
 

@@ -125,12 +125,11 @@ export class SeasonOneStage implements DeploymentStage {
       ));
     await onDeployment('GU_S1_Legendary_Pack', legendaryPack, false);
 
-    await this.setupCardsContract(cards, 'Season One', 1000, 1500, [
-      rarePack,
-      shinyPack,
-      legendaryPack,
-      epicPack,
-    ]);
+    const packAddresses = [rarePack, shinyPack, legendaryPack, epicPack];
+
+    await this.setupCardsContract(cards, 'Season One', 1000, 1500, packAddresses);
+
+    await this.setApprovedRaffleMinters(raffle, packAddresses);
 
     await this.setApprovedProcessorSellers(processor, [
       { address: epicPack, sku: GU_S1_EPIC_PACK_SKU },
@@ -294,7 +293,7 @@ export class SeasonOneStage implements DeploymentStage {
     high: number,
     approvedMinters: string[],
   ) {
-    console.log(`** Adding a new GU Season and adding approved minters $$$$ ${cards} **`);
+    console.log(`** Adding a new GU Season and adding approved minters **`);
     const contract = await new CardsFactory(this.wallet).attach(cards);
     console.log(contract.address);
     const season = await (await contract.functions.seasons(3)).low;

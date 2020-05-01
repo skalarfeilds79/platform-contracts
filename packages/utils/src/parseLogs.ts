@@ -6,7 +6,6 @@ export function parseLogs(logs: ethers.providers.Log[], abi: any): any[] {
 
   return logs
     .map((log, index) => {
-      console.log(iface.parseLog(log));
       return [iface.parseLog(log), index];
     })
     .filter((arr) => arr[0] != null)

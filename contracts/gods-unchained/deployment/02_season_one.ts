@@ -22,6 +22,7 @@ import {
   PurchaseProcessor,
 } from '../src/contracts';
 import { setTimeout } from 'timers';
+import { CardsFactory } from '../../legacy-gods-unchained/src/generated/CardsFactory';
 
 export class SeasonOneStage implements DeploymentStage {
   private wallet: Wallet;
@@ -123,6 +124,13 @@ export class SeasonOneStage implements DeploymentStage {
         processor,
       ));
     await onDeployment('GU_S1_Legendary_Pack', legendaryPack, false);
+
+    await this.setupCardsContract(cards, 'Season One', 1000, 1500, [
+      rarePack,
+      shinyPack,
+      legendaryPack,
+      epicPack,
+    ]);
 
     await this.setApprovedProcessorSellers(processor, [
       { address: epicPack, sku: GU_S1_EPIC_PACK_SKU },
@@ -256,7 +264,7 @@ export class SeasonOneStage implements DeploymentStage {
   }
 
   async setApprovedProcessorSellers(processor: string, items: { address: string; sku: string }[]) {
-    console.log('*** Adding approved processor sellers *** ');
+    console.log('** Adding approved processor sellers ** ');
     const contract = await PurchaseProcessor.at(this.wallet, processor);
     await asyncForEach(items, async (item) => {
       const isApproved = await contract.sellerApproved(item.sku, item.address);
@@ -268,13 +276,39 @@ export class SeasonOneStage implements DeploymentStage {
   }
 
   async setApprovedRaffleMinters(raffle: string, minters: string[]) {
-    console.log('*** Adding approved raffle minters *** ');
+    console.log('** Adding approved raffle minters ** ');
     const contract = await Raffle.at(this.wallet, raffle);
     await asyncForEach(minters, async (minter) => {
       const isApproved = await contract.isApprovedMinter(minter);
       if (!isApproved) {
         console.log(minter);
         await contract.setMinterApproval(minter, true);
+      }
+    });
+  }
+
+  async setupCardsContract(
+    cards: string,
+    name: string,
+    low: number,
+    high: number,
+    approvedMinters: string[],
+  ) {
+    console.log(`** Adding a new GU Season and adding approved minters $$$$ ${cards} **`);
+    const contract = await new CardsFactory(this.wallet).attach(cards);
+    console.log(contract.address);
+    const season = await (await contract.functions.seasons(3)).low;
+
+    try {
+      const exists = await contract.functions.seasons(4);
+    } catch (e) {
+      await contract.functions.startSeason(name, low, high);
+    }
+
+    await asyncForEach(approvedMinters, async (minterAddress) => {
+      if ((await contract.functions.factoryApproved(minterAddress, 4)) != true) {
+        console.log(`** Adding ${minterAddress} as an approved address **`);
+        await contract.functions.addFactory(minterAddress, 4);
       }
     });
   }

@@ -76,11 +76,6 @@ export class CoreStage implements DeploymentStage {
             low: 501,
             high: 999,
           },
-          {
-            name: 'Season1',
-            low: 1000,
-            high: 1500,
-          },
         ],
         [],
       )

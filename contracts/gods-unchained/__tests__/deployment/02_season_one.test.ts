@@ -160,13 +160,10 @@ describe('02_season_one', () => {
       ethers.constants.AddressZero,
     );
     const receipt = await tx.wait();
-    const escrowLogs = parseLogs(receipt.logs, Pack.ABI);
-    console.log(escrowLogs);
-    console.log(receipt.logs.length);
+    const escrowLogs = parseLogs(receipt.logs, EpicPack.ABI);
 
-    let receipts: ContractReceipt[] = [];
+    const receipts: ContractReceipt[] = [];
     await asyncForEach(escrowLogs, async (log) => {
-      console.log(log);
       if (log.address === epicPack.address) {
         const receipt = await (await epicPack.mint(log.values.commitmentID)).wait();
         receipts.push(receipt);
@@ -185,8 +182,13 @@ describe('02_season_one', () => {
       }
     });
 
-    // const supply = await cards.totalSupply();
-    // expect(supply).toBe(4);
+    receipts.forEach((receipt) => {
+      const log = parseLogs(receipt.logs, CreditCardEscrow.ABI);
+      console.log(log);
+    });
+
+    const supply = await cards.totalSupply();
+    expect(supply.toNumber()).toBe(20);
   });
 
   async function returnPaymentChecks(receipt: ContractReceipt) {
@@ -202,13 +204,13 @@ describe('02_season_one', () => {
   ) {
     const order = {
       quantity,
-      sku: sku,
+      sku,
       recipient: wallet.address,
       totalPrice: cost * quantity,
       currency: Currency.USDCents,
     };
 
-    const params = { escrowFor: 0, nonce: nonce, value: cost * quantity };
+    const params = { nonce, escrowFor: 360, value: cost * quantity };
     nonce = nonce + 1;
     const payment = await getSignedPayment(wallet, processor.address, packAddress, order, params);
 

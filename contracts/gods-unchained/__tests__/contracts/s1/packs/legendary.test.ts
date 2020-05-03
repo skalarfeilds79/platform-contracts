@@ -13,7 +13,7 @@ import { keccak256 } from 'ethers/utils';
 import { PurchaseProcessor, CreditCardEscrow, Escrow, Beacon } from '@imtbl/platform/src/contracts';
 import { getSignedPayment, Currency } from '@imtbl/platform/src/pay';
 import { parseLogs } from '@imtbl/utils';
-import { rares, legendaries, epics } from '../protos';
+import { rares, legendaries, epics } from './protos';
 
 jest.setTimeout(600000);
 
@@ -201,22 +201,22 @@ describe('Pack', () => {
       const receipt = await tx.wait();
       console.log(description, receipt.gasUsed.toNumber());
       // we only care about events from the core contract
-      const logs = receipt.logs.filter(log => log.address == cards.address);
+      const logs = receipt.logs.filter(log => log.address === cards.address);
       const parsed = parseLogs(logs, Cards.ABI);
       // the last event will be the minted event
-      const log = parsed[parsed.length-1];
+      const log = parsed[parsed.length - 1];
       expect(log.name).toBe('CardsMinted');
       const protos = log.values.protos;
       const packs = commitment.packQuantity.toNumber();
       expect(protos).toBeDefined();
-      expect(protos.length).toBe(packs * 5)
-      let rareOrBetter = protos.filter(p => {
-        return rares.includes(p) || epics.includes(p) || legendaries.includes(p)
+      expect(protos.length).toBe(packs * 5);
+      const rareOrBetter = protos.filter(p => {
+        return rares.includes(p) || epics.includes(p) || legendaries.includes(p);
       }).length;
-      let legendaryCount = protos.filter(p => legendaries.includes(p)).length;
+      const legendaryCount = protos.filter(p => legendaries.includes(p)).length;
       // must be at least one rare card in every pack
       expect(legendaryCount).toBeGreaterThanOrEqual(packs);
-      expect(rareOrBetter).toBeGreaterThanOrEqual(packs * 2)
+      expect(rareOrBetter).toBeGreaterThanOrEqual(packs * 2);
     }
 
     it('should create cards from 1 pack', async () => {

@@ -12,7 +12,7 @@ import "../S1Vendor.sol";
 contract Pack is IPack, S1Vendor, RarityProvider {
 
     // Emitted when the cards from a commitment are actually minted
-    event CardsMinted(uint256 indexed commitmentID, uint256 lowTokenID, uint256 highTokenID);
+    event PackCardsMinted(uint256 indexed commitmentID, uint256 lowTokenID, uint256 highTokenID);
     // Emitted when a card commitment is recorded (either purchase or opening a chest)
     event CommitmentRecorded(uint256 indexed commitmentID, Commitment commitment);
     // Emitted when the tickets from a commitment are actually minted
@@ -291,7 +291,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         uint256 lowTokenID = cards.mintCards(_owner, protos, qualities);
         uint256 highTokenID = lowTokenID + protos.length;
 
-        emit CardsMinted(_commitmentID, lowTokenID, highTokenID);
+        emit PackCardsMinted(_commitmentID, lowTokenID, highTokenID);
         emit PaymentERC721RangeMinted(
             _commitment.paymentID,
             address(cards),

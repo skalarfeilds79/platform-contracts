@@ -17,8 +17,8 @@
     "generate-typings": "npx @imtbl/isaac build -o src/contracts",
     "build": "yarn lint:sol && yarn truffle compile && yarn generate-typings && yarn tsc && yarn copy-artifacts",
     "deploy": "yarn ts-node deployment/deploy.ts",
-    "test": "yarn build && yarn reset-test-evm && yarn jest __tests__/ --runInBand",
-    "test:watch": "yarn reset-test-evm && yarn jest __tests__/ --runInBand --watch",
+    "test": "yarn build && yarn reset-test-evm && yarn jest __tests__/contracts/s1/packs/ --runInBand",
+    "test:watch": "yarn reset-test-evm && yarn jest __tests__/contracts/s1/packs/ --runInBand --watch",
     "reset-test-evm": "node scripts/reset-test-evm.js",
     "postinstall": "yarn truffle compile --all && yarn generate-typings"
   },

@@ -16,7 +16,7 @@
     "lint": "yarn lint:ts && yarn lint:sol",
     "generate-typings": "node scripts/generate-typings.js",
     "deploy": "yarn ts-node deployment/deploy.ts",
-    "build": "yarn lint:sol && yarn truffle compile --all && yarn generate-typings && yarn tsc",
+    "build": "yarn lint:sol && yarn truffle compile && yarn generate-typings && yarn tsc",
     "test-legacy": "yarn etherlime test --solcVersion=0.5.11 --output=none --timeout=10000 --runs=200",
     "test": "yarn reset-test-evm && yarn jest __tests__/ --runInBand",
     "test:watch": "yarn reset-test-evm && yarn jest __tests__/ --runInBand --watch",

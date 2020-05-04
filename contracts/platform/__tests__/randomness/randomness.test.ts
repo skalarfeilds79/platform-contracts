@@ -25,7 +25,6 @@ function parseLogs(abi: string, logs: ethers.providers.Log[]): any[] {
 }
 
 describe('Beacon', () => {
-
   const [user] = generatedWallets(provider);
 
   beforeEach(async () => {
@@ -44,11 +43,10 @@ describe('Beacon', () => {
   });
 
   describe('#commit', () => {
-
     let beacon: Beacon;
     let consumer: Consumer;
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       beacon = await Beacon.deploy(user);
       consumer = await Consumer.deploy(user, beacon.address);
     });
@@ -72,15 +70,13 @@ describe('Beacon', () => {
     it('should be able to make a simple commit', async () => {
       await commit(0);
     });
-
   });
 
   describe('#randomness', () => {
-
     let beacon: Beacon;
     let consumer: Consumer;
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       beacon = await Beacon.deploy(user);
       consumer = await Consumer.deploy(user, beacon.address);
     });
@@ -126,15 +122,13 @@ describe('Beacon', () => {
     it('should be able to make a successful callback', async () => {
       await callback(0, 1);
     });
-
   });
 
   describe('#recommit', () => {
-
     let beacon: Beacon;
     let consumer: Consumer;
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       beacon = await Beacon.deploy(user);
       consumer = await Consumer.deploy(user, beacon.address);
     });
@@ -185,15 +179,13 @@ describe('Beacon', () => {
       expect(committed).toBeTruthy();
       await beacon.randomness(receipt.blockNumber);
     });
-
   });
 
   describe('#randomness', () => {
-
     let beacon: Beacon;
     let consumer: Consumer;
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       beacon = await Beacon.deploy(user);
       consumer = await Consumer.deploy(user, beacon.address);
     });
@@ -227,8 +219,8 @@ describe('Beacon', () => {
     });
 
     it('should return the same randomness after a query', async () => {
-      let tx = await beacon.commit(0);
-      let receipt = await tx.wait();
+      const tx = await beacon.commit(0);
+      const receipt = await tx.wait();
       const original = receipt.blockNumber;
       await consumer.requireSameRandomness(original, original);
     });
@@ -268,12 +260,12 @@ describe('Beacon', () => {
       const secondRecommitBlock = receipt.blockNumber;
       forward = await beacon.getCurrentBlock(original);
       expect(forward.toNumber()).toBe(secondRecommitBlock);
-      
+
       await consumer.requireSameRandomness(original, firstRecommitBlock);
       await consumer.requireSameRandomness(firstRecommitBlock, secondRecommitBlock);
     });
 
-    it('should return the same randomness after double recommit on intermediate block', async () => {
+    it('should return the same randomness after 2 recommits on intermediate block', async () => {
       let tx = await beacon.commit(0);
       let receipt = await tx.wait();
       const original = receipt.blockNumber;
@@ -297,7 +289,5 @@ describe('Beacon', () => {
       await consumer.requireSameRandomness(original, firstRecommitBlock);
       await consumer.requireSameRandomness(firstRecommitBlock, secondRecommitBlock);
     });
-
   });
-
 });

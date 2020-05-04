@@ -22,7 +22,7 @@ import {
   PurchaseProcessor,
 } from '../src/contracts';
 import { setTimeout } from 'timers';
-import { CardsFactory } from '../../legacy-gods-unchained/src/generated/CardsFactory';
+import { Cards } from '../dist/src/contracts/Cards';
 
 export class SeasonOneStage implements DeploymentStage {
   private wallet: Wallet;
@@ -294,7 +294,7 @@ export class SeasonOneStage implements DeploymentStage {
     approvedMinters: string[],
   ) {
     console.log(`** Adding a new GU Season and adding approved minters **`);
-    const contract = await new CardsFactory(this.wallet).attach(cards);
+    const contract = await Cards.at(this.wallet, cards);
     console.log(contract.address);
     const season = await (await contract.functions.seasons(3)).low;
 

@@ -162,7 +162,8 @@ describe('02_season_one', () => {
     const receipt = await tx.wait();
     const escrowLogs = parseLogs(receipt.logs, EpicPack.ABI);
 
-    let receipts: ContractReceipt[] = [];
+    let receipts: ContractReceipt[];
+    receipts = [];
     await asyncForEach(escrowLogs, async (log) => {
       if (log.address === epicPack.address) {
         const receipt = await (await epicPack.mint(log.values.commitmentID)).wait();
@@ -204,13 +205,13 @@ describe('02_season_one', () => {
   ) {
     const order = {
       quantity,
-      sku: sku,
+      sku,
       recipient: wallet.address,
       totalPrice: cost * quantity,
       currency: Currency.USDCents,
     };
 
-    const params = { escrowFor: 360, nonce: nonce, value: cost * quantity };
+    const params = { nonce, escrowFor: 360, value: cost * quantity };
     nonce = nonce + 1;
     const payment = await getSignedPayment(wallet, processor.address, packAddress, order, params);
 

@@ -89,7 +89,7 @@ describe('Pack', () => {
     let cards: Cards;
 
     let rare: LegendaryPack;
-    const cost = 249;
+    const cost = 2499;
 
     beforeEach(async() => {
       escrow = await Escrow.deploy(owner);

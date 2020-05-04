@@ -58,10 +58,6 @@ export const outputs = {
     "human_friendly_name": "test-rpc-development",
     "addresses": {
       "IM_Beacon": "0x3Da6832fF6BF2aFA2dAEdA1e148A45c647cfB668",
-      "IM_Processor": "0x54102fA75B2446837b2c7472d4b533366eCd2811",
-      "IM_TestVendor": "0xa04DAD7dAfd35B7806495dB918F6b04947Caa466",
-      "IM_Escrow": "0xCbe4e2B3A3DE4E25265648d24357e0ba1cF65DAA",
-      "IM_Escrow_CreditCard": "0x997B07daEB6dA60f1fE3909755221D7F9242000C",
       "GU_Cards": "0x6B2590b071E0672D164e3267dA81a45ED1ca7eeb",
       "GU_OpenMinter": "0xc802aA38684F3B44Ce636304370915d0e6Bd6Fb0",
       "GU_Fusing": "0xd7e2fC3589A408D40240391fEa857A1DC444f7Dd",
@@ -73,7 +69,11 @@ export const outputs = {
       "GU_S1_Epic_Pack": "0x1590311C922a283024f0363777478C6b8c3d8c6c",
       "GU_S1_Rare_Pack": "0x751D5E793577B2fd5dF9356729f8ddabF0800F20",
       "GU_S1_Shiny_Pack": "0xa9a65D631f8c8577f543B64B35909030C84676A2",
-      "GU_S1_Legendary_Pack": "0x038C860fd0d598B3DF5577B466c8b0a074867f56"
+      "GU_S1_Legendary_Pack": "0x038C860fd0d598B3DF5577B466c8b0a074867f56",
+      "IM_Processor": "0x5578Dd96d5179Aa78d56EDbA9eBEf1Cb98077cfA",
+      "IM_TestVendor": "0xe6244DDc4E21660308989DB20b6a5c10931c1B35",
+      "IM_Escrow": "0x6AC7189BD267c81c55d7d7d0321f9B23639cB9db",
+      "IM_Escrow_CreditCard": "0x3E809c563c15a295E832e37053798DdC8d6C8dab"
     },
     "dependencies": {
       "ZERO_EX_EXCHANGE": "0x48bacb9266a570d521063ef5dd96e61686dbe788",

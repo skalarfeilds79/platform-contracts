@@ -22,7 +22,7 @@ import {
   PurchaseProcessor,
 } from '../src/contracts';
 import { setTimeout } from 'timers';
-import { Cards } from '../dist/src/contracts/Cards';
+import { Cards } from '../src/contracts/Cards';
 
 export class SeasonOneStage implements DeploymentStage {
   private wallet: Wallet;
@@ -58,7 +58,7 @@ export class SeasonOneStage implements DeploymentStage {
 
     const beacon = await findInstance('IM_Beacon');
     const cards = await findInstance('GU_Cards');
-    const escrow = await findInstance('IM_Escrow');
+    const escrow = await findInstance('IM_Escrow_CreditCard');
     const processor = await findInstance('IM_Processor');
 
     if (GU_S1_EPIC_PACK_SKU.length === 0) {

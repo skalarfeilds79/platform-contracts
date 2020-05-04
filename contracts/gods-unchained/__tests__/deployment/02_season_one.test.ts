@@ -184,8 +184,8 @@ describe('02_season_one', () => {
     });
 
     receipts.forEach((receipt) => {
-      const log = parseLogs(receipt.logs, CreditCardEscrow.ABI);
-      console.log(log);
+      const rangeMintedLogs = parseLogs(receipt.logs, Pack.ABI);
+      const escrowLogs = parseLogs(receipt.logs, Escrow.ABI);
     });
 
     const supply = await cards.totalSupply();

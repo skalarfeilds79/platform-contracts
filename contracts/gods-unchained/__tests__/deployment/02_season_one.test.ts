@@ -164,32 +164,33 @@ describe('02_season_one', () => {
 
     let receipts: ContractReceipt[];
     receipts = [];
-    // await asyncForEach(escrowLogs, async (log) => {
-    //   if (log.address === epicPack.address) {
-    //     const receipt = await (await epicPack.mint(log.values.commitmentID)).wait();
-    //     receipts.push(receipt);
-    //   }
-    //   if (log.address === legendaryPack.address) {
-    //     const receipt = await (await legendaryPack.mint(log.values.commitmentID)).wait();
-    //     receipts.push(receipt);
-    //   }
-    //   if (log.address === rarePack.address) {
-    //     const receipt = await (await rarePack.mint(log.values.commitmentID)).wait();
-    //     receipts.push(receipt);
-    //   }
-    //   if (log.address === shinyPack.address) {
-    //     const receipt = await (await shinyPack.mint(log.values.commitmentID)).wait();
-    //     receipts.push(receipt);
-    //   }
-    // });
 
-    // receipts.forEach((receipt) => {
-    //   const log = parseLogs(receipt.logs, CreditCardEscrow.ABI);
-    //   console.log(log);
-    // });
+    await asyncForEach(escrowLogs, async (log) => {
+      if (log.address === epicPack.address) {
+        const receipt = await (await epicPack.mint(log.values.commitmentID)).wait();
+        receipts.push(receipt);
+      }
+      if (log.address === legendaryPack.address) {
+        const receipt = await (await legendaryPack.mint(log.values.commitmentID)).wait();
+        receipts.push(receipt);
+      }
+      if (log.address === rarePack.address) {
+        const receipt = await (await rarePack.mint(log.values.commitmentID)).wait();
+        receipts.push(receipt);
+      }
+      if (log.address === shinyPack.address) {
+        const receipt = await (await shinyPack.mint(log.values.commitmentID)).wait();
+        receipts.push(receipt);
+      }
+    });
 
-    // const supply = await cards.totalSupply();
-    // expect(supply.toNumber()).toBe(20);
+    receipts.forEach((receipt) => {
+      const rangeMintedLogs = parseLogs(receipt.logs, Pack.ABI);
+      const escrowLogs = parseLogs(receipt.logs, Escrow.ABI);
+    });
+
+    const supply = await cards.totalSupply();
+    expect(supply.toNumber()).toBe(20);
   });
 
   async function returnPaymentChecks(receipt: ContractReceipt) {

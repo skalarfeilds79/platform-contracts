@@ -14,7 +14,7 @@
     "chain-legacy": "yarn etherlime ganache --gasLimit=15000000",
     "lint": "tslint -t verbose '__tests__/**/*.ts'",
     "generate-typings": "node scripts/generate-typings.js",
-    "build": "yarn lint:sol && yarn truffle compile --all && yarn generate-typings && yarn tsc",
+    "build": "yarn lint:sol && yarn truffle compile && yarn generate-typings && yarn tsc",
     "reset-test-evm": "node scripts/reset-test-evm.js"
   },
   "author": "",

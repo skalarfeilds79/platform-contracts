@@ -91,11 +91,11 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         );
 
         if (commitment.escrowFor == 0) {
-            _createCards(_commitmentID, commitment, commitment.recipient);
-            _createTickets(_commitmentID, commitment, commitment.recipient);
+            //_createCards(_commitmentID, commitment, commitment.recipient);
+            // _createTickets(_commitmentID, commitment, commitment.recipient);
         } else {
-            _escrowCards(_commitmentID, commitment);
-            _escrowTickets(_commitmentID, commitment);
+            //_escrowCards(_commitmentID, commitment);
+            //_escrowTickets(_commitmentID, commitment);
         }
     }
 

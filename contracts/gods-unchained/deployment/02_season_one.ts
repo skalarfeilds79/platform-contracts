@@ -20,9 +20,9 @@ import {
   ShinyPack,
   LegendaryPack,
   PurchaseProcessor,
+  Cards
 } from '../src/contracts';
 import { setTimeout } from 'timers';
-import { Cards } from '../dist/src/contracts/Cards';
 
 export class SeasonOneStage implements DeploymentStage {
   private wallet: Wallet;

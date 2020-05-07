@@ -12,7 +12,6 @@ const blockchain = new Blockchain();
 const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
 describe('PurchaseProcessor', () => {
-
   const [user, other] = generatedWallets(provider);
 
   beforeEach(async () => {
@@ -26,16 +25,15 @@ describe('PurchaseProcessor', () => {
 
   describe('#constructor', () => {
     it('should be able to deploy the processor contract', async () => {
-      const processor = await PurchaseProcessor.deploy(user);
+      const processor = await PurchaseProcessor.deploy(user, user.address);
     });
   });
 
   describe('#setSignerLimit', () => {
-
     let processor: PurchaseProcessor;
 
     beforeEach(async () => {
-      processor = await PurchaseProcessor.deploy(user);
+      processor = await PurchaseProcessor.deploy(user, user.address);
     });
 
     async function setSignerLimit(sender: Wallet, signer: string, value: number) {
@@ -50,16 +48,14 @@ describe('PurchaseProcessor', () => {
     it('should be able to set signer limit as owner', async () => {
       await setSignerLimit(user, user.address, 100);
     });
-
   });
 
   describe('#setSellerApproval', () => {
-
     let processor: PurchaseProcessor;
     const sku = keccak256('0x00');
 
     beforeEach(async () => {
-      processor = await PurchaseProcessor.deploy(user);
+      processor = await PurchaseProcessor.deploy(user, user.address);
     });
 
     async function setSellerApproval(sender: Wallet, seller: string, shouldApprove: boolean) {
@@ -76,7 +72,5 @@ describe('PurchaseProcessor', () => {
       await setSellerApproval(user, user.address, true);
       await setSellerApproval(user, user.address, false);
     });
-
   });
-
 });

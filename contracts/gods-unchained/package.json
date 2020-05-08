@@ -13,7 +13,6 @@
     "lint:sol": "yarn solhint \"contracts/**/*.sol\" --config solhint.json",
     "lint:ts": "tslint -t verbose '__tests__/**/*.ts'",
     "lint": "yarn lint:ts && yarn lint:sol",
-    "copy-artifacts": "node scripts/copy-artifacts.js",
     "generate-typings": "npx @imtbl/isaac build -o src/contracts",
     "build": "yarn lint:sol && yarn truffle compile && yarn generate-typings && yarn tsc && yarn copy-artifacts",
     "deploy": "yarn ts-node deployment/deploy.ts",

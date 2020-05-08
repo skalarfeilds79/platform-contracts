@@ -20,9 +20,8 @@ import {
   ShinyPack,
   LegendaryPack,
   PurchaseProcessor,
+  Cards
 } from '../src/contracts';
-import { setTimeout } from 'timers';
-import { Cards } from '../src/contracts/Cards';
 
 export class SeasonOneStage implements DeploymentStage {
   private wallet: Wallet;
@@ -294,7 +293,7 @@ export class SeasonOneStage implements DeploymentStage {
     approvedMinters: string[],
   ) {
     console.log(`** Adding a new GU Season and adding approved minters **`);
-    const contract = await Cards.at(this.wallet, cards);
+    const contract = Cards.at(this.wallet, cards);
     console.log(contract.address);
     const season = await (await contract.functions.seasons(3)).low;
 

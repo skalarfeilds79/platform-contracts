@@ -19,7 +19,9 @@ contract Escrow is IEscrow, Ownable {
     using SafeMath for uint256;
 
     // Mutex on escrow vault creation
-    bool public mutexLocked;
+    bool public escrowMutexLocked;
+    // Mutex on asset release
+    bool public releaseMutexLocked;
     // Whether batch transfers are enabled for this asset
     mapping(address => bool) public batchTransferEnabled;
     // Whether list transfers are enabled for this asset
@@ -41,7 +43,7 @@ contract Escrow is IEscrow, Ownable {
     ) public returns (uint256) {
 
         require(
-            !mutexLocked,
+            !escrowMutexLocked,
             "IM:Escrow: mutex must be unlocked"
         );
 
@@ -92,10 +94,10 @@ contract Escrow is IEscrow, Ownable {
             );
         }
 
-        mutexLocked = true;
+        escrowMutexLocked = true;
         // solium-disable-next-line security/no-low-level-calls
         _callbackTo.call(_callbackData);
-        mutexLocked = false;
+        escrowMutexLocked = false;
 
         if (_vault.balance > 0) {
             require(
@@ -126,7 +128,7 @@ contract Escrow is IEscrow, Ownable {
      */
     function escrow(Vault memory _vault, address _from) public returns (uint256) {
         require(
-            !mutexLocked,
+            !escrowMutexLocked,
             "IM:Escrow: mutex must be unlocked"
         );
 
@@ -185,6 +187,13 @@ contract Escrow is IEscrow, Ownable {
             "IM:Escrow: must be the releaser"
         );
 
+        require(
+            !releaseMutexLocked,
+            "IM:Escrow: release mutex must be unlocked"
+        );
+
+        releaseMutexLocked = true;
+
         if (vault.balance > 0) {
             IERC20(vault.asset).transfer(_to, vault.balance);
         } else if (vault.tokenIDs.length > 0) {
@@ -195,6 +204,7 @@ contract Escrow is IEscrow, Ownable {
 
         emit Released(_id, _to);
         delete vaults[_id];
+        releaseMutexLocked = false;
     }
 
     /**

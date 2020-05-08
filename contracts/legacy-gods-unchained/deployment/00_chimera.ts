@@ -1,7 +1,7 @@
 import { Wallet, ethers } from 'ethers';
 
-import { ChimeraMigrationFactory } from './../src/generated/ChimeraMigrationFactory';
 import { DeploymentStage } from '@imtbl/deployment-utils';
+import { ChimeraMigrationFactory } from '../src/generated/ChimeraMigrationFactory';
 
 export class ChimeraMigrationStage implements DeploymentStage {
   private wallet: Wallet;

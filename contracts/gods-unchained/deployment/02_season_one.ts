@@ -22,7 +22,6 @@ import {
   PurchaseProcessor,
   Cards
 } from '../src/contracts';
-import { setTimeout } from 'timers';
 
 export class SeasonOneStage implements DeploymentStage {
   private wallet: Wallet;

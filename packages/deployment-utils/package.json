@@ -6,9 +6,9 @@
   "typings": "dist/index.d.ts",
   "private": false,
   "dependencies": {
-    "@imtbl/addresses": "^2.0.0-alpha.4",
-    "@imtbl/common-types": "^2.0.0-alpha.4",
-    "@imtbl/test-utils": "^1.0.13",
+    "@imtbl/addresses": "^2.0.0-alpha.0",
+    "@imtbl/common-types": "^2.0.0-alpha.0",
+    "@imtbl/test-utils": "^1.0.10",
     "@imtbl/utils": "^1.1.4",
     "dotenv": "^8.2.0",
     "ethers": "4.0.42",

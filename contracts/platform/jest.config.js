@@ -7,7 +7,5 @@ module.exports = {
     "(.*).d.ts"
   ],
   testRegex: '__tests__\\/.*\\.test\\.ts$',
-  moduleFileExtensions: ['ts', 'js', 'json', 'node', 'd.ts'],
-  setupFilesAfterEnv: ['./jest.setup.js'],
   testEnvironment: 'node',
 };

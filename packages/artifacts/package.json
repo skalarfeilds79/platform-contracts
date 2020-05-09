@@ -10,7 +10,7 @@
     "prepublish": "yarn clean && yarn build",
     "quick-fix": "npm version patch && npm publish"
   },
-  "gitHead": "a7ba81c589988a4ae3e3636d4aa319bc24763e20",
+  "gitHead": "84da858d4e323a33f233ab7d5b7076483aa0691f",
   "devDependencies": {
     "@types/node": "^12.12.3",
     "typescript": "^3.7.5"

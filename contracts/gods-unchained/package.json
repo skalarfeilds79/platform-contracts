@@ -1,6 +1,6 @@
 {
   "name": "@imtbl/gods-unchained",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "Solidity smart contracts for Gods Unchained.",
   "main": "dist/src/index.js",
   "typings": "dist/src/index.d.ts",
@@ -28,8 +28,8 @@
     "@0x/contracts-exchange-libs": "^3.0.8",
     "@0x/order-utils": "^8.4.0",
     "@imtbl/common-types": "^2.0.0-alpha.0",
-    "@imtbl/deployment-utils": "^2.0.0-alpha.1",
-    "@imtbl/platform": "^2.0.6",
+    "@imtbl/deployment-utils": "^2.0.0",
+    "@imtbl/platform": "^2.0.7",
     "@imtbl/types": "1.0.10",
     "@imtbl/utils": "^1.1.1",
     "@openzeppelin/contracts": "^2.3.0",

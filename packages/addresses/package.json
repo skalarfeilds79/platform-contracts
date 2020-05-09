@@ -1,6 +1,6 @@
 {
   "name": "@imtbl/addresses",
-  "version": "2.0.0-alpha.3",
+  "version": "2.0.0-alpha.4",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -11,7 +11,7 @@
     "quick-fix": "npm version patch && npm publish"
   },
   "dependencies": {
-    "@imtbl/common-types": "^2.0.0-alpha.3",
+    "@imtbl/common-types": "^2.0.0-alpha.4",
     "ethers": "^4.0.47"
   },
   "devDependencies": {

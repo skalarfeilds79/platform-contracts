@@ -38,9 +38,10 @@
     "save": "^2.4.0"
   },
   "devDependencies": {
-    "@imtbl/addresses": "^2.0.0-alpha.4",
+    "@imtbl/addresses": "^2.0.0-alpha.0",
+    "@imtbl/utils": "^1.1.1",
     "@imtbl/isaac": "^0.0.5",
-    "@imtbl/test-utils": "^1.0.13",
+    "@imtbl/test-utils": "^1.0.10",
     "@types/jest": "^24.0.21",
     "@types/node": "^12.12.3",
     "dotenv": "^8.2.0",

@@ -1,6 +1,6 @@
 {
   "name": "@imtbl/platform",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Solidity smart contracts for the Immutable platform.",
   "main": "dist/src/index.js",
   "typings": "dist/src/index.d.ts",
@@ -47,13 +47,13 @@
     "replace-in-file": "^4.2.0",
     "solhint": "^2.3.0",
     "truffle": "^5.0.42",
+    "truffle-plugin-verify": "^0.3.9",
     "ts-generator": "^0.0.8",
     "ts-jest": "^24.1.0",
     "ts-node": "^8.4.1",
     "tslint": "^5.20.1",
     "tslint-config-airbnb": "^5.11.2",
     "tslint-no-focused-test": "^0.5.0",
-    "truffle-plugin-verify": "^0.3.9",
     "typescript": "^3.7.5"
   },
   "gitHead": "c55497fd983732ce1f73cea78d5643a7a24b86e0"

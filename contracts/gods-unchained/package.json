@@ -27,8 +27,8 @@
   "dependencies": {
     "@0x/contracts-exchange-libs": "^3.0.8",
     "@0x/order-utils": "^8.4.0",
-    "@imtbl/common-types": "^2.0.0-alpha.4",
-    "@imtbl/deployment-utils": "^2.0.0-alpha.4",
+    "@imtbl/common-types": "^2.0.0-alpha.1",
+    "@imtbl/deployment-utils": "^2.0.0-alpha.1",
     "@imtbl/platform": "^2.0.4",
     "@imtbl/types": "1.0.10",
     "@imtbl/utils": "^1.1.4",
@@ -62,5 +62,5 @@
     "tslint-no-focused-test": "^0.5.0",
     "typescript": "^3.7.5"
   },
-  "gitHead": "c55497fd983732ce1f73cea78d5643a7a24b86e0"
+  "gitHead": "daacfefe4edd037ea0c490e34259a5a76a3ae640"
 }

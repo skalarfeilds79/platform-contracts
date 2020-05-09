@@ -19,8 +19,7 @@
     "test": "yarn build && yarn reset-test-evm && yarn jest __tests__/ --runInBand",
     "test:watch": "yarn reset-test-evm && yarn jest __tests__/ --runInBand --watch",
     "reset-test-evm": "node scripts/reset-test-evm.js",
-    "prepare": "yarn clean && yarn build",
-    "prepublishOnly": "yarn test"
+    "prepare": "yarn clean && yarn build"
   },
   "author": "",
   "license": "MIT",
@@ -57,5 +56,5 @@
     "tslint-no-focused-test": "^0.5.0",
     "typescript": "^3.7.5"
   },
-  "gitHead": "84da858d4e323a33f233ab7d5b7076483aa0691f"
+  "gitHead": "c55497fd983732ce1f73cea78d5643a7a24b86e0"
 }

@@ -11,11 +11,13 @@
     "quick-fix": "npm version patch && npm publish"
   },
   "dependencies": {
-    "@0xproject/types": "^1.1.4",
     "@imtbl/common-types": "^2.0.0-alpha.0",
+    "ethers": "^4.0.47"
+  },
+  "devDependencies": {
+    "@0xproject/types": "^1.1.4",
     "@types/lodash": "^4.14.137",
     "@types/node": "^12.12.3",
-    "ethers": "^4.0.47",
     "typescript": "^3.7.5"
   },
   "gitHead": "9e32f674f909b02f9e177ca4319f06de8664b157"

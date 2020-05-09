@@ -1,13 +1,12 @@
 {
   "name": "@imtbl/test-utils",
-  "version": "1.1.0",
+  "version": "1.0.10",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "license": "MIT",
   "esModuleInterop": true,
   "dependencies": {
-    "ethers": "4.0.42",
-    "typescript": "^3.7.5"
+    "ethers": "4.0.42"
   },
   "scripts": {
     "clean": "rm -rf dist",
@@ -31,7 +30,8 @@
     "jest": "^24.9.0",
     "tslint": "^5.19.0",
     "tslint-config-airbnb": "^5.11.1",
-    "tslint-no-focused-test": "^0.5.0"
+    "tslint-no-focused-test": "^0.5.0",
+    "typescript": "^3.7.5"
   },
   "gitHead": "9e32f674f909b02f9e177ca4319f06de8664b157"
 }

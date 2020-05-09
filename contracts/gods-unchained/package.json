@@ -20,7 +20,8 @@
     "test": "yarn build && yarn reset-test-evm && yarn jest __tests__/contracts --runInBand",
     "test:watch": "yarn reset-test-evm && yarn jest __tests__/contracts --runInBand --watch",
     "reset-test-evm": "node scripts/reset-test-evm.js",
-    "postinstall": "yarn truffle compile && yarn generate-typings"
+    "prepare": "yarn clean && yarn build",
+    "prepublishOnly": "yarn test"
   },
   "author": "",
   "license": "MIT",
@@ -41,7 +42,7 @@
   "devDependencies": {
     "@imtbl/addresses": "^2.0.0-alpha.1",
     "@imtbl/isaac": "^0.0.5",
-    "@imtbl/test-utils": "^1.1.0",
+    "@imtbl/test-utils": "^1.0.10",
     "@types/jest": "^24.0.21",
     "@types/node": "^12.12.3",
     "dotenv": "^8.2.0",

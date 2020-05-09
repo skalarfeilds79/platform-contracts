@@ -1,18 +1,13 @@
 module.exports = {
-    roots: [
-      '<rootDir>/__tests__',
-    ],
-    transform: {
-      '^.+\\.ts$': 'ts-jest',
-    },
-    testRegex: '__tests__\\/.*\\.test\\.ts$',
-    moduleFileExtensions: [
-      'ts',
-      'js',
-      'json',
-      'node',
-      'd.ts',
-    ],
-    setupFilesAfterEnv: [],
-    testEnvironment: 'node',
+  preset: "ts-jest",
+  roots: ['<rootDir>/__tests__'],
+  testPathIgnorePatterns: [
+    "<rootDir>/lib/",
+    "<rootDir>/node_modules/",
+    "(.*).d.ts"
+  ],
+  testRegex: '__tests__\\/.*\\.test\\.ts$',
+  moduleFileExtensions: ['ts', 'js', 'json', 'node', 'd.ts'],
+  setupFilesAfterEnv: ['./jest.setup.js'],
+  testEnvironment: 'node',
 };

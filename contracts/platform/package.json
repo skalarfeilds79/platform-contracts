@@ -38,7 +38,7 @@
   "devDependencies": {
     "@0xproject/types": "^1.1.4",
     "@imtbl/isaac": "^0.0.5",
-    "@imtbl/test-utils": "^1.1.0",
+    "@imtbl/test-utils": "^1.0.10",
     "@types/jest": "^24.0.21",
     "@types/node": "^12.12.3",
     "fs-readdir-recursive": "^1.1.0",
@@ -54,7 +54,6 @@
     "tslint": "^5.20.1",
     "tslint-config-airbnb": "^5.11.2",
     "tslint-no-focused-test": "^0.5.0",
-    "typechain": "^0.3.19",
     "typescript": "^3.7.5"
   },
   "gitHead": "9e32f674f909b02f9e177ca4319f06de8664b157"

@@ -1,6 +1,6 @@
 {
   "name": "@imtbl/common-types",
-  "version": "2.0.0-alpha.1",
+  "version": "2.0.0-alpha.3",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",

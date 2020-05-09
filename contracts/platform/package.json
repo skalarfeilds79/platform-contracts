@@ -19,7 +19,8 @@
     "test": "yarn build && yarn reset-test-evm && yarn jest __tests__/ --runInBand",
     "test:watch": "yarn reset-test-evm && yarn jest __tests__/ --runInBand --watch",
     "reset-test-evm": "node scripts/reset-test-evm.js",
-    "postinstall": "yarn truffle compile && yarn generate-typings"
+    "prepare": "yarn clean && yarn build",
+    "prepublishOnly": "yarn test"
   },
   "author": "",
   "license": "MIT",

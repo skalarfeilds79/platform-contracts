@@ -31,7 +31,7 @@
     "@imtbl/deployment-utils": "^2.0.0-alpha.1",
     "@imtbl/platform": "^2.0.5",
     "@imtbl/types": "1.0.10",
-    "@imtbl/utils": "^1.1.4",
+    "@imtbl/utils": "^1.1.1",
     "@openzeppelin/contracts": "^2.3.0",
     "ethers": "4.0.42",
     "minimist": "^1.2.0",
@@ -41,7 +41,6 @@
     "@imtbl/addresses": "^2.0.0-alpha.0",
     "@imtbl/isaac": "^0.0.5",
     "@imtbl/test-utils": "^1.0.10",
-    "@imtbl/utils": "^1.1.1",
     "@types/jest": "^24.0.21",
     "@types/node": "^12.12.3",
     "dotenv": "^8.2.0",
@@ -62,5 +61,5 @@
     "tslint-no-focused-test": "^0.5.0",
     "typescript": "^3.7.5"
   },
-  "gitHead": "daacfefe4edd037ea0c490e34259a5a76a3ae640"
+  "gitHead": "9325e8f80991dec95fa54cee27d9bfc25d2330ad"
 }

@@ -1,6 +1,6 @@
 {
   "name": "@imtbl/platform",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Solidity smart contracts for the Immutable platform",
   "main": "dist/src/index.js",
   "typings": "dist/src/index.d.ts",
@@ -25,10 +25,10 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@imtbl/addresses": "^2.0.0-alpha.1",
-    "@imtbl/common-types": "^2.0.0-alpha.0",
-    "@imtbl/deployment-utils": "^2.0.0-alpha.1",
-    "@imtbl/utils": "^1.1.1",
+    "@imtbl/addresses": "^2.0.0-alpha.2",
+    "@imtbl/common-types": "^2.0.0-alpha.1",
+    "@imtbl/deployment-utils": "^2.0.0-alpha.2",
+    "@imtbl/utils": "^1.1.2",
     "@openzeppelin/contracts": "^2.3.0",
     "bignumber.js": "^9.0.0",
     "dotenv": "^8.2.0",
@@ -39,7 +39,7 @@
   "devDependencies": {
     "@0xproject/types": "^1.1.4",
     "@imtbl/isaac": "^0.0.5",
-    "@imtbl/test-utils": "^1.0.10",
+    "@imtbl/test-utils": "^1.0.11",
     "@types/jest": "^24.0.21",
     "@types/node": "^12.12.3",
     "fs-readdir-recursive": "^1.1.0",

@@ -32,8 +32,7 @@
     "bignumber.js": "^9.0.0",
     "dotenv": "^8.2.0",
     "ethers": "4.0.42",
-    "minimist": "^1.2.0",
-    "truffle-plugin-verify": "^0.3.9"
+    "minimist": "^1.2.0"
   },
   "devDependencies": {
     "@0xproject/types": "^1.1.4",
@@ -54,6 +53,7 @@
     "tslint": "^5.20.1",
     "tslint-config-airbnb": "^5.11.2",
     "tslint-no-focused-test": "^0.5.0",
+    "truffle-plugin-verify": "^0.3.9",
     "typescript": "^3.7.5"
   },
   "gitHead": "c55497fd983732ce1f73cea78d5643a7a24b86e0"

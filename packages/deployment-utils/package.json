@@ -1,14 +1,14 @@
 {
   "name": "@imtbl/deployment-utils",
-  "version": "2.0.0-alpha.1",
+  "version": "2.0.1",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "private": false,
   "dependencies": {
-    "@imtbl/addresses": "^2.0.0-alpha.1",
+    "@imtbl/addresses": "^2.0.0-alpha.0",
     "@imtbl/common-types": "^2.0.0-alpha.0",
-    "@imtbl/test-utils": "^1.1.0",
+    "@imtbl/test-utils": "^1.0.10",
     "@imtbl/utils": "^1.1.1",
     "dotenv": "^8.2.0",
     "ethers": "4.0.42",
@@ -16,8 +16,7 @@
     "mustache": "^3.1.0",
     "truffle": "^5.0.44",
     "truffle-plugin-verify": "^0.3.5",
-    "ts-node": "^8.4.1",
-    "typescript": "^3.7.5"
+    "ts-node": "^8.4.1"
   },
   "scripts": {
     "lint": "tslint --project . -t verbose 'src/**/*.{tsx,ts}'",
@@ -38,7 +37,8 @@
     "ethers": "4.0.42",
     "tslint": "^5.19.0",
     "tslint-config-airbnb": "^5.11.1",
-    "tslint-no-focused-test": "^0.5.0"
+    "tslint-no-focused-test": "^0.5.0",
+    "typescript": "^3.7.5"
   },
-  "gitHead": "ab80247209c924e520e06ae0b79a08d7e1d6b469"
+  "gitHead": "c55497fd983732ce1f73cea78d5643a7a24b86e0"
 }

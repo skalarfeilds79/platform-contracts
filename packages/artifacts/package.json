@@ -1,6 +1,6 @@
 {
   "name": "@imtbl/artifacts",
-  "version": "2.0.0-alpha.1",
+  "version": "2.0.0-alpha.4",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -10,8 +10,8 @@
     "prepublish": "yarn clean && yarn build",
     "quick-fix": "npm version patch && npm publish"
   },
-  "gitHead": "a7ba81c589988a4ae3e3636d4aa319bc24763e20",
-  "dependencies": {
+  "gitHead": "c55497fd983732ce1f73cea78d5643a7a24b86e0",
+  "devDependencies": {
     "@types/node": "^12.12.3",
     "typescript": "^3.7.5"
   }

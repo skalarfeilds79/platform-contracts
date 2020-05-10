@@ -1,12 +1,9 @@
 {
   "name": "@imtbl/common-types",
-  "version": "2.0.0-alpha.0",
+  "version": "2.0.0-alpha.4",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
-  "dependencies": {
-    "typescript": "^3.7.5"
-  },
   "scripts": {
     "clean": "rm -rf dist",
     "build": "yarn tsc",
@@ -27,7 +24,8 @@
     "ethers": "4.0.42",
     "tslint": "^5.19.0",
     "tslint-config-airbnb": "^5.11.1",
-    "tslint-no-focused-test": "^0.5.0"
+    "tslint-no-focused-test": "^0.5.0",
+    "typescript": "^3.7.5"
   },
-  "gitHead": "9e32f674f909b02f9e177ca4319f06de8664b157"
+  "gitHead": "c55497fd983732ce1f73cea78d5643a7a24b86e0"
 }

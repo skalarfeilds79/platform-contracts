@@ -1,13 +1,7 @@
 import 'jest';
 
 import { Blockchain, generatedWallets } from '@imtbl/test-utils';
-import {
-  Referral,
-  RarePack,
-  Cards,
-  Chest,
-  Raffle
-} from '../../../src/contracts';
+import { Referral, RarePack, Cards, Chest, Raffle } from '../../../src/contracts';
 import { Wallet, ethers } from 'ethers';
 import { keccak256 } from 'ethers/utils';
 import { PurchaseProcessor, CreditCardEscrow, Escrow, Beacon } from '@imtbl/platform/src/contracts';

@@ -2,8 +2,6 @@ import 'jest';
 
 import {
   Cards,
-  Fusing,
-  OpenMinter,
   Beacon,
   PurchaseProcessor,
   Escrow,
@@ -21,7 +19,6 @@ import {
 
 import { Wallet, ethers } from 'ethers';
 import { getSignedPayment, Currency, Payment } from '@imtbl/platform/src/pay';
-import { keccak256 } from 'ethers/utils';
 import { Blockchain } from '@imtbl/test-utils/src/Blockchain';
 
 import {
@@ -163,6 +160,7 @@ describe('02_season_one', () => {
     const escrowLogs = parseLogs(receipt.logs, EpicPack.ABI);
 
     const receipts: ContractReceipt[] = [];
+
     await asyncForEach(escrowLogs, async (log) => {
       if (log.address === epicPack.address) {
         const receipt = await (await epicPack.mint(log.values.commitmentID)).wait();
@@ -183,8 +181,8 @@ describe('02_season_one', () => {
     });
 
     receipts.forEach((receipt) => {
-      const log = parseLogs(receipt.logs, CreditCardEscrow.ABI);
-      console.log(log);
+      const rangeMintedLogs = parseLogs(receipt.logs, Pack.ABI);
+      const escrowLogs = parseLogs(receipt.logs, Escrow.ABI);
     });
 
     const supply = await cards.totalSupply();

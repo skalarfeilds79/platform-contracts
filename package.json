@@ -14,18 +14,13 @@
         "lint": "yarn lerna run lint",
         "build:platform": "yarn --cwd contracts/platform build",
         "build:gods-unchained": "yarn --cwd contracts/gods-unchained build",
-        "build:legacy-gods-unchained": "yarn --cwd contracts/legacy-gods-unchained build",
-        "build:immutable-wallet": "yarn --cwd contracts/immutable-wallet build",
-        "build:all": "yarn build:platform && yarn build:gods-unchained && yarn build:legacy-gods-unchained && yarn build:immutable-wallet",
+        "build:all": "yarn build:platform && yarn build:gods-unchained",
         "deploy:platform": "yarn --cwd contracts/platform deploy --all",
         "deploy:gods-unchained": "yarn --cwd contracts/gods-unchained deploy --all",
-        "deploy:immutable-wallet": "yarn --cwd contracts/immutable-wallet deploy --all",
-        "deploy:legacy-gods-unchained": "yarn --cwd contracts/legacy-gods-unchained deploy --all",
-        "deploy:all": "yarn deploy:platform && yarn deploy:gods-unchained && yarn deploy:immutable-wallet && yarn deploy:legacy-gods-unchained",
+        "deploy:all": "yarn deploy:platform && yarn deploy:gods-unchained",
         "setup": "yarn build:all && lerna bootstrap",
         "build": "tsc & yarn lerna run build",
         "test": "yarn lerna run test",
-        "generate-cards": "yarn --cwd packages/order-generator create",
         "ci:clear-addresses": "node scripts/clearDevAddresses"
     },
     "dependencies": {
@@ -42,6 +37,6 @@
         "ganache-cli": "^6.7.0"
     },
     "engines": {
-        "node": "^11.15.0"
+        "node": "^12.16.0"
     }
 }

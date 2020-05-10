@@ -20,9 +20,8 @@ import {
   ShinyPack,
   LegendaryPack,
   PurchaseProcessor,
+  Cards
 } from '../src/contracts';
-import { setTimeout } from 'timers';
-import { CardsFactory } from '../../legacy-gods-unchained/src/generated/CardsFactory';
 
 export class SeasonOneStage implements DeploymentStage {
   private wallet: Wallet;
@@ -58,7 +57,7 @@ export class SeasonOneStage implements DeploymentStage {
 
     const beacon = await findInstance('IM_Beacon');
     const cards = await findInstance('GU_Cards');
-    const escrow = await findInstance('IM_Escrow');
+    const escrow = await findInstance('IM_Escrow_CreditCard');
     const processor = await findInstance('IM_Processor');
 
     if (GU_S1_EPIC_PACK_SKU.length === 0) {
@@ -294,7 +293,7 @@ export class SeasonOneStage implements DeploymentStage {
     approvedMinters: string[],
   ) {
     console.log(`** Adding a new GU Season and adding approved minters **`);
-    const contract = await new CardsFactory(this.wallet).attach(cards);
+    const contract = Cards.at(this.wallet, cards);
     console.log(contract.address);
     const season = await (await contract.functions.seasons(3)).low;
 

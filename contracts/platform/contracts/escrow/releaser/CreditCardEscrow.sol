@@ -87,7 +87,6 @@ contract CreditCardEscrow is Ownable, ICreditCardEscrow {
             msg.sender == destroyer,
             "IM:CreditCardEscrow: must be the destroyer"
         );
-
         _;
     }
 

@@ -6,6 +6,5 @@ module.exports = {
     "<rootDir>/node_modules/",
     "(.*).d.ts"
   ],
-  testRegex: '__tests__\\/.*\\.test\\.ts$',
   testEnvironment: 'node',
 };

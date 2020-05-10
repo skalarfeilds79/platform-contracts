@@ -29,8 +29,6 @@
     "@imtbl/deployment-utils": "^2.0.1",
     "@imtbl/utils": "^1.1.1",
     "@openzeppelin/contracts": "^2.3.0",
-    "bignumber.js": "^9.0.0",
-    "dotenv": "^8.2.0",
     "ethers": "4.0.42",
     "minimist": "^1.2.0"
   },
@@ -40,6 +38,7 @@
     "@imtbl/test-utils": "^1.0.10",
     "@types/jest": "^24.0.21",
     "@types/node": "^12.12.3",
+    "dotenv": "^8.2.0",
     "fs-readdir-recursive": "^1.1.0",
     "jest": "^24.9.0",
     "mustache": "^3.1.0",

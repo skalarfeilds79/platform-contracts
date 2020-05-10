@@ -33,7 +33,7 @@ describe('00_forwarder', () => {
 
   it('should have the correct 0x ERC20 proxy address set', async () => {
     const erc20ProxyAddress = await forwarder.ZERO_EX_TOKEN_PROXY();
-    const expected = addressBook.zeroExERC20ProxyAddress.toLowerCase()
+    const expected = addressBook.zeroExERC20ProxyAddress.toLowerCase();
     expect(expected).toBe(erc20ProxyAddress.toLowerCase());
   });
 

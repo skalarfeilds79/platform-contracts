@@ -1,7 +1,18 @@
 import { ethers } from 'ethers';
 import { LogDescription } from 'ethers/utils';
 
-export function parseLogs(logs: ethers.providers.Log[], abi: any): any[] {
+export function parseLogs(logs: ethers.providers.Log[], ...abis: Array<string>): any[] {
+  let abi = '';
+  if (abis.length > 1) {
+    abis.forEach(a => {
+      // concatenate, removing the array brackets
+      abi += a.slice(1, a.length-1);
+    });
+    abi = '[' + abi + ']';
+  } else if (abis.length == 1) {
+    abi = abis[0];
+  }
+
   const iface = new ethers.utils.Interface(abi);
 
   return logs

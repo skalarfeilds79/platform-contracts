@@ -159,8 +159,7 @@ describe('02_season_one', () => {
     const receipt = await tx.wait();
     const escrowLogs = parseLogs(receipt.logs, EpicPack.ABI);
 
-    let receipts: ContractReceipt[];
-    receipts = [];
+    const receipts: ContractReceipt[] = [];
 
     await asyncForEach(escrowLogs, async (log) => {
       if (log.address === epicPack.address) {

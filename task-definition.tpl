@@ -15,7 +15,7 @@
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "/ecs/${CLUSTER_NAME}/${APP_NAME}-ganache",
+          "awslogs-group": "/ecs/${CLUSTER_NAME}/${APP_NAME}",
           "awslogs-region": "${AWS_DEFAULT_REGION}",
           "awslogs-stream-prefix": "${APP_NAME}-ganache"
         }

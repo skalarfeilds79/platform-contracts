@@ -5,5 +5,5 @@ set -euo pipefail
 if [[ "${NODE_ENV:-}" == "development" ]]; then
   yarn watch
 else
-  echo "nginx?"
+  yarn deploy:all
 fi

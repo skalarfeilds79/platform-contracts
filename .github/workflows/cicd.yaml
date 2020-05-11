@@ -10,12 +10,12 @@ env:
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_DEFAULT_REGION: "us-east-2"
   CLUSTER_NAME: dev
-  AWS_ACCOUNT_ID: "783421985614"
-  ROLE_ARN: arn:aws:iam::783421985614:role/ci-deploy
+  AWS_ACCOUNT_ID: ${{ secrets.NONPROD_AWS_ACCOUNT_ID }}
+  ROLE_ARN: ${{ secrets.NONPROD_ROLE_ARN }}
   APP_NAME: contracts
   ECR_REPOSITORY: platform-contracts
   CONTAINER_PORT: "4000"
-  ECR_REGISTRY: 203033780030.dkr.ecr.us-east-2.amazonaws.com
+  ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
   BUILD_VERSION: ${{ github.sha }}
   DEPLOY_TIMEOUT: "600"
 

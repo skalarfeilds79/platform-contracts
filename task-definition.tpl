@@ -2,7 +2,7 @@
   "containerDefinitions": [
     {
       "essential": true,
-      "image": "${IMAGE_NAME}",
+      "image": "trufflesuite/ganache-cli:v6.9.0",
       "memoryReservation": 1024,
       "memory": 1024,
       "name": "${APP_NAME}-ganache",

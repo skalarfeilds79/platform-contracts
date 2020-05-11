@@ -6,7 +6,7 @@
   "license": "MIT",
   "esModuleInterop": true,
   "dependencies": {
-    "ethers": "4.0.42"
+    "ethers": "^4.0.42"
   },
   "scripts": {
     "clean": "rm -rf dist",

@@ -44,14 +44,15 @@
         }
       },
       "environment": [
-PRIVATE_KEY = "0xf2f48ee19680706196e2e339e5da3491186e0c4c5030670656b0e0164837257d"
-RPC_ENDPOINT = "http://localhost:8545"
-ETHERSCAN_KEY = ""
-DEPLOYMENT_ENVIRONMENT = "development"
-DEPLOYMENT_NETWORK_ID = 50
-MINT_AMOUNT = 50
-DEFAULT_PRICE = 0.01
-API_ENDPOINT = ""
+        {
+          { "name" : "PRIVATE_KEY", "value" : "0xf2f48ee19680706196e2e339e5da3491186e0c4c5030670656b0e0164837257d" },
+          { "name" : "ETHERSCAN_KEY", "value" : "" },
+          { "name" : "DEPLOYMENT_ENVIRONMENT", "value" : "development" },
+          { "name" : "DEPLOYMENT_NETWORK_ID", "value" : "50" },
+          { "name" : "MINT_AMOUNT", "value" : "50" },
+          { "name" : "DEFAULT_PRICE", "value" : "0.01" },
+          { "name" : "API_ENDPOINT", "value" : "" },
+        }
       ],
       "secrets": []
     }

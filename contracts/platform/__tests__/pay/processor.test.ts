@@ -12,7 +12,7 @@ const blockchain = new Blockchain();
 const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
 describe('PurchaseProcessor', () => {
-  const [user, other] = generatedWallets(provider);
+  const [ownerWallet, userWallet, otherWallet] = generatedWallets(provider);
 
   beforeEach(async () => {
     await blockchain.resetAsync();
@@ -25,7 +25,7 @@ describe('PurchaseProcessor', () => {
 
   describe('#constructor', () => {
     it('should be able to deploy the processor contract', async () => {
-      const processor = await PurchaseProcessor.deploy(user, user.address);
+      const processor = await PurchaseProcessor.deploy(userWallet, userWallet.address);
     });
   });
 
@@ -33,7 +33,7 @@ describe('PurchaseProcessor', () => {
     let processor: PurchaseProcessor;
 
     beforeEach(async () => {
-      processor = await PurchaseProcessor.deploy(user, user.address);
+      processor = await PurchaseProcessor.deploy(userWallet, userWallet.address);
     });
 
     async function setSignerLimit(sender: Wallet, signer: string, value: number) {
@@ -42,11 +42,11 @@ describe('PurchaseProcessor', () => {
     }
 
     it('should not be able to set signer limit as owner', async () => {
-      await expectRevert(setSignerLimit(other, user.address, 100));
+      await expectRevert(setSignerLimit(otherWallet, userWallet.address, 100));
     });
 
     it('should be able to set signer limit as owner', async () => {
-      await setSignerLimit(user, user.address, 100);
+      await setSignerLimit(userWallet, userWallet.address, 100);
     });
   });
 
@@ -55,7 +55,7 @@ describe('PurchaseProcessor', () => {
     const sku = keccak256('0x00');
 
     beforeEach(async () => {
-      processor = await PurchaseProcessor.deploy(user, user.address);
+      processor = await PurchaseProcessor.deploy(userWallet, userWallet.address);
     });
 
     async function setSellerApproval(sender: Wallet, seller: string, shouldApprove: boolean) {
@@ -64,13 +64,35 @@ describe('PurchaseProcessor', () => {
     }
 
     it('should not be able to set seller approval as non-owner', async () => {
-      await expectRevert(setSellerApproval(other, user.address, true));
-      await expectRevert(setSellerApproval(other, user.address, false));
+      await expectRevert(setSellerApproval(otherWallet, userWallet.address, true));
+      await expectRevert(setSellerApproval(otherWallet, userWallet.address, false));
     });
 
     it('should be able to set seller approval as owner', async () => {
-      await setSellerApproval(user, user.address, true);
-      await setSellerApproval(user, user.address, false);
+      await setSellerApproval(userWallet, userWallet.address, true);
+      await setSellerApproval(userWallet, userWallet.address, false);
+    });
+  });
+
+  describe('#setOracle', () => {
+    let processorAddress: string;
+
+    beforeEach(async () => {
+      const processor = await PurchaseProcessor.deploy(ownerWallet, userWallet.address);
+      processorAddress = processor.address;
+    });
+
+    async function setOracle(sender: Wallet, address: string) {
+      const processor = await PurchaseProcessor.at(sender, processorAddress);
+      return await processor.setOracle(address);
+    }
+
+    it('should not be able to set as a non-owner', async () => {
+      await expectRevert(setOracle(userWallet, ethers.constants.AddressZero));
+    });
+
+    it('should be able to set as an owner', async () => {
+      await setOracle(ownerWallet, ethers.constants.AddressZero);
     });
   });
 });

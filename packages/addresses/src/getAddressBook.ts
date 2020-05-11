@@ -32,6 +32,8 @@ export function getAddressBook(
       testVendorAddress: addresses['IM_TestVendor'],
       escrowAddress: addresses['IM_Escrow'],
       creditCardAddress: addresses['IM_Escrow_CreditCard'],
+      ethUSDMakerOracleAddress: addresses['IM_Oracle_ETHUSDMaker'],
+      ethUSDMockOracleAddress: addresses['IM_Oracle_ETHUSDMock'],
     },
     wallet: {},
     wethAddress: dependencies['WETH'],

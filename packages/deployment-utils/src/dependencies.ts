@@ -72,4 +72,9 @@ export default {
     3: '',
     50: '0x5409ED021D9299bf6814279A6A1411A7e866A631',
   },
+  MEDIANIZER_ADDRESS: {
+    1: '',
+    3: '',
+    50: '',
+  },
 };

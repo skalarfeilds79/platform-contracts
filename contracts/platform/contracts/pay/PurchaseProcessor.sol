@@ -233,12 +233,16 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
             "IM:PurchaseProcessor: not enough ETH sent"
         );
 
-        wallet.transfer(amount);
+        uint256 remaining = msg.value.sub(amount);
 
-        uint256 remaining = amount.sub(msg.value);
+        // solium-disable-next-line
+        wallet.call.value(amount)("");
 
         if (remaining > 0) {
-            msg.sender.transfer(remaining);
+            // @TODO: Need to add re-entrency guards on remaining contracts.
+            address payable recipient = address(uint160(_order.recipient));
+            // solium-disable-next-line
+            recipient.call.value(remaining)("");
         }
 
         require(

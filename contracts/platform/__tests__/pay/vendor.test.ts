@@ -4,8 +4,9 @@ import { TestVendor, PurchaseProcessor } from '../../src/contracts';
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
-import { keccak256 } from 'ethers/utils';
-import { getETHPayment, getSignedPayment, Order, PaymentParams } from '../../src/pay';
+import { keccak256, BigNumber } from 'ethers/utils';
+import { getETHPayment, getSignedPayment, Order, PaymentParams } from '../../src/';
+import { ETHUSDMockOracle } from '../../src/contracts/ETHUSDMockOracle';
 
 const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();
@@ -13,7 +14,7 @@ const blockchain = new Blockchain();
 const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
 describe('Vendor', () => {
-  const [user, other] = generatedWallets(provider);
+  const [user, treasury, other] = generatedWallets(provider);
 
   beforeEach(async () => {
     await blockchain.resetAsync();
@@ -31,44 +32,69 @@ describe('Vendor', () => {
     });
   });
 
-  describe('#processPayment in ETH', () => {
+  describe('#processPayment (ETH)', () => {
     let pay: PurchaseProcessor;
     let vendor: TestVendor;
+    let oracle: ETHUSDMockOracle;
+
     const sku = keccak256('0x00');
 
     beforeEach(async () => {
-      pay = await PurchaseProcessor.deploy(user, user.address);
+      pay = await PurchaseProcessor.deploy(user, treasury.address);
       vendor = await TestVendor.deploy(user, pay.address);
+      oracle = await ETHUSDMockOracle.deploy(user);
     });
+
+    async function setOracle(address?: string) {
+      return await pay.setOracle(address || oracle.address);
+    }
 
     async function processETHPayment(
       approved: boolean,
       quantity: number,
       totalPrice: number,
-      value: number,
+      value: number | BigNumber,
     ) {
+      const order = { sku, totalPrice, quantity, recipient: user.address, currency: 0 };
       await pay.setSellerApproval(vendor.address, [sku], approved);
-      await vendor.processPayment(
-        { sku, totalPrice, quantity, recipient: user.address, currency: 0 },
-        getETHPayment(),
-        { value },
-      );
+      await vendor.processPayment(order, getETHPayment(), { value });
     }
 
+    it('should not be able to process with no oracle set', async () => {
+      await expectRevert(processETHPayment(true, 1, 100, 1));
+    });
+
     it('should not be able to process an insufficient ETH payment', async () => {
-      // await expectRevert(processETHPayment(true, 1, 100, 99));
+      await setOracle();
+      const valueToSend = await oracle.convert(1, 0, 100);
+      await expectRevert(processETHPayment(true, 1, 100, valueToSend.sub(1)));
     });
 
     it('should not be able to process an ETH payment for an unapproved item', async () => {
+      await setOracle();
       await expectRevert(processETHPayment(false, 1, 100, 100));
     });
 
     it('should be able to process an ETH payment', async () => {
-      await processETHPayment(true, 1, 100, 100);
+      await setOracle();
+      const valueToSend = await oracle.convert(1, 0, 100);
+      await processETHPayment(true, 1, 100, valueToSend);
+    });
+
+    it('should be able to process an ETH payment and refund the extra', async () => {
+      const treasuryBefore = await treasury.getBalance();
+
+      await setOracle();
+
+      const valueToSend = await oracle.convert(1, 0, 100);
+      await processETHPayment(true, 1, 100, valueToSend);
+
+      const treasuryAfter = await treasury.getBalance();
+      expect(treasuryAfter.toString()).toBe(treasuryBefore.add(valueToSend).toString());
     });
   });
 
-  describe('#processPayment in USD', () => {
+  describe('#processPayment (USD)', () => {
     let pay: PurchaseProcessor;
     let vendor: TestVendor;
     const sku = keccak256('0x00');

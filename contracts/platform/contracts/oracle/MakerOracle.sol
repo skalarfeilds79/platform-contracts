@@ -3,25 +3,22 @@ pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/math/SafeMath.sol";
 
-import "../IOracle.sol";
-import "../../pay/IPurchaseProcessor.sol";
+import "./IOracle.sol";
+import "./IMedianizer.sol";
+import "../pay/IPurchaseProcessor.sol";
 
-contract ETHUSDMockOracle is IOracle {
+contract MakerOracle is IOracle {
 
     using SafeMath for uint256;
 
-    uint256 public _price = 205100000000000000000;
+    address public makerDAO;
 
-    function price() public view returns (uint256) {
-        return _price;
+    constructor(address _makerDAO) public {
+        makerDAO = _makerDAO;
     }
 
-    function setPrice(
-        uint256 value
-    )
-        public
-    {
-        _price = value;
+    function price() public view returns (uint256) {
+        return uint256(IMedianizer(makerDAO).read());
     }
 
     function convert(

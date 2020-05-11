@@ -166,11 +166,6 @@
     reflect-metadata "^0.1.12"
     tslib "^1.8.1"
 
-"@imtbl/common-types@^2.0.0-alpha.5":
-  version "2.0.0-alpha.5"
-  resolved "https://registry.yarnpkg.com/@imtbl/common-types/-/common-types-2.0.0-alpha.5.tgz#8e3dc306fc5016566d207b770fcb44116c6007ce"
-  integrity sha512-U5Zoovgg68cmnt9t9xYn6NhBNKWAqb5MOYZKVBTP88hzVnkJQIbbg8WaK7+onORcIefGOSK4VRQ75FVmnB6WiA==
-
 "@jest/console@^24.7.1", "@jest/console@^24.9.0":
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/@jest/console/-/console-24.9.0.tgz#79b1bc06fb74a8cfb01cbdedf945584b1b9707f0"

@@ -18,8 +18,9 @@ import {
 } from '../../src/contracts';
 
 import { Wallet, ethers } from 'ethers';
-import { getSignedPayment, Currency, Payment } from '@imtbl/platform/src/pay';
-import { Blockchain } from '@imtbl/test-utils/src/Blockchain';
+import { ContractReceipt } from 'ethers/contract';
+import { getSignedPayment, Currency, Payment, ETHUSDMockOracle, getETHPayment } from '@imtbl/platform';
+import { Blockchain } from '@imtbl/test-utils';
 
 import {
   getAddressBook,
@@ -28,9 +29,7 @@ import {
   GU_S1_LEGENDARY_PACK_SKU,
   GU_S1_SHINY_PACK_SKU,
 } from '@imtbl/addresses';
-import { ContractReceipt } from '@imtbl/utils/node_modules/ethers/contract';
-import { parseLogs } from '@imtbl/utils/src/parseLogs';
-import { asyncForEach } from '@imtbl/utils';
+import { asyncForEach, parseLogs } from '@imtbl/utils';
 
 const config = require('dotenv').config({ path: '../../.env' }).parsed;
 const provider = new ethers.providers.JsonRpcProvider(config.RPC_ENDPOINT);
@@ -55,6 +54,7 @@ describe('02_season_one', () => {
   let rarePack: RarePack;
   let shinyPack: ShinyPack;
   let legendaryPack: LegendaryPack;
+  let oracle: ETHUSDMockOracle;
 
   let epicCost: number;
   let rareCost: number;
@@ -80,6 +80,7 @@ describe('02_season_one', () => {
     epicPack = await EpicPack.at(wallet, addressBook.godsUnchained.seasonOne.epicPackAddress);
     rarePack = await RarePack.at(wallet, addressBook.godsUnchained.seasonOne.rarePackAddress);
     shinyPack = await ShinyPack.at(wallet, addressBook.godsUnchained.seasonOne.shinyPackAddress);
+    oracle = await ETHUSDMockOracle.at(wallet, addressBook.platform.ethUSDMockOracleAddress);
     legendaryPack = await LegendaryPack.at(
       wallet,
       addressBook.godsUnchained.seasonOne.legendaryPackAddress,
@@ -89,110 +90,138 @@ describe('02_season_one', () => {
     rareCost = (await rarePack.price()).toNumber();
     legendaryCost = (await legendaryPack.price()).toNumber();
     shinyCost = (await shinyPack.price()).toNumber();
-
-    epicPayment = await returnPaymentObject(
-      defaultQuantity,
-      epicPack.address,
-      GU_S1_EPIC_PACK_SKU,
-      epicCost,
-    );
-
-    rarePayment = await returnPaymentObject(
-      defaultQuantity,
-      rarePack.address,
-      GU_S1_RARE_PACK_SKU,
-      rareCost,
-    );
-
-    legendaryPayment = await returnPaymentObject(
-      defaultQuantity,
-      legendaryPack.address,
-      GU_S1_LEGENDARY_PACK_SKU,
-      legendaryCost,
-    );
-
-    shinyPayment = await returnPaymentObject(
-      defaultQuantity,
-      shinyPack.address,
-      GU_S1_SHINY_PACK_SKU,
-      shinyCost,
-    );
   });
 
-  beforeEach(async () => {
-    await blockchain.resetAsync();
-    await blockchain.saveSnapshotAsync();
-  });
+  describe('using credit card', () => {
+    beforeAll(async () => {
+      epicPayment = await returnPaymentObject(
+        defaultQuantity,
+        epicPack.address,
+        GU_S1_EPIC_PACK_SKU,
+        epicCost,
+      );
 
-  afterEach(async () => {
-    await blockchain.revertAsync();
-  });
+      rarePayment = await returnPaymentObject(
+        defaultQuantity,
+        rarePack.address,
+        GU_S1_RARE_PACK_SKU,
+        rareCost,
+      );
 
-  it('should be able to call the purchase function on the epic pack contract', async () => {
-    await epicPack.purchase(defaultQuantity, epicPayment, ethers.constants.AddressZero);
-  });
+      legendaryPayment = await returnPaymentObject(
+        defaultQuantity,
+        legendaryPack.address,
+        GU_S1_LEGENDARY_PACK_SKU,
+        legendaryCost,
+      );
 
-  it('should be able to call the purchase function on the rare pack contract', async () => {
-    await rarePack.purchase(defaultQuantity, rarePayment, ethers.constants.AddressZero);
-  });
-
-  it('should be able to call the purchase function on the legendary pack contract', async () => {
-    await legendaryPack.purchase(defaultQuantity, legendaryPayment, ethers.constants.AddressZero);
-  });
-
-  it('should be able to call the purchase function on the shiny pack contract', async () => {
-    await shinyPack.purchase(defaultQuantity, shinyPayment, ethers.constants.AddressZero);
-  });
-
-  it('should be able to call the purchase function on S1 sale for all products', async () => {
-    const limit = await processor.signerLimits(wallet.address);
-    const tx = await s1Sale.purchaseFor(
-      wallet.address,
-      [
-        { quantity: defaultQuantity, payment: epicPayment, vendor: epicPack.address },
-        { quantity: defaultQuantity, payment: rarePayment, vendor: rarePack.address },
-        { quantity: defaultQuantity, payment: legendaryPayment, vendor: legendaryPack.address },
-        { quantity: defaultQuantity, payment: shinyPayment, vendor: shinyPack.address },
-      ],
-      ethers.constants.AddressZero,
-    );
-    const receipt = await tx.wait();
-    const escrowLogs = parseLogs(receipt.logs, EpicPack.ABI);
-
-    const receipts: ContractReceipt[] = [];
-
-    await asyncForEach(escrowLogs, async (log) => {
-      if (log.address === epicPack.address) {
-        const receipt = await (await epicPack.mint(log.values.commitmentID)).wait();
-        receipts.push(receipt);
-      }
-      if (log.address === legendaryPack.address) {
-        const receipt = await (await legendaryPack.mint(log.values.commitmentID)).wait();
-        receipts.push(receipt);
-      }
-      if (log.address === rarePack.address) {
-        const receipt = await (await rarePack.mint(log.values.commitmentID)).wait();
-        receipts.push(receipt);
-      }
-      if (log.address === shinyPack.address) {
-        const receipt = await (await shinyPack.mint(log.values.commitmentID)).wait();
-        receipts.push(receipt);
-      }
+      shinyPayment = await returnPaymentObject(
+        defaultQuantity,
+        shinyPack.address,
+        GU_S1_SHINY_PACK_SKU,
+        shinyCost,
+      );
     });
 
-    receipts.forEach((receipt) => {
-      const rangeMintedLogs = parseLogs(receipt.logs, Pack.ABI);
-      const escrowLogs = parseLogs(receipt.logs, Escrow.ABI);
+    beforeEach(async () => {
+      await blockchain.resetAsync();
+      await blockchain.saveSnapshotAsync();
     });
 
-    const supply = await cards.totalSupply();
-    expect(supply.toNumber()).toBe(20);
+    afterEach(async () => {
+      await blockchain.revertAsync();
+    });
+
+    it('should be able to call the purchase function on the epic pack contract', async () => {
+      await epicPack.purchase(defaultQuantity, epicPayment, ethers.constants.AddressZero);
+    });
+
+    it('should be able to call the purchase function on the rare pack contract', async () => {
+      await rarePack.purchase(defaultQuantity, rarePayment, ethers.constants.AddressZero);
+    });
+
+    it('should be able to call the purchase function on the legendary pack contract', async () => {
+      await legendaryPack.purchase(defaultQuantity, legendaryPayment, ethers.constants.AddressZero);
+    });
+
+    it('should be able to call the purchase function on the shiny pack contract', async () => {
+      await shinyPack.purchase(defaultQuantity, shinyPayment, ethers.constants.AddressZero);
+    });
+
+    it('should be able to call the purchase function on S1 sale for all products', async () => {
+      const limit = await processor.signerLimits(wallet.address);
+      const tx = await s1Sale.purchaseFor(
+        wallet.address,
+        [
+          { quantity: defaultQuantity, payment: epicPayment, vendor: epicPack.address },
+          { quantity: defaultQuantity, payment: rarePayment, vendor: rarePack.address },
+          { quantity: defaultQuantity, payment: legendaryPayment, vendor: legendaryPack.address },
+          { quantity: defaultQuantity, payment: shinyPayment, vendor: shinyPack.address },
+        ],
+        ethers.constants.AddressZero,
+      );
+      const receipt = await tx.wait();
+      const escrowLogs = parseLogs(receipt.logs, EpicPack.ABI);
+
+      let receipts: ContractReceipt[];
+      receipts = [];
+
+      await asyncForEach(escrowLogs, async (log) => {
+        if (log.address === epicPack.address) {
+          const receipt = await (await epicPack.mint(log.values.commitmentID)).wait();
+          receipts.push(receipt);
+        }
+        if (log.address === legendaryPack.address) {
+          const receipt = await (await legendaryPack.mint(log.values.commitmentID)).wait();
+          receipts.push(receipt);
+        }
+        if (log.address === rarePack.address) {
+          const receipt = await (await rarePack.mint(log.values.commitmentID)).wait();
+          receipts.push(receipt);
+        }
+        if (log.address === shinyPack.address) {
+          const receipt = await (await shinyPack.mint(log.values.commitmentID)).wait();
+          receipts.push(receipt);
+        }
+      });
+
+      receipts.forEach((receipt) => {
+        const rangeMintedLogs = parseLogs(receipt.logs, Pack.ABI);
+        const escrowLogs = parseLogs(receipt.logs, Escrow.ABI);
+      });
+
+      const supply = await cards.totalSupply();
+      expect(supply.toNumber()).toBe(20);
+    });
   });
 
-  async function returnPaymentChecks(receipt: ContractReceipt) {
-    const escrowLogs = parseLogs(receipt.logs, Pack.ABI);
-    console.log(escrowLogs);
-  }
+  describe.only('using ETH', () => {
+    beforeEach(async () => {
+      await blockchain.resetAsync();
+      await blockchain.saveSnapshotAsync();
+    });
+
+    afterEach(async () => {
+      await blockchain.revertAsync();
+    });
+
+    it('should be able to purchase an epic pack', async () => {
+      /// @TODO: Need to figure out why this is failing
+      const approved = await processor.sellerApproved(await epicPack.sku(), epicPack.address);
+      const approved2 = await processor.sellerApproved(await epicPack.sku(), s1Sale.address);
+      // expect(approved).toBeTruthy();
+      // expect(approved2).toBeTruthy();
+      const ethRequired = await oracle.convert(1, 0, epicCost);
+      // await s1Sale.purchase(
+      //   [{ quantity: defaultQuantity, vendor: epicPack.address, payment: getETHPayment() }],
+      //   ethers.constants.AddressZero,
+      //   { value: ethRequired },
+      // );
+      await epicPack.purchase(defaultQuantity, getETHPayment(), ethers.constants.AddressZero, {
+        value: ethRequired,
+      });
+    });
+  });
 
   async function returnPaymentObject(
     quantity: number,

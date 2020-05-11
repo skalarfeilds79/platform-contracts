@@ -5,7 +5,9 @@ pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
+
 import "./IPurchaseProcessor.sol";
+import "../oracle/IOracle.sol";
 
 contract PurchaseProcessor is IPurchaseProcessor, Ownable {
 
@@ -13,21 +15,60 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
 
     // Emitted when a seller's approval to sell a particular product is changed
     event SellerApprovalChanged(bytes32 indexed sku, address indexed seller, bool approved);
+
     // Emitted when a signer's limit is changed
     event SignerLimitChanged(address indexed signer, uint256 usdCentsLimit);
+
     // Emitted when a payment has been processed
-    event PaymentProcessed(uint256 indexed id, address indexed vendor, Order order, PaymentParams payment);
+    event PaymentProcessed(
+        uint256 indexed id,
+        address indexed vendor,
+        Order order,
+        PaymentParams payment
+    );
+
+    // Emitted when an oracle is set
+    event OracleChanged(address indexed oracle);
 
     // Stores whether a nonce has been used by a particular signer
     mapping(address => mapping(uint256 => bool)) public receiptNonces;
+
     // Track whether a contract can sell through this processor
     mapping(bytes32 => mapping(address => bool)) public sellerApproved;
+
     // Track the daily limit of each signing address
     mapping(address => Limit) public signerLimits;
+
     // The number of payments this contract has processed
     uint256 public count;
 
-    function setSignerLimit(address signer, uint256 usdCentsLimit) public onlyOwner {
+    // Address of the oracle to use
+    address public priceOracle;
+
+    // Wallet to recieve funds
+    address payable public wallet;
+
+    // Address to send funds
+    constructor(address payable _wallet) public {
+        wallet = _wallet;
+    }
+
+    function setOracle(
+        address oracleAddress
+    )
+        public
+        onlyOwner
+    {
+        priceOracle = oracleAddress;
+    }
+
+    function setSignerLimit(
+        address signer,
+        uint256 usdCentsLimit
+    )
+        public
+        onlyOwner
+    {
         signerLimits[signer].total = usdCentsLimit;
         emit SignerLimitChanged(signer, usdCentsLimit);
     }
@@ -36,7 +77,10 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
         address seller,
         bytes32[] memory skus,
         bool approved
-    ) public onlyOwner {
+    )
+        public
+        onlyOwner
+    {
         for (uint i = 0; i < skus.length; i++) {
             bytes32 sku = skus[i];
             sellerApproved[sku][seller] = approved;
@@ -49,7 +93,13 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
      * @param order the details of the order, supplied by an authorised seller
      * @param payment the details of the user's proposed payment
      */
-    function process(Order memory order, PaymentParams memory payment) public payable returns (uint) {
+    function process(
+        Order memory order,
+        PaymentParams memory payment
+    )
+        public
+        payable returns (uint)
+    {
 
         require(
             order.sku != bytes32(0),
@@ -67,17 +117,9 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
         );
 
         if (order.currency == Currency.USDCents) {
-            if (payment.currency == Currency.USDCents) {
-                _priceUSDPayUSD(order, payment);
-            } else {
-                _priceUSDPayETH(order, payment);
-            }
+            _payUSD(order, payment);
         } else {
-            if (payment.currency == Currency.ETH) {
-                _priceETHPayETH(order, payment);
-            } else {
-                _priceETHPayUSD(order, payment);
-            }
+            _payETH(order, payment);
         }
 
         uint id = count++;
@@ -145,20 +187,15 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
             payment.value,
             payment.currency
         ));
-        bytes32 recoveryHash = keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", sigHash));
+
+        bytes32 recoveryHash = keccak256(
+            abi.encodePacked("\x19Ethereum Signed Message:\n32", sigHash)
+        );
+
         return ecrecover(recoveryHash, payment.v, payment.r, payment.s);
     }
 
-    function _priceUSDPayETH(
-        Order memory _order,
-        PaymentParams memory _payment
-    )
-        internal
-    {
-        // TODO:
-    }
-
-    function _priceUSDPayUSD(
+    function _payUSD(
         Order memory _order,
         PaymentParams memory _payment
     )
@@ -178,22 +215,41 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
         _validateOrderPaymentMatch(_order, _payment);
     }
 
-    function _priceETHPayETH(
+    function _payETH(
         Order memory _order,
         PaymentParams memory _payment
     )
         internal
     {
-        // TODO:
-    }
+        require(
+            priceOracle != address(0),
+            "IM:PurchaseProcessor: oracle must be set"
+        );
 
-    function _priceETHPayUSD(
-        Order memory _order,
-        PaymentParams memory _payment
-    )
-        internal
-    {
-        // TODO:
+        uint256 amount = IOracle(priceOracle).convert(1, 0, _order.totalPrice);
+
+        require(
+            msg.value >= amount,
+            "IM:PurchaseProcessor: not enough ETH sent"
+        );
+
+        uint256 remaining = msg.value.sub(amount);
+
+        // solium-disable-next-line
+        wallet.call.value(amount)("");
+
+        if (remaining > 0) {
+            // @TODO: Need to add re-entrency guards on remaining contracts.
+            address payable recipient = address(uint160(_order.recipient));
+            // solium-disable-next-line
+            recipient.call.value(remaining)("");
+        }
+
+        require(
+            address(this).balance == 0,
+            "IM:PurchaseProcessor: ETH left over"
+        );
+
     }
 
 }

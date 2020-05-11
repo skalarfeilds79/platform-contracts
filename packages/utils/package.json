@@ -11,6 +11,9 @@
     "prepublish": "yarn clean && yarn build",
     "quick-fix": "npm version patch && npm publish"
   },
+  "dependencies": {
+    "ethers": "^4.0.42"
+  },
   "devDependencies": {
     "@0xproject/types": "^1.1.4",
     "@imtbl/common-types": "^2.0.0-alpha.5",
@@ -23,7 +26,6 @@
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.17.2",
     "ethereum-types": "^2.1.4",
-    "ethers": "4.0.42",
     "jest": "^24.9.0",
     "tslint": "^5.19.0",
     "tslint-config-airbnb": "^5.11.1",

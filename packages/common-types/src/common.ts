@@ -46,6 +46,8 @@ export declare type PlatformAddresses = {
   testVendorAddress?: string;
   escrowAddress?: string;
   creditCardAddress?: string;
+  ethUSDMakerOracleAddress?: string;
+  ethUSDMockOracleAddress?: string;
 };
 
 export declare type WalletAddresses = {

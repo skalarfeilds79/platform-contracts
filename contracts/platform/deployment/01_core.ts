@@ -1,12 +1,9 @@
-import { TestVendor } from './../src/contracts/TestVendor';
-import { PurchaseProcessor } from './../src/contracts/PurchaseProcessor';
-import { Beacon } from './../src/contracts/Beacon';
-import { Wallet, ethers } from 'ethers';
 
+import { Wallet, ethers } from 'ethers';
 import { DeploymentStage } from '@imtbl/deployment-utils';
 import { asyncForEach } from '@imtbl/utils';
-import { Escrow, CreditCardEscrow } from '../src/contracts';
-import { IM_PROCESSOR_LIMIT } from '../../../packages/addresses/src/constants';
+import { Escrow, CreditCardEscrow, Beacon, PurchaseProcessor, TestVendor } from '../src/contracts';
+import { IM_PROCESSOR_LIMIT } from '@imtbl/addresses';
 
 export class CoreStage implements DeploymentStage {
   private wallet: Wallet;
@@ -74,7 +71,7 @@ export class CoreStage implements DeploymentStage {
 
   async deployProcessor(): Promise<string> {
     console.log('** Deploying PurchaseProcessor **');
-    const contract = await PurchaseProcessor.deploy(this.wallet);
+    const contract = await PurchaseProcessor.deploy(this.wallet, this.wallet.address);
     return contract.address;
   }
 

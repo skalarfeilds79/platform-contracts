@@ -11,7 +11,7 @@
     "@imtbl/test-utils": "^1.0.14",
     "@imtbl/utils": "^1.1.5",
     "dotenv": "^8.2.0",
-    "ethers": "4.0.42",
+    "ethers": "^4.0.42",
     "fs-extra": "^8.1.0",
     "mustache": "^3.1.0",
     "truffle": "^5.0.44",

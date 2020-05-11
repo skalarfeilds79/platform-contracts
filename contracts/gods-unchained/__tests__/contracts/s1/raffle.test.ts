@@ -5,7 +5,7 @@ import { Referral, RarePack, Cards, Chest, Raffle } from '../../../src/contracts
 import { Wallet, ethers } from 'ethers';
 import { keccak256 } from 'ethers/utils';
 import { PurchaseProcessor, CreditCardEscrow, Escrow, Beacon } from '@imtbl/platform/src/contracts';
-import { getSignedPayment, Currency } from '@imtbl/platform/src/pay';
+import { getSignedPayment, Currency } from '@imtbl/platform/src';
 
 jest.setTimeout(600000);
 
@@ -17,7 +17,6 @@ const blockchain = new Blockchain();
 const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
 describe('Raffle', () => {
-
   const [owner] = generatedWallets(provider);
 
   beforeEach(async () => {
@@ -30,21 +29,16 @@ describe('Raffle', () => {
   });
 
   describe('deployment', () => {
-
     let raffle: Raffle;
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       raffle = await Raffle.deploy(owner);
     });
 
-    it('should deploy raffle contract', async () => {
-
-    });
-
+    it('should deploy raffle contract', async () => {});
   });
 
   describe('purchase', () => {
-
     let beacon: Beacon;
     let referral: Referral;
     let processor: PurchaseProcessor;
@@ -58,7 +52,7 @@ describe('Raffle', () => {
     let rare: RarePack;
     const cost = 249;
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       escrow = await Escrow.deploy(owner);
       cc = await CreditCardEscrow.deploy(
         owner,
@@ -66,18 +60,22 @@ describe('Raffle', () => {
         owner.address,
         100,
         owner.address,
-        100
+        100,
       );
       beacon = await Beacon.deploy(owner);
       referral = await Referral.deploy(owner, 90, 10);
-      processor = await PurchaseProcessor.deploy(owner);
+      processor = await PurchaseProcessor.deploy(owner, owner.address);
       cards = await Cards.deploy(owner, 1250, 'Cards', 'CARD');
       raffle = await Raffle.deploy(owner);
       rare = await RarePack.deploy(
         owner,
         raffle.address,
-        beacon.address, cards.address, referral.address, rarePackSKU,
-        cc.address, processor.address
+        beacon.address,
+        cards.address,
+        referral.address,
+        rarePackSKU,
+        cc.address,
+        processor.address,
       );
       await processor.setSellerApproval(rare.address, [rarePackSKU], true);
       await processor.setSignerLimit(owner.address, 1000000000000000);
@@ -85,8 +83,11 @@ describe('Raffle', () => {
 
     async function purchasePacks(quantity: number) {
       const order = {
-        quantity, sku: rarePackSKU, recipient: owner.address, totalPrice: cost * quantity,
-        currency: Currency.USDCents
+        quantity,
+        sku: rarePackSKU,
+        recipient: owner.address,
+        totalPrice: cost * quantity,
+        currency: Currency.USDCents,
       };
       const params = { escrowFor: 0, nonce: 0, value: cost * quantity };
       const payment = await getSignedPayment(owner, processor.address, rare.address, order, params);
@@ -113,11 +114,9 @@ describe('Raffle', () => {
       const q = commitment.ticketQuantity.toNumber();
       expect(q).toBe(100);
     });
-
   });
 
   describe('mint', () => {
-
     let beacon: Beacon;
     let referral: Referral;
     let processor: PurchaseProcessor;
@@ -131,22 +130,30 @@ describe('Raffle', () => {
     let rare: RarePack;
     const cost = 249;
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       escrow = await Escrow.deploy(owner);
       cc = await CreditCardEscrow.deploy(
         owner,
-        escrow.address, owner.address, 100, owner.address, 100
+        escrow.address,
+        owner.address,
+        100,
+        owner.address,
+        100,
       );
       beacon = await Beacon.deploy(owner);
       referral = await Referral.deploy(owner, 90, 10);
-      processor = await PurchaseProcessor.deploy(owner);
+      processor = await PurchaseProcessor.deploy(owner, owner.address);
       cards = await Cards.deploy(owner, 1250, 'Cards', 'CARD');
       raffle = await Raffle.deploy(owner);
       rare = await RarePack.deploy(
         owner,
         raffle.address,
-        beacon.address, cards.address, referral.address, rarePackSKU,
-        cc.address, processor.address
+        beacon.address,
+        cards.address,
+        referral.address,
+        rarePackSKU,
+        cc.address,
+        processor.address,
       );
       await raffle.setMinterApproval(rare.address, true);
       await processor.setSellerApproval(rare.address, [rarePackSKU], true);
@@ -157,8 +164,11 @@ describe('Raffle', () => {
 
     async function purchase(quantity: number, escrowFor: number) {
       const order = {
-        quantity, sku: rarePackSKU, recipient: owner.address,
-        totalPrice: cost * quantity, currency: Currency.USDCents
+        quantity,
+        sku: rarePackSKU,
+        recipient: owner.address,
+        totalPrice: cost * quantity,
+        currency: Currency.USDCents,
       };
       const params = { escrowFor, nonce: 0, value: cost * quantity };
       const payment = await getSignedPayment(owner, processor.address, rare.address, order, params);
@@ -206,11 +216,9 @@ describe('Raffle', () => {
       const userBalance = await raffle.balanceOf(owner.address);
       expect(userBalance.toNumber()).toBeGreaterThan(0);
     });
-
   });
 
   describe('openChest', () => {
-
     let beacon: Beacon;
     let referral: Referral;
     let processor: PurchaseProcessor;
@@ -226,22 +234,30 @@ describe('Raffle', () => {
 
     let rare: RarePack;
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       escrow = await Escrow.deploy(owner);
       cc = await CreditCardEscrow.deploy(
         owner,
-        escrow.address, owner.address, 100, owner.address, 100
+        escrow.address,
+        owner.address,
+        100,
+        owner.address,
+        100,
       );
       beacon = await Beacon.deploy(owner);
       referral = await Referral.deploy(owner, 90, 10);
-      processor = await PurchaseProcessor.deploy(owner);
+      processor = await PurchaseProcessor.deploy(owner, owner.address);
       cards = await Cards.deploy(owner, 1250, 'Cards', 'CARD');
       raffle = await Raffle.deploy(owner);
       rare = await RarePack.deploy(
         owner,
         raffle.address,
-        beacon.address, cards.address, referral.address, rarePackSKU,
-        cc.address, processor.address
+        beacon.address,
+        cards.address,
+        referral.address,
+        rarePackSKU,
+        cc.address,
+        processor.address,
       );
       await raffle.setMinterApproval(rare.address, true);
       chest = await Chest.deploy(
@@ -254,7 +270,7 @@ describe('Raffle', () => {
         rareChestSKU,
         rareChestPrice,
         escrow.address,
-        processor.address
+        processor.address,
       );
       await rare.setChest(chest.address);
       await cards.startSeason('S1', 1, 10000);
@@ -272,12 +288,19 @@ describe('Raffle', () => {
       await processor.setSellerApproval(chest.address, [rareChestSKU], true);
       const value = rareChestPrice * quantity;
       const order = {
-        quantity, sku: rareChestSKU, recipient: owner.address,
-        currency: Currency.USDCents, totalPrice: value
+        quantity,
+        sku: rareChestSKU,
+        recipient: owner.address,
+        currency: Currency.USDCents,
+        totalPrice: value,
       };
       const params = { value, escrowFor: 0, nonce: 0 };
       const payment = await getSignedPayment(
-        owner, processor.address, chest.address, order, params
+        owner,
+        processor.address,
+        chest.address,
+        order,
+        params,
       );
       await chest.purchase(quantity, payment, ZERO_EX);
       await chest.open(quantity);
@@ -302,7 +325,5 @@ describe('Raffle', () => {
       const userBalance = await raffle.balanceOf(owner.address);
       expect(userBalance.toNumber()).toBe(0);
     });
-
   });
-
 });

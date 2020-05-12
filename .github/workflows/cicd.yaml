@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - master
+  pull_request:
+    branches:
+      - master
 
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -40,9 +43,9 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
       - name: Docker build
         run: scripts/build-tools.sh docker-build
-      # No tests to run currently
-      # - name: Docker test
-      #   run: scripts/build-tools.sh docker-run test
+      # Tests disabled
+      # - name: Integration test
+      #   run: scripts/integration-test.sh
       - name: Docker push
         if: ${{ github.ref == 'refs/heads/master' }}
         run: scripts/build-tools.sh docker-push

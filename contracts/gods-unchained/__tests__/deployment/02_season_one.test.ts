@@ -32,6 +32,7 @@ import { ContractReceipt } from '@imtbl/utils/node_modules/ethers/contract';
 import { parseLogs } from '@imtbl/utils/src/parseLogs';
 import { asyncForEach } from '@imtbl/utils';
 import { getETHPayment } from '../../../platform/src/utils';
+import { BigNumber } from '@imtbl/utils/node_modules/ethers/utils';
 
 const config = require('dotenv').config({ path: '../../.env' }).parsed;
 const provider = new ethers.providers.JsonRpcProvider(config.RPC_ENDPOINT);
@@ -213,20 +214,28 @@ describe('02_season_one', () => {
       const legendaryEth = await oracle.convert(1, 0, legendaryCost);
       const rareEth = await oracle.convert(1, 0, rareCost);
 
-      const total = epicEth
-        .add(legendaryEth)
-        .add(rareEth)
-        .add(shinyEth);
+      await s1Sale.purchase(
+        [{ quantity: defaultQuantity, vendor: epicPack.address, payment: getETHPayment() }],
+        ethers.constants.AddressZero,
+        { value: epicEth },
+      );
 
       await s1Sale.purchase(
-        [
-          { quantity: defaultQuantity, vendor: epicPack.address, payment: getETHPayment() },
-          { quantity: defaultQuantity, vendor: shinyPack.address, payment: getETHPayment() },
-          { quantity: defaultQuantity, vendor: rarePack.address, payment: getETHPayment() },
-          { quantity: defaultQuantity, vendor: legendaryPack.address, payment: getETHPayment() },
-        ],
+        [{ quantity: defaultQuantity, vendor: shinyPack.address, payment: getETHPayment() }],
         ethers.constants.AddressZero,
-        { value: epicEth.add(shinyEth) },
+        { value: shinyEth },
+      );
+
+      await s1Sale.purchase(
+        [{ quantity: defaultQuantity, vendor: rarePack.address, payment: getETHPayment() }],
+        ethers.constants.AddressZero,
+        { value: rareEth },
+      );
+
+      await s1Sale.purchase(
+        [{ quantity: defaultQuantity, vendor: legendaryPack.address, payment: getETHPayment() }],
+        ethers.constants.AddressZero,
+        { value: legendaryEth },
       );
     });
   });

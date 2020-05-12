@@ -6,8 +6,7 @@
       "memoryReservation": 1024,
       "memory": 1024,
       "name": "${APP_NAME}-ganache",
-      "entryPoint": ["/bin/bash", "-c"],
-      "command": ["ganache-cli --networkId 50 --accounts 20 -l 19000000 -e 10000000000 -m 'concert load couple harbor equip island argue ramp clarify fence smart topic'"],
+      "command": ["--networkId 50 --accounts 20 -l 19000000 -e 10000000000 -m 'concert load couple harbor equip island argue ramp clarify fence smart topic'"],
       "portMappings": [
         {
           "containerPort": 8545

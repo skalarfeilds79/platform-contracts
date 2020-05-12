@@ -265,7 +265,7 @@ describe('Beacon', () => {
       await consumer.requireSameRandomness(firstRecommitBlock, secondRecommitBlock);
     });
 
-    it('should return the same randomness after 2 recommits on intermediate block', async () => {
+    it('should return randomness after double recommit on intermediate block', async () => {
       let tx = await beacon.commit(0);
       let receipt = await tx.wait();
       const original = receipt.blockNumber;

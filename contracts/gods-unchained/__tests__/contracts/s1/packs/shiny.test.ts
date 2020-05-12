@@ -3,18 +3,16 @@ import 'jest';
 import { Blockchain, generatedWallets } from '@imtbl/test-utils';
 import {
   Referral,
-  RarePack,
-  EpicPack,
-  LegendaryPack,
   ShinyPack,
   Cards,
   Chest,
-  Raffle,
-} from '../../../src/contracts';
+  Raffle
+} from '../../../../src/contracts';
 import { Wallet, ethers } from 'ethers';
 import { keccak256 } from 'ethers/utils';
-import { PurchaseProcessor, CreditCardEscrow, Escrow, Beacon } from '@imtbl/platform/src/contracts';
-import { getSignedPayment, Currency } from '@imtbl/platform/src';
+import { PurchaseProcessor, CreditCardEscrow, Escrow, Beacon, getSignedPayment, Currency } from '@imtbl/platform';
+import { parseLogs } from '@imtbl/utils';
+import { rares, epics, legendaries } from './protos';
 
 jest.setTimeout(600000);
 
@@ -26,6 +24,7 @@ const ZERO_EX = '0x0000000000000000000000000000000000000000';
 ethers.errors.setLogLevel('error');
 
 describe('Pack', () => {
+
   const [owner] = generatedWallets(provider);
 
   beforeEach(async () => {
@@ -38,6 +37,7 @@ describe('Pack', () => {
   });
 
   describe('deployment', () => {
+
     let beacon: Beacon;
     let referral: Referral;
     let processor: PurchaseProcessor;
@@ -48,9 +48,16 @@ describe('Pack', () => {
     let cc: CreditCardEscrow;
     const sku = keccak256('0x00');
 
-    beforeAll(async () => {
+    beforeAll(async() => {
       escrow = await Escrow.deploy(owner);
-      cc = await CreditCardEscrow.deploy(owner, escrow.address, ZERO_EX, 100, ZERO_EX, 100);
+      cc = await CreditCardEscrow.deploy(
+        owner,
+        escrow.address,
+        ZERO_EX,
+        100,
+        ZERO_EX,
+        100
+      );
       beacon = await Beacon.deploy(owner);
       referral = await Referral.deploy(owner, 90, 10);
       processor = await PurchaseProcessor.deploy(owner, owner.address);
@@ -58,61 +65,18 @@ describe('Pack', () => {
     });
 
     it('should deploy rare pack', async () => {
-      await RarePack.deploy(
+      await ShinyPack.deploy(
         owner,
         raffle.address,
-        beacon.address,
-        ZERO_EX,
-        referral.address,
-        sku,
-        cc.address,
-        processor.address,
+        beacon.address, ZERO_EX, referral.address, sku,
+        cc.address, processor.address
       );
     });
 
-    it('should deploy epic pack', async () => {
-      await EpicPack.deploy(
-        owner,
-        raffle.address,
-        beacon.address,
-        ZERO_EX,
-        referral.address,
-        sku,
-        cc.address,
-        processor.address,
-      );
-    });
-
-    it('should deploy legendary pack', async () => {
-      await LegendaryPack.deploy(
-        owner,
-        raffle.address,
-        beacon.address,
-        ZERO_EX,
-        referral.address,
-        sku,
-        cc.address,
-        processor.address,
-      );
-    });
-
-    it('should deploy shiny pack', async () => {
-      const shiny = await ShinyPack.deploy(
-        owner,
-        raffle.address,
-        beacon.address,
-        ZERO_EX,
-        referral.address,
-        sku,
-        cc.address,
-        processor.address,
-      );
-      const code = await provider.getCode(shiny.address);
-      expect(code.length).toBeGreaterThan(10);
-    });
   });
 
   describe('purchase', () => {
+
     let beacon: Beacon;
     let referral: Referral;
     let processor: PurchaseProcessor;
@@ -120,13 +84,13 @@ describe('Pack', () => {
 
     let escrow: Escrow;
     let cc: CreditCardEscrow;
-    const rarePackSKU = keccak256('0x00');
+    const shinyPackSKU = keccak256('0x00');
     let cards: Cards;
 
-    let rare: RarePack;
-    const cost = 249;
+    let shiny: ShinyPack;
+    const cost = 14999;
 
-    beforeEach(async () => {
+    beforeEach(async() => {
       escrow = await Escrow.deploy(owner);
       cc = await CreditCardEscrow.deploy(
         owner,
@@ -134,38 +98,37 @@ describe('Pack', () => {
         owner.address,
         100,
         owner.address,
-        100,
+        100
       );
       beacon = await Beacon.deploy(owner);
       referral = await Referral.deploy(owner, 90, 10);
       processor = await PurchaseProcessor.deploy(owner, owner.address);
       cards = await Cards.deploy(owner, 1250, 'Cards', 'CARD');
       raffle = await Raffle.deploy(owner);
-      rare = await RarePack.deploy(
+      shiny = await ShinyPack.deploy(
         owner,
         raffle.address,
-        beacon.address,
-        cards.address,
-        referral.address,
-        rarePackSKU,
-        cc.address,
-        processor.address,
+        beacon.address, cards.address, referral.address, shinyPackSKU,
+        cc.address, processor.address
       );
-      await processor.setSellerApproval(rare.address, [rarePackSKU], true);
+      await processor.setSellerApproval(shiny.address, [shinyPackSKU], true);
       await processor.setSignerLimit(owner.address, 1000000000000000);
     });
 
     async function purchasePacks(quantity: number) {
       const order = {
-        quantity,
-        sku: rarePackSKU,
-        recipient: owner.address,
-        totalPrice: cost * quantity,
-        currency: Currency.USDCents,
+        quantity, sku: shinyPackSKU, recipient: owner.address,
+        totalPrice: cost * quantity, currency: Currency.USDCents
       };
       const params = { escrowFor: 0, nonce: 0, value: cost * quantity };
-      const payment = await getSignedPayment(owner, processor.address, rare.address, order, params);
-      await rare.purchase(quantity, payment, ZERO_EX);
+      const payment = await getSignedPayment(
+         owner, processor.address, shiny.address, order, params
+       );
+      const tx = await shiny.purchase(quantity, payment, ZERO_EX);
+      const receipt = await tx.wait();
+      const parsed = parseLogs(receipt.logs, ShinyPack.ABI);
+      expect(parsed.length).toBe(1);
+      expect(parsed[0].name).toBe('CommitmentRecorded');
     }
 
     it('should purchase one pack with USD', async () => {
@@ -179,9 +142,11 @@ describe('Pack', () => {
     it('should purchase 100 packs with USD', async () => {
       await purchasePacks(100);
     });
+
   });
 
   describe('mint', () => {
+
     let beacon: Beacon;
     let referral: Referral;
     let processor: PurchaseProcessor;
@@ -189,90 +154,102 @@ describe('Pack', () => {
 
     let escrow: Escrow;
     let cc: CreditCardEscrow;
-    const rarePackSKU = keccak256('0x00');
+    const shinyPackSKU = keccak256('0x00');
     let cards: Cards;
 
-    let rare: RarePack;
-    const cost = 249;
+    let shiny: ShinyPack;
+    const cost = 14999;
 
-    beforeEach(async () => {
+    beforeEach(async() => {
       escrow = await Escrow.deploy(owner);
       cc = await CreditCardEscrow.deploy(
         owner,
-        escrow.address,
-        owner.address,
-        100,
-        owner.address,
-        100,
+        escrow.address, owner.address, 100, owner.address, 100
       );
       beacon = await Beacon.deploy(owner);
       referral = await Referral.deploy(owner, 90, 10);
       processor = await PurchaseProcessor.deploy(owner, owner.address);
       cards = await Cards.deploy(owner, 1250, 'Cards', 'CARD');
       raffle = await Raffle.deploy(owner);
-      rare = await RarePack.deploy(
+      shiny = await ShinyPack.deploy(
         owner,
         raffle.address,
-        beacon.address,
-        cards.address,
-        referral.address,
-        rarePackSKU,
-        cc.address,
-        processor.address,
+        beacon.address, cards.address, referral.address, shinyPackSKU,
+        cc.address, processor.address
       );
-      await processor.setSellerApproval(rare.address, [rarePackSKU], true);
+      await processor.setSellerApproval(shiny.address, [shinyPackSKU], true);
       await processor.setSignerLimit(owner.address, 1000000000000000);
       await cards.startSeason('S1', 1, 10000);
-      await cards.addFactory(rare.address, 1);
-      await raffle.setMinterApproval(rare.address, true);
+      await cards.addFactory(shiny.address, 1);
+      await raffle.setMinterApproval(shiny.address, true);
     });
 
-    async function purchaseAndCallback(quantity: number, escrowFor: number) {
+    async function purchase(quantity: number, escrowFor: number) {
       const order = {
-        quantity,
-        sku: rarePackSKU,
-        recipient: owner.address,
-        totalPrice: cost * quantity,
-        currency: Currency.USDCents,
+        quantity, sku: shinyPackSKU, recipient: owner.address,
+        totalPrice: cost * quantity, currency: Currency.USDCents
       };
       const params = { escrowFor, nonce: 0, value: cost * quantity };
-      const payment = await getSignedPayment(owner, processor.address, rare.address, order, params);
-      await rare.purchase(quantity, payment, ZERO_EX);
+      const payment = await getSignedPayment(owner, processor.address, shiny.address, order, params);
+      await shiny.purchase(quantity, payment, ZERO_EX);
     }
 
     async function mintTrackGas(id: number, description: string) {
-      const tx = await rare.mint(id);
+      const commitment = await shiny.commitments(id);
+      const tx = await shiny.mint(id);
       const receipt = await tx.wait();
       console.log(description, receipt.gasUsed.toNumber());
+      // we only care about events from the core contract
+      const logs = receipt.logs.filter(log => log.address === cards.address);
+      const parsed = parseLogs(logs, Cards.ABI);
+      // the last event will be the minted event
+      const log = parsed[parsed.length - 1];
+      expect(log.name).toBe('CardsMinted');
+      const protos = log.values.protos;
+      const qualities = log.values.qualities;
+      const packs = commitment.packQuantity.toNumber();
+      expect(protos).toBeDefined();
+      expect(protos.length).toBe(packs * 5);
+      const rareOrBetter = protos.filter(p => {
+        return rares.includes(p) || epics.includes(p) || legendaries.includes(p);
+      }).length;
+      const shinyLegendaryCount = protos.filter((p, i) => {
+        return legendaries.includes(p) && qualities[i] <= 3;
+      }).length;
+      // must be at least one rare card in every pack
+      expect(shinyLegendaryCount).toBeGreaterThanOrEqual(packs);
+      expect(rareOrBetter).toBeGreaterThanOrEqual(packs * 2);
     }
 
     it('should create cards from 1 pack', async () => {
-      await purchaseAndCallback(1, 100);
-      await mintTrackGas(0, '1 pack no escrow');
+      await purchase(1, 100);
+      await mintTrackGas(0, '1 pack escrow');
     });
 
     it('should create cards from 6 packs', async () => {
-      await purchaseAndCallback(6, 100);
-      await mintTrackGas(0, '6 pack no escrow');
+      await purchase(6, 100);
+      await mintTrackGas(0, '6 pack escrow');
     });
 
     it('should create cards from 18 packs', async () => {
-      await purchaseAndCallback(18, 100);
-      await mintTrackGas(0, '18 packs no escrow');
+      await purchase(18, 100);
+      await mintTrackGas(0, '18 packs escrow');
     });
 
     it('should create cards from 1 packs with no escrow', async () => {
-      await purchaseAndCallback(1, 0);
+      await purchase(1, 0);
       await mintTrackGas(0, '1 pack no escrow');
     });
 
     it('should create cards from 18 packs with no escrow', async () => {
-      await purchaseAndCallback(18, 0);
+      await purchase(18, 0);
       await mintTrackGas(0, '18 packs no escrow');
     });
+
   });
 
   describe('openChest', () => {
+
     let beacon: Beacon;
     let referral: Referral;
     let processor: PurchaseProcessor;
@@ -280,53 +257,45 @@ describe('Pack', () => {
 
     let escrow: Escrow;
     let cc: CreditCardEscrow;
-    const rarePackSKU = keccak256('0x00');
+    const shinyPackSKU = keccak256('0x00');
     const rareChestSKU = keccak256('0x01');
     let cards: Cards;
     let chest: Chest;
     const rareChestPrice = 100;
 
-    let rare: RarePack;
+    let shiny: ShinyPack;
 
-    beforeEach(async () => {
+    beforeEach(async() => {
       escrow = await Escrow.deploy(owner);
       cc = await CreditCardEscrow.deploy(
         owner,
-        escrow.address,
-        owner.address,
-        100,
-        owner.address,
-        100,
+        escrow.address, owner.address, 100, owner.address, 100
       );
       beacon = await Beacon.deploy(owner);
       referral = await Referral.deploy(owner, 90, 10);
       processor = await PurchaseProcessor.deploy(owner, owner.address);
       cards = await Cards.deploy(owner, 1250, 'Cards', 'CARD');
       raffle = await Raffle.deploy(owner);
-      rare = await RarePack.deploy(
+      shiny = await ShinyPack.deploy(
         owner,
         raffle.address,
-        beacon.address,
-        cards.address,
-        referral.address,
-        rarePackSKU,
-        cc.address,
-        processor.address,
+        beacon.address, cards.address, referral.address, shinyPackSKU,
+        cc.address, processor.address
       );
-      await raffle.setMinterApproval(rare.address, true);
+      await raffle.setMinterApproval(shiny.address, true);
       chest = await Chest.deploy(
         owner,
         'GU: S1 Rare Chest',
         'GU:1:RC',
-        rare.address,
+        shiny.address,
         0,
         referral.address,
         rareChestSKU,
         rareChestPrice,
         escrow.address,
-        processor.address,
+        processor.address
       );
-      await rare.setChest(chest.address);
+      await shiny.setChest(chest.address);
     });
 
     async function purchaseAndOpenChests(quantity: number) {
@@ -337,23 +306,16 @@ describe('Pack', () => {
       await processor.setSellerApproval(chest.address, [rareChestSKU], true);
       const value = rareChestPrice * quantity;
       const order = {
-        quantity,
-        sku: rareChestSKU,
-        recipient: owner.address,
-        currency: Currency.USDCents,
-        totalPrice: value,
+        quantity, sku: rareChestSKU, recipient: owner.address,
+        currency: Currency.USDCents, totalPrice: value
       };
       const params = { value, escrowFor: 0, nonce: 0 };
       const payment = await getSignedPayment(
-        owner,
-        processor.address,
-        chest.address,
-        order,
-        params,
-      );
+         owner, processor.address, chest.address, order, params
+       );
       await chest.purchase(quantity, payment, ZERO_EX);
       await chest.open(quantity);
-      const purchase = await rare.commitments(0);
+      const purchase = await shiny.commitments(0);
       expect(purchase.packQuantity.toNumber()).toBe(quantity * 6);
     }
 
@@ -368,8 +330,10 @@ describe('Pack', () => {
     it('should create cards from an opened chest', async () => {
       await purchaseAndOpenChests(1);
       await cards.startSeason('S1', 1, 10000);
-      await cards.addFactory(rare.address, 1);
-      await rare.mint(0);
+      await cards.addFactory(shiny.address, 1);
+      await shiny.mint(0);
     });
+
   });
+
 });

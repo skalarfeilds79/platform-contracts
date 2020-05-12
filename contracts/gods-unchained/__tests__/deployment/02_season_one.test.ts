@@ -18,8 +18,15 @@ import {
 } from '../../src/contracts';
 
 import { Wallet, ethers } from 'ethers';
-import { getSignedPayment, Currency, Payment, ETHUSDMockOracle } from '@imtbl/platform/src';
-import { Blockchain } from '@imtbl/test-utils/src/Blockchain';
+import { ContractReceipt } from 'ethers/contract';
+import {
+  getSignedPayment,
+  Currency,
+  Payment,
+  ETHUSDMockOracle,
+  getETHPayment,
+} from '@imtbl/platform';
+import { Blockchain } from '@imtbl/test-utils';
 
 import {
   getAddressBook,
@@ -28,11 +35,7 @@ import {
   GU_S1_LEGENDARY_PACK_SKU,
   GU_S1_SHINY_PACK_SKU,
 } from '@imtbl/addresses';
-import { ContractReceipt } from '@imtbl/utils/node_modules/ethers/contract';
-import { parseLogs } from '@imtbl/utils/src/parseLogs';
-import { asyncForEach } from '@imtbl/utils';
-import { getETHPayment } from '../../../platform/src/utils';
-import { BigNumber } from '@imtbl/utils/node_modules/ethers/utils';
+import { asyncForEach, parseLogs } from '@imtbl/utils';
 
 const config = require('dotenv').config({ path: '../../.env' }).parsed;
 const provider = new ethers.providers.JsonRpcProvider(config.RPC_ENDPOINT);

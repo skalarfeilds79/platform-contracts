@@ -13,3 +13,4 @@ yarn-error.log
 .DS_Store
 contracts/.DS_Store
 lerna-debug.log
+.env

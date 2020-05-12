@@ -1,12 +1,9 @@
-import { TestVendor } from './../src/contracts/TestVendor';
-import { PurchaseProcessor } from './../src/contracts/PurchaseProcessor';
-import { Beacon } from './../src/contracts/Beacon';
-import { Wallet, ethers } from 'ethers';
 
+import { Wallet, ethers } from 'ethers';
 import { DeploymentStage } from '@imtbl/deployment-utils';
 import { asyncForEach } from '@imtbl/utils';
-import { Escrow, CreditCardEscrow, ETHUSDMockOracle, MakerOracle } from '../src/contracts';
-import { IM_PROCESSOR_LIMIT } from '../../../packages/addresses/src/constants';
+import { Escrow, CreditCardEscrow, Beacon, PurchaseProcessor, TestVendor } from '../src/contracts';
+import { IM_PROCESSOR_LIMIT } from '@imtbl/addresses';
 
 export class CoreStage implements DeploymentStage {
   private wallet: Wallet;
@@ -42,22 +39,7 @@ export class CoreStage implements DeploymentStage {
     const beacon = (await findInstance('IM_Beacon')) || (await this.deployBeacon());
     await onDeployment('IM_Beacon', beacon, false);
 
-    const MEDIANIZER = await findInstance('MEDIANIZER_ADDRESS');
-
-    let oracleAddress: string;
-
-    if (MEDIANIZER.length > 0) {
-      oracleAddress =
-        (await findInstance('IM_Oracle_ETHUSDMaker')) || (await this.deployMakerOracle(MEDIANIZER));
-      await onDeployment('IM_Oracle_ETHUSDMaker', oracleAddress, false);
-    } else {
-      oracleAddress =
-        (await findInstance('IM_Oracle_ETHUSDMock')) || (await this.deployMockOracle());
-      await onDeployment('IM_Oracle_ETHUSDMock', oracleAddress, false);
-    }
-
-    const processor =
-      (await findInstance('IM_Processor')) || (await this.deployProcessor(oracleAddress));
+    const processor = (await findInstance('IM_Processor')) || (await this.deployProcessor());
     await onDeployment('IM_Processor', processor, false);
 
     const testVendor =
@@ -87,10 +69,9 @@ export class CoreStage implements DeploymentStage {
     return contract.address;
   }
 
-  async deployProcessor(oracle: string): Promise<string> {
+  async deployProcessor(): Promise<string> {
     console.log('** Deploying PurchaseProcessor **');
     const contract = await PurchaseProcessor.deploy(this.wallet, this.wallet.address);
-    await contract.setOracle(oracle);
     return contract.address;
   }
 
@@ -133,17 +114,5 @@ export class CoreStage implements DeploymentStage {
       console.log(`${signer} | $${IM_PROCESSOR_LIMIT / 100} LIMIT`);
       await contract.setSignerLimit(signer, IM_PROCESSOR_LIMIT);
     }
-  }
-
-  async deployMockOracle() {
-    console.log('** Deploying Mock Oracle **');
-    const contract = await ETHUSDMockOracle.deploy(this.wallet);
-    return contract.address;
-  }
-
-  async deployMakerOracle(medianizer: string) {
-    console.log('** Deploying Maker Oracle **');
-    const contract = await MakerOracle.deploy(this.wallet, medianizer);
-    return contract.address;
   }
 }

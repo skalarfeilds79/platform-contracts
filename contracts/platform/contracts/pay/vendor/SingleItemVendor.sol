@@ -76,7 +76,6 @@ contract SingleItemVendor is IVendor, Ownable {
     {
 
         require(!paused, "IM:SimpleProduct: must be unpaused");
-        require(_recipient != address(0), "IM:SimpleProduct: must be a valid recipient");
         require(_quantity > 0, "IM:SimpleProduct: must be a valid quantity");
 
         uint totalPrice = price.mul(_quantity);

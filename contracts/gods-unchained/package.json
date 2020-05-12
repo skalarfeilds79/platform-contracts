@@ -1,48 +1,46 @@
 {
   "name": "@imtbl/gods-unchained",
-  "version": "2.0.0-alpha.0",
+  "version": "2.0.12",
   "description": "Solidity smart contracts for Gods Unchained.",
-  "main": "dist/src/index.js",
-  "typings": "dist/src/index.d.ts",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "files": [
     "contracts/**/**.sol",
     "dist"
   ],
   "scripts": {
-    "clean": "rm -rf build; rm -rf dist; rm -rf ../types/src/generated; rm -rf ../artifacts/src",
+    "clean": "rm -rf build; rm -rf dist; rm -rf src/contracts; rm -rf ../artifacts/src",
     "lint:sol": "yarn solhint \"contracts/**/*.sol\" --config solhint.json",
     "lint:ts": "tslint -t verbose '__tests__/**/*.ts'",
     "lint": "yarn lint:ts && yarn lint:sol",
-    "copy-artifacts": "node scripts/copy-artifacts.js",
     "generate-typings": "npx @imtbl/isaac build -o src/contracts",
-    "build": "yarn lint:sol && yarn truffle compile && yarn generate-typings && yarn tsc && yarn copy-artifacts",
+    "build": "yarn lint:sol && yarn truffle compile && yarn generate-typings && yarn tsc",
     "deploy": "yarn ts-node deployment/deploy.ts",
     "test:deployment": "yarn build && yarn reset-test-evm && yarn jest __tests__/deployment --runInBand",
-    "test": "yarn build && yarn reset-test-evm && yarn jest __tests__/contracts --runInBand",
-    "test:watch": "yarn reset-test-evm && yarn jest __tests__/contracts --runInBand --watch",
+    "test": "yarn build && yarn reset-test-evm && yarn jest __tests__/contracts/s1/packs/epic.test.ts --runInBand",
+    "test:watch": "yarn reset-test-evm && yarn jest __tests__/contracts/s1/packs/epic.test.ts --runInBand --watch",
     "reset-test-evm": "node scripts/reset-test-evm.js",
-    "postinstall": "yarn truffle compile && yarn generate-typings"
+    "prepare": "yarn build"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
     "@0x/contracts-exchange-libs": "^3.0.8",
     "@0x/order-utils": "^8.4.0",
-    "@imtbl/common-types": "^2.0.0-alpha.0",
-    "@imtbl/deployment-utils": "^2.0.0-alpha.0",
-    "@imtbl/platform": "^2.0.0-alpha.0",
+    "@imtbl/common-types": "^2.0.0-alpha.5",
+    "@imtbl/deployment-utils": "^2.0.2",
+    "@imtbl/platform": "^2.0.11",
     "@imtbl/types": "1.0.10",
-    "@imtbl/utils": "^1.1.0",
+    "@imtbl/utils": "^1.1.5",
     "@openzeppelin/contracts": "^2.3.0",
-    "ethers": "4.0.42",
+    "ethers": "^4.0.42",
     "minimist": "^1.2.0",
-    "save": "^2.4.0",
-    "typescript": "^3.7.5"
+    "save": "^2.4.0"
   },
   "devDependencies": {
-    "@imtbl/addresses": "^2.0.0-alpha.0",
+    "@imtbl/addresses": "^2.0.0-alpha.5",
     "@imtbl/isaac": "^0.0.5",
-    "@imtbl/test-utils": "^1.1.0",
+    "@imtbl/test-utils": "^1.0.14",
     "@types/jest": "^24.0.21",
     "@types/node": "^12.12.3",
     "dotenv": "^8.2.0",
@@ -61,7 +59,7 @@
     "tslint": "^5.20.1",
     "tslint-config-airbnb": "^5.11.2",
     "tslint-no-focused-test": "^0.5.0",
-    "typechain": "^0.3.19"
+    "typescript": "^3.7.5"
   },
-  "gitHead": "9e32f674f909b02f9e177ca4319f06de8664b157"
+  "gitHead": "9325e8f80991dec95fa54cee27d9bfc25d2330ad"
 }

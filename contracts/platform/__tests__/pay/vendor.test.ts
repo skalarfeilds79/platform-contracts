@@ -153,7 +153,7 @@ describe('Vendor', () => {
     });
   });
 
-  describe.only('#processPayment (priced in ETH, paid in USD)', () => {
+  describe('#processPayment (priced in ETH, paid in USD)', () => {
     let pay: PurchaseProcessor;
     let vendor: TestVendor;
     let oracle: ETHUSDMockOracle;

@@ -24,7 +24,7 @@
       "secrets": []
     },
     {
-      "essential": true,
+      "essential": false,
       "image": "${IMAGE_NAME}",
       "memoryReservation": 1024,
       "memory": 1024,

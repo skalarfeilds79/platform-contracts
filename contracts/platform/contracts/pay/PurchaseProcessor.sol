@@ -277,7 +277,6 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
     )
         internal
     {
-        // @TODO: This does not have tests
         uint256 usdAmount = IOracle(priceOracle).convert(0, 1, _order.totalPrice);
 
         address signer = _getSigner(_order, _payment);
@@ -291,7 +290,15 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
 
         receiptNonces[signer][_payment.nonce] = true;
 
-        _validateOrderPaymentMatch(_order, _payment);
+        require(
+        _payment.value >= usdAmount,
+            "IM:PurchaseProcessor: receipt value must be sufficient"
+        );
+
+        require(
+            _payment.currency == Currency.USDCents,
+            "IM:PurchaseProcessor: receipt currency must match"
+        );
     }
 
     function _payEthPricedInEth(

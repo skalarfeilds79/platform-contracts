@@ -61,7 +61,7 @@ jobs:
           docker run \
             --env-file .env.deploy \
             -v ${PWD}/task-definition.tpl:/work/task-definition.tpl.json \
-            dnxsolutions/ecs-deploy:1.1.1 /work/run-task.sh
+            dnxsolutions/ecs-deploy:1.1.2 /work/run-task.sh
       - name: Logout of Amazon ECR
         if: always()
         run: docker logout ${{ steps.login-ecr.outputs.registry }}

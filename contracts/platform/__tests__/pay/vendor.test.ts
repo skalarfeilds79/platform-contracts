@@ -55,7 +55,13 @@ describe('Vendor', () => {
       totalPrice: number,
       value: number | BigNumber,
     ) {
-      const order = { sku, totalPrice, quantity, recipient: user.address, currency: 0 };
+      const order = { 
+        sku, totalPrice, quantity,
+        assetRecipient: user.address,
+        changeRecipient: user.address,
+        currency: 0,
+        alreadyPaid: 0
+      };
       await pay.setSellerApproval(vendor.address, [sku], approved);
       await vendor.processPayment(order, getETHPayment(), { value });
     }
@@ -107,7 +113,15 @@ describe('Vendor', () => {
     });
 
     function getSimpleOrder(price: number): Order {
-      return { sku, quantity: 1, totalPrice: price, currency: 1, recipient: user.address };
+      return { 
+        sku, 
+        quantity: 1, 
+        totalPrice: price, 
+        currency: 1, 
+        assetRecipient: user.address, 
+        changeRecipient: user.address,
+        alreadyPaid: 0 
+      };
     }
 
     async function processUSDPayment(order: Order, payment: PaymentParams) {

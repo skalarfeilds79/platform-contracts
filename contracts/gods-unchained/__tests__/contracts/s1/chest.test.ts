@@ -126,9 +126,11 @@ describe('Chest', () => {
       const order = {
         quantity,
         sku: rareChestSKU,
-        recipient: owner.address,
+        assetRecipient: owner.address,
+        changeRecipient: pack.address,
         currency: Currency.USDCents,
         totalPrice: value,
+        alreadyPaid: 0
       };
       const params = { value, escrowFor, nonce: 0 };
       const payment = await getSignedPayment(

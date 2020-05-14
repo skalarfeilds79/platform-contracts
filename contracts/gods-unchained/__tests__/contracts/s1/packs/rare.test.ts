@@ -117,8 +117,10 @@ describe('Pack', () => {
       const order = {
         quantity,
         sku: rarePackSKU,
-        recipient: owner.address,
+        assetRecipient: owner.address,
+        changeRecipient: owner.address,
         totalPrice: cost * quantity,
+        alreadyPaid: 0,
         currency: Currency.USDCents,
       };
       const params = { escrowFor: 0, nonce: 0, value: cost * quantity };
@@ -195,7 +197,9 @@ describe('Pack', () => {
       const order = {
         quantity,
         sku: rarePackSKU,
-        recipient: owner.address,
+        assetRecipient: owner.address,
+        changeRecipient: owner.address,
+        alreadyPaid: 0,
         totalPrice: cost * quantity,
         currency: Currency.USDCents,
       };
@@ -319,9 +323,11 @@ describe('Pack', () => {
       const order = {
         quantity,
         sku: rareChestSKU,
-        recipient: owner.address,
+        assetRecipient: owner.address,
+        changeRecipient: owner.address,
         currency: Currency.USDCents,
         totalPrice: value,
+        alreadyPaid: 0
       };
       const params = { value, escrowFor: 0, nonce: 0 };
       const payment = await getSignedPayment(

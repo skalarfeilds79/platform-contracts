@@ -232,9 +232,11 @@ describe('02_season_one', () => {
     const order = {
       quantity,
       sku,
-      recipient: wallet.address,
+      assetRecipient: wallet.address,
+      changeRecipient: packAddress,
       totalPrice: cost * quantity,
       currency: Currency.USDCents,
+      alreadyPaid: 0
     };
 
     const params = { nonce, escrowFor: 360, value: cost * quantity };

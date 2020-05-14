@@ -68,7 +68,8 @@ describe('Sale', () => {
           const order = {
             quantity,
             sku: rarePackSKU,
-            recipient: owner.address,
+            assetRecipient: owner.address,
+            changeRecipient: sale.address,
             totalPrice: cost * quantity,
             currency: Currency.USDCents,
           };

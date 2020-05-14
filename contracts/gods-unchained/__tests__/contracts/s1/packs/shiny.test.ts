@@ -118,8 +118,12 @@ describe('Pack', () => {
 
     async function purchasePacks(quantity: number) {
       const order = {
-        quantity, sku: shinyPackSKU, recipient: owner.address,
-        totalPrice: cost * quantity, currency: Currency.USDCents
+        quantity, sku: shinyPackSKU,
+        assetRecipient: owner.address,
+        changeRecipient: owner.address,
+        totalPrice: cost * quantity,
+        alreadyPaid: 0,
+        currency: Currency.USDCents
       };
       const params = { escrowFor: 0, nonce: 0, value: cost * quantity };
       const payment = await getSignedPayment(
@@ -187,11 +191,22 @@ describe('Pack', () => {
 
     async function purchase(quantity: number, escrowFor: number) {
       const order = {
-        quantity, sku: shinyPackSKU, recipient: owner.address,
-        totalPrice: cost * quantity, currency: Currency.USDCents
+        quantity,
+        sku: shinyPackSKU,
+        assetRecipient: owner.address,
+        changeRecipient: owner.address,
+        totalPrice: cost * quantity,
+        alreadyPaid: 0,
+        currency: Currency.USDCents
       };
       const params = { escrowFor, nonce: 0, value: cost * quantity };
-      const payment = await getSignedPayment(owner, processor.address, shiny.address, order, params);
+      const payment = await getSignedPayment(
+        owner,
+        processor.address,
+        shiny.address,
+        order,
+        params
+      );
       await shiny.purchase(quantity, payment, ZERO_EX);
     }
 

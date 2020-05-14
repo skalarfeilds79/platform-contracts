@@ -118,8 +118,13 @@ describe('Pack', () => {
 
     async function purchasePacks(quantity: number) {
       const order = {
-        quantity, sku: legendaryPackSKU, recipient: owner.address,
-        totalPrice: cost * quantity, currency: Currency.USDCents
+        quantity,
+        sku: legendaryPackSKU,
+        assetRecipient: owner.address,
+        changeRecipient: owner.address,
+        totalPrice: cost * quantity,
+        currency: Currency.USDCents,
+        alreadyPaid: 0
       };
       const params = { escrowFor: 0, nonce: 0, value: cost * quantity };
       const payment = await getSignedPayment(
@@ -187,11 +192,18 @@ describe('Pack', () => {
 
     async function purchase(quantity: number, escrowFor: number) {
       const order = {
-        quantity, sku: legendaryPackSKU, recipient: owner.address,
-        totalPrice: cost * quantity, currency: Currency.USDCents
+        quantity,
+        sku: legendaryPackSKU,
+        assetRecipient: owner.address,
+        changeRecipient: owner.address,
+        totalPrice: cost * quantity,
+        currency: Currency.USDCents,
+        alreadyPaid: 0
       };
       const params = { escrowFor, nonce: 0, value: cost * quantity };
-      const payment = await getSignedPayment(owner, processor.address, legendary.address, order, params);
+      const payment = await getSignedPayment(
+        owner, processor.address, legendary.address, order, params
+      );
       await legendary.purchase(quantity, payment, ZERO_EX);
     }
 
@@ -304,8 +316,13 @@ describe('Pack', () => {
       await processor.setSellerApproval(chest.address, [rareChestSKU], true);
       const value = rareChestPrice * quantity;
       const order = {
-        quantity, sku: rareChestSKU, recipient: owner.address,
-        currency: Currency.USDCents, totalPrice: value
+        quantity,
+        sku: rareChestSKU,
+        assetRecipient: owner.address,
+        changeRecipient: owner.address,
+        currency: Currency.USDCents,
+        totalPrice: value,
+        alreadyPaid: 0
       };
       const params = { value, escrowFor: 0, nonce: 0 };
       const payment = await getSignedPayment(

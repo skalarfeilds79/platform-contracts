@@ -157,8 +157,8 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
         pure
     {
         require(
-            payment.value >= order.totalPrice,
-            "IM:PurchaseProcessor: receipt value must be sufficient"
+            payment.value == order.totalPrice.sub(order.alreadyPaid),
+            "IM:PurchaseProcessor: receipt value must match"
         );
 
         require(
@@ -202,6 +202,7 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
             order.assetRecipient,
             order.sku,
             order.quantity,
+            order.alreadyPaid,
             payment.nonce,
             payment.escrowFor,
             payment.value,

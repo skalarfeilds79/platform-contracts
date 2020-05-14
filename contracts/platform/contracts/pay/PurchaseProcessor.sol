@@ -24,7 +24,8 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
         uint256 indexed id,
         address indexed vendor,
         Order order,
-        PaymentParams payment
+        PaymentParams payment,
+        Receipt receipt
     );
 
     // Emitted when an oracle is set
@@ -47,6 +48,9 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
 
     // Wallet to recieve funds
     address payable public wallet;
+
+    // Mutex for sending funds
+    bool internal mutexLocked;
 
     // Address to send funds
     constructor(address payable _wallet) public {
@@ -98,8 +102,13 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
         PaymentParams memory payment
     )
         public
-        payable returns (uint)
+        payable returns (Receipt memory)
     {
+
+        require(
+            !mutexLocked,
+            "IM:PurchaseProcessor: mutex must be unlocked"
+        );
 
         require(
             order.sku != bytes32(0),
@@ -116,17 +125,28 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
             "IM:PurchaseProcessor: must be approved to sell this product"
         );
 
+        mutexLocked = true;
+
+        uint256 amount;
         if (order.currency == Currency.USDCents) {
-            _payUSD(order, payment);
+            amount = _payUSD(order, payment);
         } else {
-            _payETH(order, payment);
+            amount = _payETH(order, payment);
         }
 
         uint id = count++;
 
-        emit PaymentProcessed(id, msg.sender, order, payment);
+        Receipt memory receipt = Receipt({
+            id: id,
+            currency: payment.currency,
+            amount: amount
+        });
 
-        return id;
+        emit PaymentProcessed(id, msg.sender, order, payment, receipt);
+
+        mutexLocked = false;
+
+        return receipt;
     }
 
     function _validateOrderPaymentMatch(
@@ -179,7 +199,7 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
         bytes32 sigHash = keccak256(abi.encodePacked(
             address(this),
             msg.sender,
-            order.recipient,
+            order.assetRecipient,
             order.sku,
             order.quantity,
             payment.nonce,
@@ -200,9 +220,13 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
         PaymentParams memory _payment
     )
         internal
+        returns (uint256)
     {
         address signer = _getSigner(_order, _payment);
 
+        // update signer limit with total price, not total price - amountPaid
+        // they're signing on the whole thing
+        // otherwise, could just set price == amountPaid
         _updateSignerLimit(signer, _order.totalPrice);
 
         require(
@@ -213,6 +237,8 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
         receiptNonces[signer][_payment.nonce] = true;
 
         _validateOrderPaymentMatch(_order, _payment);
+
+        return _order.totalPrice;
     }
 
     function _payETH(
@@ -220,13 +246,23 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
         PaymentParams memory _payment
     )
         internal
+        returns (uint256)
     {
         require(
             priceOracle != address(0),
             "IM:PurchaseProcessor: oracle must be set"
         );
 
-        uint256 amount = IOracle(priceOracle).convert(1, 0, _order.totalPrice);
+        // get the balance of this contract (includes msg.value)
+        uint256 startBalance = address(this).balance;
+
+        uint256 outstanding = _order.totalPrice.sub(_order.alreadyPaid);
+
+        if (outstanding == 0) {
+            return 0;
+        }
+
+        uint256 amount = convertUSDToETH(outstanding);
 
         require(
             msg.value >= amount,
@@ -239,17 +275,20 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
         wallet.call.value(amount)("");
 
         if (remaining > 0) {
-            // @TODO: Need to add re-entrency guards on remaining contracts.
-            address payable recipient = address(uint160(_order.recipient));
             // solium-disable-next-line
-            recipient.call.value(remaining)("");
+            _order.changeRecipient.call.value(remaining)("");
         }
 
         require(
-            address(this).balance == 0,
+            address(this).balance == startBalance.sub(msg.value),
             "IM:PurchaseProcessor: ETH left over"
         );
 
+        return amount;
+    }
+
+    function convertUSDToETH(uint256 usdCents) public view returns (uint256 eth) {
+        return IOracle(priceOracle).convert(1, 0, usdCents);
     }
 
 }

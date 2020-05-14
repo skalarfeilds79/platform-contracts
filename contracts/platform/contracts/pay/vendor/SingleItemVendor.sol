@@ -45,52 +45,20 @@ contract SingleItemVendor is IVendor, Ownable {
         paused = _paused;
     }
 
-    /** @dev Purchase assets
-     *
-     * @param _quantity the number of this product to purchase
-     * @param _payment the details of the method by which payment will be made
-     */
-    function _purchase(
-        uint256 _quantity,
-        IPurchaseProcessor.PaymentParams memory _payment
-    )
-        internal
-        returns (uint256 purchaseID)
-    {
-        return _purchaseFor(msg.sender, _quantity, _payment);
-    }
-
     /** @dev Purchase assets for a user
      *
-     * @param _recipient the user who will receive the assets
-     * @param _quantity the number of this product to purchase
-     * @param _payment the details of the method by which payment will be made
+     * @param _order the details of the order (set by vendor)
+     * @param _payment the details of the purchase (set by buyer)
      */
     function _purchaseFor(
-        address payable _recipient,
-        uint256 _quantity,
+        IPurchaseProcessor.Order memory _order,
         IPurchaseProcessor.PaymentParams memory _payment
-    )
-        internal
-        returns (uint256 paymentID)
-    {
+    ) internal returns (IPurchaseProcessor.Receipt memory) {
 
-        require(!paused, "IM:SimpleProduct: must be unpaused");
-        require(_quantity > 0, "IM:SimpleProduct: must be a valid quantity");
+        require(!paused, "IM:SingleItemVendor: must be unpaused");
+        require(_order.quantity > 0, "IM:SingleItemVendor: must be a valid quantity");
 
-        uint totalPrice = price.mul(_quantity);
-
-        IPurchaseProcessor.Order memory order = IPurchaseProcessor.Order({
-            currency: currency,
-            totalPrice: totalPrice,
-            sku: sku,
-            quantity: _quantity,
-            recipient: _recipient
-        });
-
-        paymentID = pay.process.value(msg.value)(order, _payment);
-
-        return paymentID;
+        return pay.process.value(msg.value)(_order, _payment);
     }
 
 }

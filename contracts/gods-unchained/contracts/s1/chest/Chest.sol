@@ -55,12 +55,17 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
         uint256 _quantity,
         IPurchaseProcessor.PaymentParams memory _payment,
         address payable _referrer
-    ) public payable returns (uint256) {
+    ) public payable returns (IPurchaseProcessor.Receipt memory) {
 
-        uint256 paymentID = super.purchaseFor(_user, _quantity, _payment, _referrer);
+        IPurchaseProcessor.Receipt memory receipt = super.purchaseFor(
+            _user,
+            _quantity,
+            _payment,
+            _referrer
+        );
 
         if (_payment.currency == IPurchaseProcessor.Currency.ETH || _payment.escrowFor == 0) {
-            _mintChests(_user, _quantity, paymentID);
+            _mintChests(_user, _quantity, receipt.id);
         } else {
             // escrow the chests
             IEscrow.Vault memory vault = IEscrow.Vault({
@@ -75,16 +80,16 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
 
             tempPurchase = Purchase({
                 count: _quantity,
-                paymentID: paymentID
+                paymentID: receipt.id
             });
 
             bytes memory data = abi.encodeWithSignature("mintTokens()");
 
-            escrow.callbackEscrow(vault, address(this), data, paymentID, _payment.escrowFor);
+            escrow.callbackEscrow(vault, address(this), data, receipt.id, _payment.escrowFor);
 
         }
 
-        return paymentID;
+        return receipt;
     }
 
     function mintTokens() public {

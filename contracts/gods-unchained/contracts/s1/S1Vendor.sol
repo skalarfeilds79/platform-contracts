@@ -10,6 +10,13 @@ import "@openzeppelin/contracts/ownership/Ownable.sol";
 
 contract S1Vendor is SingleItemVendor {
 
+    event PurchaseReferred(
+        uint256 indexed paymentID,
+        address indexed referrer,
+        uint256 referralFeeUSD,
+        uint256 referralFeeETH
+    );
+
     // Referral contract
     IReferral public referral;
 
@@ -39,7 +46,7 @@ contract S1Vendor is SingleItemVendor {
         uint256 _quantity,
         IPurchaseProcessor.PaymentParams memory _payment,
         address payable _referrer
-    ) public payable returns (uint256 paymentID) {
+    ) public payable returns (IPurchaseProcessor.Receipt memory) {
         return purchaseFor(msg.sender, _quantity, _payment, _referrer);
     }
 
@@ -55,22 +62,40 @@ contract S1Vendor is SingleItemVendor {
         uint256 _quantity,
         IPurchaseProcessor.PaymentParams memory _payment,
         address payable _referrer
-    ) public payable returns (uint256 paymentID) {
+    ) public payable returns (IPurchaseProcessor.Receipt memory) {
 
-        paymentID = super._purchaseFor(_recipient, _quantity, _payment);
+        uint256 totalPrice = _quantity.mul(price);
+        uint toReferrer;
+
+        if (_payment.currency == IPurchaseProcessor.Currency.ETH && _referrer != address(0)) {
+            (, toReferrer) = referral.getSplit(_recipient, totalPrice, _referrer);
+        }
+
+        IPurchaseProcessor.Order memory order = IPurchaseProcessor.Order({
+            currency: currency,
+            totalPrice: totalPrice,
+            alreadyPaid: toReferrer,
+            sku: sku,
+            quantity: _quantity,
+            assetRecipient: _recipient,
+            changeRecipient: address(uint160(address(this)))
+        });
+
+        IPurchaseProcessor.Receipt memory receipt = super._purchaseFor(order, _payment);
 
         // if the user is paying in ETH, we can pay affiliate fees instantly!
-        // if (_payment.currency == IPurchaseProcessor.Currency.ETH) {
-        //     if (_referrer != address(0)) {
-        //         uint toReferrer;
-        //         (totalPrice, toReferrer) = referral.getSplit(_recipient, totalPrice, _referrer);
-        //         order.totalPrice = totalPrice;
-        //         // TODO: pay the referrer
-        //         emit PurchaseReferred(purchaseID, _referrer);
-        //     }
-        // }
+        if (_payment.currency == IPurchaseProcessor.Currency.ETH && _referrer != address(0)) {
+            uint256 payoutAmount = pay.convertUSDToETH(toReferrer);
+            // solium-disable-next-line
+            _referrer.call.value(payoutAmount)("");
+            emit PurchaseReferred(receipt.id, _referrer, toReferrer, payoutAmount);
+        }
 
-        return paymentID;
+        // send remaining funds to original contract/user
+        // solium-disable-next-line
+        msg.sender.call.value(address(this).balance)("");
+
+        return receipt;
     }
 
 }

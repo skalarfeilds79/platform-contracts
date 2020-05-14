@@ -25,22 +25,20 @@ contract CappedVendor is SingleItemVendor {
 
     /** @dev Purchase assets for a user
      *
-     * @param _recipient the user who will receive the assets
-     * @param _quantity the number of this product to purchase
-     * @param _payment the details of the method by which payment will be made
+     * @param _order the details of the order (set by vendor)
+     * @param _payment the details of the purchase (set by buyer)
      */
     function _purchaseFor(
-        address payable _recipient,
-        uint256 _quantity,
+        IPurchaseProcessor.Order memory _order,
         IPurchaseProcessor.PaymentParams memory _payment
-    ) internal returns (uint256 purchaseID) {
+    ) internal returns (IPurchaseProcessor.Receipt memory) {
 
-        require(saleCap == 0 || saleCap >= sold + _quantity, "IM:CappedVendor: product cap has been exhausted");
+        require(saleCap == 0 || saleCap >= sold + _order.quantity, "IM:CappedVendor: product cap has been exhausted");
 
-        purchaseID = super._purchaseFor(_recipient, _quantity, _payment);
+        IPurchaseProcessor.Receipt memory receipt = super._purchaseFor(_order, _payment);
 
-        sold += _quantity;
-        return purchaseID;
+        sold += _order.quantity;
+        return receipt;
     }
 
     /** @dev Returns whether this asset is still available */

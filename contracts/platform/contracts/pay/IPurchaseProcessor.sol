@@ -9,11 +9,13 @@ contract IPurchaseProcessor {
     }
 
     struct Order {
-        address recipient;
+        address payable changeRecipient;
+        address assetRecipient;
         bytes32 sku;
         uint256 quantity;
         Currency currency;
         uint256 totalPrice;
+        uint256 alreadyPaid;
     }
 
     struct PaymentParams {
@@ -26,12 +28,23 @@ contract IPurchaseProcessor {
         uint256 escrowFor;
     }
 
+    struct Receipt {
+        uint256 id;
+        Currency currency;
+        uint256 amount;
+    }
+
     struct Limit {
         uint256 periodEnd;
         uint256 total;
         uint256 used;
     }
 
-    function process(Order memory order, PaymentParams memory payment) public payable returns (uint);
+    function process(
+        Order memory order,
+        PaymentParams memory payment
+    ) public payable returns (Receipt memory);
+
+    function convertUSDToETH(uint256 usdCents) public view returns (uint256 eth);
 
 }

@@ -8,7 +8,7 @@ import {
   GU_S1_RARE_PACK_SKU,
   GU_S1_SHINY_PACK_SKU,
   GU_S1_LEGENDARY_PACK_SKU,
-} from '@imtbl/addresses/src/constants';
+} from '@imtbl/addresses';
 
 import {
   Raffle,

@@ -73,7 +73,7 @@ export default {
     50: '0x5409ED021D9299bf6814279A6A1411A7e866A631',
   },
   MEDIANIZER_ADDRESS: {
-    1: '',
+    1: '0x729d19f657bd0614b4985cf1d82531c67569197b',
     3: '',
     50: '',
   },

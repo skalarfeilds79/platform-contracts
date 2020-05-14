@@ -128,10 +128,29 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
         mutexLocked = true;
 
         uint256 amount;
+        // What is the order itself priced in
         if (order.currency == Currency.USDCents) {
-            amount = _payUSD(order, payment);
+            // What currency is the payment given in
+            if (payment.currency == Currency.USDCents) {
+                // Pay USD via a signed receipt
+                amount = _payUsdPricedInUsd(order, payment);
+            } else if (payment.currency == Currency.ETH) {
+                // Pay ETH directly
+                amount = _payEthPricedInUsd(order, payment);
+            } else {
+                require(false, "IM:PurchaseProcessor: unknown currency");
+            }
         } else {
-            amount = _payETH(order, payment);
+            // What currency is the payment given in
+            if (payment.currency == Currency.USDCents) {
+                // Pay USD via a signed receipt
+                amount = _payUsdPricedInEth(order, payment);
+            } else if (payment.currency == Currency.ETH) {
+                // Pay ETH directly
+                amount = _payEthPricedInEth(order, payment);
+            }  else {
+                require(false, "IM:PurchaseProcessor: unknown currency");
+            }
         }
 
         uint id = count++;
@@ -216,7 +235,7 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
         return ecrecover(recoveryHash, payment.v, payment.r, payment.s);
     }
 
-    function _payUSD(
+    function _payUsdPricedInUsd(
         Order memory _order,
         PaymentParams memory _payment
     )
@@ -242,7 +261,7 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
         return _order.totalPrice;
     }
 
-    function _payETH(
+    function _payEthPricedInUsd(
         Order memory _order,
         PaymentParams memory _payment
     )
@@ -288,8 +307,92 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
         return amount;
     }
 
+    function _payUsdPricedInEth(
+        Order memory _order,
+        PaymentParams memory _payment
+    )
+        internal
+        returns (uint256)
+    {
+        uint256 outstanding = _order.totalPrice.sub(_order.alreadyPaid);
+
+        if (outstanding == 0) {
+            return 0;
+        }
+
+        uint256 usdAmount = convertETHToUSD(outstanding);
+
+        address signer = _getSigner(_order, _payment);
+
+        _updateSignerLimit(signer, usdAmount);
+
+        require(
+            !receiptNonces[signer][_payment.nonce],
+            "IM:PurchaseProcessor: nonce must not be used"
+        );
+
+        receiptNonces[signer][_payment.nonce] = true;
+
+        require(
+        _payment.value >= usdAmount,
+            "IM:PurchaseProcessor: receipt value must be sufficient"
+        );
+
+        require(
+            _payment.currency == Currency.USDCents,
+            "IM:PurchaseProcessor: receipt currency must match"
+        );
+
+        return usdAmount;
+    }
+
+    function _payEthPricedInEth(
+        Order memory _order,
+        PaymentParams memory _payment
+    )
+        internal
+        returns (uint256)
+    {
+
+        // get the balance of this contract (includes msg.value)
+        uint256 startBalance = address(this).balance;
+
+        uint256 outstanding = _order.totalPrice.sub(_order.alreadyPaid);
+
+        if (outstanding == 0) {
+            return 0;
+        }
+
+        require(
+            msg.value >= outstanding,
+            "IM:PurchaseProcessor: not enough ETH sent"
+        );
+
+        uint256 remaining = msg.value.sub(outstanding);
+
+        // solium-disable-next-line
+        wallet.call.value(outstanding)("");
+
+        if (remaining > 0) {
+            // solium-disable-next-line
+            _order.changeRecipient.call.value(remaining)("");
+        }
+
+        require(
+            address(this).balance == startBalance.sub(msg.value),
+            "IM:PurchaseProcessor: ETH left over"
+        );
+
+    }
+
     function convertUSDToETH(uint256 usdCents) public view returns (uint256 eth) {
         return IOracle(priceOracle).convert(1, 0, usdCents);
     }
+
+    function convertETHToUSD(uint256 eth) public view returns (uint256 usdCents) {
+        return IOracle(priceOracle).convert(0, 1, eth);
+    }
+
+
 
 }

@@ -18,7 +18,7 @@
     "deploy": "yarn ts-node deployment/deploy.ts",
     "test:deployment": "yarn build && yarn reset-test-evm && yarn jest __tests__/deployment --runInBand",
     "test": "yarn build && yarn reset-test-evm && yarn jest __tests__/contracts --runInBand",
-    "test:watch": "yarn reset-test-evm && yarn jest __tests__/contracts/s1/packs/epic.test.ts --runInBand --watch",
+    "test:watch": "yarn reset-test-evm && yarn jest __tests__/contracts--runInBand --watch",
     "reset-test-evm": "node scripts/reset-test-evm.js",
     "prepare": "yarn build"
   },

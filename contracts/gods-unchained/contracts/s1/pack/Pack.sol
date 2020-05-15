@@ -238,15 +238,20 @@ contract Pack is IPack, S1Vendor, RarityProvider {
     )
         public
         payable
-        returns (uint256 paymentID)
+        returns (IPurchaseProcessor.Receipt memory)
     {
-        paymentID = super.purchaseFor(_recipient, _quantity, _payment, _referrer);
+        IPurchaseProcessor.Receipt memory receipt = super.purchaseFor(
+            _recipient,
+            _quantity,
+            _payment,
+            _referrer
+        );
         if (_payment.currency == IPurchaseProcessor.Currency.ETH) {
-            _createCommitment(paymentID, _recipient, _quantity, 0);
+            _createCommitment(receipt.id, _recipient, _quantity, 0);
         } else {
-            _createCommitment(paymentID, _recipient, _quantity, _payment.escrowFor);
+            _createCommitment(receipt.id, _recipient, _quantity, _payment.escrowFor);
         }
-        return paymentID;
+        return receipt;
     }
 
     function _createTickets(

@@ -18,7 +18,7 @@ interface IS1Vendor {
     )
         external
         payable
-        returns (uint256 paymentID);
+        returns (IPurchaseProcessor.Receipt memory);
 
     /** @dev Purchase assets for a user
      *
@@ -32,6 +32,6 @@ interface IS1Vendor {
         uint256 _quantity,
         IPurchaseProcessor.PaymentParams calldata _payment,
         address payable _referrer
-    ) external payable returns (uint256 paymentID);
+    ) external payable returns (IPurchaseProcessor.Receipt memory);
 
 }

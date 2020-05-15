@@ -24,7 +24,8 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
         uint256 indexed id,
         address indexed vendor,
         Order order,
-        PaymentParams payment
+        PaymentParams payment,
+        Receipt receipt
     );
 
     // Emitted when an oracle is set
@@ -47,6 +48,9 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
 
     // Wallet to recieve funds
     address payable public wallet;
+
+    // Mutex for sending funds
+    bool internal mutexLocked;
 
     // Address to send funds
     constructor(address payable _wallet) public {
@@ -98,8 +102,13 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
         PaymentParams memory payment
     )
         public
-        payable returns (uint)
+        payable returns (Receipt memory)
     {
+
+        require(
+            !mutexLocked,
+            "IM:PurchaseProcessor: mutex must be unlocked"
+        );
 
         require(
             order.sku != bytes32(0),
@@ -116,17 +125,47 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
             "IM:PurchaseProcessor: must be approved to sell this product"
         );
 
+        mutexLocked = true;
+
+        uint256 amount;
+        // What is the order itself priced in
         if (order.currency == Currency.USDCents) {
-            _payUSD(order, payment);
+            // What currency is the payment given in
+            if (payment.currency == Currency.USDCents) {
+                // Pay USD via a signed receipt
+                amount = _payUsdPricedInUsd(order, payment);
+            } else if (payment.currency == Currency.ETH) {
+                // Pay ETH directly
+                amount = _payEthPricedInUsd(order, payment);
+            } else {
+                require(false, "IM:PurchaseProcessor: unknown currency");
+            }
         } else {
-            _payETH(order, payment);
+            // What currency is the payment given in
+            if (payment.currency == Currency.USDCents) {
+                // Pay USD via a signed receipt
+                amount = _payUsdPricedInEth(order, payment);
+            } else if (payment.currency == Currency.ETH) {
+                // Pay ETH directly
+                amount = _payEthPricedInEth(order, payment);
+            }  else {
+                require(false, "IM:PurchaseProcessor: unknown currency");
+            }
         }
 
         uint id = count++;
 
-        emit PaymentProcessed(id, msg.sender, order, payment);
+        Receipt memory receipt = Receipt({
+            id: id,
+            currency: payment.currency,
+            amount: amount
+        });
 
-        return id;
+        emit PaymentProcessed(id, msg.sender, order, payment, receipt);
+
+        mutexLocked = false;
+
+        return receipt;
     }
 
     function _validateOrderPaymentMatch(
@@ -137,8 +176,8 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
         pure
     {
         require(
-            payment.value >= order.totalPrice,
-            "IM:PurchaseProcessor: receipt value must be sufficient"
+            payment.value == order.totalPrice.sub(order.alreadyPaid),
+            "IM:PurchaseProcessor: receipt value must match"
         );
 
         require(
@@ -179,9 +218,10 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
         bytes32 sigHash = keccak256(abi.encodePacked(
             address(this),
             msg.sender,
-            order.recipient,
+            order.assetRecipient,
             order.sku,
             order.quantity,
+            order.alreadyPaid,
             payment.nonce,
             payment.escrowFor,
             payment.value,
@@ -195,14 +235,18 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
         return ecrecover(recoveryHash, payment.v, payment.r, payment.s);
     }
 
-    function _payUSD(
+    function _payUsdPricedInUsd(
         Order memory _order,
         PaymentParams memory _payment
     )
         internal
+        returns (uint256)
     {
         address signer = _getSigner(_order, _payment);
 
+        // update signer limit with total price, not total price - amountPaid
+        // they're signing on the whole thing
+        // otherwise, could just set price == amountPaid
         _updateSignerLimit(signer, _order.totalPrice);
 
         require(
@@ -213,20 +257,32 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
         receiptNonces[signer][_payment.nonce] = true;
 
         _validateOrderPaymentMatch(_order, _payment);
+
+        return _order.totalPrice;
     }
 
-    function _payETH(
+    function _payEthPricedInUsd(
         Order memory _order,
         PaymentParams memory _payment
     )
         internal
+        returns (uint256)
     {
         require(
             priceOracle != address(0),
             "IM:PurchaseProcessor: oracle must be set"
         );
 
-        uint256 amount = IOracle(priceOracle).convert(1, 0, _order.totalPrice);
+        // get the balance of this contract (includes msg.value)
+        uint256 startBalance = address(this).balance;
+
+        uint256 outstanding = _order.totalPrice.sub(_order.alreadyPaid);
+
+        if (outstanding == 0) {
+            return 0;
+        }
+
+        uint256 amount = convertUSDToETH(outstanding);
 
         require(
             msg.value >= amount,
@@ -235,21 +291,103 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
 
         uint256 remaining = msg.value.sub(amount);
 
-        // solium-disable-next-line
-        wallet.call.value(amount)("");
-
-        if (remaining > 0) {
-            // @TODO: Need to add re-entrency guards on remaining contracts.
-            address payable recipient = address(uint160(_order.recipient));
-            // solium-disable-next-line
-            recipient.call.value(remaining)("");
-        }
+        _sendETH(wallet, amount);
+        _sendETH(_order.changeRecipient, remaining);
 
         require(
-            address(this).balance == 0,
+            address(this).balance == startBalance.sub(msg.value),
             "IM:PurchaseProcessor: ETH left over"
         );
 
+        return amount;
+    }
+
+    function _payUsdPricedInEth(
+        Order memory _order,
+        PaymentParams memory _payment
+    )
+        internal
+        returns (uint256)
+    {
+        uint256 outstanding = _order.totalPrice.sub(_order.alreadyPaid);
+
+        if (outstanding == 0) {
+            return 0;
+        }
+
+        uint256 usdAmount = convertETHToUSD(outstanding);
+
+        address signer = _getSigner(_order, _payment);
+
+        _updateSignerLimit(signer, usdAmount);
+
+        require(
+            !receiptNonces[signer][_payment.nonce],
+            "IM:PurchaseProcessor: nonce must not be used"
+        );
+
+        receiptNonces[signer][_payment.nonce] = true;
+
+        require(
+        _payment.value >= usdAmount,
+            "IM:PurchaseProcessor: receipt value must be sufficient"
+        );
+
+        require(
+            _payment.currency == Currency.USDCents,
+            "IM:PurchaseProcessor: receipt currency must match"
+        );
+
+        return usdAmount;
+    }
+
+    function _payEthPricedInEth(
+        Order memory _order,
+        PaymentParams memory _payment
+    )
+        internal
+        returns (uint256)
+    {
+
+        // get the balance of this contract (includes msg.value)
+        uint256 startBalance = address(this).balance;
+
+        uint256 outstanding = _order.totalPrice.sub(_order.alreadyPaid);
+
+        if (outstanding == 0) {
+            return 0;
+        }
+
+        require(
+            msg.value >= outstanding,
+            "IM:PurchaseProcessor: not enough ETH sent"
+        );
+
+        uint256 remaining = msg.value.sub(outstanding);
+
+        _sendETH(wallet, outstanding);
+        _sendETH(_order.changeRecipient, remaining);
+
+        require(
+            address(this).balance == startBalance.sub(msg.value),
+            "IM:PurchaseProcessor: ETH left over"
+        );
+
+    }
+
+    function _sendETH(address _to, uint256 _value) internal {
+        if (_value > 0) {
+            // solium-disable-next-line
+            _to.call.value(_value)("");
+        }
+    }
+
+    function convertUSDToETH(uint256 usdCents) public view returns (uint256 eth) {
+        return IOracle(priceOracle).convert(1, 0, usdCents);
+    }
+
+    function convertETHToUSD(uint256 eth) public view returns (uint256 usdCents) {
+        return IOracle(priceOracle).convert(0, 1, eth);
     }
 
 }

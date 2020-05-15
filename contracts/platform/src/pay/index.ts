@@ -7,11 +7,13 @@ export enum Currency {
 }
 
 export interface Order {
-  recipient: string;
+  changeRecipient: string;
+  assetRecipient: string;
   sku: string;
   quantity: number;
   currency: Currency;
   totalPrice: number;
+  alreadyPaid: number;
 }
 
 export interface PaymentParams {
@@ -58,15 +60,17 @@ export async function getSignedPayment(
     'uint256',
     'uint256',
     'uint256',
+    'uint256',
     'uint8',
   ];
 
   const values = [
     processor,
     seller,
-    order.recipient,
+    order.assetRecipient,
     order.sku,
     order.quantity,
+    order.alreadyPaid,
     payment.nonce,
     payment.escrowFor,
     payment.value,

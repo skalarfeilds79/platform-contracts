@@ -4,8 +4,7 @@ import { Blockchain, generatedWallets } from '@imtbl/test-utils';
 import { Referral, RarePack, Cards, Chest, Raffle } from '../../../src/contracts';
 import { Wallet, ethers } from 'ethers';
 import { keccak256 } from 'ethers/utils';
-import { PurchaseProcessor, CreditCardEscrow, Escrow, Beacon } from '@imtbl/platform/src/contracts';
-import { getSignedPayment, Currency } from '@imtbl/platform/src';
+import { getSignedPayment, Currency, PurchaseProcessor, CreditCardEscrow, Escrow, Beacon } from '@imtbl/platform';
 
 jest.setTimeout(600000);
 
@@ -85,8 +84,10 @@ describe('Raffle', () => {
       const order = {
         quantity,
         sku: rarePackSKU,
-        recipient: owner.address,
+        assetRecipient: owner.address,
+        changeRecipient: owner.address,
         totalPrice: cost * quantity,
+        alreadyPaid: 0,
         currency: Currency.USDCents,
       };
       const params = { escrowFor: 0, nonce: 0, value: cost * quantity };
@@ -166,9 +167,11 @@ describe('Raffle', () => {
       const order = {
         quantity,
         sku: rarePackSKU,
-        recipient: owner.address,
+        assetRecipient: owner.address,
+        changeRecipient: owner.address,
         totalPrice: cost * quantity,
         currency: Currency.USDCents,
+        alreadyPaid: 0
       };
       const params = { escrowFor, nonce: 0, value: cost * quantity };
       const payment = await getSignedPayment(owner, processor.address, rare.address, order, params);
@@ -290,9 +293,11 @@ describe('Raffle', () => {
       const order = {
         quantity,
         sku: rareChestSKU,
-        recipient: owner.address,
+        assetRecipient: owner.address,
+        changeRecipient: owner.address,
         currency: Currency.USDCents,
         totalPrice: value,
+        alreadyPaid: 0,
       };
       const params = { value, escrowFor: 0, nonce: 0 };
       const payment = await getSignedPayment(

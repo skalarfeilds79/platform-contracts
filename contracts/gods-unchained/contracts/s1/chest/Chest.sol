@@ -4,8 +4,6 @@ pragma experimental ABIEncoderV2;
 import "@openzeppelin/contracts/token/ERC20/ERC20Burnable.sol";
 import "@imtbl/platform/contracts/token/TradeToggleERC20.sol";
 import "@imtbl/platform/contracts/escrow/IEscrow.sol";
-import "@imtbl/platform/contracts/pay/vendor/CappedVendor.sol";
-
 import "../S1Vendor.sol";
 import "../pack/IPack.sol";
 
@@ -16,6 +14,10 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
         uint256 count;
     }
 
+    // Cap on sold assets
+    uint public cap;
+    // Number of assets sold
+    uint public sold;
     // Pack contract in which these chests can be opened
     IPack public pack;
     // Temporary variable to hold purchase details before the escrow callback
@@ -25,7 +27,7 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
         string memory _name,
         string memory _symbol,
         IPack _pack,
-        uint256 _saleCap,
+        uint256 _cap,
         IReferral _referral,
         bytes32 _sku,
         uint256 _price,
@@ -39,7 +41,7 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
             address(_pack) != address(0),
             "S1Chest: pack must be set on construction"
         );
-
+        cap = _cap;
         pack = _pack;
     }
 
@@ -55,12 +57,21 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
         uint256 _quantity,
         IPurchaseProcessor.PaymentParams memory _payment,
         address payable _referrer
-    ) public payable returns (uint256) {
+    ) public payable returns (IPurchaseProcessor.Receipt memory) {
 
-        uint256 paymentID = super.purchaseFor(_user, _quantity, _payment, _referrer);
+        require(cap == 0 || cap >= sold + _quantity, "IM:CappedVendor: product cap has been exhausted");
+
+        IPurchaseProcessor.Receipt memory receipt = super.purchaseFor(
+            _user,
+            _quantity,
+            _payment,
+            _referrer
+        );
+
+        sold += _quantity;
 
         if (_payment.currency == IPurchaseProcessor.Currency.ETH || _payment.escrowFor == 0) {
-            _mintChests(_user, _quantity, paymentID);
+            _mintChests(_user, _quantity, receipt.id);
         } else {
             // escrow the chests
             IEscrow.Vault memory vault = IEscrow.Vault({
@@ -75,16 +86,16 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
 
             tempPurchase = Purchase({
                 count: _quantity,
-                paymentID: paymentID
+                paymentID: receipt.id
             });
 
             bytes memory data = abi.encodeWithSignature("mintTokens()");
 
-            escrow.callbackEscrow(vault, address(this), data, paymentID, _payment.escrowFor);
+            escrow.callbackEscrow(vault, address(this), data, receipt.id, _payment.escrowFor);
 
         }
 
-        return paymentID;
+        return receipt;
     }
 
     function mintTokens() public {

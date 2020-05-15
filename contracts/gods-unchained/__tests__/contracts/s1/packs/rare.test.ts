@@ -117,8 +117,10 @@ describe('Pack', () => {
       const order = {
         quantity,
         sku: rarePackSKU,
-        recipient: owner.address,
+        assetRecipient: owner.address,
+        changeRecipient: owner.address,
         totalPrice: cost * quantity,
+        alreadyPaid: 0,
         currency: Currency.USDCents,
       };
       const params = { escrowFor: 0, nonce: 0, value: cost * quantity };
@@ -140,9 +142,6 @@ describe('Pack', () => {
       await purchasePacks(5);
     });
 
-    it('should purchase 100 packs with USD', async () => {
-      await purchasePacks(100);
-    });
   });
 
   describe('mint', () => {
@@ -195,7 +194,9 @@ describe('Pack', () => {
       const order = {
         quantity,
         sku: rarePackSKU,
-        recipient: owner.address,
+        assetRecipient: owner.address,
+        changeRecipient: owner.address,
+        alreadyPaid: 0,
         totalPrice: cost * quantity,
         currency: Currency.USDCents,
       };
@@ -236,20 +237,11 @@ describe('Pack', () => {
       await mintTrackGas(0, '6 pack escrow');
     });
 
-    it('should create cards from 18 packs', async () => {
-      await purchase(18, 100);
-      await mintTrackGas(0, '18 packs escrow');
-    });
-
     it('should create cards from 1 packs with no escrow', async () => {
       await purchase(1, 0);
       await mintTrackGas(0, '1 pack no escrow');
     });
 
-    it('should create cards from 18 packs with no escrow', async () => {
-      await purchase(18, 0);
-      await mintTrackGas(0, '18 packs no escrow');
-    });
   });
 
   describe('openChest', () => {
@@ -319,9 +311,11 @@ describe('Pack', () => {
       const order = {
         quantity,
         sku: rareChestSKU,
-        recipient: owner.address,
+        assetRecipient: owner.address,
+        changeRecipient: owner.address,
         currency: Currency.USDCents,
         totalPrice: value,
+        alreadyPaid: 0
       };
       const params = { value, escrowFor: 0, nonce: 0 };
       const payment = await getSignedPayment(

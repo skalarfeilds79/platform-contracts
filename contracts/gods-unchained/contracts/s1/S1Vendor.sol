@@ -75,7 +75,7 @@ contract S1Vendor is IVendor, Ownable {
     ) public payable returns (IPurchaseProcessor.Receipt memory) {
 
         uint256 totalPrice = _quantity.mul(price);
-        uint toReferrer;
+        uint256 toReferrer = 0;
 
         if (_payment.currency == IPurchaseProcessor.Currency.ETH && _referrer != address(0)) {
             (, toReferrer) = referral.getSplit(_recipient, totalPrice, _referrer);
@@ -108,6 +108,10 @@ contract S1Vendor is IVendor, Ownable {
         }
 
         return receipt;
+    }
+
+    function () external payable {
+
     }
 
 }

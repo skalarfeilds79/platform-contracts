@@ -40,7 +40,6 @@ contract S1Sale {
         ProductPurchaseRequest[] memory _requests,
         address payable _referrer
     ) public payable  {
-        require(false, "gotcha");
         for (uint i = 0; i < _requests.length; i++) {
             ProductPurchaseRequest memory p = _requests[i];
             p.vendor.purchaseFor.value(address(this).balance)(
@@ -50,5 +49,9 @@ contract S1Sale {
                 _referrer
             );
         }
+    }
+
+    function () external payable {
+
     }
 }

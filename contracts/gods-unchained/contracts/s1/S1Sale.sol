@@ -9,6 +9,8 @@ contract S1Sale {
 
     using SafeMath for uint256;
 
+    event LogState(uint index, uint balance);
+
     struct ProductPurchaseRequest {
         uint256 quantity;
         IS1Vendor vendor;
@@ -38,6 +40,7 @@ contract S1Sale {
         ProductPurchaseRequest[] memory _requests,
         address payable _referrer
     ) public payable  {
+        require(false, "gotcha");
         for (uint i = 0; i < _requests.length; i++) {
             ProductPurchaseRequest memory p = _requests[i];
             p.vendor.purchaseFor.value(address(this).balance)(

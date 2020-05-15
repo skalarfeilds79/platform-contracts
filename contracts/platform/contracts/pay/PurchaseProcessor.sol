@@ -291,13 +291,8 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
 
         uint256 remaining = msg.value.sub(amount);
 
-        // solium-disable-next-line
-        wallet.call.value(amount)("");
-
-        if (remaining > 0) {
-            // solium-disable-next-line
-            _order.changeRecipient.call.value(remaining)("");
-        }
+        _sendETH(wallet, amount);
+        _sendETH(_order.changeRecipient, remaining);
 
         require(
             address(this).balance == startBalance.sub(msg.value),
@@ -370,19 +365,21 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
 
         uint256 remaining = msg.value.sub(outstanding);
 
-        // solium-disable-next-line
-        wallet.call.value(outstanding)("");
-
-        if (remaining > 0) {
-            // solium-disable-next-line
-            _order.changeRecipient.call.value(remaining)("");
-        }
+        _sendETH(wallet, outstanding);
+        _sendETH(_order.changeRecipient, remaining);
 
         require(
             address(this).balance == startBalance.sub(msg.value),
             "IM:PurchaseProcessor: ETH left over"
         );
 
+    }
+
+    function _sendETH(address _to, uint256 _value) internal {
+        if (_value > 0) {
+            // solium-disable-next-line
+            _to.call.value(_value)("");
+        }
     }
 
     function convertUSDToETH(uint256 usdCents) public view returns (uint256 eth) {
@@ -392,7 +389,5 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
     function convertETHToUSD(uint256 eth) public view returns (uint256 usdCents) {
         return IOracle(priceOracle).convert(0, 1, eth);
     }
-
-
 
 }

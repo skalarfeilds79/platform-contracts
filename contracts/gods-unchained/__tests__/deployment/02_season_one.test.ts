@@ -201,7 +201,7 @@ describe('02_season_one', () => {
     });
   });
 
-  describe.only('using ETH', () => {
+  describe('using ETH', () => {
     beforeEach(async () => {
       await blockchain.resetAsync();
       await blockchain.saveSnapshotAsync();

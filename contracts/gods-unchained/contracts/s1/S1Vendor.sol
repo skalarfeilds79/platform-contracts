@@ -4,11 +4,13 @@ pragma experimental ABIEncoderV2;
 import "./referral/IReferral.sol";
 import "@imtbl/platform/contracts/escrow/releaser/ICreditCardEscrow.sol";
 import "@imtbl/platform/contracts/pay/IPurchaseProcessor.sol";
-import "@imtbl/platform/contracts/pay/vendor/SingleItemVendor.sol";
+import "@imtbl/platform/contracts/pay/vendor/IVendor.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";
 
-contract S1Vendor is SingleItemVendor {
+contract S1Vendor is IVendor, Ownable {
+
+    using SafeMath for uint256;
 
     event PurchaseReferred(
         uint256 indexed paymentID,
@@ -19,6 +21,16 @@ contract S1Vendor is SingleItemVendor {
 
     // Referral contract
     IReferral public referral;
+    // Price of each product sold by this contract
+    uint256 public price;
+    // SKU of the product sold by this contract
+    bytes32 public sku;
+    // Escrow contract
+    ICreditCardEscrow public escrow;
+    // Payment processor
+    IPurchaseProcessor public pay;
+    // Whether the contract is paused
+    bool public paused;
 
     constructor(
         IReferral _referral,
@@ -26,13 +38,11 @@ contract S1Vendor is SingleItemVendor {
         uint256 _price,
         ICreditCardEscrow _escrow,
         IPurchaseProcessor _pay
-    ) public SingleItemVendor(
-        _sku,
-        IPurchaseProcessor.Currency.USDCents,
-        _price,
-        _escrow,
-        _pay
-    ) {
+    ) public {
+        sku = _sku;
+        price = _price;
+        escrow = _escrow;
+        pay = _pay;
         referral = _referral;
     }
 
@@ -72,7 +82,7 @@ contract S1Vendor is SingleItemVendor {
         }
 
         IPurchaseProcessor.Order memory order = IPurchaseProcessor.Order({
-            currency: currency,
+            currency: IPurchaseProcessor.Currency.USDCents,
             totalPrice: totalPrice,
             alreadyPaid: toReferrer,
             sku: sku,
@@ -81,7 +91,7 @@ contract S1Vendor is SingleItemVendor {
             changeRecipient: address(uint160(address(this)))
         });
 
-        IPurchaseProcessor.Receipt memory receipt = super._purchaseFor(order, _payment);
+        IPurchaseProcessor.Receipt memory receipt = pay.process.value(msg.value)(order, _payment);
 
         // if the user is paying in ETH, we can pay affiliate fees instantly!
         if (_payment.currency == IPurchaseProcessor.Currency.ETH && _referrer != address(0)) {
@@ -91,9 +101,11 @@ contract S1Vendor is SingleItemVendor {
             emit PurchaseReferred(receipt.id, _referrer, toReferrer, payoutAmount);
         }
 
-        // send remaining funds to original contract/user
-        // solium-disable-next-line
-        msg.sender.call.value(address(this).balance)("");
+        if (address(this).balance > 0) {
+            // send remaining funds to original contract/user
+            // solium-disable-next-line
+            msg.sender.call.value(address(this).balance)("");
+        }
 
         return receipt;
     }

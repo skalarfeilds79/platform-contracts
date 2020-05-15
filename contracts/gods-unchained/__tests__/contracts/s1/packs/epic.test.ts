@@ -13,7 +13,7 @@ import { keccak256 } from 'ethers/utils';
 import { PurchaseProcessor, CreditCardEscrow, Escrow, Beacon } from '@imtbl/platform/src/contracts';
 import { getSignedPayment, Currency, Order } from '@imtbl/platform/src/pay';
 
-import { 
+import {
   ETHUSDMockOracle,
   getETHPayment,
 } from '@imtbl/platform';
@@ -154,10 +154,6 @@ describe('Pack', () => {
       await purchasePacks(5);
     });
 
-    it('should purchase 100 packs with USD', async () => {
-      await purchasePacks(100);
-    });
-
   });
 
   describe('purchase ETH', () => {
@@ -215,7 +211,7 @@ describe('Pack', () => {
       };
       const params = { escrowFor: 0, nonce: 0, value: cost * quantity };
       const payment = getETHPayment();
-      const ethRequired = await oracle.convert(1, 0, cost);
+      const ethRequired = await oracle.convert(1, 0, cost * quantity);
       const tx = await epic.purchase(quantity, payment, ZERO_EX, { value: ethRequired });
       const receipt = await tx.wait();
       const parsed = parseLogs(receipt.logs, EpicPack.ABI);
@@ -231,13 +227,8 @@ describe('Pack', () => {
       await purchasePacks(5);
     });
 
-    it('should purchase 100 packs with ETH', async () => {
-      await purchasePacks(100);
-    });
-
   });
 
-<<<<<<< HEAD
   describe('openChest', () => {
 
     let beacon: Beacon;

@@ -8,6 +8,10 @@ if [ ! -f .env ]; then
   env > .env
 fi
 
+echo "Deploying contracts in 5 seconds..."
+sleep 5
+yarn db-migrate
+
 yarn deploy:all
 
 if [[ "${WATCH:-}" == "true" ]]; then

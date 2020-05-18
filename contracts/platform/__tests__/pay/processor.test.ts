@@ -2,19 +2,11 @@ import 'jest';
 
 import { PurchaseProcessor } from '../../src/contracts';
 
-import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
+import { Ganache, Blockchain,expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { ethers, Wallet } from 'ethers';
 import { keccak256 } from 'ethers/utils';
 
-import ganache from 'ganache-core';
-const gp = ganache.provider({
-  total_accounts: 20,
-  gasLimit: 19000000,
-  mnemonic: 'concert load couple harbor equip island argue ramp clarify fence smart topic',
-  default_balance_ether: 10000000000
-});
-
-const provider = new ethers.providers.Web3Provider(gp as any);
+const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
 
 const ZERO_EX = '0x0000000000000000000000000000000000000000';

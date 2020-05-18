@@ -4,7 +4,7 @@ import { Wallet, ethers } from 'ethers';
 
 ethers.errors.setLogLevel('error');
 
-import { Blockchain, generatedWallets } from '@imtbl/test-utils';
+import { Ganache, Blockchain,generatedWallets } from '@imtbl/test-utils';
 import { Referral } from '../../../src/contracts';
 
 import ganache from 'ganache-core';
@@ -15,7 +15,7 @@ const gp = ganache.provider({
   default_balance_ether: 10000000000
 });
 
-const provider = new ethers.providers.Web3Provider(gp as any);
+const provider = new Ganache(); ethers.providers.Web3Provider(gp as any);
 const blockchain = new Blockchain(provider);
 
 describe('Referral', () => {

@@ -1,0 +1,43 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - cicd
+  pull_request:
+    branches:
+      - cicd
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.PAT }}
+          submodules: true
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      - name: Docker build
+        run: scripts/build-tools.sh docker-build
+      # No tests to run currently
+      # - name: Docker test
+      #   run: scripts/build-tools.sh docker-run test
+      - name: Docker push
+        if: ${{ github.ref == 'refs/heads/cicd' }}
+        run: scripts/build-tools.sh docker-push
+      - name: Update Dependent Projects
+        if: ${{ github.ref == 'refs/heads/cicd' }}
+        run: scripts/build-tools.sh update-dependent-projects ${{ github.repository }} ${{ secrets.PAT }} ${{ github.sha }}
+      - name: Logout of Amazon ECR
+        if: always()
+        run: docker logout ${{ steps.login-ecr.outputs.registry }}

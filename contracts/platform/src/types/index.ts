@@ -1,0 +1,36 @@
+import { keccak256 } from 'ethers/utils';
+import { ethers, Wallet } from 'ethers';
+
+export enum Currency {
+  ETH,
+  USDCents,
+}
+
+export interface Order {
+  recipient: string;
+  sku: string;
+  quantity: number;
+  currency: Currency;
+  totalPrice: number;
+}
+
+export interface PaymentParams {
+  nonce: number;
+  escrowFor: number;
+  value: number;
+}
+
+export interface Payment {
+  currency: Currency;
+  escrowFor: number;
+  value: number;
+  nonce: number;
+  v: number;
+  r: string;
+  s: string;
+}
+
+export type EscrowReturnInfo = {
+  asset: string;
+  ids?: number[];
+};

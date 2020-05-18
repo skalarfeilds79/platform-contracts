@@ -1,9 +1,17 @@
-import { JsonRpcProvider } from 'ethers/providers';
+import { JsonRpcProvider, Web3Provider } from 'ethers/providers';
 import { ethers } from 'ethers';
-import { BigNumberish, BigNumber } from 'ethers/utils';
 
 export class Blockchain {
+
+  private _provider: Web3Provider | JsonRpcProvider;
   private _snapshotId: number;
+
+  constructor(_provider?: Web3Provider | JsonRpcProvider) {
+    if (!_provider) {
+      _provider = new ethers.providers.JsonRpcProvider();
+    }
+    this._provider = _provider;
+  }
 
   public async saveSnapshotAsync(): Promise<void> {
     const response = await this.sendJSONRpcRequestAsync('evm_snapshot', []);
@@ -29,7 +37,6 @@ export class Blockchain {
   }
 
   private async sendJSONRpcRequestAsync(method: string, params: any[]): Promise<any> {
-    const jsonProvider: JsonRpcProvider = new ethers.providers.JsonRpcProvider();
-    return jsonProvider.send(method, params);
+    return this._provider.send(method, params);
   }
 }

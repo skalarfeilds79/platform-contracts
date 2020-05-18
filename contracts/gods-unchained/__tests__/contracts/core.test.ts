@@ -9,8 +9,16 @@ import { Wallet, ethers } from 'ethers';
 import { Address } from '@imtbl/common-types';
 
 ethers.errors.setLogLevel('error');
-const provider = new ethers.providers.JsonRpcProvider();
-const blockchain = new Blockchain();
+import ganache from 'ganache-core';
+const gp = ganache.provider({
+  total_accounts: 20,
+  gasLimit: 19000000,
+  mnemonic: 'concert load couple harbor equip island argue ramp clarify fence smart topic',
+  default_balance_ether: 10000000000
+});
+
+const provider = new ethers.providers.Web3Provider(gp as any);
+const blockchain = new Blockchain(provider);
 
 describe('Core', () => {
   const [ownerWallet, managerWallet, userWallet] = generatedWallets(provider);

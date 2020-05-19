@@ -4,7 +4,7 @@
     "version": "1.0.0",
     "description": "Monorepo of all Immutable contracts and supporting packages",
     "scripts": {
-        "bootstrap": "lerna bootstrap",
+        "postinstall": "lerna bootstrap --ignore-scripts",
         "delete:all": "yarn delete:build && yarn delete:node_modules && yarn delete:dist",
         "delete:build": "find . -name \"build\" -exec rm -rf '{}' +",
         "delete:node_modules": "find . -name \"node_modules\" -exec rm -rf '{}' +",

@@ -134,6 +134,11 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
         pack.openChests(msg.sender, _count);
     }
 
+    /** @dev Get the number of products still available for sale */
+    function available() external view returns (uint256) {
+        return cap.sub(sold);
+    }
+
     /** @dev One way switch to enable trading */
     function makeTradable() external onlyOwner {
         require(

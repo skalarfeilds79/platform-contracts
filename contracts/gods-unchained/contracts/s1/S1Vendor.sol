@@ -7,8 +7,9 @@ import "@imtbl/platform/contracts/pay/IPurchaseProcessor.sol";
 import "@imtbl/platform/contracts/pay/vendor/IVendor.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";
+import "@openzeppelin/contracts/ownership/Pausable.sol";
 
-contract S1Vendor is IVendor, Ownable {
+contract S1Vendor is IVendor, Pauable, Ownable {
 
     using SafeMath for uint256;
 

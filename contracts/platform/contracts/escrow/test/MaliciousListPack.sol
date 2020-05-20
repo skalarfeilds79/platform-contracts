@@ -48,16 +48,12 @@ contract MaliciousListPack {
 
     function pushAttackHook(uint256 purchaseID) public {
         require(msg.sender == address(escrow), "must be the escrow contract");
-        Purchase memory p = purchases[purchaseID];
-
-        IEscrow.Vault memory vault = _createVault(p.count);
-
-        bytes memory data = abi.encodeWithSignature("emptyHook()");
-
-        escrow.callbackEscrow(vault, address(this), data);
-
-        asset.mint(address(escrow), p.count);
+        uint256 count = purchases[purchaseID].count;
         delete purchases[purchaseID];
+        IEscrow.Vault memory vault = _createVault(count);
+        bytes memory data = abi.encodeWithSignature("emptyHook()");
+        escrow.callbackEscrow(vault, address(this), data);
+        asset.mint(address(escrow), count);
     }
 
     function emptyHook() public view {
@@ -66,16 +62,13 @@ contract MaliciousListPack {
 
     function pullAttackHook(uint256 purchaseID) public {
         require(msg.sender == address(escrow), "must be the escrow contract");
-        Purchase memory p = purchases[purchaseID];
-
-        IEscrow.Vault memory vault = _createVault(p.count);
-
-        asset.mint(address(this), p.count);
-        asset.setApprovalForAll(address(escrow), true);
-
-        escrow.escrow(vault, address(this));
-
+        uint256 count = purchases[purchaseID].count;
         delete purchases[purchaseID];
+        IEscrow.Vault memory vault = _createVault(count);
+
+        asset.mint(address(this), count);
+        asset.setApprovalForAll(address(escrow), true);
+        escrow.escrow(vault, address(this));
     }
 
     function _createVault(uint256 count) internal view returns (IEscrow.Vault memory) {

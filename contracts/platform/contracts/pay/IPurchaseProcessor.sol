@@ -41,9 +41,9 @@ contract IPurchaseProcessor {
     }
 
     function process(
-        Order memory order,
-        PaymentParams memory payment
-    ) public payable returns (Receipt memory);
+        Order calldata order,
+        PaymentParams calldata payment
+    ) external payable returns (Receipt memory);
 
     function convertUSDToETH(uint256 usdCents) public view returns (uint256 eth);
 

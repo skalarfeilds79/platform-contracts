@@ -39,10 +39,10 @@ contract Escrow is IEscrow, Ownable {
      * @param _callbackData the data to pass to the callback transaction
      */
     function callbackEscrow(
-        Vault memory _vault,
+        Vault calldata _vault,
         address _callbackTo,
-        bytes memory _callbackData
-    ) public returns (uint256) {
+        bytes calldata _callbackData
+    ) external returns (uint256) {
 
         require(
             !escrowMutexLocked,
@@ -128,7 +128,7 @@ contract Escrow is IEscrow, Ownable {
      * @param _vault the escrow vault to be created
      * @param _from the address from which to pull the tokens
      */
-    function escrow(Vault memory _vault, address _from) public returns (uint256) {
+    function escrow(Vault calldata _vault, address _from) external returns (uint256) {
         require(
             !escrowMutexLocked,
             "IM:Escrow: mutex must be unlocked"
@@ -180,7 +180,7 @@ contract Escrow is IEscrow, Ownable {
      *
      * @param _id the id of the escrow vault
      */
-    function destroy(uint256 _id) public {
+    function destroy(uint256 _id) external {
         Vault memory vault = vaults[_id];
 
         require(
@@ -203,7 +203,7 @@ contract Escrow is IEscrow, Ownable {
      * @param _id the id of the escrow vault
      * @param _to the address to which assets should be released
      */
-    function release(uint256 _id, address _to) public {
+    function release(uint256 _id, address _to) external {
         Vault memory vault = vaults[_id];
 
         require(
@@ -217,6 +217,8 @@ contract Escrow is IEscrow, Ownable {
         );
 
         releaseMutexLocked = true;
+        emit Released(_id, _to);
+        delete vaults[_id];
 
         if (vault.balance > 0) {
             IERC20(vault.asset).transfer(_to, vault.balance);
@@ -226,8 +228,6 @@ contract Escrow is IEscrow, Ownable {
             _transferBatch(vault, address(this), _to);
         }
 
-        emit Released(_id, _to);
-        delete vaults[_id];
         releaseMutexLocked = false;
     }
 

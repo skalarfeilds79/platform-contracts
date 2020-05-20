@@ -15,7 +15,7 @@ contract MaliciousChest {
         asset = _asset;
     }
 
-    function maliciousPush(uint256 count) public {
+    function maliciousPush(uint256 count) external {
 
         IEscrow.Vault memory vault = _createVault(count);
 
@@ -24,7 +24,7 @@ contract MaliciousChest {
         escrow.callbackEscrow(vault, address(this), data);
     }
 
-    function maliciousPull(uint256 count) public {
+    function maliciousPull(uint256 count) external {
 
         IEscrow.Vault memory vault = _createVault(count);
 
@@ -33,7 +33,7 @@ contract MaliciousChest {
         escrow.callbackEscrow(vault, address(this), data);
     }
 
-    function pushAttackHook(uint256 count) public {
+    function pushAttackHook(uint256 count) external {
         require(msg.sender == address(escrow), "must be the escrow contract");
 
         IEscrow.Vault memory vault = _createVault(count);
@@ -46,11 +46,11 @@ contract MaliciousChest {
 
     }
 
-    function emptyHook() public view {
+    function emptyHook() external view {
         require(msg.sender == address(escrow), "must be the escrow contract");
     }
 
-    function pullAttackHook(uint256 count) public {
+    function pullAttackHook(uint256 count) external {
         require(msg.sender == address(escrow), "must be the escrow contract");
 
         IEscrow.Vault memory vault = _createVault(count);

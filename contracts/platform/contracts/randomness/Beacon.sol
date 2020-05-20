@@ -1,6 +1,5 @@
 pragma solidity 0.5.11;
 
-import "./IBeacon.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 
 /**
@@ -8,7 +7,7 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
  * @notice A commit/reveal based randomness beacon. Use for low-security randomness.
  * @author Immutable
  */
-contract Beacon is IBeacon {
+contract Beacon {
 
     using SafeMath for uint256;
 

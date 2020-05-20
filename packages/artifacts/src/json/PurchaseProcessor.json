@@ -228,7 +228,7 @@
             "type": "uint256"
           },
           {
-            "internalType": "enum IPurchaseProcessor.Currency",
+            "internalType": "enum PurchaseProcessor.Currency",
             "name": "currency",
             "type": "uint8"
           },
@@ -239,14 +239,14 @@
           }
         ],
         "indexed": false,
-        "internalType": "struct IPurchaseProcessor.Order",
+        "internalType": "struct PurchaseProcessor.Order",
         "name": "order",
         "type": "tuple"
       },
       {
         "components": [
           {
-            "internalType": "enum IPurchaseProcessor.Currency",
+            "internalType": "enum PurchaseProcessor.Currency",
             "name": "currency",
             "type": "uint8"
           },
@@ -282,7 +282,7 @@
           }
         ],
         "indexed": false,
-        "internalType": "struct IPurchaseProcessor.PaymentParams",
+        "internalType": "struct PurchaseProcessor.PaymentParams",
         "name": "payment",
         "type": "tuple"
       }
@@ -375,7 +375,7 @@
             "type": "uint256"
           },
           {
-            "internalType": "enum IPurchaseProcessor.Currency",
+            "internalType": "enum PurchaseProcessor.Currency",
             "name": "currency",
             "type": "uint8"
           },
@@ -385,14 +385,14 @@
             "type": "uint256"
           }
         ],
-        "internalType": "struct IPurchaseProcessor.Order",
+        "internalType": "struct PurchaseProcessor.Order",
         "name": "order",
         "type": "tuple"
       },
       {
         "components": [
           {
-            "internalType": "enum IPurchaseProcessor.Currency",
+            "internalType": "enum PurchaseProcessor.Currency",
             "name": "currency",
             "type": "uint8"
           },
@@ -427,7 +427,7 @@
             "type": "uint256"
           }
         ],
-        "internalType": "struct IPurchaseProcessor.PaymentParams",
+        "internalType": "struct PurchaseProcessor.PaymentParams",
         "name": "payment",
         "type": "tuple"
       }

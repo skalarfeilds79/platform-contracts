@@ -104,7 +104,7 @@ export const CreditCardEscrow = [
     "name": "escrowProtocol",
     "outputs": [
       {
-        "internalType": "contract IEscrow",
+        "internalType": "contract Escrow",
         "name": "",
         "type": "address"
       }
@@ -172,7 +172,7 @@ export const CreditCardEscrow = [
   {
     "inputs": [
       {
-        "internalType": "contract IEscrow",
+        "internalType": "contract Escrow",
         "name": "_escrowProtocol",
         "type": "address"
       },
@@ -543,7 +543,7 @@ export const CreditCardEscrow = [
             "type": "uint256[]"
           }
         ],
-        "internalType": "struct IEscrow.Vault",
+        "internalType": "struct Escrow.Vault",
         "name": "_vault",
         "type": "tuple"
       },
@@ -586,7 +586,7 @@ export const CreditCardEscrow = [
     "name": "getProtocol",
     "outputs": [
       {
-        "internalType": "contract IEscrow",
+        "internalType": "contract Escrow",
         "name": "",
         "type": "address"
       }

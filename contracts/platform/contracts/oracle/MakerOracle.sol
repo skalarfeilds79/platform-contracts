@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
 
 import "./IOracle.sol";
 import "./IMedianizer.sol";
-import "../pay/IPurchaseProcessor.sol";
+import "../pay/PurchaseProcessor.sol";
 
 contract MakerOracle is IOracle {
 

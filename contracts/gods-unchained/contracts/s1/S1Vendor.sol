@@ -2,8 +2,8 @@ pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
 import "./referral/IReferral.sol";
-import "@imtbl/platform/contracts/escrow/releaser/ICreditCardEscrow.sol";
-import "@imtbl/platform/contracts/pay/IPurchaseProcessor.sol";
+import "@imtbl/platform/contracts/escrow/releaser/CreditCardEscrow.sol";
+import "@imtbl/platform/contracts/pay/PurchaseProcessor.sol";
 import "@imtbl/platform/contracts/pay/vendor/IVendor.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";
@@ -27,16 +27,16 @@ contract S1Vendor is IVendor, Pausable, Ownable {
     // SKU of the product sold by this contract
     bytes32 public sku;
     // Escrow contract
-    ICreditCardEscrow public escrow;
+    CreditCardEscrow public escrow;
     // Payment processor
-    IPurchaseProcessor public pay;
+    PurchaseProcessor public pay;
 
     constructor(
         IReferral _referral,
         bytes32 _sku,
         uint256 _price,
-        ICreditCardEscrow _escrow,
-        IPurchaseProcessor _pay
+        CreditCardEscrow _escrow,
+        PurchaseProcessor _pay
     ) public {
         sku = _sku;
         price = _price;
@@ -53,9 +53,9 @@ contract S1Vendor is IVendor, Pausable, Ownable {
      */
     function purchase(
         uint256 _quantity,
-        IPurchaseProcessor.PaymentParams memory _payment,
+        PurchaseProcessor.PaymentParams memory _payment,
         address payable _referrer
-    ) public payable returns (IPurchaseProcessor.Receipt memory) {
+    ) public payable returns (PurchaseProcessor.Receipt memory) {
         return purchaseFor(msg.sender, _quantity, _payment, _referrer);
     }
 
@@ -69,19 +69,19 @@ contract S1Vendor is IVendor, Pausable, Ownable {
     function purchaseFor(
         address payable _recipient,
         uint256 _quantity,
-        IPurchaseProcessor.PaymentParams memory _payment,
+        PurchaseProcessor.PaymentParams memory _payment,
         address payable _referrer
-    ) public payable returns (IPurchaseProcessor.Receipt memory) {
+    ) public payable returns (PurchaseProcessor.Receipt memory) {
 
         uint256 totalPrice = _quantity.mul(price);
         uint256 toReferrer = 0;
 
-        if (_payment.currency == IPurchaseProcessor.Currency.ETH && _referrer != address(0)) {
+        if (_payment.currency == PurchaseProcessor.Currency.ETH && _referrer != address(0)) {
             (, toReferrer) = referral.getSplit(_recipient, totalPrice, _referrer);
         }
 
-        IPurchaseProcessor.Order memory order = IPurchaseProcessor.Order({
-            currency: IPurchaseProcessor.Currency.USDCents,
+        PurchaseProcessor.Order memory order = PurchaseProcessor.Order({
+            currency: PurchaseProcessor.Currency.USDCents,
             totalPrice: totalPrice,
             alreadyPaid: toReferrer,
             sku: sku,
@@ -90,10 +90,10 @@ contract S1Vendor is IVendor, Pausable, Ownable {
             changeRecipient: address(uint160(address(this)))
         });
 
-        IPurchaseProcessor.Receipt memory receipt = pay.process.value(msg.value)(order, _payment);
+        PurchaseProcessor.Receipt memory receipt = pay.process.value(msg.value)(order, _payment);
 
         // if the user is paying in ETH, we can pay affiliate fees instantly!
-        if (_payment.currency == IPurchaseProcessor.Currency.ETH && _referrer != address(0)) {
+        if (_payment.currency == PurchaseProcessor.Currency.ETH && _referrer != address(0)) {
             uint256 payoutAmount = pay.convertUSDToETH(toReferrer);
             // solium-disable-next-line
             _referrer.call.value(payoutAmount)("");

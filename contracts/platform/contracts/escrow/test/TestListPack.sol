@@ -1,7 +1,7 @@
 pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
-import "../IEscrow.sol";
+import "../Escrow.sol";
 import "./TestERC721Token.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
@@ -12,17 +12,17 @@ contract TestListPack {
     }
 
     Purchase[] public purchases;
-    IEscrow escrow;
+    Escrow escrow;
     TestERC721Token asset;
 
-    constructor(IEscrow _escrow, TestERC721Token _asset) public {
+    constructor(Escrow _escrow, TestERC721Token _asset) public {
         escrow = _escrow;
         asset = _asset;
     }
 
     function purchase(uint256 count) public {
 
-        IEscrow.Vault memory vault = _createVault(count);
+        Escrow.Vault memory vault = _createVault(count);
 
         uint256 id = purchases.push(Purchase({
             count: count
@@ -40,7 +40,7 @@ contract TestListPack {
         delete purchases[purchaseID];
     }
 
-    function _createVault(uint256 count) internal view returns (IEscrow.Vault memory) {
+    function _createVault(uint256 count) internal view returns (Escrow.Vault memory) {
 
         // predict token IDs
         uint[] memory ids = new uint[](count);
@@ -49,7 +49,7 @@ contract TestListPack {
             ids[i] = start + i;
         }
 
-        return IEscrow.Vault({
+        return Escrow.Vault({
             player: msg.sender,
             admin: msg.sender,
             asset: address(asset),

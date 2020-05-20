@@ -3,7 +3,7 @@ pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20Burnable.sol";
 import "@imtbl/platform/contracts/token/TradeToggleERC20.sol";
-import "@imtbl/platform/contracts/escrow/IEscrow.sol";
+import "@imtbl/platform/contracts/escrow/Escrow.sol";
 import "../S1Vendor.sol";
 import "../pack/IPack.sol";
 
@@ -31,8 +31,8 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
         IReferral _referral,
         bytes32 _sku,
         uint256 _price,
-        ICreditCardEscrow _escrow,
-        IPurchaseProcessor _pay
+        CreditCardEscrow _escrow,
+        PurchaseProcessor _pay
     ) public
         S1Vendor(_referral, _sku, _price, _escrow, _pay)
         TradeToggleERC20(_name, _symbol, 0)
@@ -55,13 +55,13 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
     function purchaseFor(
         address payable _user,
         uint256 _quantity,
-        IPurchaseProcessor.PaymentParams memory _payment,
+        PurchaseProcessor.PaymentParams memory _payment,
         address payable _referrer
-    ) public payable returns (IPurchaseProcessor.Receipt memory) {
+    ) public payable returns (PurchaseProcessor.Receipt memory) {
 
         require(cap == 0 || cap >= sold + _quantity, "IM:CappedVendor: product cap has been exhausted");
 
-        IPurchaseProcessor.Receipt memory receipt = super.purchaseFor(
+        PurchaseProcessor.Receipt memory receipt = super.purchaseFor(
             _user,
             _quantity,
             _payment,
@@ -70,11 +70,11 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
 
         sold += _quantity;
 
-        if (_payment.currency == IPurchaseProcessor.Currency.ETH || _payment.escrowFor == 0) {
+        if (_payment.currency == PurchaseProcessor.Currency.ETH || _payment.escrowFor == 0) {
             _mintChests(_user, _quantity, receipt.id);
         } else {
             // escrow the chests
-            IEscrow.Vault memory vault = IEscrow.Vault({
+            Escrow.Vault memory vault = Escrow.Vault({
                 player: _user,
                 admin: address(escrow),
                 asset: address(this),

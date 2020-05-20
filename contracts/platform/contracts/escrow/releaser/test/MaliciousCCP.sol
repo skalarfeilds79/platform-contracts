@@ -1,17 +1,17 @@
 pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
-import "../ICreditCardEscrow.sol";
+import "../CreditCardEscrow.sol";
 import "../../test/TestERC20Token.sol";
 import "../../test/TestERC721Token.sol";
 
 contract MaliciousCCP {
 
-    IEscrow escrow;
+    Escrow escrow;
     TestERC20Token erc20;
     TestERC721Token erc721;
 
-    constructor(IEscrow _escrow, TestERC20Token _erc20, TestERC721Token _erc721) public {
+    constructor(Escrow _escrow, TestERC20Token _erc20, TestERC721Token _erc721) public {
         escrow = _escrow;
         erc20 = _erc20;
         erc721 = _erc721;
@@ -19,7 +19,7 @@ contract MaliciousCCP {
 
     function stealERC20(address user, uint256 count) public {
 
-        IEscrow.Vault memory vault = IEscrow.Vault({
+        Escrow.Vault memory vault = Escrow.Vault({
             player: user,
             admin: user,
             asset: address(erc20),
@@ -36,7 +36,7 @@ contract MaliciousCCP {
 
     function stealERC721(address user, uint256 low, uint256 high) public {
 
-        IEscrow.Vault memory vault = IEscrow.Vault({
+        Escrow.Vault memory vault = Escrow.Vault({
             player: user,
             admin: user,
             asset: address(erc721),

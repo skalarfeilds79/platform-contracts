@@ -107,7 +107,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
 
         IEscrow.Vault memory vault = IEscrow.Vault({
             player: _commitment.recipient,
-            releaser: address(escrow),
+            admin: address(escrow),
             asset: address(cards),
             balance: 0,
             lowTokenID: low,
@@ -158,7 +158,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
 
         IEscrow.Vault memory vault = IEscrow.Vault({
             player: _commitment.recipient,
-            releaser: address(escrow),
+            admin: address(escrow),
             asset: address(raffle),
             balance: totalTickets,
             lowTokenID: 0,

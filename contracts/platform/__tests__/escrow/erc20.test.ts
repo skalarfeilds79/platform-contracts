@@ -50,7 +50,7 @@ describe('ERC20Escrow', () => {
       await erc20.approve(escrow.address, 1000);
       const vault = {
         player: user.address,
-        releaser: user.address,
+        admin: user.address,
         asset: erc20.address,
         balance: 1000,
         lowTokenID: 0,
@@ -65,7 +65,7 @@ describe('ERC20Escrow', () => {
       await erc20.approve(escrow.address, 1000);
       const vault = {
         player: user.address,
-        releaser: user.address,
+        admin: user.address,
         asset: erc20.address,
         balance: 100,
         lowTokenID: 0,
@@ -82,7 +82,7 @@ describe('ERC20Escrow', () => {
       await erc20.approve(escrow.address, 1000);
       const vault = {
         player: user.address,
-        releaser: ZERO_EX,
+        admin: ZERO_EX,
         asset: erc20.address,
         balance: 100,
         lowTokenID: 0,
@@ -97,7 +97,7 @@ describe('ERC20Escrow', () => {
       await erc20.approve(escrow.address, 1000);
       const vault = {
         player: user.address,
-        releaser: user.address,
+        admin: user.address,
         asset: erc20.address,
         balance: 1000,
         lowTokenID: 0,
@@ -124,7 +124,7 @@ describe('ERC20Escrow', () => {
       await erc20.approve(escrow.address, 1000);
       const vault = {
         player: user.address,
-        releaser: user.address,
+        admin: user.address,
         asset: erc20.address,
         balance: 1000,
         lowTokenID: 0,
@@ -140,7 +140,7 @@ describe('ERC20Escrow', () => {
       await erc20.approve(escrow.address, 1000);
       const vault = {
         player: user.address,
-        releaser: other.address,
+        admin: other.address,
         asset: erc20.address,
         balance: 1000,
         lowTokenID: 0,
@@ -158,7 +158,7 @@ describe('ERC20Escrow', () => {
       await erc20.approve(escrow.address, 1000);
       const vault = {
         player: user.address,
-        releaser: user.address,
+        admin: user.address,
         asset: erc20.address,
         balance: 1000,
         lowTokenID: 0,

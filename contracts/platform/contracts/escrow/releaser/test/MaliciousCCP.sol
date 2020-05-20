@@ -21,7 +21,7 @@ contract MaliciousCCP {
 
         IEscrow.Vault memory vault = IEscrow.Vault({
             player: user,
-            releaser: user,
+            admin: user,
             asset: address(erc20),
             balance: count,
             lowTokenID: 0,
@@ -38,7 +38,7 @@ contract MaliciousCCP {
 
         IEscrow.Vault memory vault = IEscrow.Vault({
             player: user,
-            releaser: user,
+            admin: user,
             asset: address(erc721),
             balance: 0,
             lowTokenID: low,

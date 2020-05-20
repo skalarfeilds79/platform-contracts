@@ -19,7 +19,7 @@ contract TestChest {
 
         IEscrow.Vault memory vault = IEscrow.Vault({
             player: msg.sender,
-            releaser: msg.sender,
+            admin: msg.sender,
             asset: address(asset),
             balance: count,
             lowTokenID: 0,

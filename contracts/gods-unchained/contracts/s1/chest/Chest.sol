@@ -76,7 +76,7 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
             // escrow the chests
             IEscrow.Vault memory vault = IEscrow.Vault({
                 player: _user,
-                releaser: address(escrow),
+                admin: address(escrow),
                 asset: address(this),
                 balance: _quantity,
                 lowTokenID: 0,

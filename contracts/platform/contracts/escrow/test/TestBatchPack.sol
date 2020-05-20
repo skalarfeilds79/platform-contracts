@@ -28,7 +28,7 @@ contract TestBatchPack {
 
         IEscrow.Vault memory vault = IEscrow.Vault({
             player: msg.sender,
-            releaser: msg.sender,
+            admin: msg.sender,
             asset: address(asset),
             balance: 0,
             lowTokenID: low,

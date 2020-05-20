@@ -27,7 +27,7 @@ contract TestCreditCardPack {
 
         IEscrow.Vault memory vault = IEscrow.Vault({
             player: user,
-            releaser: address(escrow),
+            admin: address(escrow),
             asset: address(erc20),
             balance: count,
             lowTokenID: 0,
@@ -52,7 +52,7 @@ contract TestCreditCardPack {
 
         IEscrow.Vault memory vault = IEscrow.Vault({
             player: user,
-            releaser: address(escrow),
+            admin: address(escrow),
             asset: address(erc721),
             balance: 0,
             lowTokenID: low,

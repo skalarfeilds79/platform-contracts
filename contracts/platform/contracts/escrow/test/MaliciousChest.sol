@@ -64,7 +64,7 @@ contract MaliciousChest {
     function _createVault(uint256 count) internal view returns (IEscrow.Vault memory) {
         return IEscrow.Vault({
             player: msg.sender,
-            releaser: msg.sender,
+            admin: msg.sender,
             asset: address(asset),
             balance: count,
             lowTokenID: 0,

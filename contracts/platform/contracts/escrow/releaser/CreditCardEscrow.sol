@@ -338,12 +338,10 @@ contract CreditCardEscrow is Ownable, ICreditCardEscrow {
             "IM:CreditCardEscrow: destruction period must have expired"
         );
 
-        // don't try to burn the assets
-        // just leave in the contract
-
         delete locks[_id];
-
         emit Destroyed(_id);
+
+        escrowProtocol.destroy(_id);
     }
 
     /**
@@ -369,8 +367,8 @@ contract CreditCardEscrow is Ownable, ICreditCardEscrow {
         );
 
         require(
-            _vault.releaser == address(this),
-            "IM:CreditCardEscrow: must be releasable by this contract"
+            _vault.admin == address(this),
+            "IM:CreditCardEscrow: admin must be this contract"
         );
 
         // escrow the assets with this contract as the releaser

@@ -1,6 +1,6 @@
 {
   "name": "@imtbl/test-utils",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "license": "MIT",
@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "@0xproject/types": "^1.1.4",
-    "@imtbl/common-types": "^2.0.0-alpha.5",
+    "@imtbl/common-types": "^2.0.0-alpha.6",
     "@types/bignumber.js": "^5.0.0",
     "@types/jest": "^24.0.21",
     "@types/lodash": "^4.14.137",

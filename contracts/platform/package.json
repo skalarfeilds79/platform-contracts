@@ -2,8 +2,8 @@
   "name": "@imtbl/platform",
   "version": "2.0.13",
   "description": "Solidity contracts for the Immutable platform.",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "main": "dist/src/index.js",
+  "typings": "dist/src/index.d.ts",
   "files": [
     "contracts/**/**.sol",
     "dist"
@@ -16,8 +16,8 @@
     "generate-typings": "npx @imtbl/isaac build -o src/contracts",
     "build": "yarn lint:sol && yarn truffle compile && yarn generate-typings && yarn tsc",
     "deploy": "yarn ts-node deployment/deploy.ts",
-    "test": "yarn build && yarn reset-test-evm && yarn jest __tests__/escrow --runInBand",
-    "test:watch": "yarn reset-test-evm && yarn jest __tests__/escrow --runInBand --watch",
+    "test": "yarn build && yarn reset-test-evm && yarn jest __tests__/contracts --runInBand",
+    "test:watch": "yarn reset-test-evm && yarn jest __tests__/contracts --runInBand --watch",
     "reset-test-evm": "node scripts/reset-test-evm.js",
     "prepare": "yarn build"
   },

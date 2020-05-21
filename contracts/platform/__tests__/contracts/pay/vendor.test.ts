@@ -1,12 +1,12 @@
 import 'jest';
 
-import { TestVendor, PurchaseProcessor } from '../../src/contracts';
+import { TestVendor, PurchaseProcessor } from '../../../src/contracts';
 
 import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
 import { keccak256, BigNumber } from 'ethers/utils';
-import { getETHPayment, getSignedPayment, Order, PaymentParams, Currency } from '../../src/';
-import { ETHUSDMockOracle } from '../../src/contracts/ETHUSDMockOracle';
+import { getETHPayment, getSignedPayment, Order, PaymentParams } from '../../../src/';
+import { ETHUSDMockOracle } from '../../../src/contracts/ETHUSDMockOracle';
 
 const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();
@@ -56,11 +56,13 @@ describe('Vendor', () => {
       value: number | BigNumber,
     ) {
       const order = {
-        sku, totalPrice, quantity,
+        sku,
+        totalPrice,
+        quantity,
         assetRecipient: user.address,
         changeRecipient: other.address,
         currency: Currency.USDCents,
-        alreadyPaid: 0
+        alreadyPaid: 0,
       };
       await pay.setSellerApproval(vendor.address, [sku], approved);
       await vendor.processPayment(order, getETHPayment(), { value });
@@ -121,7 +123,9 @@ describe('Vendor', () => {
       value: number | BigNumber,
     ) {
       const order = {
-        sku, totalPrice, quantity,
+        sku,
+        totalPrice,
+        quantity,
         assetRecipient: user.address,
         changeRecipient: other.address,
         currency: Currency.ETH,
@@ -154,7 +158,6 @@ describe('Vendor', () => {
       const otherAfter = await other.getBalance();
       expect(treasuryAfter.toString()).toBe(treasuryBefore.add(actual).toString());
       expect(otherAfter.toString()).toBe(otherBefore.add(paid - actual).toString());
-
     });
   });
 
@@ -184,7 +187,7 @@ describe('Vendor', () => {
         currency: Currency.ETH,
         assetRecipient: user.address,
         changeRecipient: user.address,
-        alreadyPaid: 0
+        alreadyPaid: 0,
       };
     }
 
@@ -243,7 +246,7 @@ describe('Vendor', () => {
         currency: 1,
         assetRecipient: user.address,
         changeRecipient: user.address,
-        alreadyPaid: 0
+        alreadyPaid: 0,
       };
     }
 

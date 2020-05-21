@@ -1,13 +1,13 @@
 import 'jest';
 jest.setTimeout(30000);
 
-import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
+import { Ganache, Blockchain,expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { Cards, Forge } from '../../src/contracts';
 import { Wallet, ethers } from 'ethers';
 
 ethers.errors.setLogLevel('error');
-const provider = new ethers.providers.JsonRpcProvider();
-const blockchain = new Blockchain();
+const provider = new Ganache(Ganache.DefaultOptions);
+const blockchain = new Blockchain(provider);
 
 describe('Forge', () => {
   const [ownerWallet, minterWallet, userWallet] = generatedWallets(provider);

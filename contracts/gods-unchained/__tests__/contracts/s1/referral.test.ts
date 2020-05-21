@@ -4,11 +4,12 @@ import { Wallet, ethers } from 'ethers';
 
 ethers.errors.setLogLevel('error');
 
-import { Blockchain, generatedWallets } from '@imtbl/test-utils';
+import { Ganache, Blockchain,generatedWallets } from '@imtbl/test-utils';
 import { Referral } from '../../../src/contracts';
 
-const provider = new ethers.providers.JsonRpcProvider();
-const blockchain = new Blockchain();
+
+const provider = new Ganache(Ganache.DefaultOptions);
+const blockchain = new Blockchain(provider);
 
 describe('Referral', () => {
 

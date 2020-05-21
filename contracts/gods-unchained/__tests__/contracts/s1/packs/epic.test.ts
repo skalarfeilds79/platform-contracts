@@ -1,6 +1,6 @@
 import 'jest';
 
-import { Blockchain, generatedWallets } from '@imtbl/test-utils';
+import { Ganache, Blockchain, generatedWallets } from '@imtbl/test-utils';
 import {
   Referral,
   EpicPack,
@@ -11,7 +11,7 @@ import {
 import { Wallet, ethers } from 'ethers';
 import { keccak256 } from 'ethers/utils';
 import { PurchaseProcessor, CreditCardEscrow, Escrow, Beacon } from '@imtbl/platform/src/contracts';
-import { getSignedPayment, Currency, Order } from '@imtbl/platform/src/pay';
+import { getSignedPayment, Currency, Order } from '@imtbl/platform';
 
 import {
   ETHUSDMockOracle,
@@ -22,8 +22,8 @@ import { epics, legendaries } from './protos';
 
 jest.setTimeout(600000);
 
-const provider = new ethers.providers.JsonRpcProvider();
-const blockchain = new Blockchain();
+const provider = new Ganache(Ganache.DefaultOptions);
+const blockchain = new Blockchain(provider);
 
 const ZERO_EX = '0x0000000000000000000000000000000000000000';
 

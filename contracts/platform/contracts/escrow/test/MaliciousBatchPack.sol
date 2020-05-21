@@ -1,7 +1,7 @@
 pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
-import "../IEscrow.sol";
+import "../Escrow.sol";
 import "./TestERC721Token.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
@@ -12,17 +12,17 @@ contract MaliciousBatchPack {
     }
 
     Purchase[] public purchases;
-    IEscrow escrow;
+    Escrow escrow;
     TestERC721Token asset;
 
-    constructor(IEscrow _escrow, TestERC721Token _asset) public {
+    constructor(Escrow _escrow, TestERC721Token _asset) public {
         escrow = _escrow;
         asset = _asset;
     }
 
     function maliciousPush(uint256 count) external {
 
-        IEscrow.Vault memory vault = _createVault(count);
+        Escrow.Vault memory vault = _createVault(count);
 
         uint256 id = purchases.push(Purchase({
             count: count
@@ -35,7 +35,7 @@ contract MaliciousBatchPack {
 
     function maliciousPull(uint256 count) external {
 
-        IEscrow.Vault memory vault = _createVault(count);
+        Escrow.Vault memory vault = _createVault(count);
 
         uint256 id = purchases.push(Purchase({
             count: count
@@ -50,7 +50,7 @@ contract MaliciousBatchPack {
         require(msg.sender == address(escrow), "must be the escrow contract");
         uint256 count = purchases[purchaseID].count;
         delete purchases[purchaseID];
-        IEscrow.Vault memory vault = _createVault(count);
+        Escrow.Vault memory vault = _createVault(count);
 
         bytes memory data = abi.encodeWithSignature("emptyHook()");
 
@@ -65,21 +65,22 @@ contract MaliciousBatchPack {
 
     function pullAttackHook(uint256 purchaseID) external {
         require(msg.sender == address(escrow), "must be the escrow contract");
+
         uint256 count = purchases[purchaseID].count;
         delete purchases[purchaseID];
-        IEscrow.Vault memory vault = _createVault(count);
+        Escrow.Vault memory vault = _createVault(count);
 
         asset.mint(address(this), count);
         asset.setApprovalForAll(address(escrow), true);
         escrow.escrow(vault, address(this));
     }
 
-    function _createVault(uint256 count) internal view returns (IEscrow.Vault memory) {
+    function _createVault(uint256 count) internal view returns (Escrow.Vault memory) {
         // predict what the token IDs will be
         uint256 low = asset.totalSupply();
         uint256 high = low + count;
 
-        return IEscrow.Vault({
+        return Escrow.Vault({
             player: msg.sender,
             admin: msg.sender,
             asset: address(asset),

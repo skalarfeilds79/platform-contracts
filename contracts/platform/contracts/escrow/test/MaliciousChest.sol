@@ -1,23 +1,23 @@
 pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
-import "../IEscrow.sol";
+import "../Escrow.sol";
 import "./TestERC20Token.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract MaliciousChest {
 
-    IEscrow escrow;
+    Escrow escrow;
     TestERC20Token asset;
 
-    constructor(IEscrow _escrow, TestERC20Token _asset) public {
+    constructor(Escrow _escrow, TestERC20Token _asset) public {
         escrow = _escrow;
         asset = _asset;
     }
 
     function maliciousPush(uint256 count) external {
 
-        IEscrow.Vault memory vault = _createVault(count);
+        Escrow.Vault memory vault = _createVault(count);
 
         bytes memory data = abi.encodeWithSignature("pushAttackHook(uint256)", count);
 
@@ -26,7 +26,7 @@ contract MaliciousChest {
 
     function maliciousPull(uint256 count) external {
 
-        IEscrow.Vault memory vault = _createVault(count);
+        Escrow.Vault memory vault = _createVault(count);
 
         bytes memory data = abi.encodeWithSignature("pullAttackHook(uint256)", count);
 
@@ -36,7 +36,7 @@ contract MaliciousChest {
     function pushAttackHook(uint256 count) external {
         require(msg.sender == address(escrow), "must be the escrow contract");
 
-        IEscrow.Vault memory vault = _createVault(count);
+        Escrow.Vault memory vault = _createVault(count);
 
         bytes memory data = abi.encodeWithSignature("emptyHook()");
 
@@ -53,7 +53,7 @@ contract MaliciousChest {
     function pullAttackHook(uint256 count) external {
         require(msg.sender == address(escrow), "must be the escrow contract");
 
-        IEscrow.Vault memory vault = _createVault(count);
+        Escrow.Vault memory vault = _createVault(count);
 
         asset.mint(address(this), count);
         asset.approve(address(escrow), 2**256-1);
@@ -61,8 +61,8 @@ contract MaliciousChest {
         escrow.escrow(vault, address(this));
     }
 
-    function _createVault(uint256 count) internal view returns (IEscrow.Vault memory) {
-        return IEscrow.Vault({
+    function _createVault(uint256 count) internal view returns (Escrow.Vault memory) {
+        return Escrow.Vault({
             player: msg.sender,
             admin: msg.sender,
             asset: address(asset),

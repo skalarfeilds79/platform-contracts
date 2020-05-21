@@ -20,7 +20,7 @@ contract TestBatchPack {
         asset = _asset;
     }
 
-    function purchase(uint256 count) public {
+    function purchase(uint256 count) external {
 
         // predict what the token IDs will be
         uint256 low = asset.totalSupply();
@@ -28,7 +28,7 @@ contract TestBatchPack {
 
         IEscrow.Vault memory vault = IEscrow.Vault({
             player: msg.sender,
-            releaser: msg.sender,
+            admin: msg.sender,
             asset: address(asset),
             balance: 0,
             lowTokenID: low,
@@ -45,11 +45,11 @@ contract TestBatchPack {
         escrow.callbackEscrow(vault, address(this), data);
     }
 
-    function escrowHook(uint256 purchaseID) public {
+    function escrowHook(uint256 purchaseID) external {
         require(msg.sender == address(escrow), "must be the escrow contract");
-        Purchase memory p = purchases[purchaseID];
-        asset.mint(address(escrow), p.count);
+        uint256 count = purchases[purchaseID].count;
         delete purchases[purchaseID];
+        asset.mint(address(escrow), count);
     }
 
 }

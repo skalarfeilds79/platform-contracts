@@ -7,8 +7,9 @@ import "@imtbl/platform/contracts/pay/IPurchaseProcessor.sol";
 import "@imtbl/platform/contracts/pay/vendor/IVendor.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";
+import "@openzeppelin/contracts/lifecycle/Pausable.sol";
 
-contract S1Vendor is IVendor, Ownable {
+contract S1Vendor is IVendor, Pausable, Ownable {
 
     using SafeMath for uint256;
 
@@ -29,8 +30,6 @@ contract S1Vendor is IVendor, Ownable {
     ICreditCardEscrow public escrow;
     // Payment processor
     IPurchaseProcessor public pay;
-    // Whether the contract is paused
-    bool public paused;
 
     constructor(
         IReferral _referral,

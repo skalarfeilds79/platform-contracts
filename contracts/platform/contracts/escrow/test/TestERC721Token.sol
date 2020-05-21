@@ -4,7 +4,7 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 contract TestERC721Token is ERC721 {
 
-    function mint(address to, uint256 count) public {
+    function mint(address to, uint256 count) external {
         uint x = supply;
         for (uint i = 0; i < count; i++) {
             _mint(to, x + i);

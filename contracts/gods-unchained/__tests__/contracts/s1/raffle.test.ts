@@ -1,6 +1,6 @@
 import 'jest';
 
-import { Blockchain, generatedWallets } from '@imtbl/test-utils';
+import { Ganache, Blockchain,generatedWallets } from '@imtbl/test-utils';
 import { Referral, RarePack, Cards, Chest, Raffle } from '../../../src/contracts';
 import { Wallet, ethers } from 'ethers';
 import { keccak256 } from 'ethers/utils';
@@ -10,8 +10,8 @@ jest.setTimeout(600000);
 
 ethers.errors.setLogLevel('error');
 
-const provider = new ethers.providers.JsonRpcProvider();
-const blockchain = new Blockchain();
+const provider = new Ganache(Ganache.DefaultOptions);
+const blockchain = new Blockchain(provider);
 
 const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
@@ -102,19 +102,13 @@ describe('Raffle', () => {
       expect(q).toBe(1);
     });
 
-    it('should purchase five packs with USD', async () => {
-      await purchasePacks(5);
+    it('should purchase two packs with USD', async () => {
+      await purchasePacks(2);
       const commitment = await rare.commitments(0);
       const q = commitment.ticketQuantity.toNumber();
-      expect(q).toBe(5);
+      expect(q).toBe(2);
     });
 
-    it('should purchase 100 packs with USD', async () => {
-      await purchasePacks(100);
-      const commitment = await rare.commitments(0);
-      const q = commitment.ticketQuantity.toNumber();
-      expect(q).toBe(100);
-    });
   });
 
   describe('mint', () => {
@@ -193,8 +187,8 @@ describe('Raffle', () => {
       expect(userBalance.toNumber()).toBe(0);
     });
 
-    it('should create cards from 5 packs', async () => {
-      await purchase(5, 100);
+    it('should create cards from 2 packs', async () => {
+      await purchase(2, 100);
       await rare.mint(0);
       const escrowBalance = await raffle.balanceOf(escrow.address);
       expect(escrowBalance.toNumber()).toBeGreaterThan(0);
@@ -211,9 +205,9 @@ describe('Raffle', () => {
       expect(userBalance.toNumber()).toBeGreaterThan(0);
     });
 
-    it('should create cards from 6 packs with no escrow', async () => {
-      await purchase(6, 0);
-      await mintTrackGas(0, '6 packs no escrow');
+    it('should create cards from 2 packs with no escrow', async () => {
+      await purchase(2, 0);
+      await mintTrackGas(0, '2 packs no escrow');
       const escrowBalance = await raffle.balanceOf(escrow.address);
       expect(escrowBalance.toNumber()).toBe(0);
       const userBalance = await raffle.balanceOf(owner.address);

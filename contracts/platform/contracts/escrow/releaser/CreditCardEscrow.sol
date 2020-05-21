@@ -103,7 +103,7 @@ contract CreditCardEscrow is Ownable, ICreditCardEscrow {
      *
      * @param _delay Number of blocks an escrow account must be marked for destruction before it is destroyed
      */
-    function setDestructionDelay(uint256 _delay) public onlyOwner {
+    function setDestructionDelay(uint256 _delay) external onlyOwner {
         destructionDelay = _delay;
     }
 
@@ -112,7 +112,7 @@ contract CreditCardEscrow is Ownable, ICreditCardEscrow {
      *
      * @param _destroyer Address of the destroyer account
      */
-    function setDestroyer(address _destroyer) public onlyOwner {
+    function setDestroyer(address _destroyer) external onlyOwner {
         require(
             _destroyer != destroyer,
             "IM:CreditCardEscrow: must change existing destroyer"
@@ -126,7 +126,7 @@ contract CreditCardEscrow is Ownable, ICreditCardEscrow {
      *
      * @param _delay Number of blocks a custodial escrow account must be marked for release
      */
-    function setReleaseDelay(uint256 _delay) public onlyOwner {
+    function setReleaseDelay(uint256 _delay) external onlyOwner {
         releaseDelay = _delay;
     }
 
@@ -149,9 +149,12 @@ contract CreditCardEscrow is Ownable, ICreditCardEscrow {
      *
      * @param _id The ID of the escrow account to be released
      */
-    function release(uint _id) public {
+    function release(uint _id) external {
 
         Lock memory lock = locks[_id];
+        // do first to avoid any re-entrancy risk
+        delete locks[_id];
+        emit Released(_id);
 
         require(
             lock.endTimestamp != 0,
@@ -178,9 +181,6 @@ contract CreditCardEscrow is Ownable, ICreditCardEscrow {
 
             escrowProtocol.release(_id, lock.releaseTo);
         }
-
-        delete locks[_id];
-        emit Released(_id);
     }
 
     /**
@@ -189,7 +189,7 @@ contract CreditCardEscrow is Ownable, ICreditCardEscrow {
      * @param _id The ID of the escrow account to be marked
      * @param _to The new owner of tese assets
      */
-    function requestRelease(uint _id, address _to) public onlyCustodian {
+    function requestRelease(uint _id, address _to) external onlyCustodian {
 
         Lock storage lock = locks[_id];
 
@@ -235,7 +235,7 @@ contract CreditCardEscrow is Ownable, ICreditCardEscrow {
      *
      * @param _id The ID of the escrow account to be unmarked
      */
-    function cancelRelease(uint _id) public onlyCustodian {
+    function cancelRelease(uint _id) external onlyCustodian {
 
         Lock storage lock = locks[_id];
 
@@ -265,7 +265,7 @@ contract CreditCardEscrow is Ownable, ICreditCardEscrow {
      *
      * @param _id The ID of the escrow account to be marked
      */
-    function requestDestruction(uint _id) public onlyDestroyer {
+    function requestDestruction(uint _id) external onlyDestroyer {
 
         Lock storage lock = locks[_id];
 
@@ -300,7 +300,7 @@ contract CreditCardEscrow is Ownable, ICreditCardEscrow {
      *
      * @param _id The ID of the escrow account to be unmarked
      */
-    function cancelDestruction(uint _id) public onlyDestroyer {
+    function cancelDestruction(uint _id) external onlyDestroyer {
 
         Lock storage lock = locks[_id];
 
@@ -338,12 +338,10 @@ contract CreditCardEscrow is Ownable, ICreditCardEscrow {
             "IM:CreditCardEscrow: destruction period must have expired"
         );
 
-        // don't try to burn the assets
-        // just leave in the contract
-
         delete locks[_id];
-
         emit Destroyed(_id);
+
+        escrowProtocol.destroy(_id);
     }
 
     /**
@@ -369,11 +367,12 @@ contract CreditCardEscrow is Ownable, ICreditCardEscrow {
         );
 
         require(
-            _vault.releaser == address(this),
-            "IM:CreditCardEscrow: must be releasable by this contract"
+            _vault.admin == address(this),
+            "IM:CreditCardEscrow: admin must be this contract"
         );
 
         // escrow the assets with this contract as the releaser
+        // trusted contract, no re-entrancy risk
         uint escrowID = escrowProtocol.callbackEscrow(_vault, _callbackTo, _callbackData);
 
         _lock(escrowID, _paymentID, _duration, _vault.player);
@@ -381,7 +380,7 @@ contract CreditCardEscrow is Ownable, ICreditCardEscrow {
         return escrowID;
     }
 
-    function getProtocol() public view returns (IEscrow) {
+    function getProtocol() external view returns (IEscrow) {
         return escrowProtocol;
     }
 

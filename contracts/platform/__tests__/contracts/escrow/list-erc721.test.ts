@@ -1,19 +1,19 @@
 import 'jest';
 
-import { Escrow, TestERC721Token, MaliciousBatchPack, TestBatchPack, TestERC20Token } from '../../src/contracts';
+import { Escrow, TestERC721Token, MaliciousListPack, TestListPack } from '../../../src/contracts';
 
-import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
+import { Ganache, Blockchain,expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
 
-const provider = new ethers.providers.JsonRpcProvider();
-const blockchain = new Blockchain();
+const provider = new Ganache(Ganache.DefaultOptions);
+const blockchain = new Blockchain(provider);
 
-const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
 ethers.errors.setLogLevel('error');
 
-describe('BatchERC271Escrow', () => {
+const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
+describe('ListERC271Escrow', () => {
   const [user, other] = generatedWallets(provider);
 
   beforeEach(async () => {
@@ -25,8 +25,8 @@ describe('BatchERC271Escrow', () => {
     await blockchain.revertAsync();
   });
 
-  async function checkBalance(token: TestERC721Token, address: string, expected: number) {
-    const balance = await token.balanceOf(address);
+  async function checkBalance(erc20: TestERC721Token, address: string, expected: number) {
+    const balance = await erc20.balanceOf(address);
     expect(balance.toNumber()).toBe(expected);
   }
 
@@ -37,29 +37,26 @@ describe('BatchERC271Escrow', () => {
   });
 
   describe('#escrow', () => {
-
     let escrow: Escrow;
     let erc721: TestERC721Token;
-    let erc20: TestERC20Token;
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       escrow = await Escrow.deploy(user);
       erc721 = await TestERC721Token.deploy(user);
-      erc20 = await TestERC20Token.deploy(user);
     });
 
-    it('should be able able to escrow', async () => {
+    it('should be able to escrow', async () => {
       await erc721.mint(user.address, 1);
       await checkBalance(erc721, user.address, 1);
       await erc721.setApprovalForAll(escrow.address, true);
       const vault = {
         player: user.address,
-        releaser: user.address,
+        admin: user.address,
         asset: erc721.address,
         balance: 0,
         lowTokenID: 0,
-        highTokenID: 1,
-        tokenIDs: []
+        highTokenID: 0,
+        tokenIDs: [0],
       };
       await escrow.escrow(vault, user.address);
     });
@@ -69,27 +66,12 @@ describe('BatchERC271Escrow', () => {
       await erc721.setApprovalForAll(escrow.address, true);
       const vault = {
         player: user.address,
-        releaser: user.address,
+        admin: user.address,
         asset: erc721.address,
         balance: 0,
         lowTokenID: 0,
         highTokenID: 0,
-        tokenIDs: []
-      };
-      await expectRevert(escrow.escrow(vault, user.address));
-    });
-
-    it('should not be able to escrow invalid range', async () => {
-      await erc721.mint(user.address, 1);
-      await erc721.setApprovalForAll(escrow.address, true);
-      const vault = {
-        player: user.address,
-        releaser: user.address,
-        asset: erc721.address,
-        balance: 0,
-        lowTokenID: 10,
-        highTokenID: 0,
-        tokenIDs: []
+        tokenIDs: [],
       };
       await expectRevert(escrow.escrow(vault, user.address));
     });
@@ -99,12 +81,12 @@ describe('BatchERC271Escrow', () => {
       await erc721.setApprovalForAll(escrow.address, true);
       const vault = {
         player: user.address,
-        releaser: user.address,
+        admin: user.address,
         asset: ZERO_EX,
         balance: 0,
         lowTokenID: 0,
-        highTokenID: 1,
-        tokenIDs: []
+        highTokenID: 0,
+        tokenIDs: [0],
       };
       await expectRevert(escrow.escrow(vault, user.address));
     });
@@ -114,64 +96,30 @@ describe('BatchERC271Escrow', () => {
       await erc721.setApprovalForAll(escrow.address, true);
       const vault = {
         player: user.address,
-        releaser: ZERO_EX,
+        admin: ZERO_EX,
         asset: erc721.address,
         balance: 0,
         lowTokenID: 0,
-        highTokenID: 1,
-        tokenIDs: []
-      };
-      await expectRevert(escrow.escrow(vault, user.address));
-    });
-
-    it('should not be able to escrow with erc20s', async () => {
-      const len = 10;
-      await erc721.mint(user.address, len);
-      await erc20.mint(user.address, 50);
-      await checkBalance(erc721, user.address, len);
-      await erc721.setApprovalForAll(escrow.address, true);
-      const vault = {
-        player: user.address,
-        releaser: user.address,
-        asset: erc721.address,
-        balance: 50,
-        lowTokenID: 0,
-        highTokenID: len,
-        tokenIDs: []
-      };
-      await expectRevert(escrow.escrow(vault, user.address));
-    });
-
-    it('should not be able to escrow with list', async () => {
-      const len = 10;
-      await erc721.mint(user.address, len);
-      await checkBalance(erc721, user.address, len);
-      await erc721.setApprovalForAll(escrow.address, true);
-      const vault = {
-        player: user.address,
-        releaser: user.address,
-        asset: erc721.address,
-        balance: 0,
-        lowTokenID: 0,
-        highTokenID: 5,
-        tokenIDs: [5, 6, 7, 8, 9]
+        highTokenID: 0,
+        tokenIDs: [0],
       };
       await expectRevert(escrow.escrow(vault, user.address));
     });
 
     it('should be able to escrow 10 tokens', async () => {
       const len = 10;
+      const tokenIDs = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
       await erc721.mint(user.address, len);
       await checkBalance(erc721, user.address, len);
       await erc721.setApprovalForAll(escrow.address, true);
       const vault = {
+        tokenIDs,
         player: user.address,
-        releaser: user.address,
+        admin: user.address,
         asset: erc721.address,
         balance: 0,
         lowTokenID: 0,
-        highTokenID: len,
-        tokenIDs: []
+        highTokenID: 0,
       };
       await escrow.escrow(vault, user.address);
     });
@@ -182,12 +130,12 @@ describe('BatchERC271Escrow', () => {
       await checkBalance(erc721, user.address, len);
       const vault = {
         player: user.address,
-        releaser: user.address,
+        admin: user.address,
         asset: erc721.address,
         balance: 0,
         lowTokenID: 0,
-        highTokenID: 1,
-        tokenIDs: []
+        highTokenID: 0,
+        tokenIDs: [0],
       };
       await expectRevert(escrow.escrow(vault, user.address));
     });
@@ -195,28 +143,26 @@ describe('BatchERC271Escrow', () => {
     it('should not be able to escrow unowned tokens', async () => {
       const len = 1;
       await erc721.mint(other.address, len);
-      // TODO: change owner
+      // TODO: change from address
       await erc721.setApprovalForAll(escrow.address, true);
       const vault = {
         player: user.address,
-        releaser: user.address,
+        admin: user.address,
         asset: erc721.address,
         balance: 0,
         lowTokenID: 0,
-        highTokenID: len,
-        tokenIDs: []
+        highTokenID: 0,
+        tokenIDs: [0],
       };
       await expectRevert(escrow.escrow(vault, user.address));
     });
-
   });
 
   describe('#release', () => {
-
     let escrow: Escrow;
     let erc721: TestERC721Token;
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       escrow = await Escrow.deploy(user);
       erc721 = await TestERC721Token.deploy(user);
     });
@@ -226,12 +172,12 @@ describe('BatchERC271Escrow', () => {
       await erc721.setApprovalForAll(escrow.address, true);
       const vault = {
         player: user.address,
-        releaser: other.address,
+        admin: other.address,
         asset: erc721.address,
         balance: 0,
         lowTokenID: 0,
-        highTokenID: 1,
-        tokenIDs: []
+        highTokenID: 0,
+        tokenIDs: [0],
       };
       await escrow.escrow(vault, user.address);
       await expectRevert(escrow.release(0, user.address));
@@ -244,12 +190,12 @@ describe('BatchERC271Escrow', () => {
       await erc721.setApprovalForAll(escrow.address, true);
       const vault = {
         player: user.address,
-        releaser: user.address,
+        admin: user.address,
         asset: erc721.address,
         balance: 0,
         lowTokenID: 0,
-        highTokenID: 1,
-        tokenIDs: []
+        highTokenID: 0,
+        tokenIDs: [0],
       };
       await escrow.escrow(vault, user.address);
       await checkBalance(erc721, user.address, 0);
@@ -258,21 +204,19 @@ describe('BatchERC271Escrow', () => {
       await checkBalance(erc721, user.address, 1);
       await checkBalance(erc721, escrow.address, 0);
     });
-
   });
 
   describe('#callbackEscrow', () => {
-
     let escrow: Escrow;
     let erc721: TestERC721Token;
-    let malicious: MaliciousBatchPack;
-    let pack: TestBatchPack;
+    let malicious: MaliciousListPack;
+    let pack: TestListPack;
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       escrow = await Escrow.deploy(user);
       erc721 = await TestERC721Token.deploy(user);
-      malicious = await MaliciousBatchPack.deploy(user, escrow.address, erc721.address);
-      pack = await TestBatchPack.deploy(user, escrow.address, erc721.address);
+      malicious = await MaliciousListPack.deploy(user, escrow.address, erc721.address);
+      pack = await TestListPack.deploy(user, escrow.address, erc721.address);
     });
 
     it('should be able to create a vault using a callback', async () => {
@@ -287,6 +231,6 @@ describe('BatchERC271Escrow', () => {
       await expectRevert(malicious.maliciousPull(5));
     });
 
+    //   // TODO: tests for where the assets are already in escrow
   });
-
 });

@@ -71,7 +71,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
      *
      * @param _chest the chest contract for this pack
      */
-    function setChest(address _chest) public onlyOwner {
+    function setChest(address _chest) external onlyOwner {
         require(
             chest == address(0),
             "S1Pack: must not have already set chest"
@@ -83,7 +83,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
      *
      * @param _commitmentID the ID of the commitment
      */
-    function mint(uint256 _commitmentID) public {
+    function mint(uint256 _commitmentID) external {
         Commitment memory commitment = commitments[_commitmentID];
         require(
             commitment.recipient != address(0),
@@ -107,7 +107,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
 
         IEscrow.Vault memory vault = IEscrow.Vault({
             player: _commitment.recipient,
-            releaser: address(escrow),
+            admin: address(escrow),
             asset: address(cards),
             balance: 0,
             lowTokenID: low,
@@ -158,7 +158,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
 
         IEscrow.Vault memory vault = IEscrow.Vault({
             player: _commitment.recipient,
-            releaser: address(escrow),
+            admin: address(escrow),
             asset: address(raffle),
             balance: totalTickets,
             lowTokenID: 0,
@@ -177,7 +177,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         );
     }
 
-    function ticketsEscrowHook(uint256 _commitmentID) public {
+    function ticketsEscrowHook(uint256 _commitmentID) external {
         address protocol = address(escrow.getProtocol());
 
         require(
@@ -192,15 +192,16 @@ contract Pack is IPack, S1Vendor, RarityProvider {
             "S1Pack: must have tickets available"
         );
 
-        _createTickets(_commitmentID, commitment, protocol);
-        commitments[_commitmentID].ticketQuantity = 0;
         // if there's nothing left to do on this purchase, clear it
         if (commitments[_commitmentID].packQuantity == 0) {
             delete commitments[_commitmentID];
+        } else {
+            commitments[_commitmentID].ticketQuantity = 0;
         }
+        _createTickets(_commitmentID, commitment, protocol);
     }
 
-    function cardsEscrowHook(uint256 _commitmentID) public {
+    function cardsEscrowHook(uint256 _commitmentID) external {
         address protocol = address(escrow.getProtocol());
 
         require(
@@ -215,12 +216,13 @@ contract Pack is IPack, S1Vendor, RarityProvider {
             "S1Pack: must have cards available"
         );
 
-        _createCards(_commitmentID, commitment, protocol);
-        commitments[_commitmentID].packQuantity = 0;
         // if there's nothing left to do on this purchase, clear it
         if (commitments[_commitmentID].ticketQuantity == 0) {
             delete commitments[_commitmentID];
+        } else {
+            commitments[_commitmentID].packQuantity = 0;
         }
+        _createCards(_commitmentID, commitment, protocol);
     }
 
     /** @dev Purchase packs for a user
@@ -257,7 +259,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
     function _createTickets(
         uint256 _commitmentID,
         Commitment memory _commitment,
-        address _owner
+        address _recipient
     ) internal {
 
         if (_commitment.ticketQuantity == 0) {
@@ -272,7 +274,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
             totalTickets += qty;
             ticketQuantities[i] = qty;
         }
-        raffle.mint(_owner, totalTickets);
+        raffle.mint(_recipient, totalTickets);
         emit TicketsMinted(_commitmentID, ticketQuantities);
         emit PaymentERC20Minted(
             _commitment.paymentID,
@@ -284,7 +286,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
     function _createCards(
         uint256 _commitmentID,
         Commitment memory _commitment,
-        address _owner
+        address _recipient
     ) internal {
         uint256 randomness = _getRandomness(_commitmentID, _commitment);
         uint cardCount = _commitment.packQuantity * 5;
@@ -293,7 +295,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         for (uint i = 0; i < cardCount; i++) {
             (protos[i], qualities[i]) = _getCardDetails(i, randomness);
         }
-        uint256 lowTokenID = cards.mintCards(_owner, protos, qualities);
+        uint256 lowTokenID = cards.mintCards(_recipient, protos, qualities);
         uint256 highTokenID = lowTokenID + protos.length;
 
         emit PackCardsMinted(_commitmentID, lowTokenID, highTokenID);
@@ -305,7 +307,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         );
     }
 
-    function openChests(address _owner, uint256 _quantity) public {
+    function openChests(address _recipient, uint256 _quantity) external {
         require(
             msg.sender == chest,
             "S1Pack: must be the chest contract"
@@ -316,10 +318,10 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         Commitment memory commitment = Commitment({
             commitBlock: commitBlock,
             packQuantity: _quantity * 6,
-            recipient: _owner,
+            recipient: _recipient,
             escrowFor: 0,
             paymentID: 0,
-            ticketQuantity: paused ? 0 : _quantity * 6
+            ticketQuantity: paused() ? 0 : _quantity * 6
         });
 
         commitments[commitmentID] = commitment;

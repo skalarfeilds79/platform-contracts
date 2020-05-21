@@ -53,7 +53,6 @@ describe('02_season_one', () => {
   let processor: PurchaseProcessor;
   let escrow: Escrow;
   let cards: Cards;
-  let s1Vendor: S1Vendor;
   let s1Raffle: Raffle;
   let s1Sale: S1Sale;
   let s1Referral: Referral;
@@ -79,16 +78,15 @@ describe('02_season_one', () => {
     beacon = await Beacon.at(wallet, addressBook.platform.beaconAddress);
     processor = await PurchaseProcessor.at(wallet, addressBook.platform.processorAddress);
     escrow = await Escrow.at(wallet, addressBook.platform.escrowAddress);
-    cards = await Cards.at(wallet, addressBook.godsUnchained.cardsAddress);
-    s1Vendor = await S1Vendor.at(wallet, addressBook.godsUnchained.seasonOne.vendorAddress);
-    s1Raffle = await Raffle.at(wallet, addressBook.godsUnchained.seasonOne.raffleAddress);
-    s1Sale = await S1Sale.at(wallet, addressBook.godsUnchained.seasonOne.saleAddress);
-    s1Referral = await Referral.at(wallet, addressBook.godsUnchained.seasonOne.referralAddress);
-    epicPack = await EpicPack.at(wallet, addressBook.godsUnchained.seasonOne.epicPackAddress);
-    rarePack = await RarePack.at(wallet, addressBook.godsUnchained.seasonOne.rarePackAddress);
-    shinyPack = await ShinyPack.at(wallet, addressBook.godsUnchained.seasonOne.shinyPackAddress);
-    oracle = await ETHUSDMockOracle.at(wallet, addressBook.platform.ethUSDMockOracleAddress);
-    legendaryPack = await LegendaryPack.at(
+    cards = Cards.at(wallet, addressBook.godsUnchained.cardsAddress);
+    s1Raffle = Raffle.at(wallet, addressBook.godsUnchained.seasonOne.raffleAddress);
+    s1Sale = S1Sale.at(wallet, addressBook.godsUnchained.seasonOne.saleAddress);
+    s1Referral = Referral.at(wallet, addressBook.godsUnchained.seasonOne.referralAddress);
+    epicPack = EpicPack.at(wallet, addressBook.godsUnchained.seasonOne.epicPackAddress);
+    rarePack = RarePack.at(wallet, addressBook.godsUnchained.seasonOne.rarePackAddress);
+    shinyPack = ShinyPack.at(wallet, addressBook.godsUnchained.seasonOne.shinyPackAddress);
+    oracle = ETHUSDMockOracle.at(wallet, addressBook.platform.ethUSDMockOracleAddress);
+    legendaryPack = LegendaryPack.at(
       wallet,
       addressBook.godsUnchained.seasonOne.legendaryPackAddress,
     );

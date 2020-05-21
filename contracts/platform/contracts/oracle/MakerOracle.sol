@@ -26,7 +26,7 @@ contract MakerOracle is IOracle {
         uint8 to,
         uint256 amount
     )
-        public
+        external
         view
         returns (uint256 returned)
     {

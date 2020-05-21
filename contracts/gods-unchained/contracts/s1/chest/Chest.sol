@@ -61,6 +61,7 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
 
         require(cap == 0 || cap >= sold + _quantity, "IM:CappedVendor: product cap has been exhausted");
 
+        sold += _quantity;
         IPurchaseProcessor.Receipt memory receipt = super.purchaseFor(
             _user,
             _quantity,
@@ -68,15 +69,13 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
             _referrer
         );
 
-        sold += _quantity;
-
         if (_payment.currency == IPurchaseProcessor.Currency.ETH || _payment.escrowFor == 0) {
             _mintChests(_user, _quantity, receipt.id);
         } else {
             // escrow the chests
             IEscrow.Vault memory vault = IEscrow.Vault({
                 player: _user,
-                releaser: address(escrow),
+                admin: address(escrow),
                 asset: address(this),
                 balance: _quantity,
                 lowTokenID: 0,
@@ -92,7 +91,6 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
             bytes memory data = abi.encodeWithSignature("mintTokens()");
 
             escrow.callbackEscrow(vault, address(this), data, receipt.id, _payment.escrowFor);
-
         }
 
         return receipt;
@@ -132,6 +130,11 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
     function open(uint _count) public {
         _burn(msg.sender, _count);
         pack.openChests(msg.sender, _count);
+    }
+
+    /** @dev Get the number of products still available for sale */
+    function available() external view returns (uint256) {
+        return cap.sub(sold);
     }
 
     /** @dev One way switch to enable trading */

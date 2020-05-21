@@ -5,7 +5,7 @@ import { Cards } from '../../src/contracts';
 jest.setTimeout(30000);
 
 import { ethers } from 'ethers';
-import { generatedWallets } from '@imtbl/test-utils';
+import { Ganache, generatedWallets } from '@imtbl/test-utils';
 import { parseLogs } from '@imtbl/utils';
 
 ethers.errors.setLogLevel('error');

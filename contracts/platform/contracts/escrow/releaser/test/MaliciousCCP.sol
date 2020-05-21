@@ -17,11 +17,11 @@ contract MaliciousCCP {
         erc721 = _erc721;
     }
 
-    function stealERC20(address user, uint256 count) public {
+    function stealERC20(address user, uint256 count) external {
 
         IEscrow.Vault memory vault = IEscrow.Vault({
             player: user,
-            releaser: user,
+            admin: user,
             asset: address(erc20),
             balance: count,
             lowTokenID: 0,
@@ -34,11 +34,11 @@ contract MaliciousCCP {
         escrow.callbackEscrow(vault, address(this), data);
     }
 
-    function stealERC721(address user, uint256 low, uint256 high) public {
+    function stealERC721(address user, uint256 low, uint256 high) external {
 
         IEscrow.Vault memory vault = IEscrow.Vault({
             player: user,
-            releaser: user,
+            admin: user,
             asset: address(erc721),
             balance: 0,
             lowTokenID: low,
@@ -51,10 +51,10 @@ contract MaliciousCCP {
         escrow.callbackEscrow(vault, address(this), data);
     }
 
-    function erc721FakeHook() public {
+    function erc721FakeHook() external {
     }
 
-    function erc20FakeHook() public {
+    function erc20FakeHook() external {
     }
 
 }

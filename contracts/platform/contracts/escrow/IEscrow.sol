@@ -5,7 +5,7 @@ contract IEscrow {
 
     struct Vault {
         address player;
-        address releaser;
+        address admin;
         address asset;
         uint256 balance;
         uint256 lowTokenID;
@@ -40,7 +40,14 @@ contract IEscrow {
      * @param _id the id of the escrow vault
      * @param _to the address to which assets should be released
      */
-    function release(uint256 _id, address _to) public;
+    function release(uint256 _id, address _to) external;
+
+    /**
+     * @dev Destroy the assets in an escrow account
+     *
+     * @param _id the id of the escrow vault
+     */
+    function destroy(uint256 _id) external;
 
 
 }

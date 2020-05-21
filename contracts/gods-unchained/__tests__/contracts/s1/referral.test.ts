@@ -7,15 +7,8 @@ ethers.errors.setLogLevel('error');
 import { Ganache, Blockchain,generatedWallets } from '@imtbl/test-utils';
 import { Referral } from '../../../src/contracts';
 
-import ganache from 'ganache-core';
-const gp = ganache.provider({
-  total_accounts: 20,
-  gasLimit: 19000000,
-  mnemonic: 'concert load couple harbor equip island argue ramp clarify fence smart topic',
-  default_balance_ether: 10000000000
-});
 
-const provider = new Ganache(); ethers.providers.Web3Provider(gp as any);
+const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
 
 describe('Referral', () => {

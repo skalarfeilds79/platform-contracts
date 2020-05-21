@@ -15,6 +15,8 @@ contract Escrow is IEscrow, Ownable {
     event Escrowed(uint256 indexed id, Vault vault);
     // Emitted when the assets in an escrow vault are released
     event Released(uint256 indexed id, address to);
+    // Emitted when the assets in an escrow vault are destroyed
+    event Destroyed(uint256 indexed id);
 
     using SafeMath for uint256;
 
@@ -53,8 +55,8 @@ contract Escrow is IEscrow, Ownable {
         );
 
         require(
-            _vault.releaser != address(0),
-            "IM:Escrow: must have a releaser"
+            _vault.admin != address(0),
+            "IM:Escrow: must have an admin"
         );
 
         uint256 preBalance = 0;
@@ -138,8 +140,8 @@ contract Escrow is IEscrow, Ownable {
         );
 
         require(
-            _vault.releaser != address(0),
-            "IM:Escrow: must have a releaser"
+            _vault.admin != address(0),
+            "IM:Escrow: must have an admin"
         );
 
         if (_vault.balance > 0) {
@@ -174,17 +176,39 @@ contract Escrow is IEscrow, Ownable {
     }
 
     /**
+     * @dev Destroy the assets in an escrow account
+     *
+     * @param _id the id of the escrow vault
+     */
+    function destroy(uint256 _id) external {
+        Vault memory vault = vaults[_id];
+
+        require(
+            vault.admin == msg.sender,
+            "IM:Escrow: must be the admin"
+        );
+
+        require(
+            !releaseMutexLocked,
+            "IM:Escrow: release mutex must be unlocked"
+        );
+
+        delete vaults[_id];
+        emit Destroyed(_id);
+    }
+
+    /**
      * @dev Release assets from an escrow account
      *
      * @param _id the id of the escrow vault
      * @param _to the address to which assets should be released
      */
-    function release(uint256 _id, address _to) public {
+    function release(uint256 _id, address _to) external {
         Vault memory vault = vaults[_id];
 
         require(
-            vault.releaser == msg.sender,
-            "IM:Escrow: must be the releaser"
+            vault.admin == msg.sender,
+            "IM:Escrow: must be the admin"
         );
 
         require(
@@ -193,6 +217,8 @@ contract Escrow is IEscrow, Ownable {
         );
 
         releaseMutexLocked = true;
+        emit Released(_id, _to);
+        delete vaults[_id];
 
         if (vault.balance > 0) {
             IERC20(vault.asset).transfer(_to, vault.balance);
@@ -202,8 +228,6 @@ contract Escrow is IEscrow, Ownable {
             _transferBatch(vault, address(this), _to);
         }
 
-        emit Released(_id, _to);
-        delete vaults[_id];
         releaseMutexLocked = false;
     }
 

@@ -17,7 +17,7 @@ export const S1Sale = [
           {
             "components": [
               {
-                "internalType": "enum IPurchaseProcessor.Currency",
+                "internalType": "enum PurchaseProcessor.Currency",
                 "name": "currency",
                 "type": "uint8"
               },
@@ -52,7 +52,7 @@ export const S1Sale = [
                 "type": "uint256"
               }
             ],
-            "internalType": "struct IPurchaseProcessor.PaymentParams",
+            "internalType": "struct PurchaseProcessor.PaymentParams",
             "name": "payment",
             "type": "tuple"
           }
@@ -96,7 +96,7 @@ export const S1Sale = [
           {
             "components": [
               {
-                "internalType": "enum IPurchaseProcessor.Currency",
+                "internalType": "enum PurchaseProcessor.Currency",
                 "name": "currency",
                 "type": "uint8"
               },
@@ -131,7 +131,7 @@ export const S1Sale = [
                 "type": "uint256"
               }
             ],
-            "internalType": "struct IPurchaseProcessor.PaymentParams",
+            "internalType": "struct PurchaseProcessor.PaymentParams",
             "name": "payment",
             "type": "tuple"
           }

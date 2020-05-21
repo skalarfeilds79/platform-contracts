@@ -1,7 +1,7 @@
 pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
-import "@imtbl/platform/contracts/randomness/IBeacon.sol";
+import "@imtbl/platform/contracts/randomness/Beacon.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "./RarityProvider.sol";
 import "./IPack.sol";
@@ -32,7 +32,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
     // All commitments recorded by this pack
     mapping(uint256 => Commitment) public commitments;
     // The randomness beacon used by this pack
-    IBeacon public beacon;
+    Beacon public beacon;
     // The core cards contract
     ICards public cards;
     // The raffle ticket contract
@@ -54,13 +54,13 @@ contract Pack is IPack, S1Vendor, RarityProvider {
 
     constructor(
         IRaffle _raffle,
-        IBeacon _beacon,
+        Beacon _beacon,
         ICards _cards,
         IReferral _referral,
         bytes32 _sku,
         uint256 _price,
-        ICreditCardEscrow _escrow,
-        IPurchaseProcessor _pay
+        CreditCardEscrow _escrow,
+        PurchaseProcessor _pay
     ) public S1Vendor(_referral, _sku, _price, _escrow, _pay) {
         raffle = _raffle;
         beacon = _beacon;
@@ -105,7 +105,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         uint low = cards.nextBatch();
         uint high = low + cardCount;
 
-        IEscrow.Vault memory vault = IEscrow.Vault({
+        Escrow.Vault memory vault = Escrow.Vault({
             player: _commitment.recipient,
             admin: address(escrow),
             asset: address(cards),
@@ -156,7 +156,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
             totalTickets += qty;
         }
 
-        IEscrow.Vault memory vault = IEscrow.Vault({
+        Escrow.Vault memory vault = Escrow.Vault({
             player: _commitment.recipient,
             admin: address(escrow),
             asset: address(raffle),
@@ -235,20 +235,20 @@ contract Pack is IPack, S1Vendor, RarityProvider {
     function purchaseFor(
         address payable _recipient,
         uint256 _quantity,
-        IPurchaseProcessor.PaymentParams memory _payment,
+        PurchaseProcessor.PaymentParams memory _payment,
         address payable _referrer
     )
         public
         payable
-        returns (IPurchaseProcessor.Receipt memory)
+        returns (PurchaseProcessor.Receipt memory)
     {
-        IPurchaseProcessor.Receipt memory receipt = super.purchaseFor(
+        PurchaseProcessor.Receipt memory receipt = super.purchaseFor(
             _recipient,
             _quantity,
             _payment,
             _referrer
         );
-        if (_payment.currency == IPurchaseProcessor.Currency.ETH) {
+        if (_payment.currency == PurchaseProcessor.Currency.ETH) {
             _createCommitment(receipt.id, _recipient, _quantity, 0);
         } else {
             _createCommitment(receipt.id, _recipient, _quantity, _payment.escrowFor);

@@ -1,7 +1,7 @@
 pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
-import "../IEscrow.sol";
+import "../Escrow.sol";
 import "./TestERC721Token.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
@@ -12,17 +12,17 @@ contract MaliciousListPack {
     }
 
     Purchase[] public purchases;
-    IEscrow escrow;
+    Escrow escrow;
     TestERC721Token asset;
 
-    constructor(IEscrow _escrow, TestERC721Token _asset) public {
+    constructor(Escrow _escrow, TestERC721Token _asset) public {
         escrow = _escrow;
         asset = _asset;
     }
 
-    function maliciousPush(uint256 count) public {
+    function maliciousPush(uint256 count) external {
 
-        IEscrow.Vault memory vault = _createVault(count);
+        Escrow.Vault memory vault = _createVault(count);
 
         uint256 id = purchases.push(Purchase({
             count: count
@@ -33,9 +33,9 @@ contract MaliciousListPack {
         escrow.callbackEscrow(vault, address(this), data);
     }
 
-    function maliciousPull(uint256 count) public {
+    function maliciousPull(uint256 count) external {
 
-        IEscrow.Vault memory vault = _createVault(count);
+        Escrow.Vault memory vault = _createVault(count);
 
         uint256 id = purchases.push(Purchase({
             count: count
@@ -46,32 +46,33 @@ contract MaliciousListPack {
         escrow.callbackEscrow(vault, address(this), data);
     }
 
-    function pushAttackHook(uint256 purchaseID) public {
+    function pushAttackHook(uint256 purchaseID) external {
         require(msg.sender == address(escrow), "must be the escrow contract");
         uint256 count = purchases[purchaseID].count;
         delete purchases[purchaseID];
-        IEscrow.Vault memory vault = _createVault(count);
+        Escrow.Vault memory vault = _createVault(count);
         bytes memory data = abi.encodeWithSignature("emptyHook()");
         escrow.callbackEscrow(vault, address(this), data);
         asset.mint(address(escrow), count);
     }
 
-    function emptyHook() public view {
+    function emptyHook() external view {
         require(msg.sender == address(escrow), "must be the escrow contract");
     }
 
-    function pullAttackHook(uint256 purchaseID) public {
+    function pullAttackHook(uint256 purchaseID) external {
         require(msg.sender == address(escrow), "must be the escrow contract");
+
         uint256 count = purchases[purchaseID].count;
         delete purchases[purchaseID];
-        IEscrow.Vault memory vault = _createVault(count);
+        Escrow.Vault memory vault = _createVault(count);
 
         asset.mint(address(this), count);
         asset.setApprovalForAll(address(escrow), true);
         escrow.escrow(vault, address(this));
     }
 
-    function _createVault(uint256 count) internal view returns (IEscrow.Vault memory) {
+    function _createVault(uint256 count) internal view returns (Escrow.Vault memory) {
 
         // predict token IDs
 
@@ -81,7 +82,7 @@ contract MaliciousListPack {
             ids[i] = start + i;
         }
 
-        return IEscrow.Vault({
+        return Escrow.Vault({
             player: msg.sender,
             admin: msg.sender,
             asset: address(asset),

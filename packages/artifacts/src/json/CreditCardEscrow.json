@@ -104,7 +104,7 @@
     "name": "escrowProtocol",
     "outputs": [
       {
-        "internalType": "contract IEscrow",
+        "internalType": "contract Escrow",
         "name": "",
         "type": "address"
       }
@@ -172,7 +172,7 @@
   {
     "inputs": [
       {
-        "internalType": "contract IEscrow",
+        "internalType": "contract Escrow",
         "name": "_escrowProtocol",
         "type": "address"
       },
@@ -543,7 +543,7 @@
             "type": "uint256[]"
           }
         ],
-        "internalType": "struct IEscrow.Vault",
+        "internalType": "struct Escrow.Vault",
         "name": "_vault",
         "type": "tuple"
       },
@@ -586,7 +586,7 @@
     "name": "getProtocol",
     "outputs": [
       {
-        "internalType": "contract IEscrow",
+        "internalType": "contract Escrow",
         "name": "",
         "type": "address"
       }

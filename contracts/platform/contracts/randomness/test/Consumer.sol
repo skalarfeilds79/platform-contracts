@@ -1,12 +1,12 @@
 pragma solidity 0.5.11;
 
-import "../IBeacon.sol";
+import "../Beacon.sol";
 
 contract Consumer {
 
-    IBeacon public beacon;
+    Beacon public beacon;
 
-    constructor(IBeacon _beacon) public {
+    constructor(Beacon _beacon) public {
         beacon = _beacon;
     }
 

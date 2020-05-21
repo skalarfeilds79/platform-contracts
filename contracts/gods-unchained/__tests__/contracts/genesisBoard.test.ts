@@ -4,15 +4,15 @@ import { GenesisBoard } from '../../src/contracts';
 import 'jest';
 jest.setTimeout(30000);
 
-import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
+import { Ganache, Blockchain,expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { Wallet, ethers } from 'ethers';
 
 ethers.errors.setLogLevel('error');
 
 import { parseLogs } from '@imtbl/utils';
 
-const provider = new ethers.providers.JsonRpcProvider();
-const blockchain = new Blockchain();
+const provider = new Ganache(Ganache.DefaultOptions);
+const blockchain = new Blockchain(provider);
 
 describe('Genesis Board', () => {
   const [ownerWallet, minterWallet, userWallet, userWallet2, userWallet3] = generatedWallets(

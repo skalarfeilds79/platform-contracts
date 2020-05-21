@@ -1,12 +1,10 @@
 import 'jest';
 
-import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
-import { ethers } from 'ethers';
+import { Ganache, generatedWallets } from '@imtbl/test-utils';
 import { BigNumber } from 'ethers/utils';
 import { ETHUSDMockOracle } from '../../../src/contracts/ETHUSDMockOracle';
 
-const provider = new ethers.providers.JsonRpcProvider();
-const blockchain = new Blockchain();
+const provider = new Ganache(Ganache.DefaultOptions);
 
 describe('ETHUSDMockOracle', () => {
   const [ownerWallet, userWallet] = generatedWallets(provider);

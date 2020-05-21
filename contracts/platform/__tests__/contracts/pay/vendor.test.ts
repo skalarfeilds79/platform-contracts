@@ -1,18 +1,13 @@
 import 'jest';
 
 import { TestVendor, PurchaseProcessor } from '../../../src/contracts';
-
-import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
-import { ethers } from 'ethers';
+import { Ganache, Blockchain,expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { keccak256, BigNumber } from 'ethers/utils';
-import { getETHPayment, getSignedPayment, Order, PaymentParams } from '../../../src/';
+import { getETHPayment, getSignedPayment, Order, PaymentParams, Currency } from '../../../src/';
 import { ETHUSDMockOracle } from '../../../src/contracts/ETHUSDMockOracle';
-import { Currency } from '../../../src/types/index';
 
-const provider = new ethers.providers.JsonRpcProvider();
-const blockchain = new Blockchain();
-
-const ZERO_EX = '0x0000000000000000000000000000000000000000';
+const provider = new Ganache(Ganache.DefaultOptions);
+const blockchain = new Blockchain(provider);
 
 describe('Vendor', () => {
   const [user, treasury, other] = generatedWallets(provider);

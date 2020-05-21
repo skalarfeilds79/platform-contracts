@@ -3,12 +3,11 @@ pragma experimental ABIEncoderV2;
 
 // solium-disable security/no-block-members
 
-import "../IEscrow.sol";
-import "./ICreditCardEscrow.sol";
+import "../Escrow.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 
-contract CreditCardEscrow is Ownable, ICreditCardEscrow {
+contract CreditCardEscrow is Ownable {
 
     using SafeMath for uint256;
 
@@ -56,7 +55,7 @@ contract CreditCardEscrow is Ownable, ICreditCardEscrow {
     }
 
     // Escrow protocol contract
-    IEscrow public escrowProtocol;
+    Escrow public escrowProtocol;
     // Mapping from escrow IDs to details
     mapping(uint256 => Lock) public locks;
     // The address which can destroy assets
@@ -69,7 +68,7 @@ contract CreditCardEscrow is Ownable, ICreditCardEscrow {
     uint256 public releaseDelay;
 
     constructor(
-        IEscrow _escrowProtocol,
+        Escrow _escrowProtocol,
         address _destroyer,
         uint256 _destructionDelay,
         address _custodian,
@@ -354,7 +353,7 @@ contract CreditCardEscrow is Ownable, ICreditCardEscrow {
      * @param _duration the duration of the escrow
      */
     function callbackEscrow(
-        IEscrow.Vault memory _vault,
+        Escrow.Vault memory _vault,
         address _callbackTo,
         bytes memory _callbackData,
         uint256 _paymentID,
@@ -380,7 +379,7 @@ contract CreditCardEscrow is Ownable, ICreditCardEscrow {
         return escrowID;
     }
 
-    function getProtocol() external view returns (IEscrow) {
+    function getProtocol() public view returns (Escrow) {
         return escrowProtocol;
     }
 

@@ -1,10 +1,16 @@
 import 'jest';
 
+import { CardsWrapper } from '../../src/wrappers';
+import { DeploymentEnvironment, DeploymentNetwork } from '@imtbl/common-types';
+
+import { ZeroExWrapper } from '../../src/wrappers/zeroExWrapper';
 import { ethers } from 'ethers';
+import { Ganache, generatedWallets } from '@imtbl/test-utils';
+import { getAddressBook } from '@imtbl/addresses';
 
 ethers.errors.setLogLevel('error');
 
-const provider = new ethers.providers.JsonRpcProvider();
+const provider = new Ganache(Ganache.DefaultOptions);
 
 describe('Order Generator', () => {
   // const [makerWallet, takerWallet] = generatedWallets(provider);

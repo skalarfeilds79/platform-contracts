@@ -5,7 +5,6 @@ import {
   Beacon,
   PurchaseProcessor,
   Escrow,
-  S1Vendor,
   Raffle,
   S1Sale,
   Referral,
@@ -13,8 +12,6 @@ import {
   RarePack,
   ShinyPack,
   LegendaryPack,
-  CreditCardEscrow,
-  Pack,
 } from '../../src/contracts';
 
 import { Wallet, ethers } from 'ethers';
@@ -30,6 +27,14 @@ import {
 
 import { Blockchain } from '@imtbl/test-utils';
 
+import { getAddressBook } from '@imtbl/addresses';
+
+import {
+  GU_S1_EPIC_PACK_SKU,
+  GU_S1_RARE_PACK_SKU,
+  GU_S1_LEGENDARY_PACK_SKU,
+  GU_S1_SHINY_PACK_SKU,
+} from '../../deployment/constants';
 import { asyncForEach, parseLogs } from '@imtbl/utils';
 import { getGodsUnchainedAddresses } from '../../src/addresses/index';
 
@@ -51,7 +56,6 @@ describe('02_season_one', () => {
   let processor: PurchaseProcessor;
   let escrow: Escrow;
   let cards: Cards;
-  let s1Vendor: S1Vendor;
   let s1Raffle: Raffle;
   let s1Sale: S1Sale;
   let s1Referral: Referral;
@@ -191,7 +195,7 @@ describe('02_season_one', () => {
       });
 
       receipts.forEach((receipt) => {
-        const rangeMintedLogs = parseLogs(receipt.logs, Pack.ABI);
+        const rangeMintedLogs = parseLogs(receipt.logs, RarePack.ABI);
         const escrowLogs = parseLogs(receipt.logs, Escrow.ABI);
       });
 

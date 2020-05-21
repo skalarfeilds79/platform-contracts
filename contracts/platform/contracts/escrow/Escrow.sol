@@ -5,11 +5,20 @@ import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
-import "./IEscrow.sol";
 import "../token/IBatchTransfer.sol";
 import "../token/IListTransfer.sol";
 
-contract Escrow is IEscrow, Ownable {
+contract Escrow is Ownable {
+
+    struct Vault {
+        address player;
+        address admin;
+        address asset;
+        uint256 balance;
+        uint256 lowTokenID;
+        uint256 highTokenID;
+        uint256[] tokenIDs;
+    }
 
     // Emitted when a new escrow vault is created
     event Escrowed(uint256 indexed id, Vault vault);
@@ -98,7 +107,8 @@ contract Escrow is IEscrow, Ownable {
 
         escrowMutexLocked = true;
         // solium-disable-next-line security/no-low-level-calls
-        _callbackTo.call(_callbackData);
+        (bool success, ) = _callbackTo.call(_callbackData);
+        require(success, "IM:Escrow: callback must be successful");
         escrowMutexLocked = false;
 
         if (_vault.balance > 0) {

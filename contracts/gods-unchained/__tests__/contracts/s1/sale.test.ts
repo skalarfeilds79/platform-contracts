@@ -1,6 +1,6 @@
 import 'jest';
 
-import { Blockchain, generatedWallets } from '@imtbl/test-utils';
+import { Ganache, Blockchain,generatedWallets } from '@imtbl/test-utils';
 import { S1Sale, Referral, RarePack, Raffle } from '../../../src/contracts';
 import { ethers } from 'ethers';
 import { keccak256 } from 'ethers/utils';
@@ -9,8 +9,8 @@ import { Order, getETHPayment, ETHUSDMockOracle } from '@imtbl/platform/src';
 
 jest.setTimeout(600000);
 
-const provider = new ethers.providers.JsonRpcProvider();
-const blockchain = new Blockchain();
+const provider = new Ganache(Ganache.DefaultOptions);
+const blockchain = new Blockchain(provider);
 
 const ZERO_EX = '0x0000000000000000000000000000000000000000';
 

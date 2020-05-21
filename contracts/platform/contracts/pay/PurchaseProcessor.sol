@@ -6,10 +6,46 @@ pragma experimental ABIEncoderV2;
 import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 
-import "./IPurchaseProcessor.sol";
 import "../oracle/IOracle.sol";
 
-contract PurchaseProcessor is IPurchaseProcessor, Ownable {
+contract PurchaseProcessor is Ownable {
+
+    enum Currency {
+        ETH,
+        USDCents
+    }
+
+    struct Order {
+        address payable changeRecipient;
+        address assetRecipient;
+        bytes32 sku;
+        uint256 quantity;
+        Currency currency;
+        uint256 totalPrice;
+        uint256 alreadyPaid;
+    }
+
+    struct PaymentParams {
+        Currency currency;
+        uint256 value;
+        uint256 nonce;
+        bytes32 r;
+        bytes32 s;
+        uint8 v;
+        uint256 escrowFor;
+    }
+
+    struct Receipt {
+        uint256 id;
+        Currency currency;
+        uint256 amount;
+    }
+
+    struct Limit {
+        uint256 periodEnd;
+        uint256 total;
+        uint256 used;
+    }
 
     using SafeMath for uint256;
 
@@ -136,21 +172,23 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
                 amount = _payUsdPricedInUsd(order, payment);
             } else if (payment.currency == Currency.ETH) {
                 // Pay ETH directly
-                amount = _payEthPricedInUsd(order, payment);
+                amount = _payEthPricedInUsd(order);
             } else {
-                require(false, "IM:PurchaseProcessor: unknown currency");
+                require(false, "IM:PurchaseProcessor: unknown paymentcurrency");
             }
-        } else {
+        } else if (order.currency == Currency.ETH) {
             // What currency is the payment given in
             if (payment.currency == Currency.USDCents) {
                 // Pay USD via a signed receipt
                 amount = _payUsdPricedInEth(order, payment);
             } else if (payment.currency == Currency.ETH) {
                 // Pay ETH directly
-                amount = _payEthPricedInEth(order, payment);
+                amount = _payEthPricedInEth(order);
             }  else {
-                require(false, "IM:PurchaseProcessor: unknown currency");
+                require(false, "IM:PurchaseProcessor: unknown paymentcurrency");
             }
+        } else {
+            require(false, "IM:PurchaseProcessor: unknown order currency");
         }
 
         uint id = count++;
@@ -262,8 +300,7 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
     }
 
     function _payEthPricedInUsd(
-        Order memory _order,
-        PaymentParams memory _payment
+        Order memory _order
     )
         internal
         returns (uint256)
@@ -342,8 +379,7 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
     }
 
     function _payEthPricedInEth(
-        Order memory _order,
-        PaymentParams memory _payment
+        Order memory _order
     )
         internal
         returns (uint256)
@@ -373,12 +409,14 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
             "IM:PurchaseProcessor: ETH left over"
         );
 
+        return outstanding;
     }
 
     function _sendETH(address _to, uint256 _value) internal {
         if (_value > 0) {
             // solium-disable-next-line
-            _to.call.value(_value)("");
+            (bool success, ) = _to.call.value(_value)("");
+            require(success, "IM:PurchaseProcessor: ETH send must be successful");
         }
     }
 

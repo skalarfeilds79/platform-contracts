@@ -51,10 +51,10 @@ export class SeasonOneStage implements DeploymentStage {
     if (!processorAddress || processorAddress.length === 0) {
       throw '*** IM_Processor not deloyed! Run `yarn deploy --core` inside contracts/platform';
     }
-    const s1Vendor =
-      (await findInstance('GU_S1_Vendor')) || (await this.deployVendor(processorAddress));
+    // const s1Vendor =
+    //   (await findInstance('GU_S1_Vendor')) || (await this.deployVendor(processorAddress));
 
-    await onDeployment('GU_S1_Vendor', s1Vendor, false);
+    // await onDeployment('GU_S1_Vendor', s1Vendor, false);
 
     const raffle = (await findInstance('GU_S1_Raffle')) || (await this.deployRaffle());
     await onDeployment('GU_S1_Raffle', raffle, false);
@@ -157,19 +157,6 @@ export class SeasonOneStage implements DeploymentStage {
       { address: shinyPack, sku: GU_S1_SHINY_PACK_SKU },
       { address: legendaryPack, sku: GU_S1_LEGENDARY_PACK_SKU },
     ]);
-  }
-
-  async deployVendor(processor: string): Promise<string> {
-    console.log('** Deploying S1Vendor **');
-    const contract = await S1Vendor.confirmDeployment(
-      this.wallet,
-      ethers.constants.AddressZero,
-      ethers.constants.HashZero,
-      1,
-      ethers.constants.AddressZero,
-      processor,
-    );
-    return contract.address;
   }
 
   async deployRaffle(): Promise<string> {

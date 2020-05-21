@@ -354,12 +354,12 @@ contract CreditCardEscrow is Ownable, ICreditCardEscrow {
      * @param _duration the duration of the escrow
      */
     function callbackEscrow(
-        IEscrow.Vault calldata _vault,
+        IEscrow.Vault memory _vault,
         address _callbackTo,
-        bytes calldata _callbackData,
+        bytes memory _callbackData,
         uint256 _paymentID,
         uint256 _duration
-    ) external returns (uint) {
+    ) public returns (uint) {
 
         require(
             _duration > 0,

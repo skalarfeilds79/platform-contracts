@@ -21,10 +21,10 @@ contract IEscrow {
      * @param _callbackData the data to pass to the callback transaction
      */
     function callbackEscrow(
-        Vault calldata _vault,
+        Vault memory _vault,
         address _callbackTo,
-        bytes calldata _callbackData
-    ) external returns (uint256);
+        bytes memory _callbackData
+    ) public returns (uint256);
 
     /**
      * @dev Create a new escrow vault
@@ -32,7 +32,7 @@ contract IEscrow {
      * @param _vault the escrow vault to be created
      * @param _from the address from which to pull the tokens
      */
-    function escrow(Vault calldata _vault, address _from) external returns (uint256);
+    function escrow(Vault memory _vault, address _from) public returns (uint256);
 
     /**
      * @dev Release assets from an escrow account

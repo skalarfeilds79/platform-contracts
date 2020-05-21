@@ -58,12 +58,12 @@ contract ICreditCardEscrow {
      * @param _duration The duration of the escrow
      */
     function callbackEscrow(
-        IEscrow.Vault calldata _vault,
+        IEscrow.Vault memory _vault,
         address _callbackTo,
-        bytes calldata _callbackData,
+        bytes memory _callbackData,
         uint256 _paymentID,
         uint256 _duration
-    ) external returns (uint);
+    ) public returns (uint);
 
     function getProtocol() external view returns (IEscrow);
 }

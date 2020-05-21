@@ -98,10 +98,10 @@ contract PurchaseProcessor is IPurchaseProcessor, Ownable {
      * @param payment the details of the user's proposed payment
      */
     function process(
-        Order calldata order,
-        PaymentParams calldata payment
+        Order memory order,
+        PaymentParams memory payment
     )
-        external
+        public
         payable returns (Receipt memory)
     {
 

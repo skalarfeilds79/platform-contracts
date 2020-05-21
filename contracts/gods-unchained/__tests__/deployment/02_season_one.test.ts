@@ -5,7 +5,6 @@ import {
   Beacon,
   PurchaseProcessor,
   Escrow,
-  S1Vendor,
   Raffle,
   S1Sale,
   Referral,
@@ -13,8 +12,6 @@ import {
   RarePack,
   ShinyPack,
   LegendaryPack,
-  CreditCardEscrow,
-  Pack,
 } from '../../src/contracts';
 
 import { Wallet, ethers } from 'ethers';
@@ -191,7 +188,7 @@ describe('02_season_one', () => {
       });
 
       receipts.forEach((receipt) => {
-        const rangeMintedLogs = parseLogs(receipt.logs, Pack.ABI);
+        const rangeMintedLogs = parseLogs(receipt.logs, RarePack.ABI);
         const escrowLogs = parseLogs(receipt.logs, Escrow.ABI);
       });
 

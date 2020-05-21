@@ -1,14 +1,12 @@
 import 'jest';
 
 import { CardsWrapper } from '../../src/wrappers';
-import { IExchange } from '../../src/contracts';
 import { DeploymentEnvironment, DeploymentNetwork } from '@imtbl/common-types';
 
 import { ZeroExWrapper } from '../../src/wrappers/zeroExWrapper';
 import { ethers } from 'ethers';
 import { Ganache, generatedWallets } from '@imtbl/test-utils';
 import { getAddressBook } from '@imtbl/addresses';
-import { orderHashUtils } from '@0x/order-utils';
 
 ethers.errors.setLogLevel('error');
 

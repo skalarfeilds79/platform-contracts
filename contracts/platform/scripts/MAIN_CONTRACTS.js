@@ -8,7 +8,6 @@
 module.exports = [
   { IM_Beacon: 'Beacon' },
   { IM_Processor: 'Processor' },
-  { IM_TestVendor: 'TestVendor' },
   { IM_Escrow: 'Escrow' },
   { IM_Escrow_CreditCard: 'Escrow_CreditCard' },
 ];

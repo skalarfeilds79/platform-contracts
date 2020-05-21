@@ -335,8 +335,8 @@ export class SeasonOneStage implements DeploymentStage {
 
     const unsignedTx = await Chest.getDeployTransaction(
       this.wallet,
-      'GU:S1: Rare Chest',
-      'GUS1RC',
+      'GU:S1: Legendary Chest',
+      'GUS1LC',
       legendaryPack,
       LEGENDARY_CHEST_CAP,
       referral,

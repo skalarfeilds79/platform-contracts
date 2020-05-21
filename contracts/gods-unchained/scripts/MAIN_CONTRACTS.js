@@ -17,6 +17,8 @@ module.exports = [
   { GU_S1_Referral: 'Referral' },
   { GU_S1_Epic_Pack: 'EpicPack' },
   { GU_S1_Rare_Pack: 'RarePack' },
+  { GU_S1_Rare_Chest: 'Chest' },
   { GU_S1_Shiny_Pack: 'ShinyPack' },
   { GU_S1_Legendary_Pack: 'LegendaryPack' },
+  { GU_S1_Legendary_Chest: 'Chest' },
 ];

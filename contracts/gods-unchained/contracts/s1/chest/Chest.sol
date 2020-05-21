@@ -61,14 +61,13 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
 
         require(cap == 0 || cap >= sold + _quantity, "IM:CappedVendor: product cap has been exhausted");
 
+        sold += _quantity;
         IPurchaseProcessor.Receipt memory receipt = super.purchaseFor(
             _user,
             _quantity,
             _payment,
             _referrer
         );
-
-        sold += _quantity;
 
         if (_payment.currency == IPurchaseProcessor.Currency.ETH || _payment.escrowFor == 0) {
             _mintChests(_user, _quantity, receipt.id);
@@ -92,7 +91,6 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
             bytes memory data = abi.encodeWithSignature("mintTokens()");
 
             escrow.callbackEscrow(vault, address(this), data, receipt.id, _payment.escrowFor);
-
         }
 
         return receipt;

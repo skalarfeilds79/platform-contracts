@@ -1,6 +1,6 @@
 import { Wallet, ethers } from 'ethers';
 import { DeploymentStage } from '@imtbl/deployment-utils';
-import { Escrow, CreditCardEscrow, Beacon, PurchaseProcessor, TestVendor } from '../src/contracts';
+import { Escrow, CreditCardEscrow, Beacon, PurchaseProcessor } from '../src/contracts';
 import { IM_PROCESSOR_LIMIT } from '@imtbl/addresses';
 
 export class CoreStage implements DeploymentStage {
@@ -59,19 +59,29 @@ export class CoreStage implements DeploymentStage {
 
   async deployBeacon(): Promise<string> {
     console.log('** Deploying Beacon **');
-    const beacon = await Beacon.awaitDeployment(this.wallet);
+    const beacon = await Beacon.awaitDeployment(
+      this.wallet,
+      { nonce: await this.wallet.getTransactionCount()}
+    );
     return beacon.address;
   }
 
   async deployProcessor(): Promise<string> {
     console.log('** Deploying PurchaseProcessor **');
-    const processor = await PurchaseProcessor.awaitDeployment(this.wallet, this.wallet.address);
+    const processor = await PurchaseProcessor.awaitDeployment(
+      this.wallet,
+      this.wallet.address,
+      { nonce: await this.wallet.getTransactionCount()}
+    );
     return processor.address;
   }
 
   async deployEscrow(): Promise<string> {
     console.log('** Deploying Escrow **');
-    const escrow = await Escrow.awaitDeployment(this.wallet);
+    const escrow = await Escrow.awaitDeployment(
+      this.wallet,
+      { nonce: await this.wallet.getTransactionCount()}
+    );
     return escrow.address;
   }
 
@@ -90,6 +100,7 @@ export class CoreStage implements DeploymentStage {
       destructionDelay,
       custodian,
       custodianDelay,
+      { nonce: await this.wallet.getTransactionCount()}
     );
     return cc.address;
   }

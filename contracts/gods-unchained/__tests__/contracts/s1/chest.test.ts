@@ -1,6 +1,6 @@
 import 'jest';
 
-import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
+import { Ganache, Blockchain,expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { Chest, Referral, TestPack, Escrow } from '../../../src/contracts';
 
 import { ethers } from 'ethers';
@@ -10,8 +10,8 @@ import { ETHUSDMockOracle } from '@imtbl/platform/src';
 
 const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
-const provider = new ethers.providers.JsonRpcProvider();
-const blockchain = new Blockchain();
+const provider = new Ganache(Ganache.DefaultOptions);
+const blockchain = new Blockchain(provider);
 
 ethers.errors.setLogLevel('error');
 

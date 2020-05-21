@@ -1,19 +1,19 @@
 import 'jest';
 
-import { Escrow, TestERC721Token, MaliciousListPack, TestListPack } from '../../src/contracts';
+import { Escrow, TestERC721Token, MaliciousListPack, TestListPack } from '../../../src/contracts';
 
-import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
+import { Ganache, Blockchain,expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
 
-const provider = new ethers.providers.JsonRpcProvider();
-const blockchain = new Blockchain();
+const provider = new Ganache(Ganache.DefaultOptions);
+const blockchain = new Blockchain(provider);
+
 
 ethers.errors.setLogLevel('error');
 
 const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
 describe('ListERC271Escrow', () => {
-
   const [user, other] = generatedWallets(provider);
 
   beforeEach(async () => {
@@ -37,11 +37,10 @@ describe('ListERC271Escrow', () => {
   });
 
   describe('#escrow', () => {
-
     let escrow: Escrow;
     let erc721: TestERC721Token;
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       escrow = await Escrow.deploy(user);
       erc721 = await TestERC721Token.deploy(user);
     });
@@ -57,7 +56,7 @@ describe('ListERC271Escrow', () => {
         balance: 0,
         lowTokenID: 0,
         highTokenID: 0,
-        tokenIDs: [0]
+        tokenIDs: [0],
       };
       await escrow.escrow(vault, user.address);
     });
@@ -72,7 +71,7 @@ describe('ListERC271Escrow', () => {
         balance: 0,
         lowTokenID: 0,
         highTokenID: 0,
-        tokenIDs: []
+        tokenIDs: [],
       };
       await expectRevert(escrow.escrow(vault, user.address));
     });
@@ -87,7 +86,7 @@ describe('ListERC271Escrow', () => {
         balance: 0,
         lowTokenID: 0,
         highTokenID: 0,
-        tokenIDs: [0]
+        tokenIDs: [0],
       };
       await expectRevert(escrow.escrow(vault, user.address));
     });
@@ -102,7 +101,7 @@ describe('ListERC271Escrow', () => {
         balance: 0,
         lowTokenID: 0,
         highTokenID: 0,
-        tokenIDs: [0]
+        tokenIDs: [0],
       };
       await expectRevert(escrow.escrow(vault, user.address));
     });
@@ -136,7 +135,7 @@ describe('ListERC271Escrow', () => {
         balance: 0,
         lowTokenID: 0,
         highTokenID: 0,
-        tokenIDs: [0]
+        tokenIDs: [0],
       };
       await expectRevert(escrow.escrow(vault, user.address));
     });
@@ -153,19 +152,17 @@ describe('ListERC271Escrow', () => {
         balance: 0,
         lowTokenID: 0,
         highTokenID: 0,
-        tokenIDs: [0]
+        tokenIDs: [0],
       };
       await expectRevert(escrow.escrow(vault, user.address));
     });
-
   });
 
   describe('#release', () => {
-
     let escrow: Escrow;
     let erc721: TestERC721Token;
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       escrow = await Escrow.deploy(user);
       erc721 = await TestERC721Token.deploy(user);
     });
@@ -198,7 +195,7 @@ describe('ListERC271Escrow', () => {
         balance: 0,
         lowTokenID: 0,
         highTokenID: 0,
-        tokenIDs: [0]
+        tokenIDs: [0],
       };
       await escrow.escrow(vault, user.address);
       await checkBalance(erc721, user.address, 0);
@@ -207,17 +204,15 @@ describe('ListERC271Escrow', () => {
       await checkBalance(erc721, user.address, 1);
       await checkBalance(erc721, escrow.address, 0);
     });
-
   });
 
   describe('#callbackEscrow', () => {
-
     let escrow: Escrow;
     let erc721: TestERC721Token;
     let malicious: MaliciousListPack;
     let pack: TestListPack;
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       escrow = await Escrow.deploy(user);
       erc721 = await TestERC721Token.deploy(user);
       malicious = await MaliciousListPack.deploy(user, escrow.address, erc721.address);
@@ -236,8 +231,6 @@ describe('ListERC271Escrow', () => {
       await expectRevert(malicious.maliciousPull(5));
     });
 
-  //   // TODO: tests for where the assets are already in escrow
-
+    //   // TODO: tests for where the assets are already in escrow
   });
-
 });

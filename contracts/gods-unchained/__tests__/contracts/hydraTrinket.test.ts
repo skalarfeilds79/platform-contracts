@@ -2,14 +2,14 @@ import { Address } from '@imtbl/common-types';
 import 'jest';
 jest.setTimeout(30000);
 
-import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
+import { Ganache, Blockchain,expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { HydraTrinket } from '../../src/contracts';
 import { Wallet, ethers } from 'ethers';
 
 ethers.errors.setLogLevel('error');
 
-const provider = new ethers.providers.JsonRpcProvider();
-const blockchain = new Blockchain();
+const provider = new Ganache(Ganache.DefaultOptions);
+const blockchain = new Blockchain(provider);
 
 describe('Hydra Trinket', () => {
   const [ownerWallet, minterWallet, userWallet, userWallet2, userWallet3] = generatedWallets(

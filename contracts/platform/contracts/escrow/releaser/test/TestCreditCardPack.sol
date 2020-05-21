@@ -80,9 +80,9 @@ contract TestCreditCardPack {
     function erc20Hook(uint256 purchaseID) public {
         address protocol = address(escrow.getProtocol());
         require(msg.sender == protocol, "must be the escrow contract");
-        Purchase memory p = purchases[purchaseID];
-        erc20.mint(protocol, p.count);
+        uint256 count = purchases[purchaseID].count;
         delete purchases[purchaseID];
+        erc20.mint(protocol, count);
     }
 
 }

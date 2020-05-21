@@ -96,7 +96,7 @@ contract PurchaseProcessor is Ownable {
     function setOracle(
         address oracleAddress
     )
-        public
+        external
         onlyOwner
     {
         priceOracle = oracleAddress;
@@ -106,7 +106,7 @@ contract PurchaseProcessor is Ownable {
         address signer,
         uint256 usdCentsLimit
     )
-        public
+        external
         onlyOwner
     {
         signerLimits[signer].total = usdCentsLimit;
@@ -115,10 +115,10 @@ contract PurchaseProcessor is Ownable {
 
     function setSellerApproval(
         address seller,
-        bytes32[] memory skus,
+        bytes32[] calldata skus,
         bool approved
     )
-        public
+        external
         onlyOwner
     {
         for (uint i = 0; i < skus.length; i++) {

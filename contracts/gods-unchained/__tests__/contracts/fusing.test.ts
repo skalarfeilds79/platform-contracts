@@ -2,7 +2,7 @@ import 'jest';
 
 jest.setTimeout(30000);
 
-import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
+import { Ganache, Blockchain,expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { Cards, Fusing } from '../../src/contracts';
 import { CardsWrapper } from '../../src/wrappers';
 import { Wallet, ethers } from 'ethers';
@@ -10,8 +10,8 @@ ethers.errors.setLogLevel('error');
 import { ContractReceipt } from 'ethers/contract';
 import { parseLogs } from '@imtbl/utils';
 
-const provider = new ethers.providers.JsonRpcProvider();
-const blockchain = new Blockchain();
+const provider = new Ganache(Ganache.DefaultOptions);
+const blockchain = new Blockchain(provider);
 
 describe('Fusing', () => {
   const [ownerWallet, minterWallet, userWallet, unauthorisedWallet] = generatedWallets(provider);

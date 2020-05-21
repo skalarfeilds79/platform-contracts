@@ -15,7 +15,7 @@ contract TestChest {
         asset = _asset;
     }
 
-    function purchase(uint256 count) public {
+    function purchase(uint256 count) external {
 
         Escrow.Vault memory vault = Escrow.Vault({
             player: msg.sender,
@@ -32,7 +32,7 @@ contract TestChest {
         escrow.callbackEscrow(vault, address(this), data);
     }
 
-    function escrowHook(uint256 count) public {
+    function escrowHook(uint256 count) external {
         require(msg.sender == address(escrow), "must be the escrow contract");
         asset.mint(address(escrow), count);
     }

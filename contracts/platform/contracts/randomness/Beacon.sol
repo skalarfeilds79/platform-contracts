@@ -30,7 +30,11 @@ contract Beacon {
      *
      * @param _offset the offset from the current block of the block which will be used in our random seed
      */
-    function commit(uint256 _offset) public returns (uint256) {
+    function commit(uint256 _offset) external returns (uint256) {
+        _commit(_offset);
+    }
+
+    function _commit(uint256 _offset) internal returns (uint256) {
         uint256 commitBlock = block.number.add(_offset);
         require(commitBlock >= block.number, "IM:Beacon: must not overflow");
         if (!commitRequested[commitBlock]) {
@@ -59,7 +63,7 @@ contract Beacon {
      *
      * @param _commitBlock the block in question
      */
-    function randomness(uint256 _commitBlock) public returns (bytes32) {
+    function randomness(uint256 _commitBlock) external returns (bytes32) {
         uint256 currentBlock = getCurrentBlock(_commitBlock);
         if (blockHashes[currentBlock] == bytes32(0)) {
             _callback(currentBlock);
@@ -74,7 +78,7 @@ contract Beacon {
      * @param _commitBlock the original commit block
      * @param _offset the offset from current block of the block which will be used in our random seed
      */
-    function recommit(uint256 _commitBlock, uint256 _offset) public {
+    function recommit(uint256 _commitBlock, uint256 _offset) external {
 
         require(commitRequested[_commitBlock], "IM:Beacon: original block must have requested a commit");
 
@@ -87,7 +91,7 @@ contract Beacon {
 
         forwards[_commitBlock] = finalBlock;
         // actually commit to this new block
-        commit(_offset);
+        _commit(_offset);
 
         emit Recommit(_commitBlock, finalBlock);
     }

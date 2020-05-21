@@ -6,7 +6,9 @@
   "license": "MIT",
   "esModuleInterop": true,
   "dependencies": {
-    "ethers": "^4.0.42"
+    "@types/web3": "1.0.19",
+    "ethers": "^4.0.42",
+    "ganache-core": "^2.7.0"
   },
   "scripts": {
     "clean": "rm -rf dist",

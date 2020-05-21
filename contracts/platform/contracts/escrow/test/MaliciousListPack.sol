@@ -20,7 +20,7 @@ contract MaliciousListPack {
         asset = _asset;
     }
 
-    function maliciousPush(uint256 count) public {
+    function maliciousPush(uint256 count) external {
 
         Escrow.Vault memory vault = _createVault(count);
 
@@ -33,7 +33,7 @@ contract MaliciousListPack {
         escrow.callbackEscrow(vault, address(this), data);
     }
 
-    function maliciousPull(uint256 count) public {
+    function maliciousPull(uint256 count) external {
 
         Escrow.Vault memory vault = _createVault(count);
 
@@ -46,36 +46,30 @@ contract MaliciousListPack {
         escrow.callbackEscrow(vault, address(this), data);
     }
 
-    function pushAttackHook(uint256 purchaseID) public {
+    function pushAttackHook(uint256 purchaseID) external {
         require(msg.sender == address(escrow), "must be the escrow contract");
-        Purchase memory p = purchases[purchaseID];
-
-        Escrow.Vault memory vault = _createVault(p.count);
-
+        uint256 count = purchases[purchaseID].count;
+        delete purchases[purchaseID];
+        Escrow.Vault memory vault = _createVault(count);
         bytes memory data = abi.encodeWithSignature("emptyHook()");
-
         escrow.callbackEscrow(vault, address(this), data);
+        asset.mint(address(escrow), count);
+    }
 
-        asset.mint(address(escrow), p.count);
+    function emptyHook() external view {
+        require(msg.sender == address(escrow), "must be the escrow contract");
+    }
+
+    function pullAttackHook(uint256 purchaseID) external {
+        require(msg.sender == address(escrow), "must be the escrow contract");
+
+        uint256 count = purchases[purchaseID].count;
         delete purchases[purchaseID];
-    }
+        Escrow.Vault memory vault = _createVault(count);
 
-    function emptyHook() public view {
-        require(msg.sender == address(escrow), "must be the escrow contract");
-    }
-
-    function pullAttackHook(uint256 purchaseID) public {
-        require(msg.sender == address(escrow), "must be the escrow contract");
-        Purchase memory p = purchases[purchaseID];
-
-        Escrow.Vault memory vault = _createVault(p.count);
-
-        asset.mint(address(this), p.count);
+        asset.mint(address(this), count);
         asset.setApprovalForAll(address(escrow), true);
-
         escrow.escrow(vault, address(this));
-
-        delete purchases[purchaseID];
     }
 
     function _createVault(uint256 count) internal view returns (Escrow.Vault memory) {

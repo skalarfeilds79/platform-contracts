@@ -189,7 +189,7 @@ contract Escrow is Ownable {
      *
      * @param _id the id of the escrow vault
      */
-    function destroy(uint256 _id) public {
+    function destroy(uint256 _id) external {
         Vault memory vault = vaults[_id];
 
         require(
@@ -212,7 +212,7 @@ contract Escrow is Ownable {
      * @param _id the id of the escrow vault
      * @param _to the address to which assets should be released
      */
-    function release(uint256 _id, address _to) public {
+    function release(uint256 _id, address _to) external {
         Vault memory vault = vaults[_id];
 
         require(
@@ -226,6 +226,8 @@ contract Escrow is Ownable {
         );
 
         releaseMutexLocked = true;
+        emit Released(_id, _to);
+        delete vaults[_id];
 
         if (vault.balance > 0) {
             IERC20(vault.asset).transfer(_to, vault.balance);
@@ -235,8 +237,6 @@ contract Escrow is Ownable {
             _transferBatch(vault, address(this), _to);
         }
 
-        emit Released(_id, _to);
-        delete vaults[_id];
         releaseMutexLocked = false;
     }
 

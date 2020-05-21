@@ -1,17 +1,17 @@
 import 'jest';
 
-import { Escrow, TestERC20Token, TestChest, MaliciousChest } from '../../src/contracts';
+import { Escrow, TestERC20Token, TestChest, MaliciousChest } from '../../../src/contracts';
 
-import { Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
+import { Ganache, Blockchain,expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
 
-const provider = new ethers.providers.JsonRpcProvider();
-const blockchain = new Blockchain();
+const provider = new Ganache(Ganache.DefaultOptions);
+const blockchain = new Blockchain(provider);
+
 
 const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
 describe('ERC20Escrow', () => {
-
   const [user, other] = generatedWallets(provider);
 
   beforeEach(async () => {
@@ -35,11 +35,10 @@ describe('ERC20Escrow', () => {
   });
 
   describe('#escrow', () => {
-
     let escrow: Escrow;
     let erc20: TestERC20Token;
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       escrow = await Escrow.deploy(user);
       erc20 = await TestERC20Token.deploy(user);
     });
@@ -55,7 +54,7 @@ describe('ERC20Escrow', () => {
         balance: 1000,
         lowTokenID: 0,
         highTokenID: 0,
-        tokenIDs: []
+        tokenIDs: [],
       };
       await escrow.escrow(vault, user.address);
     });
@@ -70,7 +69,7 @@ describe('ERC20Escrow', () => {
         balance: 100,
         lowTokenID: 0,
         highTokenID: 0,
-        tokenIDs: []
+        tokenIDs: [],
       };
       await escrow.escrow(vault, user.address);
       const balance = await erc20.balanceOf(user.address);
@@ -87,7 +86,7 @@ describe('ERC20Escrow', () => {
         balance: 100,
         lowTokenID: 0,
         highTokenID: 0,
-        tokenIDs: []
+        tokenIDs: [],
       };
       await expectRevert(escrow.escrow(vault, user.address));
     });
@@ -102,19 +101,17 @@ describe('ERC20Escrow', () => {
         balance: 1000,
         lowTokenID: 0,
         highTokenID: 0,
-        tokenIDs: []
+        tokenIDs: [],
       };
       await expectRevert(escrow.escrow(vault, user.address));
     });
-
   });
 
   describe('#release', () => {
-
     let escrow: Escrow;
     let erc20: TestERC20Token;
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       escrow = await Escrow.deploy(user);
       erc20 = await TestERC20Token.deploy(user);
     });
@@ -129,7 +126,7 @@ describe('ERC20Escrow', () => {
         balance: 1000,
         lowTokenID: 0,
         highTokenID: 0,
-        tokenIDs: []
+        tokenIDs: [],
       };
       await escrow.escrow(vault, user.address);
       await escrow.release(0, user.address);
@@ -145,7 +142,7 @@ describe('ERC20Escrow', () => {
         balance: 1000,
         lowTokenID: 0,
         highTokenID: 0,
-        tokenIDs: []
+        tokenIDs: [],
       };
       await escrow.escrow(vault, user.address);
       await expectRevert(escrow.release(0, user.address));
@@ -163,7 +160,7 @@ describe('ERC20Escrow', () => {
         balance: 1000,
         lowTokenID: 0,
         highTokenID: 0,
-        tokenIDs: []
+        tokenIDs: [],
       };
       await escrow.escrow(vault, user.address);
       await checkBalance(erc20, user.address, 0);
@@ -172,17 +169,15 @@ describe('ERC20Escrow', () => {
       await checkBalance(erc20, user.address, 1000);
       await checkBalance(erc20, escrow.address, 0);
     });
-
   });
 
   describe('#callbackEscrow', () => {
-
     let escrow: Escrow;
     let erc20: TestERC20Token;
     let malicious: MaliciousChest;
     let chest: TestChest;
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       escrow = await Escrow.deploy(user);
       erc20 = await TestERC20Token.deploy(user);
       malicious = await MaliciousChest.deploy(user, escrow.address, erc20.address);
@@ -200,7 +195,5 @@ describe('ERC20Escrow', () => {
     it('should not be able to create a pull escrow vault in the callback', async () => {
       await expectRevert(malicious.maliciousPull(5));
     });
-
   });
-
 });

@@ -4,11 +4,20 @@ import { Wallet, ethers } from 'ethers';
 import { DeploymentStage } from '@imtbl/deployment-utils';
 import { asyncForEach } from '@imtbl/utils';
 import {
+  GU_S1_RARE_CHEST_SKU,
+  GU_S1_LEGENDARY_CHEST_SKU,
+  LEGENDARY_CHEST_PRICE,
+} from './constants';
+
+import {
+  RARE_CHEST_CAP,
+  LEGENDARY_CHEST_CAP,
+  RARE_CHEST_PRICE,
   GU_S1_EPIC_PACK_SKU,
   GU_S1_RARE_PACK_SKU,
   GU_S1_SHINY_PACK_SKU,
   GU_S1_LEGENDARY_PACK_SKU,
-} from '@imtbl/addresses';
+} from './constants';
 
 import {
   Raffle,
@@ -20,7 +29,8 @@ import {
   ShinyPack,
   LegendaryPack,
   PurchaseProcessor,
-  Cards
+  Cards,
+  Chest,
 } from '../src/contracts';
 
 export class SeasonOneStage implements DeploymentStage {
@@ -38,7 +48,7 @@ export class SeasonOneStage implements DeploymentStage {
     transferOwnership: (addresses: string[]) => void,
   ) {
     const processorAddress = await findInstance('IM_Processor');
-    if (!processorAddress || processorAddress.length == 0) {
+    if (!processorAddress || processorAddress.length === 0) {
       throw '*** IM_Processor not deloyed! Run `yarn deploy --core` inside contracts/platform';
     }
     const s1Vendor =
@@ -124,12 +134,23 @@ export class SeasonOneStage implements DeploymentStage {
       ));
     await onDeployment('GU_S1_Legendary_Pack', legendaryPack, false);
 
-    const packAddresses = [rarePack, shinyPack, legendaryPack, epicPack];
+    const rareChest =
+      (await findInstance('GU_S1_Rare_Chest')) ||
+      (await this.deployRareChest(rarePack, referral, escrow, processor));
+    await onDeployment('GU_S1_Rare_Chest', rareChest, false);
 
+    const legendaryChest =
+      (await findInstance('GU_S1_Legendary_Chest')) ||
+      (await this.deployLegendaryChest(legendaryPack, referral, escrow, processor));
+    await onDeployment('GU_S1_Legendary_Chest', legendaryChest, false);
+
+    const packAddresses = [rarePack, shinyPack, legendaryPack, epicPack];
     await this.setupCardsContract(cards, 'Season One', 1000, 1500, packAddresses);
 
-    await this.setApprovedRaffleMinters(raffle, packAddresses);
+    await this.setChestForPack('Rare', rarePack, rareChest);
+    await this.setChestForPack('Legendary', legendaryPack, legendaryChest);
 
+    await this.setApprovedRaffleMinters(raffle, packAddresses);
     await this.setApprovedProcessorSellers(processor, [
       { address: epicPack, sku: GU_S1_EPIC_PACK_SKU },
       { address: rarePack, sku: GU_S1_RARE_PACK_SKU },
@@ -140,7 +161,7 @@ export class SeasonOneStage implements DeploymentStage {
 
   async deployVendor(processor: string): Promise<string> {
     console.log('** Deploying S1Vendor **');
-    const contract = await S1Vendor.deploy(
+    const contract = await S1Vendor.confirmDeployment(
       this.wallet,
       ethers.constants.AddressZero,
       ethers.constants.HashZero,
@@ -153,20 +174,29 @@ export class SeasonOneStage implements DeploymentStage {
 
   async deployRaffle(): Promise<string> {
     console.log('** Deploying Raffle **');
-    const contract = await Raffle.deploy(this.wallet);
-    return contract.address;
+    const unsignedTx = await Raffle.getDeployTransaction(this.wallet);
+    unsignedTx.nonce = await this.wallet.getTransactionCount();
+    const signedTx = await this.wallet.sendTransaction(unsignedTx);
+    const receipt = await signedTx.wait();
+    return receipt.contractAddress;
   }
 
   async deploySale(): Promise<string> {
     console.log('** Deploying S1Sale **');
-    const contract = await S1Sale.deploy(this.wallet);
-    return contract.address;
+    const unsignedTx = await S1Sale.getDeployTransaction(this.wallet);
+    unsignedTx.nonce = await this.wallet.getTransactionCount();
+    const signedTx = await this.wallet.sendTransaction(unsignedTx);
+    const receipt = await signedTx.wait();
+    return receipt.contractAddress;
   }
 
   async deployReferral(): Promise<string> {
     console.log('** Deploying Referral **');
-    const contract = await Referral.deploy(this.wallet, 90, 10);
-    return contract.address;
+    const unsignedTx = await Referral.getDeployTransaction(this.wallet, 90, 10);
+    unsignedTx.nonce = await this.wallet.getTransactionCount();
+    const signedTx = await this.wallet.sendTransaction(unsignedTx);
+    const receipt = await signedTx.wait();
+    return receipt.contractAddress;
   }
 
   async deployEpicPack(
@@ -179,7 +209,7 @@ export class SeasonOneStage implements DeploymentStage {
     processor: string,
   ): Promise<string> {
     console.log('** Deploying EpicPack **');
-    const contract = await EpicPack.deploy(
+    const unsignedTx = await EpicPack.getDeployTransaction(
       this.wallet,
       raffle,
       beacon,
@@ -189,7 +219,10 @@ export class SeasonOneStage implements DeploymentStage {
       escrow,
       processor,
     );
-    return contract.address;
+    unsignedTx.nonce = await this.wallet.getTransactionCount();
+    const signedTx = await this.wallet.sendTransaction(unsignedTx);
+    const receipt = await signedTx.wait();
+    return receipt.contractAddress;
   }
 
   async deployRarePack(
@@ -202,7 +235,7 @@ export class SeasonOneStage implements DeploymentStage {
     processor: string,
   ): Promise<string> {
     console.log('** Deploying RarePack **');
-    const contract = await RarePack.deploy(
+    const unsignedTx = await RarePack.getDeployTransaction(
       this.wallet,
       raffle,
       beacon,
@@ -212,7 +245,10 @@ export class SeasonOneStage implements DeploymentStage {
       escrow,
       processor,
     );
-    return contract.address;
+    unsignedTx.nonce = await this.wallet.getTransactionCount();
+    const signedTx = await this.wallet.sendTransaction(unsignedTx);
+    const receipt = await signedTx.wait();
+    return receipt.contractAddress;
   }
 
   async deployShinyPack(
@@ -225,7 +261,7 @@ export class SeasonOneStage implements DeploymentStage {
     processor: string,
   ): Promise<string> {
     console.log('** Deploying ShinyPack **');
-    const contract = await ShinyPack.deploy(
+    const unsignedTx = await ShinyPack.getDeployTransaction(
       this.wallet,
       raffle,
       beacon,
@@ -235,7 +271,10 @@ export class SeasonOneStage implements DeploymentStage {
       escrow,
       processor,
     );
-    return contract.address;
+    unsignedTx.nonce = await this.wallet.getTransactionCount();
+    const signedTx = await this.wallet.sendTransaction(unsignedTx);
+    const receipt = await signedTx.wait();
+    return receipt.contractAddress;
   }
 
   async deployLegendaryPack(
@@ -248,7 +287,7 @@ export class SeasonOneStage implements DeploymentStage {
     processor: string,
   ): Promise<string> {
     console.log('** Deploying LegendaryPack **');
-    const contract = await LegendaryPack.deploy(
+    const unsignedTx = await LegendaryPack.getDeployTransaction(
       this.wallet,
       raffle,
       beacon,
@@ -258,7 +297,59 @@ export class SeasonOneStage implements DeploymentStage {
       escrow,
       processor,
     );
-    return contract.address;
+    unsignedTx.nonce = await this.wallet.getTransactionCount();
+    const signedTx = await this.wallet.sendTransaction(unsignedTx);
+    const receipt = await signedTx.wait();
+    return receipt.contractAddress;
+  }
+
+  async deployRareChest(rarePack: string, referral: string, escrow: string, processor: string) {
+    console.log('** Deploying Rare Chest **');
+
+    const unsignedTx = await Chest.getDeployTransaction(
+      this.wallet,
+      'GU:S1: Rare Chest',
+      'GUS1RC',
+      rarePack,
+      RARE_CHEST_CAP,
+      referral,
+      GU_S1_RARE_CHEST_SKU,
+      RARE_CHEST_PRICE,
+      escrow,
+      processor,
+    );
+
+    unsignedTx.nonce = await this.wallet.getTransactionCount();
+    const signedTx = await this.wallet.sendTransaction(unsignedTx);
+    const receipt = await signedTx.wait();
+    return receipt.contractAddress;
+  }
+
+  async deployLegendaryChest(
+    legendaryPack: string,
+    referral: string,
+    escrow: string,
+    processor: string,
+  ) {
+    console.log('** Deploying Legendary Chest **');
+
+    const unsignedTx = await Chest.getDeployTransaction(
+      this.wallet,
+      'GU:S1: Legendary Chest',
+      'GUS1LC',
+      legendaryPack,
+      LEGENDARY_CHEST_CAP,
+      referral,
+      GU_S1_LEGENDARY_CHEST_SKU,
+      LEGENDARY_CHEST_PRICE,
+      escrow,
+      processor,
+    );
+
+    unsignedTx.nonce = await this.wallet.getTransactionCount();
+    const signedTx = await this.wallet.sendTransaction(unsignedTx);
+    const receipt = await signedTx.wait();
+    return receipt.contractAddress;
   }
 
   async setApprovedProcessorSellers(processor: string, items: { address: string; sku: string }[]) {
@@ -285,6 +376,16 @@ export class SeasonOneStage implements DeploymentStage {
     });
   }
 
+  async setChestForPack(name: string, pack: string, chest: string) {
+    console.log(`** Setting ${name} chest on pack **`);
+    const contract = await Pack.at(this.wallet, pack);
+    const existingChestAddress = await contract.chest();
+
+    if (existingChestAddress === ethers.constants.AddressZero) {
+      await contract.setChest(chest);
+    }
+  }
+
   async setupCardsContract(
     cards: string,
     name: string,
@@ -292,7 +393,7 @@ export class SeasonOneStage implements DeploymentStage {
     high: number,
     approvedMinters: string[],
   ) {
-    console.log(`** Adding a new GU Season and adding approved minters **`);
+    console.log('** Adding a new GU Season and adding approved minters **');
     const contract = Cards.at(this.wallet, cards);
     console.log(contract.address);
     const season = await (await contract.functions.seasons(3)).low;
@@ -304,7 +405,7 @@ export class SeasonOneStage implements DeploymentStage {
     }
 
     await asyncForEach(approvedMinters, async (minterAddress) => {
-      if ((await contract.functions.factoryApproved(minterAddress, 4)) != true) {
+      if ((await contract.functions.factoryApproved(minterAddress, 4)) !== true) {
         console.log(`** Adding ${minterAddress} as an approved address **`);
         await contract.functions.addFactory(minterAddress, 4);
       }

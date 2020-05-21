@@ -3,7 +3,7 @@ import 'jest';
 import { Ganache, Blockchain,expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
 import { BigNumber } from 'ethers/utils';
-import { ETHUSDMockOracle } from '../../src/contracts/ETHUSDMockOracle';
+import { ETHUSDMockOracle } from '../../../src/contracts/ETHUSDMockOracle';
 
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);

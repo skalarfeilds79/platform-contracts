@@ -1,13 +1,13 @@
 import 'jest';
 
 import {
-    Escrow,
-    TestERC20Token,
-    CreditCardEscrow,
-    TestERC721Token,
-    TestCreditCardPack,
-    MaliciousCCP,
-} from '../../../src/contracts';
+  Escrow,
+  TestERC20Token,
+  CreditCardEscrow,
+  TestERC721Token,
+  TestCreditCardPack,
+  MaliciousCCP,
+} from '../../../../src/contracts';
 
 import { Ganache, Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
@@ -20,7 +20,6 @@ const ZERO_EX = '0x0000000000000000000000000000000000000000';
 ethers.errors.setLogLevel('error');
 
 describe('CreditCardEscrow', () => {
-
   const [user, other] = generatedWallets(provider);
 
   beforeEach(async () => {
@@ -38,7 +37,6 @@ describe('CreditCardEscrow', () => {
   }
 
   describe('#requestDestruction', () => {
-
     let escrow: Escrow;
     let cc: CreditCardEscrow;
     let erc20: TestERC20Token;
@@ -50,7 +48,7 @@ describe('CreditCardEscrow', () => {
     const custodian = user;
     const releaseDelay = 100;
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       erc20 = await TestERC20Token.deploy(user);
       erc721 = await TestERC721Token.deploy(user);
       escrow = await Escrow.deploy(user);
@@ -60,14 +58,9 @@ describe('CreditCardEscrow', () => {
         destroyer.address,
         100,
         custodian.address,
-        100
+        100,
       );
-      pack = await TestCreditCardPack.deploy(
-        user,
-        cc.address,
-        erc20.address,
-        erc721.address
-      );
+      pack = await TestCreditCardPack.deploy(user, cc.address, erc20.address, erc721.address);
       malicious = await MaliciousCCP.deploy(user, escrow.address, erc20.address, erc721.address);
     });
 
@@ -116,7 +109,5 @@ describe('CreditCardEscrow', () => {
       await cc.destroy(0);
       await expectRevert(malicious.stealERC721(user.address, 0, 1));
     });
-
   });
-
 });

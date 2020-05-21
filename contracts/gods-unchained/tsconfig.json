@@ -3,6 +3,11 @@
   "compilerOptions": {
     "outDir": "./dist"
   },
+<<<<<<< HEAD
   "include": ["src"],
   "exclude": ["node_modules"],
+=======
+  "include": ["src", "__tests__"],
+  "exclude": ["node_modules", ],
+>>>>>>> 71b3193ac072f09b751ac19bfddba25408fc49a9
 }

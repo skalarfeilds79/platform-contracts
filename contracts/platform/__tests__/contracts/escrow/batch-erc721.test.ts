@@ -1,6 +1,12 @@
 import 'jest';
 
-import { Escrow, TestERC721Token, MaliciousBatchPack, TestBatchPack, TestERC20Token } from '../../src/contracts';
+import {
+  Escrow,
+  TestERC721Token,
+  MaliciousBatchPack,
+  TestBatchPack,
+  TestERC20Token,
+} from '../../../src/contracts';
 
 import { Ganache, Blockchain,expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
@@ -14,7 +20,6 @@ const ZERO_EX = '0x0000000000000000000000000000000000000000';
 ethers.errors.setLogLevel('error');
 
 describe('BatchERC271Escrow', () => {
-
   const [user, other] = generatedWallets(provider);
 
   beforeEach(async () => {
@@ -38,12 +43,11 @@ describe('BatchERC271Escrow', () => {
   });
 
   describe('#escrow', () => {
-
     let escrow: Escrow;
     let erc721: TestERC721Token;
     let erc20: TestERC20Token;
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       escrow = await Escrow.deploy(user);
       erc721 = await TestERC721Token.deploy(user);
       erc20 = await TestERC20Token.deploy(user);
@@ -60,7 +64,7 @@ describe('BatchERC271Escrow', () => {
         balance: 0,
         lowTokenID: 0,
         highTokenID: 1,
-        tokenIDs: []
+        tokenIDs: [],
       };
       await escrow.escrow(vault, user.address);
     });
@@ -75,7 +79,7 @@ describe('BatchERC271Escrow', () => {
         balance: 0,
         lowTokenID: 0,
         highTokenID: 0,
-        tokenIDs: []
+        tokenIDs: [],
       };
       await expectRevert(escrow.escrow(vault, user.address));
     });
@@ -90,7 +94,7 @@ describe('BatchERC271Escrow', () => {
         balance: 0,
         lowTokenID: 10,
         highTokenID: 0,
-        tokenIDs: []
+        tokenIDs: [],
       };
       await expectRevert(escrow.escrow(vault, user.address));
     });
@@ -105,7 +109,7 @@ describe('BatchERC271Escrow', () => {
         balance: 0,
         lowTokenID: 0,
         highTokenID: 1,
-        tokenIDs: []
+        tokenIDs: [],
       };
       await expectRevert(escrow.escrow(vault, user.address));
     });
@@ -120,7 +124,7 @@ describe('BatchERC271Escrow', () => {
         balance: 0,
         lowTokenID: 0,
         highTokenID: 1,
-        tokenIDs: []
+        tokenIDs: [],
       };
       await expectRevert(escrow.escrow(vault, user.address));
     });
@@ -138,7 +142,7 @@ describe('BatchERC271Escrow', () => {
         balance: 50,
         lowTokenID: 0,
         highTokenID: len,
-        tokenIDs: []
+        tokenIDs: [],
       };
       await expectRevert(escrow.escrow(vault, user.address));
     });
@@ -155,7 +159,7 @@ describe('BatchERC271Escrow', () => {
         balance: 0,
         lowTokenID: 0,
         highTokenID: 5,
-        tokenIDs: [5, 6, 7, 8, 9]
+        tokenIDs: [5, 6, 7, 8, 9],
       };
       await expectRevert(escrow.escrow(vault, user.address));
     });
@@ -172,7 +176,7 @@ describe('BatchERC271Escrow', () => {
         balance: 0,
         lowTokenID: 0,
         highTokenID: len,
-        tokenIDs: []
+        tokenIDs: [],
       };
       await escrow.escrow(vault, user.address);
     });
@@ -188,7 +192,7 @@ describe('BatchERC271Escrow', () => {
         balance: 0,
         lowTokenID: 0,
         highTokenID: 1,
-        tokenIDs: []
+        tokenIDs: [],
       };
       await expectRevert(escrow.escrow(vault, user.address));
     });
@@ -205,19 +209,17 @@ describe('BatchERC271Escrow', () => {
         balance: 0,
         lowTokenID: 0,
         highTokenID: len,
-        tokenIDs: []
+        tokenIDs: [],
       };
       await expectRevert(escrow.escrow(vault, user.address));
     });
-
   });
 
   describe('#release', () => {
-
     let escrow: Escrow;
     let erc721: TestERC721Token;
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       escrow = await Escrow.deploy(user);
       erc721 = await TestERC721Token.deploy(user);
     });
@@ -232,7 +234,7 @@ describe('BatchERC271Escrow', () => {
         balance: 0,
         lowTokenID: 0,
         highTokenID: 1,
-        tokenIDs: []
+        tokenIDs: [],
       };
       await escrow.escrow(vault, user.address);
       await expectRevert(escrow.release(0, user.address));
@@ -250,7 +252,7 @@ describe('BatchERC271Escrow', () => {
         balance: 0,
         lowTokenID: 0,
         highTokenID: 1,
-        tokenIDs: []
+        tokenIDs: [],
       };
       await escrow.escrow(vault, user.address);
       await checkBalance(erc721, user.address, 0);
@@ -259,17 +261,15 @@ describe('BatchERC271Escrow', () => {
       await checkBalance(erc721, user.address, 1);
       await checkBalance(erc721, escrow.address, 0);
     });
-
   });
 
   describe('#callbackEscrow', () => {
-
     let escrow: Escrow;
     let erc721: TestERC721Token;
     let malicious: MaliciousBatchPack;
     let pack: TestBatchPack;
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       escrow = await Escrow.deploy(user);
       erc721 = await TestERC721Token.deploy(user);
       malicious = await MaliciousBatchPack.deploy(user, escrow.address, erc721.address);
@@ -287,7 +287,5 @@ describe('BatchERC271Escrow', () => {
     it('should not be able to create a pull escrow vault in the callback', async () => {
       await expectRevert(malicious.maliciousPull(5));
     });
-
   });
-
 });

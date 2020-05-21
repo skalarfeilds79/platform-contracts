@@ -1,6 +1,6 @@
 import 'jest';
 
-import { Beacon, Consumer } from '../../src/contracts';
+import { Beacon, Consumer } from '../../../src/contracts';
 
 import { Ganache, Blockchain,expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';

@@ -2,7 +2,8 @@ import { Wallet, ethers } from 'ethers';
 import { DeploymentStage } from '@imtbl/deployment-utils';
 import { asyncForEach } from '@imtbl/utils';
 import { Escrow, CreditCardEscrow, Beacon, PurchaseProcessor, TestVendor } from '../src/contracts';
-import { IM_PROCESSOR_LIMIT } from '@imtbl/addresses';
+
+export const IM_PROCESSOR_LIMIT = 100000000;
 
 export class CoreStage implements DeploymentStage {
   private wallet: Wallet;

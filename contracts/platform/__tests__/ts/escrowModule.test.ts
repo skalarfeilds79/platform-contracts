@@ -6,9 +6,9 @@ import { PurchaseProcessor } from '../../src/contracts/PurchaseProcessor';
 import { keccak256 } from 'ethers/utils';
 import { parseLogs } from '../../../../packages/utils/src/parseLogs';
 import Platform from '../../src/Platform';
-import { getAddressBook } from '@imtbl/addresses/';
+import { getAddressBook, GU_S1_RARE_PACK_SKU } from '@imtbl/addresses/';
 import { Currency } from '../../src/types/index';
-import { GU_S1_RARE_PACK_SKU } from '../../../../packages/addresses/src/constants';
+
 import {
   getSignedPayment,
   ETHUSDMockOracle,
@@ -17,6 +17,7 @@ import {
   Beacon,
   Escrow,
 } from '../../src';
+
 import {
   Raffle,
   Cards,

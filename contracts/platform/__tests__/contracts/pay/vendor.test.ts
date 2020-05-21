@@ -7,6 +7,7 @@ import { ethers } from 'ethers';
 import { keccak256, BigNumber } from 'ethers/utils';
 import { getETHPayment, getSignedPayment, Order, PaymentParams } from '../../../src/';
 import { ETHUSDMockOracle } from '../../../src/contracts/ETHUSDMockOracle';
+import { Currency } from '../../../src/types/index';
 
 const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();

@@ -55,10 +55,7 @@ export declare type WalletAddresses = {
   walletDeployerAddress?: string;
 };
 
-export declare type AddressBook = {
-  platform?: PlatformAddresses;
-  godsUnchained?: GodsUnchainedAddresses;
-  wallet?: WalletAddresses;
+export declare type DependencyAddresses = {
   wethAddress?: string;
   zeroExExchangeAddress?: string;
   zeroExERC20ProxyAddress?: string;

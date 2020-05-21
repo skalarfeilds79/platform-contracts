@@ -201,7 +201,7 @@ describe('02_season_one', () => {
     });
   });
 
-  describe.only('using ETH', () => {
+  describe('using ETH', () => {
     beforeEach(async () => {
       await blockchain.resetAsync();
       await blockchain.saveSnapshotAsync();
@@ -252,9 +252,11 @@ describe('02_season_one', () => {
     const order = {
       quantity,
       sku,
-      recipient: wallet.address,
+      assetRecipient: wallet.address,
+      changeRecipient: packAddress,
       totalPrice: cost * quantity,
       currency: Currency.USDCents,
+      alreadyPaid: 0
     };
 
     const params = { nonce, escrowFor: 360, value: cost * quantity };

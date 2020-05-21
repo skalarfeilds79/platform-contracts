@@ -10,7 +10,7 @@ contract ICreditCardEscrow {
      *
      * @param _id The ID of the escrow account to be released
      */
-    function release(uint _id) public;
+    function release(uint _id) external;
 
     /**
      * @dev Request that a custodial escrow account's assets be marked for release
@@ -18,35 +18,35 @@ contract ICreditCardEscrow {
      * @param _id The ID of the escrow account to be marked
      * @param _to The new owner of tese assets
      */
-    function requestRelease(uint _id, address _to) public;
+    function requestRelease(uint _id, address _to) external;
 
     /**
      * @dev Cancel a release request
      *
      * @param _id The ID of the escrow account to be unmarked
      */
-    function cancelRelease(uint _id) public;
+    function cancelRelease(uint _id) external;
 
     /**
      * @dev Request that an escrow account's assets be marked for destruction
      *
      * @param _id The ID of the escrow account to be marked
      */
-    function requestDestruction(uint _id) public;
+    function requestDestruction(uint _id) external;
 
     /**
      * @dev Revoke a destruction request
      *
      * @param _id The ID of the escrow account to be unmarked
      */
-    function cancelDestruction(uint _id) public;
+    function cancelDestruction(uint _id) external;
 
     /**
      * @dev Destroy all assets in an escrow account
      *
      * @param _id The ID of the escrow account to be destroyed
      */
-    function destroy(uint _id) public;
+    function destroy(uint _id) external;
 
     /**
      * @dev Create a new escrow account
@@ -65,5 +65,5 @@ contract ICreditCardEscrow {
         uint256 _duration
     ) public returns (uint);
 
-    function getProtocol() public view returns (IEscrow);
+    function getProtocol() external view returns (IEscrow);
 }

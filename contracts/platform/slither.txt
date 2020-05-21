@@ -1,0 +1,648 @@
+INFO:Detectors:
+PurchaseProcessor._payEthPricedInUsd(IPurchaseProcessor.Order,IPurchaseProcessor.PaymentParams) (pay/PurchaseProcessor.sol#237-272) sends eth to arbitrary user
+        Dangerous calls:
+        - wallet.call.value(amount)() (pay/PurchaseProcessor.sol#258)
+PurchaseProcessor._payEthPricedInEth(IPurchaseProcessor.Order,IPurchaseProcessor.PaymentParams) (pay/PurchaseProcessor.sol#304-333) sends eth to arbitrary user
+        Dangerous calls:
+        - wallet.call.value(_order.totalPrice)() (pay/PurchaseProcessor.sol#319)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#functions-that-send-ether-to-arbitrary-destinations
+INFO:Detectors:
+Reentrancy in CappedVendor._purchaseFor(address,uint256,IPurchaseProcessor.PaymentParams) (pay/vendor/CappedVendor.sol#32-44):
+        External calls:
+        - purchaseID = super._purchaseFor(_recipient,_quantity,_payment) (pay/vendor/CappedVendor.sol#40)
+                - paymentID = pay.process.value(msg.value)(order,_payment) (pay/vendor/SingleItemVendor.sol#91)
+        State variables written after the call(s):
+        - sold += _quantity (pay/vendor/CappedVendor.sol#42)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities
+INFO:Detectors:
+MakerOracle.convert(uint8,uint8,uint256) (oracle/MakerOracle.sol#24-52) performs a multiplication on the result of a division:
+        -price().div(10 ** 16).mul(amount) (oracle/MakerOracle.sol#45)
+MakerOracle.convert(uint8,uint8,uint256) (oracle/MakerOracle.sol#24-52) performs a multiplication on the result of a division:
+        -uint256(10 ** 34).div(price()).mul(amount) (oracle/MakerOracle.sol#50)
+ETHUSDMockOracle.convert(uint8,uint8,uint256) (oracle/test/ETHUSDMockOracle.sol#27-55) performs a multiplication on the result of a division:
+        -price().div(10 ** 16).mul(amount) (oracle/test/ETHUSDMockOracle.sol#48)
+ETHUSDMockOracle.convert(uint8,uint8,uint256) (oracle/test/ETHUSDMockOracle.sol#27-55) performs a multiplication on the result of a division:
+        -uint256(10 ** 34).div(price()).mul(amount) (oracle/test/ETHUSDMockOracle.sol#53)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#divide-before-multiply
+INFO:Detectors:
+PurchaseProcessor._payEthPricedInEth(IPurchaseProcessor.Order,IPurchaseProcessor.PaymentParams) (pay/PurchaseProcessor.sol#304-333) uses a dangerous strict equality:
+        - require(bool,string)(address(this).balance == 0,IM:PurchaseProcessor: ETH left over) (pay/PurchaseProcessor.sol#328-331)
+PurchaseProcessor._payEthPricedInUsd(IPurchaseProcessor.Order,IPurchaseProcessor.PaymentParams) (pay/PurchaseProcessor.sol#237-272) uses a dangerous strict equality:
+        - require(bool,string)(address(this).balance == 0,IM:PurchaseProcessor: ETH left over) (pay/PurchaseProcessor.sol#267-270)
+Escrow.callbackEscrow(IEscrow.Vault,address,bytes) (escrow/Escrow.sol#39-121) uses a dangerous strict equality:
+        - require(bool,string)(IERC20(_vault.asset).balanceOf(address(this)).sub(preBalance) == _vault.balance,IM:Escrow: must have transferred the tokens) (escrow/Escrow.sol#103-106)
+Beacon._callback(uint256) (randomness/Beacon.sol#44-56) uses a dangerous strict equality:
+        - blockHashes[_commitBlock] == bytes32(0) (randomness/Beacon.sol#49)
+Beacon.getCurrentBlock(uint256) (randomness/Beacon.sol#101-112) uses a dangerous strict equality:
+        - forwardTo == 0 (randomness/Beacon.sol#103)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dangerous-strict-equalities
+INFO:Detectors:
+Reentrancy in Escrow.callbackEscrow(IEscrow.Vault,address,bytes) (escrow/Escrow.sol#39-121):
+        External calls:
+        - require(bool,string)(! _areAnyInListEscrowed(_vault),IM:Escrow: list must not be already escrowed) (escrow/Escrow.sol#75-78)
+                - (success,response) = _asset.call(data) (escrow/Escrow.sol#299)
+        - require(bool,string)(! _areAnyInBatchEscrowed(_vault),IM:Escrow: batch must not be already escrowed) (escrow/Escrow.sol#86-89)
+                - (success,response) = _asset.call(data) (escrow/Escrow.sol#299)
+        State variables written after the call(s):
+        - escrowMutexLocked = true (escrow/Escrow.sol#97)
+Reentrancy in Escrow.callbackEscrow(IEscrow.Vault,address,bytes) (escrow/Escrow.sol#39-121):
+        External calls:
+        - require(bool,string)(! _areAnyInListEscrowed(_vault),IM:Escrow: list must not be already escrowed) (escrow/Escrow.sol#75-78)
+                - (success,response) = _asset.call(data) (escrow/Escrow.sol#299)
+        - require(bool,string)(! _areAnyInBatchEscrowed(_vault),IM:Escrow: batch must not be already escrowed) (escrow/Escrow.sol#86-89)
+                - (success,response) = _asset.call(data) (escrow/Escrow.sol#299)
+        - _callbackTo.call(_callbackData) (escrow/Escrow.sol#99)
+        State variables written after the call(s):
+        - escrowMutexLocked = false (escrow/Escrow.sol#100)
+Reentrancy in TestCreditCardPack.erc20Hook(uint256) (escrow/releaser/test/TestCreditCardPack.sol#80-86):
+        External calls:
+        - erc20.mint(protocol,p.count) (escrow/releaser/test/TestCreditCardPack.sol#84)
+        State variables written after the call(s):
+        - delete purchases[purchaseID] (escrow/releaser/test/TestCreditCardPack.sol#85)
+Reentrancy in TestCreditCardPack.erc721Hook(uint256) (escrow/releaser/test/TestCreditCardPack.sol#72-78):
+        External calls:
+        - erc721.mint(protocol,p.count) (escrow/releaser/test/TestCreditCardPack.sol#76)
+        State variables written after the call(s):
+        - delete purchases[purchaseID] (escrow/releaser/test/TestCreditCardPack.sol#77)
+Reentrancy in TestBatchPack.escrowHook(uint256) (escrow/test/TestBatchPack.sol#48-53):
+        External calls:
+        - asset.mint(address(escrow),p.count) (escrow/test/TestBatchPack.sol#51)
+        State variables written after the call(s):
+        - delete purchases[purchaseID] (escrow/test/TestBatchPack.sol#52)
+Reentrancy in TestListPack.escrowHook(uint256) (escrow/test/TestListPack.sol#36-41):
+        External calls:
+        - asset.mint(address(escrow),p.count) (escrow/test/TestListPack.sol#39)
+        State variables written after the call(s):
+        - delete purchases[purchaseID] (escrow/test/TestListPack.sol#40)
+Reentrancy in MaliciousListPack.pullAttackHook(uint256) (escrow/test/MaliciousListPack.sol#67-79):
+        External calls:
+        - asset.mint(address(this),p.count) (escrow/test/MaliciousListPack.sol#73)
+        - asset.setApprovalForAll(address(escrow),true) (escrow/test/MaliciousListPack.sol#74)
+        - escrow.escrow(vault,address(this)) (escrow/test/MaliciousListPack.sol#76)
+        State variables written after the call(s):
+        - delete purchases[purchaseID] (escrow/test/MaliciousListPack.sol#78)
+Reentrancy in MaliciousBatchPack.pullAttackHook(uint256) (escrow/test/MaliciousBatchPack.sol#67-79):
+        External calls:
+        - asset.mint(address(this),p.count) (escrow/test/MaliciousBatchPack.sol#73)
+        - asset.setApprovalForAll(address(escrow),true) (escrow/test/MaliciousBatchPack.sol#74)
+        - escrow.escrow(vault,address(this)) (escrow/test/MaliciousBatchPack.sol#76)
+        State variables written after the call(s):
+        - delete purchases[purchaseID] (escrow/test/MaliciousBatchPack.sol#78)
+Reentrancy in MaliciousListPack.pushAttackHook(uint256) (escrow/test/MaliciousListPack.sol#49-61):
+        External calls:
+        - escrow.callbackEscrow(vault,address(this),data) (escrow/test/MaliciousListPack.sol#57)
+        - asset.mint(address(escrow),p.count) (escrow/test/MaliciousListPack.sol#59)
+        State variables written after the call(s):
+        - delete purchases[purchaseID] (escrow/test/MaliciousListPack.sol#60)
+Reentrancy in MaliciousBatchPack.pushAttackHook(uint256) (escrow/test/MaliciousBatchPack.sol#49-61):
+        External calls:
+        - escrow.callbackEscrow(vault,address(this),data) (escrow/test/MaliciousBatchPack.sol#57)
+        - asset.mint(address(escrow),p.count) (escrow/test/MaliciousBatchPack.sol#59)
+        State variables written after the call(s):
+        - delete purchases[purchaseID] (escrow/test/MaliciousBatchPack.sol#60)
+Reentrancy in CreditCardEscrow.release(uint256) (escrow/releaser/CreditCardEscrow.sol#152-184):
+        External calls:
+        - escrowProtocol.release(_id,lock.owner) (escrow/releaser/CreditCardEscrow.sol#167)
+        - escrowProtocol.release(_id,lock.releaseTo) (escrow/releaser/CreditCardEscrow.sol#179)
+        State variables written after the call(s):
+        - delete locks[_id] (escrow/releaser/CreditCardEscrow.sol#182)
+Reentrancy in Escrow.release(uint256,address) (escrow/Escrow.sol#182-208):
+        External calls:
+        - IERC20(vault.asset).transfer(_to,vault.balance) (escrow/Escrow.sol#198)
+        - _transferList(vault,address(this),_to) (escrow/Escrow.sol#200)
+                - IListTransfer(_vault.asset).transferAllFrom(_from,_to,_vault.tokenIDs) (escrow/Escrow.sol#242)
+                - IERC721(_vault.asset).transferFrom(_from,_to,_vault.tokenIDs[i]) (escrow/Escrow.sol#245)
+        - _transferBatch(vault,address(this),_to) (escrow/Escrow.sol#202)
+                - IBatchTransfer(_vault.asset).transferBatch(_from,_to,_vault.lowTokenID,_vault.highTokenID) (escrow/Escrow.sol#252)
+                - IERC721(_vault.asset).transferFrom(_from,_to,i) (escrow/Escrow.sol#255)
+        State variables written after the call(s):
+        - releaseMutexLocked = false (escrow/Escrow.sol#207)
+        - delete vaults[_id] (escrow/Escrow.sol#206)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+INFO:Detectors:
+PurchaseProcessor._payEthPricedInUsd(IPurchaseProcessor.Order,IPurchaseProcessor.PaymentParams) (pay/PurchaseProcessor.sol#237-272) ignores return value by wallet.call.value(amount)() (pay/PurchaseProcessor.sol#258)
+PurchaseProcessor._payEthPricedInUsd(IPurchaseProcessor.Order,IPurchaseProcessor.PaymentParams) (pay/PurchaseProcessor.sol#237-272) ignores return value by recipient.call.value(remaining)() (pay/PurchaseProcessor.sol#264)
+PurchaseProcessor._payEthPricedInEth(IPurchaseProcessor.Order,IPurchaseProcessor.PaymentParams) (pay/PurchaseProcessor.sol#304-333) ignores return value by wallet.call.value(_order.totalPrice)() (pay/PurchaseProcessor.sol#319)
+PurchaseProcessor._payEthPricedInEth(IPurchaseProcessor.Order,IPurchaseProcessor.PaymentParams) (pay/PurchaseProcessor.sol#304-333) ignores return value by recipient.call.value(remaining)() (pay/PurchaseProcessor.sol#325)
+Escrow.callbackEscrow(IEscrow.Vault,address,bytes) (escrow/Escrow.sol#39-121) ignores return value by _callbackTo.call(_callbackData) (escrow/Escrow.sol#99)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-low-level-calls
+INFO:Detectors:
+TestBatchPack.purchase(uint256) (escrow/test/TestBatchPack.sol#23-46) ignores return value by escrow.callbackEscrow(vault,address(this),data) (escrow/test/TestBatchPack.sol#45)
+TestChest.purchase(uint256) (escrow/test/TestChest.sol#18-33) ignores return value by escrow.callbackEscrow(vault,address(this),data) (escrow/test/TestChest.sol#32)
+TestListPack.purchase(uint256) (escrow/test/TestListPack.sol#23-34) ignores return value by escrow.callbackEscrow(vault,address(this),data) (escrow/test/TestListPack.sol#33)
+MaliciousCCP.stealERC20(address,uint256) (escrow/releaser/test/MaliciousCCP.sol#20-35) ignores return value by escrow.callbackEscrow(vault,address(this),data) (escrow/releaser/test/MaliciousCCP.sol#34)
+MaliciousCCP.stealERC721(address,uint256,uint256) (escrow/releaser/test/MaliciousCCP.sol#37-52) ignores return value by escrow.callbackEscrow(vault,address(this),data) (escrow/releaser/test/MaliciousCCP.sol#51)
+Consumer.multiCommit(uint256) (randomness/test/Consumer.sol#13-17) ignores return value by beacon.commit(0) (randomness/test/Consumer.sol#15)
+Consumer.sameBlockCallback() (randomness/test/Consumer.sol#19-22) ignores return value by beacon.commit(0) (randomness/test/Consumer.sol#20)
+Consumer.sameBlockCallback() (randomness/test/Consumer.sol#19-22) ignores return value by beacon.randomness(block.number) (randomness/test/Consumer.sol#21)
+Consumer.multiCallback(uint256,uint256) (randomness/test/Consumer.sol#24-28) ignores return value by beacon.randomness(commitBlock) (randomness/test/Consumer.sol#26)
+TestVendor.processPayment(IPurchaseProcessor.Order,IPurchaseProcessor.PaymentParams) (pay/test/TestVendor.sol#14-16) ignores return value by pay.process.value(msg.value)(order,payment) (pay/test/TestVendor.sol#15)
+MaliciousListPack.maliciousPush(uint256) (escrow/test/MaliciousListPack.sol#23-34) ignores return value by escrow.callbackEscrow(vault,address(this),data) (escrow/test/MaliciousListPack.sol#33)
+MaliciousListPack.maliciousPull(uint256) (escrow/test/MaliciousListPack.sol#36-47) ignores return value by escrow.callbackEscrow(vault,address(this),data) (escrow/test/MaliciousListPack.sol#46)
+MaliciousListPack.pushAttackHook(uint256) (escrow/test/MaliciousListPack.sol#49-61) ignores return value by escrow.callbackEscrow(vault,address(this),data) (escrow/test/MaliciousListPack.sol#57)
+MaliciousListPack.pullAttackHook(uint256) (escrow/test/MaliciousListPack.sol#67-79) ignores return value by escrow.escrow(vault,address(this)) (escrow/test/MaliciousListPack.sol#76)
+Escrow.escrow(IEscrow.Vault,address) (escrow/Escrow.sol#129-174) ignores return value by IERC20(_vault.asset).transferFrom(_from,address(this),_vault.balance) (escrow/Escrow.sol#156)
+Escrow.release(uint256,address) (escrow/Escrow.sol#182-208) ignores return value by IERC20(vault.asset).transfer(_to,vault.balance) (escrow/Escrow.sol#198)
+MaliciousChest.maliciousPush(uint256) (escrow/test/MaliciousChest.sol#18-25) ignores return value by escrow.callbackEscrow(vault,address(this),data) (escrow/test/MaliciousChest.sol#24)
+MaliciousChest.maliciousPull(uint256) (escrow/test/MaliciousChest.sol#27-34) ignores return value by escrow.callbackEscrow(vault,address(this),data) (escrow/test/MaliciousChest.sol#33)
+MaliciousChest.pushAttackHook(uint256) (escrow/test/MaliciousChest.sol#36-47) ignores return value by escrow.callbackEscrow(vault,address(this),data) (escrow/test/MaliciousChest.sol#43)
+MaliciousChest.pullAttackHook(uint256) (escrow/test/MaliciousChest.sol#53-62) ignores return value by asset.approve(address(escrow),2 ** 256 - 1) (escrow/test/MaliciousChest.sol#59)
+MaliciousChest.pullAttackHook(uint256) (escrow/test/MaliciousChest.sol#53-62) ignores return value by escrow.escrow(vault,address(this)) (escrow/test/MaliciousChest.sol#61)
+TestCreditCardPack.purchaseERC20(address,uint256,uint64) (escrow/releaser/test/TestCreditCardPack.sol#26-45) ignores return value by escrow.callbackEscrow(vault,address(this),data,id,duration) (escrow/releaser/test/TestCreditCardPack.sol#44)
+TestCreditCardPack.purchaseERC721(address,uint256,uint64) (escrow/releaser/test/TestCreditCardPack.sol#47-70) ignores return value by escrow.callbackEscrow(vault,address(this),data,id,duration) (escrow/releaser/test/TestCreditCardPack.sol#69)
+MaliciousBatchPack.maliciousPush(uint256) (escrow/test/MaliciousBatchPack.sol#23-34) ignores return value by escrow.callbackEscrow(vault,address(this),data) (escrow/test/MaliciousBatchPack.sol#33)
+MaliciousBatchPack.maliciousPull(uint256) (escrow/test/MaliciousBatchPack.sol#36-47) ignores return value by escrow.callbackEscrow(vault,address(this),data) (escrow/test/MaliciousBatchPack.sol#46)
+MaliciousBatchPack.pushAttackHook(uint256) (escrow/test/MaliciousBatchPack.sol#49-61) ignores return value by escrow.callbackEscrow(vault,address(this),data) (escrow/test/MaliciousBatchPack.sol#57)
+MaliciousBatchPack.pullAttackHook(uint256) (escrow/test/MaliciousBatchPack.sol#67-79) ignores return value by escrow.escrow(vault,address(this)) (escrow/test/MaliciousBatchPack.sol#76)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-return
+INFO:Detectors:
+TradeToggleERC20.constructor(string,string,uint8).name (token/TradeToggleERC20.sol#13) shadows:
+        - ERC20Detailed.name() (@openzeppelin/contracts/token/ERC20/ERC20Detailed.sol#27-29) (function)
+TradeToggleERC20.constructor(string,string,uint8).symbol (token/TradeToggleERC20.sol#13) shadows:
+        - ERC20Detailed.symbol() (@openzeppelin/contracts/token/ERC20/ERC20Detailed.sol#35-37) (function)
+TradeToggleERC20.constructor(string,string,uint8).decimals (token/TradeToggleERC20.sol#13) shadows:
+        - ERC20Detailed.decimals() (@openzeppelin/contracts/token/ERC20/ERC20Detailed.sol#51-53) (function)
+CreditCardEscrow._lock(uint256,uint256,uint256,address)._owner (escrow/releaser/CreditCardEscrow.sol#392) shadows:
+        - Ownable._owner (@openzeppelin/contracts/ownership/Ownable.sol#14) (state variable)
+Escrow._existsAndEscrowed(address,uint256).owner (escrow/Escrow.sol#301) shadows:
+        - Ownable.owner() (@openzeppelin/contracts/ownership/Ownable.sol#30-32) (function)
+ERC20Detailed.constructor(string,string,uint8).name (@openzeppelin/contracts/token/ERC20/ERC20Detailed.sol#18) shadows:
+        - ERC20Detailed.name() (@openzeppelin/contracts/token/ERC20/ERC20Detailed.sol#27-29) (function)
+ERC20Detailed.constructor(string,string,uint8).symbol (@openzeppelin/contracts/token/ERC20/ERC20Detailed.sol#18) shadows:
+        - ERC20Detailed.symbol() (@openzeppelin/contracts/token/ERC20/ERC20Detailed.sol#35-37) (function)
+ERC20Detailed.constructor(string,string,uint8).decimals (@openzeppelin/contracts/token/ERC20/ERC20Detailed.sol#18) shadows:
+        - ERC20Detailed.decimals() (@openzeppelin/contracts/token/ERC20/ERC20Detailed.sol#51-53) (function)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#local-variable-shadowing
+INFO:Detectors:
+Consumer.multiCommit(uint256) (randomness/test/Consumer.sol#13-17) has external calls inside a loop: beacon.commit(0) (randomness/test/Consumer.sol#15)
+Consumer.multiCallback(uint256,uint256) (randomness/test/Consumer.sol#24-28) has external calls inside a loop: beacon.randomness(commitBlock) (randomness/test/Consumer.sol#26)
+Escrow._transferList(IEscrow.Vault,address,address) (escrow/Escrow.sol#240-248) has external calls inside a loop: IERC721(_vault.asset).transferFrom(_from,_to,_vault.tokenIDs[i]) (escrow/Escrow.sol#245)
+Escrow._transferBatch(IEscrow.Vault,address,address) (escrow/Escrow.sol#250-258) has external calls inside a loop: IERC721(_vault.asset).transferFrom(_from,_to,i) (escrow/Escrow.sol#255)
+Escrow._areAllInListEscrowed(IEscrow.Vault) (escrow/Escrow.sol#269-276) has external calls inside a loop: IERC721(_vault.asset).ownerOf(_vault.tokenIDs[i]) != address(this) (escrow/Escrow.sol#271)
+Escrow._areAllInBatchEscrowed(IEscrow.Vault) (escrow/Escrow.sol#287-294) has external calls inside a loop: IERC721(_vault.asset).ownerOf(i) != address(this) (escrow/Escrow.sol#289)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation/#calls-inside-a-loop
+INFO:Detectors:
+Reentrancy in CreditCardEscrow.callbackEscrow(IEscrow.Vault,address,bytes,uint256,uint256) (escrow/releaser/CreditCardEscrow.sol#358-382):
+        External calls:
+        - escrowID = escrowProtocol.callbackEscrow(_vault,_callbackTo,_callbackData) (escrow/releaser/CreditCardEscrow.sol#377)
+        State variables written after the call(s):
+        - _lock(escrowID,_paymentID,_duration,_vault.player) (escrow/releaser/CreditCardEscrow.sol#379)
+                - locks[_escrowID] = Lock(_owner,endTimestamp,0,0,address(0)) (escrow/releaser/CreditCardEscrow.sol#398-404)
+Reentrancy in Escrow.callbackEscrow(IEscrow.Vault,address,bytes) (escrow/Escrow.sol#39-121):
+        External calls:
+        - require(bool,string)(! _areAnyInListEscrowed(_vault),IM:Escrow: list must not be already escrowed) (escrow/Escrow.sol#75-78)
+                - (success,response) = _asset.call(data) (escrow/Escrow.sol#299)
+        - require(bool,string)(! _areAnyInBatchEscrowed(_vault),IM:Escrow: batch must not be already escrowed) (escrow/Escrow.sol#86-89)
+                - (success,response) = _asset.call(data) (escrow/Escrow.sol#299)
+        - _callbackTo.call(_callbackData) (escrow/Escrow.sol#99)
+        State variables written after the call(s):
+        - _escrow(_vault) (escrow/Escrow.sol#120)
+                - id = vaults.push(_vault) - 1 (escrow/Escrow.sol#235)
+Reentrancy in Escrow.escrow(IEscrow.Vault,address) (escrow/Escrow.sol#129-174):
+        External calls:
+        - IERC20(_vault.asset).transferFrom(_from,address(this),_vault.balance) (escrow/Escrow.sol#156)
+        - _transferList(_vault,_from,address(this)) (escrow/Escrow.sol#163)
+                - IListTransfer(_vault.asset).transferAllFrom(_from,_to,_vault.tokenIDs) (escrow/Escrow.sol#242)
+                - IERC721(_vault.asset).transferFrom(_from,_to,_vault.tokenIDs[i]) (escrow/Escrow.sol#245)
+        - _transferBatch(_vault,_from,address(this)) (escrow/Escrow.sol#165)
+                - IBatchTransfer(_vault.asset).transferBatch(_from,_to,_vault.lowTokenID,_vault.highTokenID) (escrow/Escrow.sol#252)
+                - IERC721(_vault.asset).transferFrom(_from,_to,i) (escrow/Escrow.sol#255)
+        State variables written after the call(s):
+        - _escrow(_vault) (escrow/Escrow.sol#173)
+                - id = vaults.push(_vault) - 1 (escrow/Escrow.sol#235)
+Reentrancy in PurchaseProcessor.process(IPurchaseProcessor.Order,IPurchaseProcessor.PaymentParams) (pay/PurchaseProcessor.sol#96-149):
+        External calls:
+        - _payEthPricedInUsd(order,payment) (pay/PurchaseProcessor.sol#127)
+                - wallet.call.value(amount)() (pay/PurchaseProcessor.sol#258)
+                - recipient.call.value(remaining)() (pay/PurchaseProcessor.sol#264)
+        - _payEthPricedInEth(order,payment) (pay/PurchaseProcessor.sol#138)
+                - wallet.call.value(_order.totalPrice)() (pay/PurchaseProcessor.sol#319)
+                - recipient.call.value(remaining)() (pay/PurchaseProcessor.sol#325)
+        State variables written after the call(s):
+        - id = count ++ (pay/PurchaseProcessor.sol#144)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-2
+INFO:Detectors:
+Reentrancy in CreditCardEscrow.callbackEscrow(IEscrow.Vault,address,bytes,uint256,uint256) (escrow/releaser/CreditCardEscrow.sol#358-382):
+        External calls:
+        - escrowID = escrowProtocol.callbackEscrow(_vault,_callbackTo,_callbackData) (escrow/releaser/CreditCardEscrow.sol#377)
+        Event emitted after the call(s):
+        - Escrowed(_escrowID,_paymentID,_owner,endTimestamp) (escrow/releaser/CreditCardEscrow.sol#406)
+                - _lock(escrowID,_paymentID,_duration,_vault.player) (escrow/releaser/CreditCardEscrow.sol#379)
+Reentrancy in Escrow.callbackEscrow(IEscrow.Vault,address,bytes) (escrow/Escrow.sol#39-121):
+        External calls:
+        - require(bool,string)(! _areAnyInListEscrowed(_vault),IM:Escrow: list must not be already escrowed) (escrow/Escrow.sol#75-78)
+                - (success,response) = _asset.call(data) (escrow/Escrow.sol#299)
+        - require(bool,string)(! _areAnyInBatchEscrowed(_vault),IM:Escrow: batch must not be already escrowed) (escrow/Escrow.sol#86-89)
+                - (success,response) = _asset.call(data) (escrow/Escrow.sol#299)
+        - _callbackTo.call(_callbackData) (escrow/Escrow.sol#99)
+        Event emitted after the call(s):
+        - Escrowed(id,_vault) (escrow/Escrow.sol#236)
+                - _escrow(_vault) (escrow/Escrow.sol#120)
+Reentrancy in Escrow.escrow(IEscrow.Vault,address) (escrow/Escrow.sol#129-174):
+        External calls:
+        - IERC20(_vault.asset).transferFrom(_from,address(this),_vault.balance) (escrow/Escrow.sol#156)
+        - _transferList(_vault,_from,address(this)) (escrow/Escrow.sol#163)
+                - IListTransfer(_vault.asset).transferAllFrom(_from,_to,_vault.tokenIDs) (escrow/Escrow.sol#242)
+                - IERC721(_vault.asset).transferFrom(_from,_to,_vault.tokenIDs[i]) (escrow/Escrow.sol#245)
+        - _transferBatch(_vault,_from,address(this)) (escrow/Escrow.sol#165)
+                - IBatchTransfer(_vault.asset).transferBatch(_from,_to,_vault.lowTokenID,_vault.highTokenID) (escrow/Escrow.sol#252)
+                - IERC721(_vault.asset).transferFrom(_from,_to,i) (escrow/Escrow.sol#255)
+        Event emitted after the call(s):
+        - Escrowed(id,_vault) (escrow/Escrow.sol#236)
+                - _escrow(_vault) (escrow/Escrow.sol#173)
+Reentrancy in PurchaseProcessor.process(IPurchaseProcessor.Order,IPurchaseProcessor.PaymentParams) (pay/PurchaseProcessor.sol#96-149):
+        External calls:
+        - _payEthPricedInUsd(order,payment) (pay/PurchaseProcessor.sol#127)
+                - wallet.call.value(amount)() (pay/PurchaseProcessor.sol#258)
+                - recipient.call.value(remaining)() (pay/PurchaseProcessor.sol#264)
+        - _payEthPricedInEth(order,payment) (pay/PurchaseProcessor.sol#138)
+                - wallet.call.value(_order.totalPrice)() (pay/PurchaseProcessor.sol#319)
+                - recipient.call.value(remaining)() (pay/PurchaseProcessor.sol#325)
+        Event emitted after the call(s):
+        - PaymentProcessed(id,msg.sender,order,payment) (pay/PurchaseProcessor.sol#146)
+Reentrancy in CreditCardEscrow.release(uint256) (escrow/releaser/CreditCardEscrow.sol#152-184):
+        External calls:
+        - escrowProtocol.release(_id,lock.owner) (escrow/releaser/CreditCardEscrow.sol#167)
+        - escrowProtocol.release(_id,lock.releaseTo) (escrow/releaser/CreditCardEscrow.sol#179)
+        Event emitted after the call(s):
+        - Released(_id) (escrow/releaser/CreditCardEscrow.sol#183)
+Reentrancy in Escrow.release(uint256,address) (escrow/Escrow.sol#182-208):
+        External calls:
+        - IERC20(vault.asset).transfer(_to,vault.balance) (escrow/Escrow.sol#198)
+        - _transferList(vault,address(this),_to) (escrow/Escrow.sol#200)
+                - IListTransfer(_vault.asset).transferAllFrom(_from,_to,_vault.tokenIDs) (escrow/Escrow.sol#242)
+                - IERC721(_vault.asset).transferFrom(_from,_to,_vault.tokenIDs[i]) (escrow/Escrow.sol#245)
+        - _transferBatch(vault,address(this),_to) (escrow/Escrow.sol#202)
+                - IBatchTransfer(_vault.asset).transferBatch(_from,_to,_vault.lowTokenID,_vault.highTokenID) (escrow/Escrow.sol#252)
+                - IERC721(_vault.asset).transferFrom(_from,_to,i) (escrow/Escrow.sol#255)
+        Event emitted after the call(s):
+        - Released(_id,_to) (escrow/Escrow.sol#205)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+INFO:Detectors:
+PurchaseProcessor._updateSignerLimit(address,uint256) (pay/PurchaseProcessor.sol#169-188) uses timestamp for comparisons
+        Dangerous comparisons:
+        - require(bool,string)(limit.total > 0,IM:PurchaseProcessor: invalid signer) (pay/PurchaseProcessor.sol#171-174)
+        - limit.periodEnd < block.timestamp (pay/PurchaseProcessor.sol#176)
+        - require(bool,string)(limit.total >= nextUsed,IM:PurchaseProcessor: exceeds signing limit for this address) (pay/PurchaseProcessor.sol#182-185)
+CreditCardEscrow.release(uint256) (escrow/releaser/CreditCardEscrow.sol#152-184) uses timestamp for comparisons
+        Dangerous comparisons:
+        - require(bool,string)(lock.endTimestamp != 0,IM:CreditCardEscrow: must have escrow period set) (escrow/releaser/CreditCardEscrow.sol#156-159)
+        - require(bool,string)(block.timestamp >= lock.endTimestamp,IM:CreditCardEscrow: escrow period must have expired) (escrow/releaser/CreditCardEscrow.sol#161-164)
+        - lock.owner != address(0) (escrow/releaser/CreditCardEscrow.sol#166)
+        - require(bool,string)(lock.releaseTo != address(0),IM:CreditCardEscrow: cannot burn assets) (escrow/releaser/CreditCardEscrow.sol#169-172)
+        - require(bool,string)(block.timestamp >= lock.releaseTimestamp,IM:CreditCardEscrow: release period must have expired) (escrow/releaser/CreditCardEscrow.sol#174-177)
+CreditCardEscrow.requestRelease(uint256,address) (escrow/releaser/CreditCardEscrow.sol#192-231) uses timestamp for comparisons
+        Dangerous comparisons:
+        - require(bool,string)(lock.owner == address(0),IM:CreditCardEscrow: escrow account is not custodial, call release directly) (escrow/releaser/CreditCardEscrow.sol#196-199)
+        - require(bool,string)(lock.endTimestamp != 0,IM:CreditCardEscrow: must be in escrow) (escrow/releaser/CreditCardEscrow.sol#201-203)
+        - require(bool,string)(lock.destructionTimestamp == 0,IM:CreditCardEscrow: must not be marked for destruction) (escrow/releaser/CreditCardEscrow.sol#205-208)
+        - require(bool,string)(lock.releaseTimestamp == 0,IM:CreditCardEscrow: must not be marked for release) (escrow/releaser/CreditCardEscrow.sol#210-213)
+        - require(bool,string)(block.timestamp.add(releaseDelay) >= lock.endTimestamp,IM:CreditCardEscrow: release period must end after escrow period) (escrow/releaser/CreditCardEscrow.sol#215-218)
+CreditCardEscrow.cancelRelease(uint256) (escrow/releaser/CreditCardEscrow.sol#238-261) uses timestamp for comparisons
+        Dangerous comparisons:
+        - require(bool,string)(lock.releaseTimestamp > block.timestamp,IM:CreditCardEscrow: release period must not have expired) (escrow/releaser/CreditCardEscrow.sol#252-255)
+CreditCardEscrow.requestDestruction(uint256) (escrow/releaser/CreditCardEscrow.sol#268-296) uses timestamp for comparisons
+        Dangerous comparisons:
+        - require(bool,string)(lock.endTimestamp != 0,IM:CreditCardEscrow: must be in escrow) (escrow/releaser/CreditCardEscrow.sol#272-275)
+        - require(bool,string)(lock.destructionTimestamp == 0,IM:CreditCardEscrow: must not be marked for destruction) (escrow/releaser/CreditCardEscrow.sol#277-280)
+        - require(bool,string)(lock.endTimestamp > block.timestamp,IM:CreditCardEscrow: escrow period must not have expired) (escrow/releaser/CreditCardEscrow.sol#282-285)
+        - require(bool,string)(lock.owner == address(0),IM:CreditCardEscrow: must be zero address) (escrow/releaser/CreditCardEscrow.sol#287-290)
+CreditCardEscrow.cancelDestruction(uint256) (escrow/releaser/CreditCardEscrow.sol#303-320) uses timestamp for comparisons
+        Dangerous comparisons:
+        - require(bool,string)(lock.destructionTimestamp > block.timestamp,IM:CreditCardEscrow: destruction period must not have expired) (escrow/releaser/CreditCardEscrow.sol#312-315)
+CreditCardEscrow.destroy(uint256) (escrow/releaser/CreditCardEscrow.sol#327-347) uses timestamp for comparisons
+        Dangerous comparisons:
+        - require(bool,string)(block.timestamp >= lock.destructionTimestamp,IM:CreditCardEscrow: destruction period must have expired) (escrow/releaser/CreditCardEscrow.sol#336-339)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+INFO:Detectors:
+Address.isContract(address) (@openzeppelin/contracts/utils/Address.sol#24-33) uses assembly
+        - INLINE ASM None (@openzeppelin/contracts/utils/Address.sol#31)
+ERC721._checkOnERC721Received(address,address,uint256,bytes) (@openzeppelin/contracts/token/ERC721/ERC721.sol#327-355) uses assembly
+        - INLINE ASM None (@openzeppelin/contracts/token/ERC721/ERC721.sol#344-347)
+Escrow._existsAndEscrowed(address,uint256) (escrow/Escrow.sol#296-309) uses assembly
+        - INLINE ASM None (escrow/Escrow.sol#303)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#assembly-usage
+INFO:Detectors:
+Different versions of Solidity is used in :
+        - Version used: ['0.5.11', '^0.5.0', '^0.5.11', '^0.5.5']
+        - 0.5.11 (pay/vendor/IVendor.sol#1)
+        - 0.5.11 (oracle/MakerOracle.sol#1)
+        - ABIEncoderV2 (oracle/MakerOracle.sol#2)
+        - 0.5.11 (token/TradeToggleERC20.sol#1)
+        - ^0.5.0 (@openzeppelin/contracts/introspection/IERC165.sol#1)
+        - 0.5.11 (escrow/test/TestBatchPack.sol#1)
+        - ABIEncoderV2 (escrow/test/TestBatchPack.sol#2)
+        - 0.5.11 (oracle/IOracle.sol#1)
+        - ABIEncoderV2 (oracle/IOracle.sol#2)
+        - 0.5.11 (pay/PurchaseProcessor.sol#1)
+        - ABIEncoderV2 (pay/PurchaseProcessor.sol#2)
+        - 0.5.11 (escrow/test/TestChest.sol#1)
+        - ABIEncoderV2 (escrow/test/TestChest.sol#2)
+        - ^0.5.0 (@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol#1)
+        - 0.5.11 (escrow/test/TestListPack.sol#1)
+        - ABIEncoderV2 (escrow/test/TestListPack.sol#2)
+        - 0.5.11 (pay/vendor/SingleItemVendor.sol#1)
+        - ABIEncoderV2 (pay/vendor/SingleItemVendor.sol#2)
+        - 0.5.11 (token/IListTransfer.sol#1)
+        - 0.5.11 (token/IBatchTransfer.sol#1)
+        - ^0.5.0 (@openzeppelin/contracts/math/SafeMath.sol#1)
+        - 0.5.11 (pay/vendor/CappedVendor.sol#1)
+        - ABIEncoderV2 (pay/vendor/CappedVendor.sol#2)
+        - ^0.5.11 (oracle/IMedianizer.sol#2)
+        - 0.5.11 (escrow/releaser/test/MaliciousCCP.sol#1)
+        - ABIEncoderV2 (escrow/releaser/test/MaliciousCCP.sol#2)
+        - 0.5.11 (escrow/releaser/CreditCardEscrow.sol#1)
+        - ABIEncoderV2 (escrow/releaser/CreditCardEscrow.sol#2)
+        - ^0.5.0 (@openzeppelin/contracts/introspection/ERC165.sol#1)
+        - 0.5.11 (randomness/test/Consumer.sol#1)
+        - 0.5.11 (pay/test/TestVendor.sol#1)
+        - ABIEncoderV2 (pay/test/TestVendor.sol#2)
+        - ^0.5.5 (@openzeppelin/contracts/utils/Address.sol#1)
+        - 0.5.11 (escrow/test/MaliciousListPack.sol#1)
+        - ABIEncoderV2 (escrow/test/MaliciousListPack.sol#2)
+        - 0.5.11 (randomness/IBeacon.sol#1)
+        - ^0.5.0 (@openzeppelin/contracts/token/ERC721/ERC721.sol#1)
+        - 0.5.11 (oracle/test/ETHUSDMockOracle.sol#1)
+        - ABIEncoderV2 (oracle/test/ETHUSDMockOracle.sol#2)
+        - 0.5.11 (escrow/test/TestERC721Token.sol#1)
+        - 0.5.11 (escrow/test/TestERC20Token.sol#1)
+        - ^0.5.0 (@openzeppelin/contracts/GSN/Context.sol#1)
+        - 0.5.11 (escrow/Escrow.sol#1)
+        - ABIEncoderV2 (escrow/Escrow.sol#2)
+        - 0.5.11 (escrow/test/MaliciousChest.sol#1)
+        - ABIEncoderV2 (escrow/test/MaliciousChest.sol#2)
+        - ^0.5.0 (@openzeppelin/contracts/drafts/Counters.sol#1)
+        - 0.5.11 (randomness/Beacon.sol#1)
+        - ^0.5.0 (@openzeppelin/contracts/token/ERC20/ERC20Detailed.sol#1)
+        - ^0.5.0 (@openzeppelin/contracts/token/ERC721/IERC721.sol#1)
+        - 0.5.11 (escrow/releaser/test/TestCreditCardPack.sol#1)
+        - ABIEncoderV2 (escrow/releaser/test/TestCreditCardPack.sol#2)
+        - ^0.5.0 (@openzeppelin/contracts/ownership/Ownable.sol#1)
+        - ^0.5.0 (@openzeppelin/contracts/token/ERC20/ERC20.sol#1)
+        - 0.5.11 (escrow/releaser/ICreditCardEscrow.sol#1)
+        - ABIEncoderV2 (escrow/releaser/ICreditCardEscrow.sol#2)
+        - ^0.5.0 (@openzeppelin/contracts/token/ERC20/IERC20.sol#1)
+        - 0.5.11 (pay/IPurchaseProcessor.sol#1)
+        - ABIEncoderV2 (pay/IPurchaseProcessor.sol#2)
+        - 0.5.11 (escrow/IEscrow.sol#1)
+        - ABIEncoderV2 (escrow/IEscrow.sol#2)
+        - 0.5.11 (escrow/test/MaliciousBatchPack.sol#1)
+        - ABIEncoderV2 (escrow/test/MaliciousBatchPack.sol#2)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#different-pragma-directives-are-used
+INFO:Detectors:
+Pragma version^0.5.0 (@openzeppelin/contracts/introspection/IERC165.sol#1) allows old versions
+Pragma version^0.5.0 (@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol#1) allows old versions
+Pragma version^0.5.0 (@openzeppelin/contracts/math/SafeMath.sol#1) allows old versions
+Pragma version^0.5.0 (@openzeppelin/contracts/introspection/ERC165.sol#1) allows old versions
+Pragma version^0.5.5 (@openzeppelin/contracts/utils/Address.sol#1) is known to contain severe issue (https://solidity.readthedocs.io/en/v0.5.8/bugs.html)
+Pragma version^0.5.0 (@openzeppelin/contracts/token/ERC721/ERC721.sol#1) allows old versions
+Pragma version^0.5.0 (@openzeppelin/contracts/GSN/Context.sol#1) allows old versions
+Pragma version^0.5.0 (@openzeppelin/contracts/drafts/Counters.sol#1) allows old versions
+Pragma version^0.5.0 (@openzeppelin/contracts/token/ERC20/ERC20Detailed.sol#1) allows old versions
+Pragma version^0.5.0 (@openzeppelin/contracts/token/ERC721/IERC721.sol#1) allows old versions
+Pragma version^0.5.0 (@openzeppelin/contracts/ownership/Ownable.sol#1) allows old versions
+Pragma version^0.5.0 (@openzeppelin/contracts/token/ERC20/ERC20.sol#1) allows old versions
+Pragma version^0.5.0 (@openzeppelin/contracts/token/ERC20/IERC20.sol#1) allows old versions
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+INFO:Detectors:
+Low level call in PurchaseProcessor._payEthPricedInUsd(IPurchaseProcessor.Order,IPurchaseProcessor.PaymentParams) (pay/PurchaseProcessor.sol#237-272):
+        - wallet.call.value(amount)() (pay/PurchaseProcessor.sol#258)
+        - recipient.call.value(remaining)() (pay/PurchaseProcessor.sol#264)
+Low level call in PurchaseProcessor._payEthPricedInEth(IPurchaseProcessor.Order,IPurchaseProcessor.PaymentParams) (pay/PurchaseProcessor.sol#304-333):
+        - wallet.call.value(_order.totalPrice)() (pay/PurchaseProcessor.sol#319)
+        - recipient.call.value(remaining)() (pay/PurchaseProcessor.sol#325)
+Low level call in Address.sendValue(address,uint256) (@openzeppelin/contracts/utils/Address.sol#63-69):
+        - (success) = recipient.call.value(amount)() (@openzeppelin/contracts/utils/Address.sol#67)
+Low level call in ERC721._checkOnERC721Received(address,address,uint256,bytes) (@openzeppelin/contracts/token/ERC721/ERC721.sol#327-355):
+        - (success,returndata) = to.call(abi.encodeWithSelector(IERC721Receiver(to).onERC721Received.selector,_msgSender(),from,tokenId,_data)) (@openzeppelin/contracts/token/ERC721/ERC721.sol#334-340)
+Low level call in Escrow.callbackEscrow(IEscrow.Vault,address,bytes) (escrow/Escrow.sol#39-121):
+        - _callbackTo.call(_callbackData) (escrow/Escrow.sol#99)
+Low level call in Escrow._existsAndEscrowed(address,uint256) (escrow/Escrow.sol#296-309):
+        - (success,response) = _asset.call(data) (escrow/Escrow.sol#299)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#low-level-calls
+INFO:Detectors:
+Parameter SingleItemVendor.setPaused(bool)._paused (pay/vendor/SingleItemVendor.sol#44) is not in mixedCase
+Parameter CreditCardEscrow.setDestructionDelay(uint256)._delay (escrow/releaser/CreditCardEscrow.sol#106) is not in mixedCase
+Parameter CreditCardEscrow.setDestroyer(address)._destroyer (escrow/releaser/CreditCardEscrow.sol#115) is not in mixedCase
+Parameter CreditCardEscrow.setReleaseDelay(uint256)._delay (escrow/releaser/CreditCardEscrow.sol#129) is not in mixedCase
+Parameter CreditCardEscrow.setCustodian(address)._custodian (escrow/releaser/CreditCardEscrow.sol#138) is not in mixedCase
+Parameter CreditCardEscrow.release(uint256)._id (escrow/releaser/CreditCardEscrow.sol#152) is not in mixedCase
+Parameter CreditCardEscrow.requestRelease(uint256,address)._id (escrow/releaser/CreditCardEscrow.sol#192) is not in mixedCase
+Parameter CreditCardEscrow.requestRelease(uint256,address)._to (escrow/releaser/CreditCardEscrow.sol#192) is not in mixedCase
+Parameter CreditCardEscrow.cancelRelease(uint256)._id (escrow/releaser/CreditCardEscrow.sol#238) is not in mixedCase
+Parameter CreditCardEscrow.requestDestruction(uint256)._id (escrow/releaser/CreditCardEscrow.sol#268) is not in mixedCase
+Parameter CreditCardEscrow.cancelDestruction(uint256)._id (escrow/releaser/CreditCardEscrow.sol#303) is not in mixedCase
+Parameter CreditCardEscrow.destroy(uint256)._id (escrow/releaser/CreditCardEscrow.sol#327) is not in mixedCase
+Parameter CreditCardEscrow.callbackEscrow(IEscrow.Vault,address,bytes,uint256,uint256)._vault (escrow/releaser/CreditCardEscrow.sol#359) is not in mixedCase
+Parameter CreditCardEscrow.callbackEscrow(IEscrow.Vault,address,bytes,uint256,uint256)._callbackTo (escrow/releaser/CreditCardEscrow.sol#360) is not in mixedCase
+Parameter CreditCardEscrow.callbackEscrow(IEscrow.Vault,address,bytes,uint256,uint256)._callbackData (escrow/releaser/CreditCardEscrow.sol#361) is not in mixedCase
+Parameter CreditCardEscrow.callbackEscrow(IEscrow.Vault,address,bytes,uint256,uint256)._paymentID (escrow/releaser/CreditCardEscrow.sol#362) is not in mixedCase
+Parameter CreditCardEscrow.callbackEscrow(IEscrow.Vault,address,bytes,uint256,uint256)._duration (escrow/releaser/CreditCardEscrow.sol#363) is not in mixedCase
+Parameter ERC721.safeTransferFrom(address,address,uint256,bytes)._data (@openzeppelin/contracts/token/ERC721/ERC721.sol#177) is not in mixedCase
+Variable ETHUSDMockOracle._price (oracle/test/ETHUSDMockOracle.sol#13) is not in mixedCase
+Parameter Escrow.callbackEscrow(IEscrow.Vault,address,bytes)._vault (escrow/Escrow.sol#40) is not in mixedCase
+Parameter Escrow.callbackEscrow(IEscrow.Vault,address,bytes)._callbackTo (escrow/Escrow.sol#41) is not in mixedCase
+Parameter Escrow.callbackEscrow(IEscrow.Vault,address,bytes)._callbackData (escrow/Escrow.sol#42) is not in mixedCase
+Parameter Escrow.escrow(IEscrow.Vault,address)._vault (escrow/Escrow.sol#129) is not in mixedCase
+Parameter Escrow.escrow(IEscrow.Vault,address)._from (escrow/Escrow.sol#129) is not in mixedCase
+Parameter Escrow.release(uint256,address)._id (escrow/Escrow.sol#182) is not in mixedCase
+Parameter Escrow.release(uint256,address)._to (escrow/Escrow.sol#182) is not in mixedCase
+Parameter Escrow.setBatchTransferEnabled(address,bool)._asset (escrow/Escrow.sol#216) is not in mixedCase
+Parameter Escrow.setBatchTransferEnabled(address,bool)._enabled (escrow/Escrow.sol#216) is not in mixedCase
+Parameter Escrow.setListTransferEnabled(address,bool)._asset (escrow/Escrow.sol#226) is not in mixedCase
+Parameter Escrow.setListTransferEnabled(address,bool)._enabled (escrow/Escrow.sol#226) is not in mixedCase
+Parameter Beacon.commit(uint256)._offset (randomness/Beacon.sol#34) is not in mixedCase
+Parameter Beacon.randomness(uint256)._commitBlock (randomness/Beacon.sol#63) is not in mixedCase
+Parameter Beacon.recommit(uint256,uint256)._commitBlock (randomness/Beacon.sol#78) is not in mixedCase
+Parameter Beacon.recommit(uint256,uint256)._offset (randomness/Beacon.sol#78) is not in mixedCase
+Parameter Beacon.getCurrentBlock(uint256)._commitBlock (randomness/Beacon.sol#101) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+INFO:Detectors:
+ETHUSDMockOracle.slitherConstructorVariables() (oracle/test/ETHUSDMockOracle.sol#9-57) uses literals with too many digits:
+        - _price = 205100000000000000000 (oracle/test/ETHUSDMockOracle.sol#13)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+INFO:Detectors:
+convert(uint8,uint8,uint256) should be declared external:
+        - ETHUSDMockOracle.convert(uint8,uint8,uint256) (oracle/test/ETHUSDMockOracle.sol#27-55)
+        - MakerOracle.convert(uint8,uint8,uint256) (oracle/MakerOracle.sol#24-52)
+purchase(uint256) should be declared external:
+        - TestBatchPack.purchase(uint256) (escrow/test/TestBatchPack.sol#23-46)
+escrowHook(uint256) should be declared external:
+        - TestBatchPack.escrowHook(uint256) (escrow/test/TestBatchPack.sol#48-53)
+setOracle(address) should be declared external:
+        - PurchaseProcessor.setOracle(address) (pay/PurchaseProcessor.sol#56-63)
+setSignerLimit(address,uint256) should be declared external:
+        - PurchaseProcessor.setSignerLimit(address,uint256) (pay/PurchaseProcessor.sol#65-74)
+setSellerApproval(address,bytes32[],bool) should be declared external:
+        - PurchaseProcessor.setSellerApproval(address,bytes32[],bool) (pay/PurchaseProcessor.sol#76-89)
+process(IPurchaseProcessor.Order,IPurchaseProcessor.PaymentParams) should be declared external:
+        - IPurchaseProcessor.process(IPurchaseProcessor.Order,IPurchaseProcessor.PaymentParams) (pay/IPurchaseProcessor.sol#35)
+        - PurchaseProcessor.process(IPurchaseProcessor.Order,IPurchaseProcessor.PaymentParams) (pay/PurchaseProcessor.sol#96-149)
+purchase(uint256) should be declared external:
+        - TestChest.purchase(uint256) (escrow/test/TestChest.sol#18-33)
+escrowHook(uint256) should be declared external:
+        - TestChest.escrowHook(uint256) (escrow/test/TestChest.sol#35-38)
+onERC721Received(address,address,uint256,bytes) should be declared external:
+        - IERC721Receiver.onERC721Received(address,address,uint256,bytes) (@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol#23-24)
+purchase(uint256) should be declared external:
+        - TestListPack.purchase(uint256) (escrow/test/TestListPack.sol#23-34)
+escrowHook(uint256) should be declared external:
+        - TestListPack.escrowHook(uint256) (escrow/test/TestListPack.sol#36-41)
+available() should be declared external:
+        - CappedVendor.available() (pay/vendor/CappedVendor.sol#47-52)
+read() should be declared external:
+        - IMedianizer.read() (oracle/IMedianizer.sol#6-9)
+stealERC20(address,uint256) should be declared external:
+        - MaliciousCCP.stealERC20(address,uint256) (escrow/releaser/test/MaliciousCCP.sol#20-35)
+stealERC721(address,uint256,uint256) should be declared external:
+        - MaliciousCCP.stealERC721(address,uint256,uint256) (escrow/releaser/test/MaliciousCCP.sol#37-52)
+erc721FakeHook() should be declared external:
+        - MaliciousCCP.erc721FakeHook() (escrow/releaser/test/MaliciousCCP.sol#54-55)
+erc20FakeHook() should be declared external:
+        - MaliciousCCP.erc20FakeHook() (escrow/releaser/test/MaliciousCCP.sol#57-58)
+setDestructionDelay(uint256) should be declared external:
+        - CreditCardEscrow.setDestructionDelay(uint256) (escrow/releaser/CreditCardEscrow.sol#106-108)
+setDestroyer(address) should be declared external:
+        - CreditCardEscrow.setDestroyer(address) (escrow/releaser/CreditCardEscrow.sol#115-122)
+setReleaseDelay(uint256) should be declared external:
+        - CreditCardEscrow.setReleaseDelay(uint256) (escrow/releaser/CreditCardEscrow.sol#129-131)
+setCustodian(address) should be declared external:
+        - CreditCardEscrow.setCustodian(address) (escrow/releaser/CreditCardEscrow.sol#138-145)
+release(uint256) should be declared external:
+        - CreditCardEscrow.release(uint256) (escrow/releaser/CreditCardEscrow.sol#152-184)
+        - ICreditCardEscrow.release(uint256) (escrow/releaser/ICreditCardEscrow.sol#13)
+requestRelease(uint256,address) should be declared external:
+        - ICreditCardEscrow.requestRelease(uint256,address) (escrow/releaser/ICreditCardEscrow.sol#21)
+        - CreditCardEscrow.requestRelease(uint256,address) (escrow/releaser/CreditCardEscrow.sol#192-231)
+cancelRelease(uint256) should be declared external:
+        - CreditCardEscrow.cancelRelease(uint256) (escrow/releaser/CreditCardEscrow.sol#238-261)
+        - ICreditCardEscrow.cancelRelease(uint256) (escrow/releaser/ICreditCardEscrow.sol#28)
+requestDestruction(uint256) should be declared external:
+        - ICreditCardEscrow.requestDestruction(uint256) (escrow/releaser/ICreditCardEscrow.sol#35)
+        - CreditCardEscrow.requestDestruction(uint256) (escrow/releaser/CreditCardEscrow.sol#268-296)
+cancelDestruction(uint256) should be declared external:
+        - CreditCardEscrow.cancelDestruction(uint256) (escrow/releaser/CreditCardEscrow.sol#303-320)
+        - ICreditCardEscrow.cancelDestruction(uint256) (escrow/releaser/ICreditCardEscrow.sol#42)
+destroy(uint256) should be declared external:
+        - CreditCardEscrow.destroy(uint256) (escrow/releaser/CreditCardEscrow.sol#327-347)
+        - ICreditCardEscrow.destroy(uint256) (escrow/releaser/ICreditCardEscrow.sol#49)
+callbackEscrow(IEscrow.Vault,address,bytes,uint256,uint256) should be declared external:
+        - CreditCardEscrow.callbackEscrow(IEscrow.Vault,address,bytes,uint256,uint256) (escrow/releaser/CreditCardEscrow.sol#358-382)
+        - ICreditCardEscrow.callbackEscrow(IEscrow.Vault,address,bytes,uint256,uint256) (escrow/releaser/ICreditCardEscrow.sol#60-66)
+getProtocol() should be declared external:
+        - CreditCardEscrow.getProtocol() (escrow/releaser/CreditCardEscrow.sol#384-386)
+        - ICreditCardEscrow.getProtocol() (escrow/releaser/ICreditCardEscrow.sol#68)
+multiCommit(uint256) should be declared external:
+        - Consumer.multiCommit(uint256) (randomness/test/Consumer.sol#13-17)
+sameBlockCallback() should be declared external:
+        - Consumer.sameBlockCallback() (randomness/test/Consumer.sol#19-22)
+multiCallback(uint256,uint256) should be declared external:
+        - Consumer.multiCallback(uint256,uint256) (randomness/test/Consumer.sol#24-28)
+requireSameRandomness(uint256,uint256) should be declared external:
+        - Consumer.requireSameRandomness(uint256,uint256) (randomness/test/Consumer.sol#30-34)
+processPayment(IPurchaseProcessor.Order,IPurchaseProcessor.PaymentParams) should be declared external:
+        - TestVendor.processPayment(IPurchaseProcessor.Order,IPurchaseProcessor.PaymentParams) (pay/test/TestVendor.sol#14-16)
+maliciousPush(uint256) should be declared external:
+        - MaliciousListPack.maliciousPush(uint256) (escrow/test/MaliciousListPack.sol#23-34)
+maliciousPull(uint256) should be declared external:
+        - MaliciousListPack.maliciousPull(uint256) (escrow/test/MaliciousListPack.sol#36-47)
+pushAttackHook(uint256) should be declared external:
+        - MaliciousListPack.pushAttackHook(uint256) (escrow/test/MaliciousListPack.sol#49-61)
+emptyHook() should be declared external:
+        - MaliciousListPack.emptyHook() (escrow/test/MaliciousListPack.sol#63-65)
+pullAttackHook(uint256) should be declared external:
+        - MaliciousListPack.pullAttackHook(uint256) (escrow/test/MaliciousListPack.sol#67-79)
+recommit(uint256,uint256) should be declared external:
+        - Beacon.recommit(uint256,uint256) (randomness/Beacon.sol#78-94)
+        - IBeacon.recommit(uint256,uint256) (randomness/IBeacon.sol#6)
+randomness(uint256) should be declared external:
+        - Beacon.randomness(uint256) (randomness/Beacon.sol#63-69)
+        - IBeacon.randomness(uint256) (randomness/IBeacon.sol#7)
+balanceOf(address) should be declared external:
+        - IERC721.balanceOf(address) (@openzeppelin/contracts/token/ERC721/IERC721.sol#16)
+        - ERC721.balanceOf(address) (@openzeppelin/contracts/token/ERC721/ERC721.sol#62-66)
+approve(address,uint256) should be declared external:
+        - IERC721.approve(address,uint256) (@openzeppelin/contracts/token/ERC721/IERC721.sol#45)
+        - ERC721.approve(address,uint256) (@openzeppelin/contracts/token/ERC721/ERC721.sol#88-98)
+setApprovalForAll(address,bool) should be declared external:
+        - ERC721.setApprovalForAll(address,bool) (@openzeppelin/contracts/token/ERC721/ERC721.sol#118-123)
+        - IERC721.setApprovalForAll(address,bool) (@openzeppelin/contracts/token/ERC721/IERC721.sol#48)
+transferFrom(address,address,uint256) should be declared external:
+        - ERC721.transferFrom(address,address,uint256) (@openzeppelin/contracts/token/ERC721/ERC721.sol#143-148)
+        - IERC721.transferFrom(address,address,uint256) (@openzeppelin/contracts/token/ERC721/IERC721.sol#44)
+safeTransferFrom(address,address,uint256) should be declared external:
+        - ERC721.safeTransferFrom(address,address,uint256) (@openzeppelin/contracts/token/ERC721/ERC721.sol#161-163)
+        - IERC721.safeTransferFrom(address,address,uint256) (@openzeppelin/contracts/token/ERC721/IERC721.sol#35)
+setPrice(uint256) should be declared external:
+        - ETHUSDMockOracle.setPrice(uint256) (oracle/test/ETHUSDMockOracle.sol#19-25)
+mint(address,uint256) should be declared external:
+        - TestERC721Token.mint(address,uint256) (escrow/test/TestERC721Token.sol#7-13)
+totalSupply() should be declared external:
+        - TestERC721Token.totalSupply() (escrow/test/TestERC721Token.sol#17-19)
+mint(address,uint256) should be declared external:
+        - TestERC20Token.mint(address,uint256) (escrow/test/TestERC20Token.sol#7-9)
+callbackEscrow(IEscrow.Vault,address,bytes) should be declared external:
+        - Escrow.callbackEscrow(IEscrow.Vault,address,bytes) (escrow/Escrow.sol#39-121)
+        - IEscrow.callbackEscrow(IEscrow.Vault,address,bytes) (escrow/IEscrow.sol#23-27)
+escrow(IEscrow.Vault,address) should be declared external:
+        - Escrow.escrow(IEscrow.Vault,address) (escrow/Escrow.sol#129-174)
+        - IEscrow.escrow(IEscrow.Vault,address) (escrow/IEscrow.sol#35)
+release(uint256,address) should be declared external:
+        - Escrow.release(uint256,address) (escrow/Escrow.sol#182-208)
+        - IEscrow.release(uint256,address) (escrow/IEscrow.sol#43)
+maliciousPush(uint256) should be declared external:
+        - MaliciousChest.maliciousPush(uint256) (escrow/test/MaliciousChest.sol#18-25)
+maliciousPull(uint256) should be declared external:
+        - MaliciousChest.maliciousPull(uint256) (escrow/test/MaliciousChest.sol#27-34)
+pushAttackHook(uint256) should be declared external:
+        - MaliciousChest.pushAttackHook(uint256) (escrow/test/MaliciousChest.sol#36-47)
+emptyHook() should be declared external:
+        - MaliciousChest.emptyHook() (escrow/test/MaliciousChest.sol#49-51)
+pullAttackHook(uint256) should be declared external:
+        - MaliciousChest.pullAttackHook(uint256) (escrow/test/MaliciousChest.sol#53-62)
+name() should be declared external:
+        - ERC20Detailed.name() (@openzeppelin/contracts/token/ERC20/ERC20Detailed.sol#27-29)
+symbol() should be declared external:
+        - ERC20Detailed.symbol() (@openzeppelin/contracts/token/ERC20/ERC20Detailed.sol#35-37)
+decimals() should be declared external:
+        - ERC20Detailed.decimals() (@openzeppelin/contracts/token/ERC20/ERC20Detailed.sol#51-53)
+purchaseERC20(address,uint256,uint64) should be declared external:
+        - TestCreditCardPack.purchaseERC20(address,uint256,uint64) (escrow/releaser/test/TestCreditCardPack.sol#26-45)
+purchaseERC721(address,uint256,uint64) should be declared external:
+        - TestCreditCardPack.purchaseERC721(address,uint256,uint64) (escrow/releaser/test/TestCreditCardPack.sol#47-70)
+erc721Hook(uint256) should be declared external:
+        - TestCreditCardPack.erc721Hook(uint256) (escrow/releaser/test/TestCreditCardPack.sol#72-78)
+erc20Hook(uint256) should be declared external:
+        - TestCreditCardPack.erc20Hook(uint256) (escrow/releaser/test/TestCreditCardPack.sol#80-86)
+owner() should be declared external:
+        - Ownable.owner() (@openzeppelin/contracts/ownership/Ownable.sol#30-32)
+renounceOwnership() should be declared external:
+        - Ownable.renounceOwnership() (@openzeppelin/contracts/ownership/Ownable.sol#56-59)
+transferOwnership(address) should be declared external:
+        - Ownable.transferOwnership(address) (@openzeppelin/contracts/ownership/Ownable.sol#65-67)
+totalSupply() should be declared external:
+        - ERC20.totalSupply() (@openzeppelin/contracts/token/ERC20/ERC20.sol#43-45)
+balanceOf(address) should be declared external:
+        - ERC20.balanceOf(address) (@openzeppelin/contracts/token/ERC20/ERC20.sol#50-52)
+allowance(address,address) should be declared external:
+        - ERC20.allowance(address,address) (@openzeppelin/contracts/token/ERC20/ERC20.sol#70-72)
+approve(address,uint256) should be declared external:
+        - ERC20.approve(address,uint256) (@openzeppelin/contracts/token/ERC20/ERC20.sol#81-84)
+increaseAllowance(address,uint256) should be declared external:
+        - ERC20.increaseAllowance(address,uint256) (@openzeppelin/contracts/token/ERC20/ERC20.sol#116-119)
+decreaseAllowance(address,uint256) should be declared external:
+        - ERC20.decreaseAllowance(address,uint256) (@openzeppelin/contracts/token/ERC20/ERC20.sol#135-138)
+maliciousPush(uint256) should be declared external:
+        - MaliciousBatchPack.maliciousPush(uint256) (escrow/test/MaliciousBatchPack.sol#23-34)
+maliciousPull(uint256) should be declared external:
+        - MaliciousBatchPack.maliciousPull(uint256) (escrow/test/MaliciousBatchPack.sol#36-47)
+pushAttackHook(uint256) should be declared external:
+        - MaliciousBatchPack.pushAttackHook(uint256) (escrow/test/MaliciousBatchPack.sol#49-61)
+emptyHook() should be declared external:
+        - MaliciousBatchPack.emptyHook() (escrow/test/MaliciousBatchPack.sol#63-65)
+pullAttackHook(uint256) should be declared external:
+        - MaliciousBatchPack.pullAttackHook(uint256) (escrow/test/MaliciousBatchPack.sol#67-79)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-as-external
+INFO:Slither:. analyzed (43 contracts with 46 detectors), 226 result(s) found
+INFO:Slither:Use https://crytic.io/ to get access to additional detectors and Github integration
+kermankohli@Kermans-MBP platform %

@@ -50,7 +50,7 @@ describe('ListERC271Escrow', () => {
       await erc721.setApprovalForAll(escrow.address, true);
       const vault = {
         player: user.address,
-        releaser: user.address,
+        admin: user.address,
         asset: erc721.address,
         balance: 0,
         lowTokenID: 0,
@@ -65,7 +65,7 @@ describe('ListERC271Escrow', () => {
       await erc721.setApprovalForAll(escrow.address, true);
       const vault = {
         player: user.address,
-        releaser: user.address,
+        admin: user.address,
         asset: erc721.address,
         balance: 0,
         lowTokenID: 0,
@@ -80,7 +80,7 @@ describe('ListERC271Escrow', () => {
       await erc721.setApprovalForAll(escrow.address, true);
       const vault = {
         player: user.address,
-        releaser: user.address,
+        admin: user.address,
         asset: ZERO_EX,
         balance: 0,
         lowTokenID: 0,
@@ -95,7 +95,7 @@ describe('ListERC271Escrow', () => {
       await erc721.setApprovalForAll(escrow.address, true);
       const vault = {
         player: user.address,
-        releaser: ZERO_EX,
+        admin: ZERO_EX,
         asset: erc721.address,
         balance: 0,
         lowTokenID: 0,
@@ -114,7 +114,7 @@ describe('ListERC271Escrow', () => {
       const vault = {
         tokenIDs,
         player: user.address,
-        releaser: user.address,
+        admin: user.address,
         asset: erc721.address,
         balance: 0,
         lowTokenID: 0,
@@ -129,7 +129,7 @@ describe('ListERC271Escrow', () => {
       await checkBalance(erc721, user.address, len);
       const vault = {
         player: user.address,
-        releaser: user.address,
+        admin: user.address,
         asset: erc721.address,
         balance: 0,
         lowTokenID: 0,
@@ -146,7 +146,7 @@ describe('ListERC271Escrow', () => {
       await erc721.setApprovalForAll(escrow.address, true);
       const vault = {
         player: user.address,
-        releaser: user.address,
+        admin: user.address,
         asset: erc721.address,
         balance: 0,
         lowTokenID: 0,
@@ -171,7 +171,7 @@ describe('ListERC271Escrow', () => {
       await erc721.setApprovalForAll(escrow.address, true);
       const vault = {
         player: user.address,
-        releaser: other.address,
+        admin: other.address,
         asset: erc721.address,
         balance: 0,
         lowTokenID: 0,
@@ -189,7 +189,7 @@ describe('ListERC271Escrow', () => {
       await erc721.setApprovalForAll(escrow.address, true);
       const vault = {
         player: user.address,
-        releaser: user.address,
+        admin: user.address,
         asset: erc721.address,
         balance: 0,
         lowTokenID: 0,

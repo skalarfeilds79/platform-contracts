@@ -1,6 +1,6 @@
 {
   "name": "@imtbl/common-types",
-  "version": "2.0.0-alpha.5",
+  "version": "2.0.0-alpha.7",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -27,5 +27,5 @@
     "tslint-no-focused-test": "^0.5.0",
     "typescript": "^3.7.5"
   },
-  "gitHead": "c55497fd983732ce1f73cea78d5643a7a24b86e0"
+  "gitHead": "0600df9b370d3d700e9da510a2fe20aadba92928"
 }

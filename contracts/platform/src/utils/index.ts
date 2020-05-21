@@ -30,15 +30,17 @@ export async function getSignedPayment(
     'uint256',
     'uint256',
     'uint256',
+    'uint256',
     'uint8',
   ];
 
   const values = [
     processor,
     seller,
-    order.recipient,
+    order.assetRecipient,
     order.sku,
     order.quantity,
+    order.alreadyPaid,
     payment.nonce,
     payment.escrowFor,
     payment.value,

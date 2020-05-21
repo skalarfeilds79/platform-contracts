@@ -20,7 +20,7 @@ contract TestListPack {
         asset = _asset;
     }
 
-    function purchase(uint256 count) public {
+    function purchase(uint256 count) external {
 
         IEscrow.Vault memory vault = _createVault(count);
 
@@ -33,11 +33,11 @@ contract TestListPack {
         escrow.callbackEscrow(vault, address(this), data);
     }
 
-    function escrowHook(uint256 purchaseID) public {
+    function escrowHook(uint256 purchaseID) external {
         require(msg.sender == address(escrow), "must be the escrow contract");
-        Purchase memory p = purchases[purchaseID];
-        asset.mint(address(escrow), p.count);
+        uint256 count = purchases[purchaseID].count;
         delete purchases[purchaseID];
+        asset.mint(address(escrow), count);
     }
 
     function _createVault(uint256 count) internal view returns (IEscrow.Vault memory) {
@@ -51,7 +51,7 @@ contract TestListPack {
 
         return IEscrow.Vault({
             player: msg.sender,
-            releaser: msg.sender,
+            admin: msg.sender,
             asset: address(asset),
             balance: 0,
             lowTokenID: 0,

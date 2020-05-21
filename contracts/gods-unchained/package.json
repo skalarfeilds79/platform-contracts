@@ -1,6 +1,6 @@
 {
   "name": "@imtbl/gods-unchained",
-  "version": "2.0.12",
+  "version": "2.0.14",
   "description": "Solidity smart contracts for Gods Unchained.",
   "main": "dist/src/index.js",
   "typings": "dist/src/index.d.ts",
@@ -17,8 +17,8 @@
     "build": "yarn lint:sol && yarn truffle compile && yarn generate-typings && yarn tsc",
     "deploy": "yarn ts-node deployment/deploy.ts",
     "test:deployment": "yarn build && yarn reset-test-evm && yarn jest __tests__/deployment --runInBand",
-    "test": "yarn build && yarn reset-test-evm && yarn jest __tests__/contracts/ --runInBand",
-    "test:watch": "yarn reset-test-evm && yarn jest __tests__/contracts/ --runInBand --watch",
+    "test": "yarn build && yarn reset-test-evm && yarn jest __tests__/contracts/s1/sale.test.ts --runInBand",
+    "test:watch": "yarn reset-test-evm && yarn jest __tests__/contracts/s1/sale.test.ts --runInBand --watch",
     "reset-test-evm": "node scripts/reset-test-evm.js",
     "prepare": "yarn build"
   },
@@ -27,11 +27,11 @@
   "dependencies": {
     "@0x/contracts-exchange-libs": "^3.0.8",
     "@0x/order-utils": "^8.4.0",
-    "@imtbl/common-types": "^2.0.0-alpha.5",
-    "@imtbl/deployment-utils": "^2.0.2",
-    "@imtbl/platform": "^2.0.11",
+    "@imtbl/common-types": "^2.0.0-alpha.7",
+    "@imtbl/deployment-utils": "^2.0.4",
+    "@imtbl/platform": "^2.0.13",
     "@imtbl/types": "1.0.10",
-    "@imtbl/utils": "^1.1.5",
+    "@imtbl/utils": "^1.1.7",
     "@openzeppelin/contracts": "^2.3.0",
     "ethers": "^4.0.42",
     "minimist": "^1.2.0",
@@ -61,5 +61,5 @@
     "tslint-no-focused-test": "^0.5.0",
     "typescript": "^3.7.5"
   },
-  "gitHead": "9325e8f80991dec95fa54cee27d9bfc25d2330ad"
+  "gitHead": "0600df9b370d3d700e9da510a2fe20aadba92928"
 }

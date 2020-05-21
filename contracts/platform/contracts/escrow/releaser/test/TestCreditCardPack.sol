@@ -27,7 +27,7 @@ contract TestCreditCardPack {
 
         IEscrow.Vault memory vault = IEscrow.Vault({
             player: user,
-            releaser: address(escrow),
+            admin: address(escrow),
             asset: address(erc20),
             balance: count,
             lowTokenID: 0,
@@ -52,7 +52,7 @@ contract TestCreditCardPack {
 
         IEscrow.Vault memory vault = IEscrow.Vault({
             player: user,
-            releaser: address(escrow),
+            admin: address(escrow),
             asset: address(erc721),
             balance: 0,
             lowTokenID: low,
@@ -80,9 +80,9 @@ contract TestCreditCardPack {
     function erc20Hook(uint256 purchaseID) public {
         address protocol = address(escrow.getProtocol());
         require(msg.sender == protocol, "must be the escrow contract");
-        Purchase memory p = purchases[purchaseID];
-        erc20.mint(protocol, p.count);
+        uint256 count = purchases[purchaseID].count;
         delete purchases[purchaseID];
+        erc20.mint(protocol, count);
     }
 
 }

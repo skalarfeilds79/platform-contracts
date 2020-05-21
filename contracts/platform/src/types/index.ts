@@ -7,11 +7,13 @@ export enum Currency {
 }
 
 export interface Order {
-  recipient: string;
+  changeRecipient: string;
+  assetRecipient: string;
   sku: string;
   quantity: number;
   currency: Currency;
   totalPrice: number;
+  alreadyPaid: number;
 }
 
 export interface PaymentParams {

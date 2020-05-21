@@ -117,8 +117,12 @@ describe('Pack', () => {
 
     async function purchasePacks(quantity: number) {
       const order = {
-        quantity, sku: shinyPackSKU, recipient: owner.address,
-        totalPrice: cost * quantity, currency: Currency.USDCents
+        quantity, sku: shinyPackSKU,
+        assetRecipient: owner.address,
+        changeRecipient: owner.address,
+        totalPrice: cost * quantity,
+        alreadyPaid: 0,
+        currency: Currency.USDCents
       };
       const params = { escrowFor: 0, nonce: 0, value: cost * quantity };
       const payment = await getSignedPayment(
@@ -137,10 +141,6 @@ describe('Pack', () => {
 
     it('should purchase five packs with USD', async () => {
       await purchasePacks(5);
-    });
-
-    it('should purchase 100 packs with USD', async () => {
-      await purchasePacks(100);
     });
 
   });
@@ -186,11 +186,22 @@ describe('Pack', () => {
 
     async function purchase(quantity: number, escrowFor: number) {
       const order = {
-        quantity, sku: shinyPackSKU, recipient: owner.address,
-        totalPrice: cost * quantity, currency: Currency.USDCents
+        quantity,
+        sku: shinyPackSKU,
+        assetRecipient: owner.address,
+        changeRecipient: owner.address,
+        totalPrice: cost * quantity,
+        alreadyPaid: 0,
+        currency: Currency.USDCents
       };
       const params = { escrowFor, nonce: 0, value: cost * quantity };
-      const payment = await getSignedPayment(owner, processor.address, shiny.address, order, params);
+      const payment = await getSignedPayment(
+        owner,
+        processor.address,
+        shiny.address,
+        order,
+        params
+      );
       await shiny.purchase(quantity, payment, ZERO_EX);
     }
 
@@ -231,19 +242,9 @@ describe('Pack', () => {
       await mintTrackGas(0, '6 pack escrow');
     });
 
-    it('should create cards from 18 packs', async () => {
-      await purchase(18, 100);
-      await mintTrackGas(0, '18 packs escrow');
-    });
-
     it('should create cards from 1 packs with no escrow', async () => {
       await purchase(1, 0);
       await mintTrackGas(0, '1 pack no escrow');
-    });
-
-    it('should create cards from 18 packs with no escrow', async () => {
-      await purchase(18, 0);
-      await mintTrackGas(0, '18 packs no escrow');
     });
 
   });
@@ -306,8 +307,13 @@ describe('Pack', () => {
       await processor.setSellerApproval(chest.address, [rareChestSKU], true);
       const value = rareChestPrice * quantity;
       const order = {
-        quantity, sku: rareChestSKU, recipient: owner.address,
-        currency: Currency.USDCents, totalPrice: value
+        quantity,
+        sku: rareChestSKU,
+        assetRecipient: owner.address,
+        changeRecipient: owner.address,
+        currency: Currency.USDCents,
+        totalPrice: value,
+        alreadyPaid: 0
       };
       const params = { value, escrowFor: 0, nonce: 0 };
       const payment = await getSignedPayment(

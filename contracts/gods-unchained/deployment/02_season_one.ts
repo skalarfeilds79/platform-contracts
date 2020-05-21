@@ -4,11 +4,20 @@ import { Wallet, ethers } from 'ethers';
 import { DeploymentStage } from '@imtbl/deployment-utils';
 import { asyncForEach } from '@imtbl/utils';
 import {
+  GU_S1_RARE_CHEST_SKU,
+  GU_S1_LEGENDARY_CHEST_SKU,
+  LEGENDARY_CHEST_PRICE,
+} from './constants';
+
+import {
+  RARE_CHEST_CAP,
+  LEGENDARY_CHEST_CAP,
+  RARE_CHEST_PRICE,
   GU_S1_EPIC_PACK_SKU,
   GU_S1_RARE_PACK_SKU,
   GU_S1_SHINY_PACK_SKU,
   GU_S1_LEGENDARY_PACK_SKU,
-} from '@imtbl/addresses';
+} from './constants';
 
 import {
   Raffle,
@@ -21,6 +30,7 @@ import {
   LegendaryPack,
   PurchaseProcessor,
   Cards,
+  Chest,
 } from '../src/contracts';
 
 export class SeasonOneStage implements DeploymentStage {
@@ -38,7 +48,7 @@ export class SeasonOneStage implements DeploymentStage {
     transferOwnership: (addresses: string[]) => void,
   ) {
     const processorAddress = await findInstance('IM_Processor');
-    if (!processorAddress || processorAddress.length == 0) {
+    if (!processorAddress || processorAddress.length === 0) {
       throw '*** IM_Processor not deloyed! Run `yarn deploy --core` inside contracts/platform';
     }
     const s1Vendor =
@@ -124,12 +134,23 @@ export class SeasonOneStage implements DeploymentStage {
       ));
     await onDeployment('GU_S1_Legendary_Pack', legendaryPack, false);
 
-    const packAddresses = [rarePack, shinyPack, legendaryPack, epicPack];
+    const rareChest =
+      (await findInstance('GU_S1_Rare_Chest')) ||
+      (await this.deployRareChest(rarePack, referral, escrow, processor));
+    await onDeployment('GU_S1_Rare_Chest', rareChest, false);
 
+    const legendaryChest =
+      (await findInstance('GU_S1_Legendary_Chest')) ||
+      (await this.deployLegendaryChest(legendaryPack, referral, escrow, processor));
+    await onDeployment('GU_S1_Legendary_Chest', legendaryChest, false);
+
+    const packAddresses = [rarePack, shinyPack, legendaryPack, epicPack];
     await this.setupCardsContract(cards, 'Season One', 1000, 1500, packAddresses);
 
-    await this.setApprovedRaffleMinters(raffle, packAddresses);
+    await this.setChestForPack('Rare', rarePack, rareChest);
+    await this.setChestForPack('Legendary', legendaryPack, legendaryChest);
 
+    await this.setApprovedRaffleMinters(raffle, packAddresses);
     await this.setApprovedProcessorSellers(processor, [
       { address: epicPack, sku: GU_S1_EPIC_PACK_SKU },
       { address: rarePack, sku: GU_S1_RARE_PACK_SKU },
@@ -282,6 +303,55 @@ export class SeasonOneStage implements DeploymentStage {
     return receipt.contractAddress;
   }
 
+  async deployRareChest(rarePack: string, referral: string, escrow: string, processor: string) {
+    console.log('** Deploying Rare Chest **');
+
+    const unsignedTx = await Chest.getDeployTransaction(
+      this.wallet,
+      'GU:S1: Rare Chest',
+      'GUS1RC',
+      rarePack,
+      RARE_CHEST_CAP,
+      referral,
+      GU_S1_RARE_CHEST_SKU,
+      RARE_CHEST_PRICE,
+      escrow,
+      processor,
+    );
+
+    unsignedTx.nonce = await this.wallet.getTransactionCount();
+    const signedTx = await this.wallet.sendTransaction(unsignedTx);
+    const receipt = await signedTx.wait();
+    return receipt.contractAddress;
+  }
+
+  async deployLegendaryChest(
+    legendaryPack: string,
+    referral: string,
+    escrow: string,
+    processor: string,
+  ) {
+    console.log('** Deploying Legendary Chest **');
+
+    const unsignedTx = await Chest.getDeployTransaction(
+      this.wallet,
+      'GU:S1: Rare Chest',
+      'GUS1RC',
+      legendaryPack,
+      LEGENDARY_CHEST_CAP,
+      referral,
+      GU_S1_LEGENDARY_CHEST_SKU,
+      LEGENDARY_CHEST_PRICE,
+      escrow,
+      processor,
+    );
+
+    unsignedTx.nonce = await this.wallet.getTransactionCount();
+    const signedTx = await this.wallet.sendTransaction(unsignedTx);
+    const receipt = await signedTx.wait();
+    return receipt.contractAddress;
+  }
+
   async setApprovedProcessorSellers(processor: string, items: { address: string; sku: string }[]) {
     console.log('** Adding approved processor sellers ** ');
     const contract = await PurchaseProcessor.at(this.wallet, processor);
@@ -306,6 +376,16 @@ export class SeasonOneStage implements DeploymentStage {
     });
   }
 
+  async setChestForPack(name: string, pack: string, chest: string) {
+    console.log(`** Setting ${name} chest on pack **`);
+    const contract = await Pack.at(this.wallet, pack);
+    const existingChestAddress = await contract.chest();
+
+    if (existingChestAddress === ethers.constants.AddressZero) {
+      await contract.setChest(chest);
+    }
+  }
+
   async setupCardsContract(
     cards: string,
     name: string,
@@ -313,7 +393,7 @@ export class SeasonOneStage implements DeploymentStage {
     high: number,
     approvedMinters: string[],
   ) {
-    console.log(`** Adding a new GU Season and adding approved minters **`);
+    console.log('** Adding a new GU Season and adding approved minters **');
     const contract = Cards.at(this.wallet, cards);
     console.log(contract.address);
     const season = await (await contract.functions.seasons(3)).low;
@@ -325,7 +405,7 @@ export class SeasonOneStage implements DeploymentStage {
     }
 
     await asyncForEach(approvedMinters, async (minterAddress) => {
-      if ((await contract.functions.factoryApproved(minterAddress, 4)) != true) {
+      if ((await contract.functions.factoryApproved(minterAddress, 4)) !== true) {
         console.log(`** Adding ${minterAddress} as an approved address **`);
         await contract.functions.addFactory(minterAddress, 4);
       }

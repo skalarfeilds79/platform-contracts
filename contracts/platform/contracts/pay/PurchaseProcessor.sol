@@ -6,10 +6,46 @@ pragma experimental ABIEncoderV2;
 import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 
-import "./IPurchaseProcessor.sol";
 import "../oracle/IOracle.sol";
 
-contract PurchaseProcessor is IPurchaseProcessor, Ownable {
+contract PurchaseProcessor is Ownable {
+
+    enum Currency {
+        ETH,
+        USDCents
+    }
+
+    struct Order {
+        address payable changeRecipient;
+        address assetRecipient;
+        bytes32 sku;
+        uint256 quantity;
+        Currency currency;
+        uint256 totalPrice;
+        uint256 alreadyPaid;
+    }
+
+    struct PaymentParams {
+        Currency currency;
+        uint256 value;
+        uint256 nonce;
+        bytes32 r;
+        bytes32 s;
+        uint8 v;
+        uint256 escrowFor;
+    }
+
+    struct Receipt {
+        uint256 id;
+        Currency currency;
+        uint256 amount;
+    }
+
+    struct Limit {
+        uint256 periodEnd;
+        uint256 total;
+        uint256 used;
+    }
 
     using SafeMath for uint256;
 

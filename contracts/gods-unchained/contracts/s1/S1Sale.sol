@@ -2,7 +2,7 @@ pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/math/SafeMath.sol";
-import "@imtbl/platform/contracts/pay/IPurchaseProcessor.sol";
+import "@imtbl/platform/contracts/pay/PurchaseProcessor.sol";
 import "./IS1Vendor.sol";
 
 contract S1Sale {
@@ -14,7 +14,7 @@ contract S1Sale {
     struct ProductPurchaseRequest {
         uint256 quantity;
         IS1Vendor vendor;
-        IPurchaseProcessor.PaymentParams payment;
+        PurchaseProcessor.PaymentParams payment;
     }
 
     /** @dev Purchase assets from a number of products

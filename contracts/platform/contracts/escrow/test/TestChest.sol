@@ -1,23 +1,23 @@
 pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
-import "../IEscrow.sol";
+import "../Escrow.sol";
 import "./TestERC20Token.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract TestChest {
 
-    IEscrow escrow;
+    Escrow escrow;
     TestERC20Token asset;
 
-    constructor(IEscrow _escrow, TestERC20Token _asset) public {
+    constructor(Escrow _escrow, TestERC20Token _asset) public {
         escrow = _escrow;
         asset = _asset;
     }
 
     function purchase(uint256 count) external {
 
-        IEscrow.Vault memory vault = IEscrow.Vault({
+        Escrow.Vault memory vault = Escrow.Vault({
             player: msg.sender,
             admin: msg.sender,
             asset: address(asset),

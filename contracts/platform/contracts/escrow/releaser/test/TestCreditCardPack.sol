@@ -1,13 +1,13 @@
 pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
-import "../ICreditCardEscrow.sol";
+import "../CreditCardEscrow.sol";
 import "../../test/TestERC20Token.sol";
 import "../../test/TestERC721Token.sol";
 
 contract TestCreditCardPack {
 
-    ICreditCardEscrow escrow;
+    CreditCardEscrow escrow;
     TestERC20Token erc20;
     TestERC721Token erc721;
 
@@ -17,7 +17,7 @@ contract TestCreditCardPack {
 
     Purchase[] public purchases;
 
-    constructor(ICreditCardEscrow _escrow, TestERC20Token _erc20, TestERC721Token _erc721) public {
+    constructor(CreditCardEscrow _escrow, TestERC20Token _erc20, TestERC721Token _erc721) public {
         escrow = _escrow;
         erc20 = _erc20;
         erc721 = _erc721;
@@ -25,7 +25,7 @@ contract TestCreditCardPack {
 
     function purchaseERC20(address user, uint256 count, uint64 duration) public {
 
-        IEscrow.Vault memory vault = IEscrow.Vault({
+        Escrow.Vault memory vault = Escrow.Vault({
             player: user,
             admin: address(escrow),
             asset: address(erc20),
@@ -50,7 +50,7 @@ contract TestCreditCardPack {
         uint256 low = erc721.totalSupply();
         uint256 high = low + count;
 
-        IEscrow.Vault memory vault = IEscrow.Vault({
+        Escrow.Vault memory vault = Escrow.Vault({
             player: user,
             admin: address(escrow),
             asset: address(erc721),

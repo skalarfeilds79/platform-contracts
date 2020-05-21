@@ -35,7 +35,7 @@ export const EpicPack = [
     "name": "pay",
     "outputs": [
       {
-        "internalType": "contract IPurchaseProcessor",
+        "internalType": "contract PurchaseProcessor",
         "name": "",
         "type": "address"
       }
@@ -55,7 +55,7 @@ export const EpicPack = [
       {
         "components": [
           {
-            "internalType": "enum IPurchaseProcessor.Currency",
+            "internalType": "enum PurchaseProcessor.Currency",
             "name": "currency",
             "type": "uint8"
           },
@@ -90,7 +90,7 @@ export const EpicPack = [
             "type": "uint256"
           }
         ],
-        "internalType": "struct IPurchaseProcessor.PaymentParams",
+        "internalType": "struct PurchaseProcessor.PaymentParams",
         "name": "_payment",
         "type": "tuple"
       },
@@ -244,7 +244,7 @@ export const EpicPack = [
     "name": "beacon",
     "outputs": [
       {
-        "internalType": "contract IBeacon",
+        "internalType": "contract Beacon",
         "name": "",
         "type": "address"
       }
@@ -398,7 +398,7 @@ export const EpicPack = [
       {
         "components": [
           {
-            "internalType": "enum IPurchaseProcessor.Currency",
+            "internalType": "enum PurchaseProcessor.Currency",
             "name": "currency",
             "type": "uint8"
           },
@@ -433,7 +433,7 @@ export const EpicPack = [
             "type": "uint256"
           }
         ],
-        "internalType": "struct IPurchaseProcessor.PaymentParams",
+        "internalType": "struct PurchaseProcessor.PaymentParams",
         "name": "_payment",
         "type": "tuple"
       },
@@ -461,7 +461,7 @@ export const EpicPack = [
     "name": "escrow",
     "outputs": [
       {
-        "internalType": "contract ICreditCardEscrow",
+        "internalType": "contract CreditCardEscrow",
         "name": "",
         "type": "address"
       }
@@ -491,7 +491,7 @@ export const EpicPack = [
     "name": "currency",
     "outputs": [
       {
-        "internalType": "enum IPurchaseProcessor.Currency",
+        "internalType": "enum PurchaseProcessor.Currency",
         "name": "",
         "type": "uint8"
       }
@@ -523,7 +523,7 @@ export const EpicPack = [
         "type": "address"
       },
       {
-        "internalType": "contract IBeacon",
+        "internalType": "contract Beacon",
         "name": "_beacon",
         "type": "address"
       },
@@ -543,12 +543,12 @@ export const EpicPack = [
         "type": "bytes32"
       },
       {
-        "internalType": "contract ICreditCardEscrow",
+        "internalType": "contract CreditCardEscrow",
         "name": "_escrow",
         "type": "address"
       },
       {
-        "internalType": "contract IPurchaseProcessor",
+        "internalType": "contract PurchaseProcessor",
         "name": "_pay",
         "type": "address"
       }

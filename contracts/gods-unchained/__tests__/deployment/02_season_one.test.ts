@@ -28,13 +28,14 @@ import {
 } from '@imtbl/platform';
 import { Blockchain } from '@imtbl/test-utils';
 
+import { getAddressBook } from '@imtbl/addresses';
+
 import {
-  getAddressBook,
   GU_S1_EPIC_PACK_SKU,
   GU_S1_RARE_PACK_SKU,
   GU_S1_LEGENDARY_PACK_SKU,
   GU_S1_SHINY_PACK_SKU,
-} from '@imtbl/addresses';
+} from '../../deployment/constants';
 import { asyncForEach, parseLogs } from '@imtbl/utils';
 
 const config = require('dotenv').config({ path: '../../.env' }).parsed;

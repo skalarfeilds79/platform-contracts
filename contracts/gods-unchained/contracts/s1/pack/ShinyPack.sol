@@ -7,12 +7,12 @@ contract ShinyPack is Pack {
 
     constructor(
         IRaffle _raffle,
-        IBeacon _beacon,
+        Beacon _beacon,
         ICards _cards,
         IReferral _referral,
         bytes32 _sku,
-        ICreditCardEscrow _escrow,
-        IPurchaseProcessor _pay
+        CreditCardEscrow _escrow,
+        PurchaseProcessor _pay
     ) public Pack(
         _raffle,
         _beacon,

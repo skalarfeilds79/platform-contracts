@@ -22,7 +22,6 @@ import {
   Raffle,
   S1Sale,
   Referral,
-  Pack,
   EpicPack,
   RarePack,
   ShinyPack,
@@ -329,7 +328,7 @@ export class SeasonOneStage implements DeploymentStage {
 
   async setChestForPack(name: string, pack: string, chest: string) {
     console.log(`** Setting ${name} chest on pack **`);
-    const contract = Pack.at(this.wallet, pack);
+    const contract = RarePack.at(this.wallet, pack);
     const existingChestAddress = await contract.chest();
 
     if (existingChestAddress === ethers.constants.AddressZero) {

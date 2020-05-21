@@ -172,21 +172,23 @@ contract PurchaseProcessor is Ownable {
                 amount = _payUsdPricedInUsd(order, payment);
             } else if (payment.currency == Currency.ETH) {
                 // Pay ETH directly
-                amount = _payEthPricedInUsd(order, payment);
+                amount = _payEthPricedInUsd(order);
             } else {
-                require(false, "IM:PurchaseProcessor: unknown currency");
+                require(false, "IM:PurchaseProcessor: unknown paymentcurrency");
             }
-        } else {
+        } else if (order.currency == Currency.ETH) {
             // What currency is the payment given in
             if (payment.currency == Currency.USDCents) {
                 // Pay USD via a signed receipt
                 amount = _payUsdPricedInEth(order, payment);
             } else if (payment.currency == Currency.ETH) {
                 // Pay ETH directly
-                amount = _payEthPricedInEth(order, payment);
+                amount = _payEthPricedInEth(order);
             }  else {
-                require(false, "IM:PurchaseProcessor: unknown currency");
+                require(false, "IM:PurchaseProcessor: unknown paymentcurrency");
             }
+        } else {
+            require(false, "IM:PurchaseProcessor: unknown order currency");
         }
 
         uint id = count++;
@@ -298,8 +300,7 @@ contract PurchaseProcessor is Ownable {
     }
 
     function _payEthPricedInUsd(
-        Order memory _order,
-        PaymentParams memory _payment
+        Order memory _order
     )
         internal
         returns (uint256)
@@ -378,8 +379,7 @@ contract PurchaseProcessor is Ownable {
     }
 
     function _payEthPricedInEth(
-        Order memory _order,
-        PaymentParams memory _payment
+        Order memory _order
     )
         internal
         returns (uint256)
@@ -409,12 +409,14 @@ contract PurchaseProcessor is Ownable {
             "IM:PurchaseProcessor: ETH left over"
         );
 
+        return outstanding;
     }
 
     function _sendETH(address _to, uint256 _value) internal {
         if (_value > 0) {
             // solium-disable-next-line
-            _to.call.value(_value)("");
+            (bool success, ) = _to.call.value(_value)("");
+            require(success, "IM:PurchaseProcessor: ETH send must be successful");
         }
     }
 

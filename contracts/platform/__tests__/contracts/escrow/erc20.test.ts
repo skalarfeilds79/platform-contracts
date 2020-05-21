@@ -3,11 +3,9 @@ import 'jest';
 import { Escrow, TestERC20Token, TestChest, MaliciousChest } from '../../../src/contracts';
 
 import { Ganache, Blockchain,expectRevert, generatedWallets } from '@imtbl/test-utils';
-import { ethers } from 'ethers';
 
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
-
 
 const ZERO_EX = '0x0000000000000000000000000000000000000000';
 

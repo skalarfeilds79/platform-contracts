@@ -107,7 +107,8 @@ contract Escrow is Ownable {
 
         escrowMutexLocked = true;
         // solium-disable-next-line security/no-low-level-calls
-        _callbackTo.call(_callbackData);
+        (bool success, ) = _callbackTo.call(_callbackData);
+        require(success, "IM:Escrow: callback must be successful");
         escrowMutexLocked = false;
 
         if (_vault.balance > 0) {

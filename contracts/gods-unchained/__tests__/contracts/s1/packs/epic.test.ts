@@ -11,7 +11,7 @@ import {
 import { Wallet, ethers } from 'ethers';
 import { keccak256 } from 'ethers/utils';
 import { PurchaseProcessor, CreditCardEscrow, Escrow, Beacon } from '@imtbl/platform/src/contracts';
-import { getSignedPayment, Currency, Order } from '@imtbl/platform/src/pay';
+import { getSignedPayment, Currency, Order } from '@imtbl/platform';
 
 import {
   ETHUSDMockOracle,

@@ -17,8 +17,8 @@
     "build": "yarn lint:sol && yarn truffle compile && yarn generate-typings && yarn tsc",
     "deploy": "yarn ts-node deployment/deploy.ts",
     "test:deployment": "yarn build && yarn reset-test-evm && yarn jest __tests__/deployment --runInBand",
-    "test": "yarn build && yarn reset-test-evm && yarn jest __tests__/contracts",
-    "test:watch": "yarn reset-test-evm && yarn jest __tests__/contracts --watch",
+    "test": "yarn build && yarn jest __tests__/contracts",
+    "test:watch": "yarn jest __tests__/contracts --watch",
     "reset-test-evm": "node scripts/reset-test-evm.js",
     "prepare": "yarn build"
   },

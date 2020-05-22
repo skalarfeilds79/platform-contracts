@@ -12,11 +12,11 @@ import "../S1Vendor.sol";
 contract Pack is IPack, S1Vendor, RarityProvider {
 
     // Emitted when the cards from a commitment are actually minted
-    event PackCardsMinted(uint256 indexed commitmentID, uint256 lowTokenID, uint256 highTokenID);
+    event PackCardsMinted(uint256 indexed commitmentID, uint256 mintIndex, uint256 lowTokenID, uint256 highTokenID);
     // Emitted when a card commitment is recorded (either purchase or opening a chest)
     event CommitmentRecorded(uint256 indexed commitmentID, Commitment commitment);
     // Emitted when the tickets from a commitment are actually minted
-    event TicketsMinted(uint256 indexed commitmentID, uint16[] ticketCounts);
+    event TicketsMinted(uint256 indexed commitmentID, uint256 mintIndex, uint16[] ticketCounts);
 
     // A commitment to generating a certain number of packs for a certain user
     // Prefer commitment to purchase (includes cards opened from chests)
@@ -26,6 +26,8 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         uint256 packQuantity;
         uint256 ticketQuantity;
         uint256 escrowFor;
+        uint256 packsMinted;
+        uint256 ticketsMinted;
         address recipient;
     }
 
@@ -41,6 +43,8 @@ contract Pack is IPack, S1Vendor, RarityProvider {
     address public chest;
     // The number of commitments
     uint256 public commitmentCount;
+
+    uint256 constant MAX_MINT = 50;
 
     function _getCardDetails(uint _index, uint _random)
         internal
@@ -193,7 +197,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         );
 
         // if there's nothing left to do on this purchase, clear it
-        if (commitments[_commitmentID].packQuantity == 0) {
+        if (commitment.packQuantity == commitment.packsMinted) {
             delete commitments[_commitmentID];
         } else {
             commitments[_commitmentID].ticketQuantity = 0;
@@ -262,20 +266,24 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         address _recipient
     ) internal {
 
-        if (_commitment.ticketQuantity == 0) {
+        uint start = _commitment.ticketsMinted;
+        uint remaining = _commitment.ticketQuantity.sub(_commitment.ticketsMinted);
+        uint end =  > MAX_MINT ? _commitment.ticketsMinted + MAX_MINT : _commitment.ticketQuantity;
+
+        if (end - start == 0) {
             return;
         }
 
         uint randomness = _getRandomness(_commitmentID, _commitment);
-        uint16[] memory ticketQuantities = new uint16[](_commitment.ticketQuantity);
+        uint16[] memory ticketQuantities = new uint16[](end - start);
         uint totalTickets = 0;
-        for (uint i = 0; i < _commitment.ticketQuantity; i++) {
+        for (uint i = start; i < end; i++) {
             uint16 qty = _getTicketsInPack(i, randomness);
             totalTickets += qty;
             ticketQuantities[i] = qty;
         }
         raffle.mint(_recipient, totalTickets);
-        emit TicketsMinted(_commitmentID, ticketQuantities);
+        emit TicketsMinted(_commitmentID, start, ticketQuantities);
         emit PaymentERC20Minted(
             _commitment.paymentID,
             address(raffle),
@@ -288,17 +296,26 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         Commitment memory _commitment,
         address _recipient
     ) internal {
+
+        uint start = _commitment.packsMinted;
+        uint remaining = _commitment.packQuantity.sub(_commitment.packsMinted);
+        uint end =  > MAX_MINT ? _commitment.packsMinted + MAX_MINT : _commitment.packQuantity;
+
+        if (end - start == 0) {
+            return;
+        }
+
         uint256 randomness = _getRandomness(_commitmentID, _commitment);
-        uint cardCount = _commitment.packQuantity * 5;
+        uint cardCount = (end - start) * 5;
         uint16[] memory protos = new uint16[](cardCount);
         uint8[] memory qualities = new uint8[](cardCount);
-        for (uint i = 0; i < cardCount; i++) {
+        for (uint i = start; i < end; i++) {
             (protos[i], qualities[i]) = _getCardDetails(i, randomness);
         }
         uint256 lowTokenID = cards.mintCards(_recipient, protos, qualities);
         uint256 highTokenID = lowTokenID + protos.length;
 
-        emit PackCardsMinted(_commitmentID, lowTokenID, highTokenID);
+        emit PackCardsMinted(_commitmentID, start, lowTokenID, highTokenID);
         emit PaymentERC721RangeMinted(
             _commitment.paymentID,
             address(cards),
@@ -318,6 +335,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         Commitment memory commitment = Commitment({
             commitBlock: commitBlock,
             packQuantity: _quantity * 6,
+            minted: 0,
             recipient: _recipient,
             escrowFor: 0,
             paymentID: 0,
@@ -341,6 +359,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
             commitBlock: commitBlock,
             packQuantity: _quantity,
             recipient: _recipient,
+            minted: 0,
             escrowFor: _escrowFor,
             paymentID: _paymentID,
             ticketQuantity: _quantity

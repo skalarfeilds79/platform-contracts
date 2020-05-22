@@ -21,7 +21,7 @@
         "setup": "yarn build:all && lerna bootstrap",
         "build": "tsc & yarn lerna run build",
         "watch": "tsc -p . --watch --preserveWatchOutput",
-        "test": "lerna run test",
+        "test": "lerna run test --parallel",
         "ci:clear-addresses": "node scripts/clearDevAddresses"
     },
     "dependencies": {

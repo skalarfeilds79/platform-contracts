@@ -19,8 +19,8 @@
         "deploy:gods-unchained": "yarn --cwd contracts/gods-unchained deploy --all",
         "deploy:all": "yarn deploy:platform && yarn deploy:gods-unchained",
         "setup": "yarn build:all && lerna bootstrap",
-        "build": "tsc & yarn lerna run build",
-        "test": "lerna run test",
+        "build": "lerna run build --parallel",
+        "test": "lerna run test --parallel",
         "ci:clear-addresses": "node scripts/clearDevAddresses"
     },
     "dependencies": {

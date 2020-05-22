@@ -17,7 +17,6 @@
         "deploy:platform": "yarn --cwd contracts/platform deploy --all",
         "deploy:gods-unchained": "yarn --cwd contracts/gods-unchained deploy --all",
         "deploy:all": "yarn deploy:platform && yarn deploy:gods-unchained",
-        "setup": "yarn build && lerna bootstrap",
         "watch": "tsc -p . --watch --preserveWatchOutput",
         "build:all": "yarn build",
         "build": "lerna run build --parallel",

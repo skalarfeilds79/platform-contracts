@@ -2,31 +2,16 @@ import 'jest';
 
 import { ethers } from 'ethers';
 import { generatedWallets, Blockchain } from '@imtbl/test-utils';
-import { PurchaseProcessor } from '../../src/contracts/PurchaseProcessor';
 import { keccak256 } from 'ethers/utils';
-import { parseLogs } from '../../../../packages/utils/src/parseLogs';
-import Platform from '../../src/Platform';
-import { getAddressBook, GU_S1_RARE_PACK_SKU } from '@imtbl/addresses/';
-import { Currency } from '../../src/types/index';
+import { parseLogs } from '@imtbl/utils';
 
-import {
-  getSignedPayment,
-  ETHUSDMockOracle,
-  Order,
-  PaymentParams,
-  Beacon,
-  Escrow,
-} from '../../src';
+import { Currency, Platform } from '@imtbl/platform';
 
-import {
-  Raffle,
-  Cards,
-  RarePack,
-  CardsWrapper,
-  CreditCardEscrow,
-  S1Sale,
-  Pack,
-} from '@imtbl/gods-unchained';
+import { RarePack, CreditCardEscrow, S1Sale } from '../../src';
+import { getSignedPayment, getPlatformAddresses } from '@imtbl/platform/src';
+
+import { getGodsUnchainedAddresses } from '../../src/addresses/index';
+import { GU_S1_RARE_PACK_SKU } from '../../deployment/constants';
 
 const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();
@@ -34,7 +19,16 @@ const blockchain = new Blockchain();
 jest.setTimeout(60000);
 
 const config = require('dotenv').config({ path: '../../.env' }).parsed;
-const addressBook = getAddressBook(config.DEPLOYMENT_NETWORK_ID, config.DEPLOYMENT_ENVIRONMENT);
+
+const guAddressBook = getGodsUnchainedAddresses(
+  config.DEPLOYMENT_NETWORK_ID,
+  config.DEPLOYMENT_ENVIRONMENT,
+);
+
+const platformAddressBook = getPlatformAddresses(
+  config.DEPLOYMENT_NETWORK_ID,
+  config.DEPLOYMENT_ENVIRONMENT,
+);
 
 describe('EscrowModule', () => {
   const [ownerWallet, userWallet, treasuryWallet] = generatedWallets(provider);
@@ -49,10 +43,10 @@ describe('EscrowModule', () => {
     await blockchain.resetAsync();
     await blockchain.saveSnapshotAsync();
 
-    s1Sale = await S1Sale.at(ownerWallet, addressBook.godsUnchained.seasonOne.saleAddress);
-    rarePack = await RarePack.at(ownerWallet, addressBook.godsUnchained.seasonOne.rarePackAddress);
+    s1Sale = await S1Sale.at(ownerWallet, guAddressBook.seasonOne.saleAddress);
+    rarePack = await RarePack.at(ownerWallet, guAddressBook.seasonOne.rarePackAddress);
 
-    platform = await new Platform().init(ownerWallet, addressBook.platform);
+    platform = await new Platform().init(ownerWallet, platformAddressBook);
   });
 
   afterEach(async () => {
@@ -63,11 +57,11 @@ describe('EscrowModule', () => {
     const ids = await purchase(1);
 
     const cardsResult = await platform.escrow.getAssetsFromId(ids[0]);
-    expect(cardsResult.asset).toEqual(addressBook.godsUnchained.cardsAddress);
+    expect(cardsResult.asset).toEqual(guAddressBook.cardsAddress);
     expect(cardsResult.ids.length).toEqual(5);
 
     const ticketsResult = await platform.escrow.getAssetsFromId(ids[1]);
-    expect(ticketsResult.asset).toEqual(addressBook.godsUnchained.seasonOne.raffleAddress);
+    expect(ticketsResult.asset).toEqual(guAddressBook.seasonOne.raffleAddress);
     expect(ticketsResult.ids).toEqual([]);
   });
 
@@ -75,11 +69,11 @@ describe('EscrowModule', () => {
     const ids = await purchase(5);
 
     const cardsResult = await platform.escrow.getAssetsFromId(ids[0]);
-    expect(cardsResult.asset).toEqual(addressBook.godsUnchained.cardsAddress);
+    expect(cardsResult.asset).toEqual(guAddressBook.cardsAddress);
     expect(cardsResult.ids.length).toEqual(25);
 
     const ticketsResult = await platform.escrow.getAssetsFromId(ids[1]);
-    expect(ticketsResult.asset).toEqual(addressBook.godsUnchained.seasonOne.raffleAddress);
+    expect(ticketsResult.asset).toEqual(guAddressBook.seasonOne.raffleAddress);
     expect(ticketsResult.ids).toEqual([]);
   });
 
@@ -87,11 +81,11 @@ describe('EscrowModule', () => {
     const ids = await purchase(10);
 
     const cardsResult = await platform.escrow.getAssetsFromId(ids[0]);
-    expect(cardsResult.asset).toEqual(addressBook.godsUnchained.cardsAddress);
+    expect(cardsResult.asset).toEqual(guAddressBook.cardsAddress);
     expect(cardsResult.ids.length).toEqual(50);
 
     const ticketsResult = await platform.escrow.getAssetsFromId(ids[1]);
-    expect(ticketsResult.asset).toEqual(addressBook.godsUnchained.seasonOne.raffleAddress);
+    expect(ticketsResult.asset).toEqual(guAddressBook.seasonOne.raffleAddress);
     expect(ticketsResult.ids).toEqual([]);
   });
 
@@ -110,7 +104,7 @@ describe('EscrowModule', () => {
     );
 
     const purchaseReceipt = await purchaseTx.wait();
-    const purchaseLogs = parseLogs(purchaseReceipt.logs, Pack.ABI);
+    const purchaseLogs = parseLogs(purchaseReceipt.logs, RarePack.ABI);
     const commitmentId = purchaseLogs[0].values.commitmentID.toNumber();
 
     const mintTx = await rarePack.mint(commitmentId);
@@ -128,12 +122,14 @@ describe('EscrowModule', () => {
     sku: string,
     cost: number,
   ) {
-    const order = {
+    const order2 = {
       quantity,
-      sku,
-      recipient: userWallet.address,
+      sku: sku,
+      assetRecipient: userWallet.address,
+      changeRecipient: userWallet.address,
       totalPrice: cost * quantity,
       currency: Currency.USDCents,
+      alreadyPaid: 0,
     };
 
     const nonce = 0;
@@ -144,7 +140,7 @@ describe('EscrowModule', () => {
       ownerWallet,
       platform.addresses.processorAddress,
       packAddress,
-      order,
+      order2,
       params,
     );
 

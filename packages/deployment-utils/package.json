@@ -6,7 +6,6 @@
   "typings": "dist/index.d.ts",
   "private": false,
   "dependencies": {
-    "@imtbl/addresses": "^2.0.0-alpha.7",
     "@imtbl/common-types": "^2.0.0-alpha.7",
     "@imtbl/test-utils": "^1.0.16",
     "@imtbl/utils": "^1.1.7",

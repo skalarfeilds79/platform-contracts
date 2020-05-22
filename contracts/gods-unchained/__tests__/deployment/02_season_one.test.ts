@@ -23,11 +23,9 @@ import {
   ETHUSDMockOracle,
   getETHPayment,
   getPlatformAddresses,
-} from '@imtbl/platform';
+} from '@imtbl/platform/src';
 
 import { Blockchain } from '@imtbl/test-utils';
-
-import { getAddressBook } from '@imtbl/addresses';
 
 import {
   GU_S1_EPIC_PACK_SKU,
@@ -45,6 +43,11 @@ const blockchain = new Blockchain();
 const wallet: Wallet = new ethers.Wallet(config.PRIVATE_KEY, provider);
 
 const godUnchainedAddressBook = getGodsUnchainedAddresses(
+  config.DEPLOYMENT_NETWORK_ID,
+  config.DEPLOYMENT_ENVIRONMENT,
+);
+
+const platformAddressBook = getPlatformAddresses(
   config.DEPLOYMENT_NETWORK_ID,
   config.DEPLOYMENT_ENVIRONMENT,
 );
@@ -78,18 +81,19 @@ describe('02_season_one', () => {
   const defaultQuantity = 1;
 
   beforeAll(async () => {
-    beacon = await Beacon.at(wallet, addressBook.platform.beaconAddress);
-    processor = await PurchaseProcessor.at(wallet, addressBook.platform.processorAddress);
-    escrow = await Escrow.at(wallet, addressBook.platform.escrowAddress);
+    beacon = await Beacon.at(wallet, platformAddressBook.beaconAddress);
+    processor = await PurchaseProcessor.at(wallet, platformAddressBook.processorAddress);
+    escrow = await Escrow.at(wallet, platformAddressBook.escrowAddress);
     cards = await Cards.at(wallet, godUnchainedAddressBook.cardsAddress);
-    s1Vendor = await S1Vendor.at(wallet, godUnchainedAddressBook.seasonOne.vendorAddress);
     s1Raffle = await Raffle.at(wallet, godUnchainedAddressBook.seasonOne.raffleAddress);
     s1Sale = await S1Sale.at(wallet, godUnchainedAddressBook.seasonOne.saleAddress);
     s1Referral = await Referral.at(wallet, godUnchainedAddressBook.seasonOne.referralAddress);
     epicPack = await EpicPack.at(wallet, godUnchainedAddressBook.seasonOne.epicPackAddress);
     rarePack = await RarePack.at(wallet, godUnchainedAddressBook.seasonOne.rarePackAddress);
     shinyPack = await ShinyPack.at(wallet, godUnchainedAddressBook.seasonOne.shinyPackAddress);
-    oracle = await ETHUSDMockOracle.at(wallet, addressBook.platform.ethUSDMockOracleAddress);
+
+    oracle = await ETHUSDMockOracle.at(wallet, platformAddressBook.ethUSDMockOracleAddress);
+
     legendaryPack = await LegendaryPack.at(
       wallet,
       godUnchainedAddressBook.seasonOne.legendaryPackAddress,

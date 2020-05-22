@@ -37,13 +37,13 @@ export class CoreStage implements DeploymentStage {
     }
 
     const beacon = (await findInstance('IM_Beacon')) || (await this.deployBeacon());
-    onDeployment('IM_Beacon', beacon, false);
+    await onDeployment('IM_Beacon', beacon, false);
 
     const processor = (await findInstance('IM_Processor')) || (await this.deployProcessor());
-    onDeployment('IM_Processor', processor, false);
+    await onDeployment('IM_Processor', processor, false);
 
     const escrow = (await findInstance('IM_Escrow')) || (await this.deployEscrow());
-    onDeployment('IM_Escrow', escrow, false);
+    await onDeployment('IM_Escrow', escrow, false);
 
     const creditCardEscrow =
       (await findInstance('IM_Escrow_CreditCard')) ||
@@ -54,36 +54,32 @@ export class CoreStage implements DeploymentStage {
         ESCROW_CUSTODIAN,
         ESCROW_RELEASE_DELAY,
       ));
-    onDeployment('IM_Escrow_CreditCard', creditCardEscrow, false);
+    await onDeployment('IM_Escrow_CreditCard', creditCardEscrow, false);
 
     await this.setPaymentProcessorSigner(processor, firstSigner);
   }
 
   async deployBeacon(): Promise<string> {
     console.log('** Deploying Beacon **');
-    const beacon = await Beacon.awaitDeployment(
-      this.wallet,
-      { nonce: await this.wallet.getTransactionCount()}
-    );
+    const beacon = await Beacon.awaitDeployment(this.wallet, {
+      nonce: await this.wallet.getTransactionCount(),
+    });
     return beacon.address;
   }
 
   async deployProcessor(): Promise<string> {
     console.log('** Deploying PurchaseProcessor **');
-    const processor = await PurchaseProcessor.awaitDeployment(
-      this.wallet,
-      this.wallet.address,
-      { nonce: await this.wallet.getTransactionCount()}
-    );
+    const processor = await PurchaseProcessor.awaitDeployment(this.wallet, this.wallet.address, {
+      nonce: await this.wallet.getTransactionCount(),
+    });
     return processor.address;
   }
 
   async deployEscrow(): Promise<string> {
     console.log('** Deploying Escrow **');
-    const escrow = await Escrow.awaitDeployment(
-      this.wallet,
-      { nonce: await this.wallet.getTransactionCount()}
-    );
+    const escrow = await Escrow.awaitDeployment(this.wallet, {
+      nonce: await this.wallet.getTransactionCount(),
+    });
     return escrow.address;
   }
 
@@ -102,7 +98,7 @@ export class CoreStage implements DeploymentStage {
       destructionDelay,
       custodian,
       custodianDelay,
-      { nonce: await this.wallet.getTransactionCount()}
+      { nonce: await this.wallet.getTransactionCount() },
     );
     return cc.address;
   }

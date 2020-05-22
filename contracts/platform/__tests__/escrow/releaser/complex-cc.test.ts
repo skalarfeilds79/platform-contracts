@@ -7,7 +7,7 @@ import {
   TestERC721Token,
   TestCreditCardPack,
   MaliciousCCP,
-} from '../../../../src/contracts';
+} from '../../../src/contracts';
 
 import { Ganache, Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';

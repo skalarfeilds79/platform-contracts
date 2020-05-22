@@ -2,7 +2,7 @@ import 'jest';
 
 import { Ganache, generatedWallets } from '@imtbl/test-utils';
 import { BigNumber } from 'ethers/utils';
-import { ETHUSDMockOracle } from '../../../src/contracts/ETHUSDMockOracle';
+import { ETHUSDMockOracle } from '../../src/contracts/ETHUSDMockOracle';
 
 const provider = new Ganache(Ganache.DefaultOptions);
 

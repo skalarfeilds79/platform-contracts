@@ -5,8 +5,7 @@ import { Chest, Referral, TestPack, Escrow } from '../../../src/contracts';
 
 import { ethers } from 'ethers';
 import { keccak256 } from 'ethers/utils';
-import { PurchaseProcessor, CreditCardEscrow, getETHPayment, getSignedPayment, Currency } from '@imtbl/platform';
-import { ETHUSDMockOracle } from '@imtbl/platform/src';
+import { ETHUSDMockOracle, PurchaseProcessor, CreditCardEscrow, getETHPayment, getSignedPayment, Currency } from '@imtbl/platform';
 
 const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
@@ -34,6 +33,7 @@ describe('Chest', () => {
     let escrow: CreditCardEscrow;
     let referral: Referral;
     let pack: TestPack;
+    let oracle: ETHUSDMockOracle;
     const rareChestSKU = keccak256('0x00');
     const rareChestPrice = 100;
 
@@ -42,6 +42,7 @@ describe('Chest', () => {
       processor = await PurchaseProcessor.deploy(owner, owner.address);
       pack = await TestPack.deploy(owner);
       escrowProtocol = await Escrow.deploy(owner);
+      oracle = await ETHUSDMockOracle.deploy(owner);
       escrow = await CreditCardEscrow.deploy(
         owner,
         escrowProtocol.address,
@@ -62,13 +63,15 @@ describe('Chest', () => {
         escrow.address,
         processor.address,
       );
+      await processor.setOracle(oracle.address);
+      await processor.setSellerApproval(chest.address, [rareChestSKU], true);
     });
 
     async function purchaseChests(quantity: number) {
-      await processor.setSellerApproval(chest.address, [rareChestSKU], true);
       let balance = await chest.balanceOf(owner.address);
       expect(balance.toNumber()).toBe(0);
-      await chest.purchase(quantity, getETHPayment(), ZERO_EX);
+      const ethRequired = await oracle.convert(1, 0, rareChestPrice * quantity);
+      await chest.purchase(quantity, getETHPayment(), ZERO_EX, { value: ethRequired});
       balance = await chest.balanceOf(owner.address);
       expect(balance.toNumber()).toBe(quantity);
     }

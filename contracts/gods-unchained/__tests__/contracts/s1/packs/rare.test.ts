@@ -24,7 +24,7 @@ const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
 ethers.errors.setLogLevel('error');
 
-describe('Pack', () => {
+describe('Rare Pack', () => {
   const [owner] = generatedWallets(provider);
 
   beforeEach(async () => {
@@ -185,7 +185,7 @@ describe('Pack', () => {
       );
       await processor.setSellerApproval(rare.address, [rarePackSKU], true);
       await processor.setSignerLimit(owner.address, 1000000000000000);
-      await cards.startSeason('S1', 1, 10000);
+      await cards.startSeason('S1', 800, 1000);
       await cards.addFactory(rare.address, 1);
       await raffle.setMinterApproval(rare.address, true);
     });
@@ -232,9 +232,9 @@ describe('Pack', () => {
       await mintTrackGas(0, '1 pack escrow');
     });
 
-    it('should create cards from 6 packs', async () => {
-      await purchase(6, 100);
-      await mintTrackGas(0, '6 pack escrow');
+    it('should create cards from 2 packs', async () => {
+      await purchase(2, 100);
+      await mintTrackGas(0, '2 pack escrow');
     });
 
     it('should create cards from 1 packs with no escrow', async () => {
@@ -335,13 +335,13 @@ describe('Pack', () => {
       await purchaseAndOpenChests(1);
     });
 
-    it('should create a valid purchase from 6 chests', async () => {
-      await purchaseAndOpenChests(6);
+    it('should create a valid purchase from 2 chests', async () => {
+      await purchaseAndOpenChests(2);
     });
 
     it('should create cards from an opened chest', async () => {
       await purchaseAndOpenChests(1);
-      await cards.startSeason('S1', 1, 10000);
+      await cards.startSeason('S1', 800, 1000);
       await cards.addFactory(rare.address, 1);
       await rare.mint(0);
     });

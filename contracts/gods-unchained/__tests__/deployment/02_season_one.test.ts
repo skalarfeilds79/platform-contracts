@@ -35,6 +35,8 @@ import {
 } from '../../deployment/constants';
 import { asyncForEach, parseLogs } from '@imtbl/utils';
 
+ethers.errors.setLogLevel('error');
+
 const config = require('dotenv').config({ path: '../../.env' }).parsed;
 const provider = new ethers.providers.JsonRpcProvider(config.RPC_ENDPOINT);
 const blockchain = new Blockchain();

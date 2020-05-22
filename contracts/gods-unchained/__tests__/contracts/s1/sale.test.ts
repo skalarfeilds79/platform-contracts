@@ -11,6 +11,7 @@ jest.setTimeout(600000);
 
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
+ethers.errors.setLogLevel('error');
 
 const ZERO_EX = '0x0000000000000000000000000000000000000000';
 

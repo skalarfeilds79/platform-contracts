@@ -19,6 +19,7 @@
         "deploy:all": "yarn deploy:platform && yarn deploy:gods-unchained",
         "setup": "yarn build && lerna bootstrap",
         "watch": "tsc -p . --watch --preserveWatchOutput",
+        "build:all": "yarn build",
         "build": "lerna run build --parallel",
         "test": "lerna run test --parallel",
         "ci:clear-addresses": "node scripts/clearDevAddresses"

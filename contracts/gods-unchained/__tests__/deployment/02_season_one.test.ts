@@ -1,6 +1,7 @@
 import 'jest';
 
 import {
+  S1Cap,
   Cards,
   Beacon,
   PurchaseProcessor,
@@ -54,6 +55,7 @@ describe('02_season_one', () => {
   let cards: Cards;
   let s1Raffle: Raffle;
   let s1Sale: S1Sale;
+  let cap: S1Cap;
   let s1Referral: Referral;
   let epicPack: EpicPack;
   let rarePack: RarePack;
@@ -74,9 +76,9 @@ describe('02_season_one', () => {
   const defaultQuantity = 1;
 
   beforeAll(async () => {
-    beacon = await Beacon.at(wallet, addressBook.platform.beaconAddress);
-    processor = await PurchaseProcessor.at(wallet, addressBook.platform.processorAddress);
-    escrow = await Escrow.at(wallet, addressBook.platform.escrowAddress);
+    beacon = Beacon.at(wallet, addressBook.platform.beaconAddress);
+    processor = PurchaseProcessor.at(wallet, addressBook.platform.processorAddress);
+    escrow = Escrow.at(wallet, addressBook.platform.escrowAddress);
     cards = Cards.at(wallet, addressBook.godsUnchained.cardsAddress);
     s1Raffle = Raffle.at(wallet, addressBook.godsUnchained.seasonOne.raffleAddress);
     s1Sale = S1Sale.at(wallet, addressBook.godsUnchained.seasonOne.saleAddress);

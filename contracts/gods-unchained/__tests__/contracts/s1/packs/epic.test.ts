@@ -5,17 +5,15 @@ import {
   Referral,
   EpicPack,
   Cards,
-  Raffle
+  Raffle,
+  S1Cap
 } from '../../../../src/contracts';
-import { Wallet, ethers } from 'ethers';
+import { ethers } from 'ethers';
 import { keccak256 } from 'ethers/utils';
-import { PurchaseProcessor, CreditCardEscrow, Escrow, Beacon } from '@imtbl/platform/src/contracts';
+import { PurchaseProcessor, CreditCardEscrow, Escrow, Beacon } from '@imtbl/platform';
 import { getSignedPayment, Currency, Order } from '@imtbl/platform';
 
-import {
-  ETHUSDMockOracle,
-  getETHPayment,
-} from '@imtbl/platform';
+import { ETHUSDMockOracle, getETHPayment } from '@imtbl/platform';
 import { parseLogs } from '@imtbl/utils';
 
 jest.setTimeout(600000);
@@ -45,6 +43,7 @@ describe('EpicPack', () => {
     let beacon: Beacon;
     let referral: Referral;
     let processor: PurchaseProcessor;
+    let cap: S1Cap;
 
     let raffle: Raffle;
 
@@ -62,6 +61,7 @@ describe('EpicPack', () => {
         ZERO_EX,
         100
       );
+      cap = await S1Cap.deploy(owner, 400000000);
       beacon = await Beacon.deploy(owner);
       referral = await Referral.deploy(owner, 90, 10);
       processor = await PurchaseProcessor.deploy(owner, owner.address);
@@ -71,6 +71,7 @@ describe('EpicPack', () => {
     it('should deploy epic pack', async () => {
       await EpicPack.deploy(
         owner,
+        cap.address,
         raffle.address,
         beacon.address, ZERO_EX, referral.address, sku,
         cc.address, processor.address
@@ -84,6 +85,7 @@ describe('EpicPack', () => {
     let beacon: Beacon;
     let referral: Referral;
     let processor: PurchaseProcessor;
+    let cap: S1Cap;
     let raffle: Raffle;
     let oracle: ETHUSDMockOracle;
 
@@ -106,6 +108,7 @@ describe('EpicPack', () => {
         100
       );
       beacon = await Beacon.deploy(owner);
+      cap = await S1Cap.deploy(owner, 400000000);
       referral = await Referral.deploy(owner, 90, 10);
       oracle = await ETHUSDMockOracle.deploy(owner);
       processor = await PurchaseProcessor.deploy(owner, owner.address);
@@ -113,6 +116,7 @@ describe('EpicPack', () => {
       raffle = await Raffle.deploy(owner);
       epic = await EpicPack.deploy(
         owner,
+        cap.address,
         raffle.address,
         beacon.address, cards.address, referral.address, epicPackSKU,
         cc.address, processor.address
@@ -120,6 +124,7 @@ describe('EpicPack', () => {
       await processor.setOracle(oracle.address);
       await processor.setSellerApproval(epic.address, [epicPackSKU], true);
       await processor.setSignerLimit(owner.address, 1000000000000000);
+      await cap.setCanUpdate([epic.address], true);
     });
 
     async function purchasePacks(quantity: number) {
@@ -159,6 +164,7 @@ describe('EpicPack', () => {
     let oracle: ETHUSDMockOracle;
     let processor: PurchaseProcessor;
     let raffle: Raffle;
+    let cap: S1Cap;
 
     let escrow: Escrow;
     let cc: CreditCardEscrow;
@@ -178,6 +184,7 @@ describe('EpicPack', () => {
         owner.address,
         100
       );
+      cap = await S1Cap.deploy(owner, 400000000);
       beacon = await Beacon.deploy(owner);
       referral = await Referral.deploy(owner, 90, 10);
       oracle = await ETHUSDMockOracle.deploy(owner);
@@ -186,6 +193,7 @@ describe('EpicPack', () => {
       raffle = await Raffle.deploy(owner);
       epic = await EpicPack.deploy(
         owner,
+        cap.address,
         raffle.address,
         beacon.address, cards.address, referral.address, epicPackSKU,
         cc.address, processor.address
@@ -193,6 +201,7 @@ describe('EpicPack', () => {
       await processor.setOracle(oracle.address);
       await processor.setSellerApproval(epic.address, [epicPackSKU], true);
       await processor.setSignerLimit(owner.address, 1000000000000000);
+      await cap.setCanUpdate([epic.address], true);
     });
 
     async function purchasePacks(quantity: number) {

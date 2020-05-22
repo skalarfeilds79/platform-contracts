@@ -1,7 +1,7 @@
 import 'jest';
 
 import { Ganache, Blockchain,generatedWallets } from '@imtbl/test-utils';
-import { Referral, RarePack, Cards, Chest, Raffle } from '../../../src/contracts';
+import { S1Cap, Referral, RarePack, Cards, Chest, Raffle } from '../../../src/contracts';
 import { Wallet, ethers } from 'ethers';
 import { keccak256 } from 'ethers/utils';
 import { getSignedPayment, Currency, PurchaseProcessor, CreditCardEscrow, Escrow, Beacon } from '@imtbl/platform';
@@ -38,20 +38,21 @@ describe('Raffle', () => {
   });
 
   describe('purchase', () => {
+    
     let beacon: Beacon;
     let referral: Referral;
     let processor: PurchaseProcessor;
     let raffle: Raffle;
-
+    let cap: S1Cap;
     let escrow: Escrow;
     let cc: CreditCardEscrow;
     const rarePackSKU = keccak256('0x00');
     let cards: Cards;
-
     let rare: RarePack;
     const cost = 249;
 
     beforeEach(async () => {
+      cap = await S1Cap.deploy(owner, 400000000);
       escrow = await Escrow.deploy(owner);
       cc = await CreditCardEscrow.deploy(
         owner,
@@ -68,6 +69,7 @@ describe('Raffle', () => {
       raffle = await Raffle.deploy(owner);
       rare = await RarePack.deploy(
         owner,
+        cap.address,
         raffle.address,
         beacon.address,
         cards.address,
@@ -78,6 +80,7 @@ describe('Raffle', () => {
       );
       await processor.setSellerApproval(rare.address, [rarePackSKU], true);
       await processor.setSignerLimit(owner.address, 1000000000000000);
+      await cap.setCanUpdate([rare.address], true);
     });
 
     async function purchasePacks(quantity: number) {
@@ -116,12 +119,11 @@ describe('Raffle', () => {
     let referral: Referral;
     let processor: PurchaseProcessor;
     let raffle: Raffle;
-
     let escrow: Escrow;
     let cc: CreditCardEscrow;
     const rarePackSKU = keccak256('0x00');
     let cards: Cards;
-
+    let cap: S1Cap;
     let rare: RarePack;
     const cost = 249;
 
@@ -135,6 +137,7 @@ describe('Raffle', () => {
         owner.address,
         100,
       );
+      cap = await S1Cap.deploy(owner, 400000000);
       beacon = await Beacon.deploy(owner);
       referral = await Referral.deploy(owner, 90, 10);
       processor = await PurchaseProcessor.deploy(owner, owner.address);
@@ -142,6 +145,7 @@ describe('Raffle', () => {
       raffle = await Raffle.deploy(owner);
       rare = await RarePack.deploy(
         owner,
+        cap.address,
         raffle.address,
         beacon.address,
         cards.address,
@@ -155,6 +159,7 @@ describe('Raffle', () => {
       await processor.setSignerLimit(owner.address, 1000000000000000);
       await cards.startSeason('S1', 800, 1000);
       await cards.addFactory(rare.address, 1);
+      await cap.setCanUpdate([rare.address], true);
     });
 
     async function purchase(quantity: number, escrowFor: number) {
@@ -228,10 +233,11 @@ describe('Raffle', () => {
     let cards: Cards;
     let chest: Chest;
     const rareChestPrice = 100;
-
+    let cap: S1Cap;
     let rare: RarePack;
 
     beforeEach(async () => {
+      cap = await S1Cap.deploy(owner, 400000000);
       escrow = await Escrow.deploy(owner);
       cc = await CreditCardEscrow.deploy(
         owner,
@@ -248,6 +254,7 @@ describe('Raffle', () => {
       raffle = await Raffle.deploy(owner);
       rare = await RarePack.deploy(
         owner,
+        cap.address,
         raffle.address,
         beacon.address,
         cards.address,
@@ -263,6 +270,7 @@ describe('Raffle', () => {
         'GU:1:RC',
         rare.address,
         0,
+        cap.address,
         referral.address,
         rareChestSKU,
         rareChestPrice,
@@ -272,6 +280,7 @@ describe('Raffle', () => {
       await rare.setChest(chest.address);
       await cards.startSeason('S1', 800, 1000);
       await cards.addFactory(rare.address, 1);
+      await cap.setCanUpdate([rare.address, chest.address], true);
     });
 
     async function purchaseAndOpenChests(quantity: number, pause = false) {

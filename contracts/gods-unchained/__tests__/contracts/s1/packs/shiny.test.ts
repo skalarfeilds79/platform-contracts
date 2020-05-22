@@ -2,6 +2,7 @@ import 'jest';
 
 import { Ganache, Blockchain,generatedWallets } from '@imtbl/test-utils';
 import {
+  S1Cap,
   Referral,
   ShinyPack,
   Cards,
@@ -40,9 +41,8 @@ describe('Shiny Pack', () => {
     let beacon: Beacon;
     let referral: Referral;
     let processor: PurchaseProcessor;
-
+    let cap: S1Cap;
     let raffle: Raffle;
-
     let escrow: Escrow;
     let cc: CreditCardEscrow;
     const sku = keccak256('0x00');
@@ -57,15 +57,17 @@ describe('Shiny Pack', () => {
         ZERO_EX,
         100
       );
+      cap = await S1Cap.deploy(owner, 400000000);
       beacon = await Beacon.deploy(owner);
       referral = await Referral.deploy(owner, 90, 10);
       processor = await PurchaseProcessor.deploy(owner, owner.address);
       raffle = await Raffle.deploy(owner);
     });
 
-    it('should deploy rare pack', async () => {
+    it('should deploy shiny pack', async () => {
       await ShinyPack.deploy(
         owner,
+        cap.address,
         raffle.address,
         beacon.address, ZERO_EX, referral.address, sku,
         cc.address, processor.address
@@ -80,16 +82,16 @@ describe('Shiny Pack', () => {
     let referral: Referral;
     let processor: PurchaseProcessor;
     let raffle: Raffle;
-
+    let cap: S1Cap;
     let escrow: Escrow;
     let cc: CreditCardEscrow;
     const shinyPackSKU = keccak256('0x00');
     let cards: Cards;
-
     let shiny: ShinyPack;
     const cost = 14999;
 
     beforeEach(async() => {
+      cap = await S1Cap.deploy(owner, 400000000);
       escrow = await Escrow.deploy(owner);
       cc = await CreditCardEscrow.deploy(
         owner,
@@ -106,12 +108,14 @@ describe('Shiny Pack', () => {
       raffle = await Raffle.deploy(owner);
       shiny = await ShinyPack.deploy(
         owner,
+        cap.address,
         raffle.address,
         beacon.address, cards.address, referral.address, shinyPackSKU,
         cc.address, processor.address
       );
       await processor.setSellerApproval(shiny.address, [shinyPackSKU], true);
       await processor.setSignerLimit(owner.address, 1000000000000000);
+      await cap.setCanUpdate([shiny.address], true);
     });
 
     async function purchasePacks(quantity: number) {
@@ -150,17 +154,17 @@ describe('Shiny Pack', () => {
     let referral: Referral;
     let processor: PurchaseProcessor;
     let raffle: Raffle;
-
+    let cap: S1Cap;
     let escrow: Escrow;
     let cc: CreditCardEscrow;
     const shinyPackSKU = keccak256('0x00');
     let cards: Cards;
-
     let shiny: ShinyPack;
     const cost = 14999;
 
     beforeEach(async() => {
       escrow = await Escrow.deploy(owner);
+      cap = await S1Cap.deploy(owner, 400000000);
       cc = await CreditCardEscrow.deploy(
         owner,
         escrow.address, owner.address, 100, owner.address, 100
@@ -172,6 +176,7 @@ describe('Shiny Pack', () => {
       raffle = await Raffle.deploy(owner);
       shiny = await ShinyPack.deploy(
         owner,
+        cap.address,
         raffle.address,
         beacon.address, cards.address, referral.address, shinyPackSKU,
         cc.address, processor.address
@@ -181,6 +186,7 @@ describe('Shiny Pack', () => {
       await cards.startSeason('S1', 800, 1000);
       await cards.addFactory(shiny.address, 1);
       await raffle.setMinterApproval(shiny.address, true);
+      await cap.setCanUpdate([shiny.address], true);
     });
 
     async function purchase(quantity: number, escrowFor: number) {

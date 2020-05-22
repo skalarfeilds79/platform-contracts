@@ -9,8 +9,6 @@ contract S1Sale {
 
     using SafeMath for uint256;
 
-    event LogState(uint index, uint balance);
-
     struct ProductPurchaseRequest {
         uint256 quantity;
         IS1Vendor vendor;

@@ -1,7 +1,7 @@
 import 'jest';
 
 import { Ganache, Blockchain,expectRevert, generatedWallets } from '@imtbl/test-utils';
-import { Chest, Referral, TestPack, Escrow } from '../../../src/contracts';
+import { S1Cap, Chest, Referral, TestPack, Escrow } from '../../../src/contracts';
 
 import { ethers } from 'ethers';
 import { keccak256 } from 'ethers/utils';
@@ -32,12 +32,14 @@ describe('Chest', () => {
     let escrowProtocol: Escrow;
     let escrow: CreditCardEscrow;
     let referral: Referral;
+    let cap: S1Cap;
     let pack: TestPack;
     let oracle: ETHUSDMockOracle;
     const rareChestSKU = keccak256('0x00');
     const rareChestPrice = 100;
 
     beforeEach(async () => {
+      cap = await S1Cap.deploy(owner, 400000000);
       referral = await Referral.deploy(owner, 90, 10);
       processor = await PurchaseProcessor.deploy(owner, owner.address);
       pack = await TestPack.deploy(owner);
@@ -57,6 +59,7 @@ describe('Chest', () => {
         'GU:1:RC',
         pack.address,
         0,
+        cap.address,
         referral.address,
         rareChestSKU,
         rareChestPrice,
@@ -65,6 +68,7 @@ describe('Chest', () => {
       );
       await processor.setOracle(oracle.address);
       await processor.setSellerApproval(chest.address, [rareChestSKU], true);
+      await cap.setCanUpdate([chest.address], true);
     });
 
     async function purchaseChests(quantity: number) {
@@ -86,7 +90,9 @@ describe('Chest', () => {
   });
 
   describe('#purchase USD', () => {
+
     let chest: Chest;
+    let cap: S1Cap;
     let processor: PurchaseProcessor;
     let escrowProtocol: Escrow;
     let escrow: CreditCardEscrow;
@@ -96,6 +102,7 @@ describe('Chest', () => {
     const rareChestPrice = 100;
 
     beforeEach(async () => {
+      cap = await S1Cap.deploy(owner, 400000000);
       processor = await PurchaseProcessor.deploy(owner, owner.address);
       referral = await Referral.deploy(owner, 90, 10);
       pack = await TestPack.deploy(owner);
@@ -114,12 +121,14 @@ describe('Chest', () => {
         'GU:1:RC',
         pack.address,
         0,
+        cap.address,
         referral.address,
         rareChestSKU,
         rareChestPrice,
         escrow.address,
         processor.address,
       );
+      await cap.setCanUpdate([chest.address], true);
     });
 
     async function purchaseChests(quantity: number, escrowFor: number) {
@@ -183,11 +192,13 @@ describe('Chest', () => {
     let escrow: CreditCardEscrow;
     let referral: Referral;
     let pack: TestPack;
+    let cap: S1Cap;
     let oracle: ETHUSDMockOracle;
     const rareChestSKU = keccak256('0x00');
     const rareChestCost = 2000;
 
     beforeEach(async () => {
+      cap = await S1Cap.deploy(owner, 400000000);
       processor = await PurchaseProcessor.deploy(owner, owner.address);
       referral = await Referral.deploy(owner, 90, 10);
       pack = await TestPack.deploy(owner);
@@ -207,6 +218,7 @@ describe('Chest', () => {
         'GU:1:RC',
         pack.address,
         0,
+        cap.address,
         referral.address,
         rareChestSKU,
         rareChestCost,
@@ -215,6 +227,7 @@ describe('Chest', () => {
       );
       await processor.setSellerApproval(chest.address, [rareChestSKU], true);
       await processor.setOracle(oracle.address);
+      await cap.setCanUpdate([chest.address], true);
     });
 
     async function openChests(quantity: number) {

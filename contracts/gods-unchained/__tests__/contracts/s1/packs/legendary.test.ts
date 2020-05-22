@@ -6,7 +6,8 @@ import {
   LegendaryPack,
   Cards,
   Chest,
-  Raffle
+  Raffle,
+  S1Cap
 } from '../../../../src/contracts';
 import { Wallet, ethers } from 'ethers';
 import { keccak256 } from 'ethers/utils';
@@ -41,9 +42,8 @@ describe('Legendary Pack', () => {
     let beacon: Beacon;
     let referral: Referral;
     let processor: PurchaseProcessor;
-
+    let cap: S1Cap;
     let raffle: Raffle;
-
     let escrow: Escrow;
     let cc: CreditCardEscrow;
     const sku = keccak256('0x00');
@@ -58,15 +58,17 @@ describe('Legendary Pack', () => {
         ZERO_EX,
         100
       );
+      cap = await S1Cap.deploy(owner, 400000000);
       beacon = await Beacon.deploy(owner);
       referral = await Referral.deploy(owner, 90, 10);
       processor = await PurchaseProcessor.deploy(owner, owner.address);
       raffle = await Raffle.deploy(owner);
     });
 
-    it('should deploy rare pack', async () => {
+    it('should deploy legendary pack', async () => {
       await LegendaryPack.deploy(
         owner,
+        cap.address,
         raffle.address,
         beacon.address, ZERO_EX, referral.address, sku,
         cc.address, processor.address
@@ -81,12 +83,11 @@ describe('Legendary Pack', () => {
     let referral: Referral;
     let processor: PurchaseProcessor;
     let raffle: Raffle;
-
+    let cap: S1Cap;
     let escrow: Escrow;
     let cc: CreditCardEscrow;
     const legendaryPackSKU = keccak256('0x00');
     let cards: Cards;
-
     let legendary: LegendaryPack;
     const cost = 2499;
 
@@ -100,6 +101,7 @@ describe('Legendary Pack', () => {
         owner.address,
         100
       );
+      cap = await S1Cap.deploy(owner, 400000000);
       beacon = await Beacon.deploy(owner);
       referral = await Referral.deploy(owner, 90, 10);
       processor = await PurchaseProcessor.deploy(owner, owner.address);
@@ -107,12 +109,14 @@ describe('Legendary Pack', () => {
       raffle = await Raffle.deploy(owner);
       legendary = await LegendaryPack.deploy(
         owner,
+        cap.address,
         raffle.address,
         beacon.address, cards.address, referral.address, legendaryPackSKU,
         cc.address, processor.address
       );
       await processor.setSellerApproval(legendary.address, [legendaryPackSKU], true);
       await processor.setSignerLimit(owner.address, 1000000000000000);
+      await cap.setCanUpdate([legendary.address], true);
     });
 
     async function purchasePacks(quantity: number) {
@@ -152,12 +156,11 @@ describe('Legendary Pack', () => {
     let referral: Referral;
     let processor: PurchaseProcessor;
     let raffle: Raffle;
-
+    let cap: S1Cap;
     let escrow: Escrow;
     let cc: CreditCardEscrow;
     const legendaryPackSKU = keccak256('0x00');
     let cards: Cards;
-
     let legendary: LegendaryPack;
     const cost = 2499;
 
@@ -167,6 +170,7 @@ describe('Legendary Pack', () => {
         owner,
         escrow.address, owner.address, 100, owner.address, 100
       );
+      cap = await S1Cap.deploy(owner, 400000000);
       beacon = await Beacon.deploy(owner);
       referral = await Referral.deploy(owner, 90, 10);
       processor = await PurchaseProcessor.deploy(owner, owner.address);
@@ -174,6 +178,7 @@ describe('Legendary Pack', () => {
       raffle = await Raffle.deploy(owner);
       legendary = await LegendaryPack.deploy(
         owner,
+        cap.address,
         raffle.address,
         beacon.address, cards.address, referral.address, legendaryPackSKU,
         cc.address, processor.address
@@ -183,6 +188,7 @@ describe('Legendary Pack', () => {
       await cards.startSeason('S1', 800, 1000);
       await cards.addFactory(legendary.address, 1);
       await raffle.setMinterApproval(legendary.address, true);
+      await cap.setCanUpdate([legendary.address], true);
     });
 
     async function purchase(quantity: number, escrowFor: number) {
@@ -249,7 +255,7 @@ describe('Legendary Pack', () => {
     let referral: Referral;
     let processor: PurchaseProcessor;
     let raffle: Raffle;
-
+    let cap: S1Cap;
     let escrow: Escrow;
     let cc: CreditCardEscrow;
     const legendaryPackSKU = keccak256('0x00');
@@ -257,7 +263,6 @@ describe('Legendary Pack', () => {
     let cards: Cards;
     let chest: Chest;
     const rareChestPrice = 100;
-
     let legendary: LegendaryPack;
 
     beforeEach(async() => {
@@ -266,6 +271,7 @@ describe('Legendary Pack', () => {
         owner,
         escrow.address, owner.address, 100, owner.address, 100
       );
+      cap = await S1Cap.deploy(owner, 400000000);
       beacon = await Beacon.deploy(owner);
       referral = await Referral.deploy(owner, 90, 10);
       processor = await PurchaseProcessor.deploy(owner, owner.address);
@@ -273,6 +279,7 @@ describe('Legendary Pack', () => {
       raffle = await Raffle.deploy(owner);
       legendary = await LegendaryPack.deploy(
         owner,
+        cap.address,
         raffle.address,
         beacon.address, cards.address, referral.address, legendaryPackSKU,
         cc.address, processor.address
@@ -284,6 +291,7 @@ describe('Legendary Pack', () => {
         'GU:1:RC',
         legendary.address,
         0,
+        cap.address,
         referral.address,
         rareChestSKU,
         rareChestPrice,
@@ -291,6 +299,7 @@ describe('Legendary Pack', () => {
         processor.address
       );
       await legendary.setChest(chest.address);
+      await cap.setCanUpdate([legendary.address, chest.address], true);
     });
 
     async function purchaseAndOpenChests(quantity: number) {

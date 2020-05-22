@@ -6,6 +6,7 @@ import "./Pack.sol";
 contract LegendaryPack is Pack {
 
     constructor(
+        S1Cap _cap,
         IRaffle _raffle,
         Beacon _beacon,
         ICards _cards,
@@ -14,6 +15,7 @@ contract LegendaryPack is Pack {
         CreditCardEscrow _escrow,
         PurchaseProcessor _pay
     ) public Pack(
+        _cap,
         _raffle,
         _beacon,
         _cards,

@@ -2,6 +2,7 @@ pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
 import "./referral/IReferral.sol";
+import "./S1Cap.sol";
 import "@imtbl/platform/contracts/escrow/releaser/CreditCardEscrow.sol";
 import "@imtbl/platform/contracts/pay/PurchaseProcessor.sol";
 import "@imtbl/platform/contracts/pay/vendor/IVendor.sol";
@@ -30,8 +31,11 @@ contract S1Vendor is IVendor, Pausable, Ownable {
     CreditCardEscrow public escrow;
     // Payment processor
     PurchaseProcessor public pay;
+    // Cap tracker
+    S1Cap cap;
 
     constructor(
+        S1Cap _cap,
         IReferral _referral,
         bytes32 _sku,
         uint256 _price,
@@ -43,6 +47,7 @@ contract S1Vendor is IVendor, Pausable, Ownable {
         escrow = _escrow;
         pay = _pay;
         referral = _referral;
+        cap = _cap;
     }
 
     /** @dev Purchase assets
@@ -74,6 +79,7 @@ contract S1Vendor is IVendor, Pausable, Ownable {
     ) public payable returns (PurchaseProcessor.Receipt memory) {
 
         uint256 totalPrice = _quantity.mul(price);
+
         uint256 toReferrer = 0;
 
         if (_payment.currency == PurchaseProcessor.Currency.ETH && _referrer != address(0)) {
@@ -105,6 +111,8 @@ contract S1Vendor is IVendor, Pausable, Ownable {
             // solium-disable-next-line
             msg.sender.call.value(address(this).balance)("");
         }
+
+        cap.update(totalPrice);
 
         return receipt;
     }

@@ -18,3 +18,5 @@ export const RARE_CHEST_PRICE = 1799;
 
 export const LEGENDARY_CHEST_CAP = 3250;
 export const LEGENDARY_CHEST_PRICE = 17999;
+
+export const SEASON_ONE_CAP = 400000000;

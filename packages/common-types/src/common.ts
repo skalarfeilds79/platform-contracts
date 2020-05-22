@@ -30,6 +30,7 @@ export declare type SeasonOneAddresses = {
   rarePackAddress?: string;
   shinyPackAddress?: string;
   legendaryPackAddress?: string;
+  capAddress?: string;
 };
 
 export declare type GodsUnchainedAddresses = {

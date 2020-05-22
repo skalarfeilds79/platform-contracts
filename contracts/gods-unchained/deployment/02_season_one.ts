@@ -16,6 +16,7 @@ import {
   GU_S1_RARE_PACK_SKU,
   GU_S1_SHINY_PACK_SKU,
   GU_S1_LEGENDARY_PACK_SKU,
+  SEASON_ONE_CAP
 } from './constants';
 
 import {
@@ -29,6 +30,7 @@ import {
   PurchaseProcessor,
   Cards,
   Chest,
+  S1Cap
 } from '../src/contracts';
 
 export class SeasonOneStage implements DeploymentStage {
@@ -59,16 +61,13 @@ export class SeasonOneStage implements DeploymentStage {
     const referral = (await findInstance('GU_S1_Referral')) || (await this.deployReferral());
     onDeployment('GU_S1_Referral', referral, false);
 
+    const s1Cap = (await findInstance('GU_S1_Cap')) || (await this.deployCap());
+    onDeployment('GU_S1_Cap', s1Cap, false);
+
     const beacon = await findInstance('IM_Beacon');
     const cards = await findInstance('GU_Cards');
     const escrow = await findInstance('IM_Escrow_CreditCard');
     const processor = await findInstance('IM_Processor');
-
-    console.log('beacon', beacon);
-    console.log('cards', cards);
-    console.log('escrow', escrow);
-    console.log('processor', processor);
-
 
     if (GU_S1_EPIC_PACK_SKU.length === 0) {
       throw '*** No Epic Pack SKU set! Cannot deploy EpicPack. ***';
@@ -76,6 +75,7 @@ export class SeasonOneStage implements DeploymentStage {
     const epicPack =
       (await findInstance('GU_S1_Epic_Pack')) ||
       (await this.deployEpicPack(
+        s1Cap,
         raffle,
         beacon,
         cards,
@@ -92,6 +92,7 @@ export class SeasonOneStage implements DeploymentStage {
     const rarePack =
       (await findInstance('GU_S1_Rare_Pack')) ||
       (await this.deployRarePack(
+        s1Cap,
         raffle,
         beacon,
         cards,
@@ -107,7 +108,8 @@ export class SeasonOneStage implements DeploymentStage {
     }
     const shinyPack =
       (await findInstance('GU_S1_Shiny_Pack')) ||
-      (await this.deployEpicPack(
+      (await this.deployShinyPack(
+        s1Cap,
         raffle,
         beacon,
         cards,
@@ -124,6 +126,7 @@ export class SeasonOneStage implements DeploymentStage {
     const legendaryPack =
       (await findInstance('GU_S1_Legendary_Pack')) ||
       (await this.deployLegendaryPack(
+        s1Cap,
         raffle,
         beacon,
         cards,
@@ -136,12 +139,12 @@ export class SeasonOneStage implements DeploymentStage {
 
     const rareChest =
       (await findInstance('GU_S1_Rare_Chest')) ||
-      (await this.deployRareChest(rarePack, referral, escrow, processor));
+      (await this.deployRareChest(rarePack, s1Cap, referral, escrow, processor));
     onDeployment('GU_S1_Rare_Chest', rareChest, false);
 
     const legendaryChest =
       (await findInstance('GU_S1_Legendary_Chest')) ||
-      (await this.deployLegendaryChest(legendaryPack, referral, escrow, processor));
+      (await this.deployLegendaryChest(legendaryPack, s1Cap, referral, escrow, processor));
     onDeployment('GU_S1_Legendary_Chest', legendaryChest, false);
 
     const packAddresses = [rarePack, shinyPack, legendaryPack, epicPack];
@@ -177,6 +180,16 @@ export class SeasonOneStage implements DeploymentStage {
     return sale.address;
   }
 
+  async deployCap(): Promise<string> {
+    console.log('** Deploying S1Cap **');
+    const cap = await S1Cap.awaitDeployment(
+      this.wallet,
+      SEASON_ONE_CAP,
+      { nonce: await this.wallet.getTransactionCount()}
+    );
+    return cap.address;
+  }
+
   async deployReferral(): Promise<string> {
     console.log('** Deploying Referral **');
     const sale = await Referral.awaitDeployment(
@@ -189,6 +202,7 @@ export class SeasonOneStage implements DeploymentStage {
   }
 
   async deployEpicPack(
+    cap: string,
     raffle: string,
     beacon: string,
     cards: string,
@@ -200,6 +214,7 @@ export class SeasonOneStage implements DeploymentStage {
     console.log('** Deploying EpicPack **');
     const epic = await EpicPack.awaitDeployment(
       this.wallet,
+      cap,
       raffle,
       beacon,
       cards,
@@ -213,6 +228,7 @@ export class SeasonOneStage implements DeploymentStage {
   }
 
   async deployRarePack(
+    cap: string,
     raffle: string,
     beacon: string,
     cards: string,
@@ -224,6 +240,7 @@ export class SeasonOneStage implements DeploymentStage {
     console.log('** Deploying RarePack **');
     const rare = await RarePack.awaitDeployment(
       this.wallet,
+      cap,
       raffle,
       beacon,
       cards,
@@ -237,6 +254,7 @@ export class SeasonOneStage implements DeploymentStage {
   }
 
   async deployShinyPack(
+    cap: string,
     raffle: string,
     beacon: string,
     cards: string,
@@ -248,6 +266,7 @@ export class SeasonOneStage implements DeploymentStage {
     console.log('** Deploying ShinyPack **');
     const shiny = await ShinyPack.awaitDeployment(
       this.wallet,
+      cap,
       raffle,
       beacon,
       cards,
@@ -261,6 +280,7 @@ export class SeasonOneStage implements DeploymentStage {
   }
 
   async deployLegendaryPack(
+    cap: string,
     raffle: string,
     beacon: string,
     cards: string,
@@ -272,6 +292,7 @@ export class SeasonOneStage implements DeploymentStage {
     console.log('** Deploying LegendaryPack **');
     const legendary = await LegendaryPack.awaitDeployment(
       this.wallet,
+      cap,
       raffle,
       beacon,
       cards,
@@ -284,7 +305,7 @@ export class SeasonOneStage implements DeploymentStage {
     return legendary.address;
   }
 
-  async deployRareChest(rarePack: string, referral: string, escrow: string, processor: string) {
+  async deployRareChest(rarePack: string, cap: string, referral: string, escrow: string, processor: string) {
     console.log('** Deploying Rare Chest **');
     const chest = await Chest.awaitDeployment(
       this.wallet,
@@ -292,6 +313,7 @@ export class SeasonOneStage implements DeploymentStage {
       'GUS1RC',
       rarePack,
       RARE_CHEST_CAP,
+      cap,
       referral,
       GU_S1_RARE_CHEST_SKU,
       RARE_CHEST_PRICE,
@@ -304,6 +326,7 @@ export class SeasonOneStage implements DeploymentStage {
 
   async deployLegendaryChest(
     legendaryPack: string,
+    cap: string,
     referral: string,
     escrow: string,
     processor: string,
@@ -315,6 +338,7 @@ export class SeasonOneStage implements DeploymentStage {
       'GUS1LC',
       legendaryPack,
       LEGENDARY_CHEST_CAP,
+      cap,
       referral,
       GU_S1_LEGENDARY_CHEST_SKU,
       LEGENDARY_CHEST_PRICE,

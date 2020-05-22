@@ -25,6 +25,7 @@ async function start() {
     await newManager.deploy();
   } catch (error) {
     console.log(error);
+    throw error;
   }
 }
 

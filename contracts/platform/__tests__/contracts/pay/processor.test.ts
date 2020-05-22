@@ -8,6 +8,7 @@ import { keccak256 } from 'ethers/utils';
 
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
+ethers.errors.setLogLevel('error');
 
 describe('PurchaseProcessor', () => {
   const [ownerWallet, userWallet, otherWallet] = generatedWallets(provider);

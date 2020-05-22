@@ -10,6 +10,7 @@ const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
 
 jest.setTimeout(10000);
+ethers.errors.setLogLevel('error');
 
 function parseLogs(abi: string, logs: ethers.providers.Log[]): any[] {
   const iface = new ethers.utils.Interface(abi);

@@ -16,8 +16,6 @@ describe('Order Generator', () => {
   const [makerWallet, takerWallet] = generatedWallets(provider);
   const addressBook = getAddressBook(DeploymentNetwork.TestRPC, DeploymentEnvironment.Development);
 
-  console.log(addressBook);
-
   const zeroExWrapper = new ZeroExWrapper(makerWallet);
   const cardsWrapper = new CardsWrapper(makerWallet);
 

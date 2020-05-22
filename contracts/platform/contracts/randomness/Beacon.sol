@@ -31,7 +31,7 @@ contract Beacon {
      * @param _offset the offset from the current block of the block which will be used in our random seed
      */
     function commit(uint256 _offset) external returns (uint256) {
-        _commit(_offset);
+        return _commit(_offset);
     }
 
     function _commit(uint256 _offset) internal returns (uint256) {

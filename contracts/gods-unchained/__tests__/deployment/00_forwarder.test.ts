@@ -3,6 +3,8 @@ import 'jest';
 import { Forwarder } from '../../src/contracts';
 import { Wallet, ethers } from 'ethers';
 
+ethers.errors.setLogLevel('error');
+
 import { getAddressBook } from '@imtbl/addresses';
 
 const config = require('dotenv').config({ path: '../../.env' }).parsed;

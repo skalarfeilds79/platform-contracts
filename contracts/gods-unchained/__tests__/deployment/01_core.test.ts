@@ -2,6 +2,7 @@ import 'jest';
 
 import { Cards, Fusing, OpenMinter } from '../../src/contracts';
 import { Wallet, ethers } from 'ethers';
+ethers.errors.setLogLevel('error');
 
 import { getAddressBook } from '@imtbl/addresses';
 

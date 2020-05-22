@@ -16,6 +16,8 @@ const blockchain = new Blockchain(provider);
 
 const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
+
+jest.setTimeout(10000);
 ethers.errors.setLogLevel('error');
 
 describe('BatchERC271Escrow', () => {

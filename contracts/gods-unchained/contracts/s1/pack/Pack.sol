@@ -12,11 +12,22 @@ import "../S1Vendor.sol";
 contract Pack is IPack, S1Vendor, RarityProvider {
 
     // Emitted when the cards from a commitment are actually minted
-    event PackCardsMinted(uint256 indexed commitmentID, uint256 mintIndex, uint256 lowTokenID, uint256 highTokenID);
+    event PackCardsMinted(
+        uint256 indexed commitmentID,
+        uint256 mintIndexStart,
+        uint256 mintIndexEnd,
+        uint256 lowTokenID,
+        uint256 highTokenID
+    );
     // Emitted when a card commitment is recorded (either purchase or opening a chest)
     event CommitmentRecorded(uint256 indexed commitmentID, Commitment commitment);
     // Emitted when the tickets from a commitment are actually minted
-    event TicketsMinted(uint256 indexed commitmentID, uint256 mintIndex, uint16[] ticketCounts);
+    event TicketsMinted(
+        uint256 indexed commitmentID,
+        uint256 mintIndexStart,
+        uint256 mintIndexEnd,
+        uint16[] ticketCounts
+    );
 
     // A commitment to generating a certain number of packs for a certain user
     // Prefer commitment to purchase (includes cards opened from chests)
@@ -196,13 +207,13 @@ contract Pack is IPack, S1Vendor, RarityProvider {
             "S1Pack: must have tickets available"
         );
 
-        // if there's nothing left to do on this purchase, clear it
-        if (commitment.packQuantity == commitment.packsMinted) {
+        uint256 end = _createTickets(_commitmentID, commitment, protocol);
+        // if all minting has finished, clear this purchase
+        if (commitment.ticketQuantity == end && commitment.packQuantity == commitment.packsMinted) {
             delete commitments[_commitmentID];
         } else {
-            commitments[_commitmentID].ticketQuantity = 0;
+            commitments[_commitmentID].ticketsMinted = end;
         }
-        _createTickets(_commitmentID, commitment, protocol);
     }
 
     function cardsEscrowHook(uint256 _commitmentID) external {
@@ -215,18 +226,13 @@ contract Pack is IPack, S1Vendor, RarityProvider {
 
         Commitment memory commitment = commitments[_commitmentID];
 
-        require(
-            commitment.packQuantity > 0,
-            "S1Pack: must have cards available"
-        );
-
-        // if there's nothing left to do on this purchase, clear it
-        if (commitments[_commitmentID].ticketQuantity == 0) {
+        uint256 end = _createCards(_commitmentID, commitment, protocol);
+        // if all minting has finished, clear this purchase
+        if (commitment.ticketQuantity == end && commitment.packQuantity == commitment.packsMinted) {
             delete commitments[_commitmentID];
         } else {
-            commitments[_commitmentID].packQuantity = 0;
+            commitments[_commitmentID].ticketsMinted = end;
         }
-        _createCards(_commitmentID, commitment, protocol);
     }
 
     /** @dev Purchase packs for a user
@@ -264,7 +270,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         uint256 _commitmentID,
         Commitment memory _commitment,
         address _recipient
-    ) internal {
+    ) internal returns (uint256) {
 
         uint start = _commitment.ticketsMinted;
         uint remaining = _commitment.ticketQuantity.sub(_commitment.ticketsMinted);
@@ -283,19 +289,20 @@ contract Pack is IPack, S1Vendor, RarityProvider {
             ticketQuantities[i] = qty;
         }
         raffle.mint(_recipient, totalTickets);
-        emit TicketsMinted(_commitmentID, start, ticketQuantities);
+        emit TicketsMinted(_commitmentID, start, end, ticketQuantities);
         emit PaymentERC20Minted(
             _commitment.paymentID,
             address(raffle),
             totalTickets
         );
+        return end;
     }
 
     function _createCards(
         uint256 _commitmentID,
         Commitment memory _commitment,
         address _recipient
-    ) internal {
+    ) internal returns (uint256) {
 
         uint start = _commitment.packsMinted;
         uint remaining = _commitment.packQuantity.sub(_commitment.packsMinted);
@@ -315,13 +322,15 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         uint256 lowTokenID = cards.mintCards(_recipient, protos, qualities);
         uint256 highTokenID = lowTokenID + protos.length;
 
-        emit PackCardsMinted(_commitmentID, start, lowTokenID, highTokenID);
+        emit PackCardsMinted(_commitmentID, start, end, lowTokenID, highTokenID);
         emit PaymentERC721RangeMinted(
             _commitment.paymentID,
             address(cards),
             lowTokenID,
             highTokenID
         );
+
+        return end;
     }
 
     function openChests(address _recipient, uint256 _quantity) external {

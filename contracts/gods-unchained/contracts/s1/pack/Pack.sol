@@ -119,7 +119,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         }
     }
 
-    function _canMint(Commitment memory _commitment) internal returns (bool) {
+    function _canMint(Commitment memory _commitment) internal pure returns (bool) {
         return (
             _commitment.packsMinted < _commitment.packQuantity ||
             _commitment.ticketsMinted < _commitment.ticketQuantity
@@ -128,9 +128,10 @@ contract Pack is IPack, S1Vendor, RarityProvider {
 
     function _escrowCards(uint256 _commitmentID, Commitment memory _commitment) internal {
 
-        uint cardCount = _commitment.packQuantity * 5;
+        (uint start, uint end) = _getPacksBookends(_commitment);
         uint low = cards.nextBatch();
-        uint high = low + cardCount;
+        uint len = end.sub(start);
+        uint high = low.add(len);
 
         Escrow.Vault memory vault = Escrow.Vault({
             player: _commitment.recipient,
@@ -165,14 +166,14 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         return uint256(hashed);
     }
 
-    function _getTicketsBookends(Commitment memory _commitment) internal returns (uint256 start, uint256 end) {
+    function _getTicketsBookends(Commitment memory _commitment) internal pure returns (uint256, uint256) {
         uint start = _commitment.ticketsMinted;
         uint remaining = _commitment.ticketQuantity.sub(_commitment.ticketsMinted);
         uint end = remaining > MAX_MINT ? _commitment.ticketsMinted + MAX_MINT : _commitment.ticketQuantity;
         return (start, end);
     }
 
-    function _getPacksBookends(Commitment memory _commitment) internal returns (uint256 start, uint256 end) {
+    function _getPacksBookends(Commitment memory _commitment) internal pure returns (uint256, uint256) {
         uint start = _commitment.packsMinted;
         uint remaining = _commitment.packQuantity.sub(_commitment.packsMinted);
         uint end = remaining > MAX_MINT ? _commitment.packsMinted + MAX_MINT : _commitment.packQuantity;
@@ -299,15 +300,16 @@ contract Pack is IPack, S1Vendor, RarityProvider {
     ) internal returns (uint256) {
 
         (uint start, uint end) = _getTicketsBookends(_commitment);
-        if (end - start == 0) {
+        uint len = end.sub(start);
+        if (len == 0) {
             return 0;
         }
 
         uint randomness = _getRandomness(_commitmentID, _commitment);
-        uint16[] memory ticketQuantities = new uint16[](end - start);
+        uint16[] memory ticketQuantities = new uint16[](len);
         uint totalTickets = 0;
-        for (uint i = start; i < end; i++) {
-            uint16 qty = _getTicketsInPack(i, randomness);
+        for (uint i = 0; i < len; i++) {
+            uint16 qty = _getTicketsInPack(start+i, randomness);
             totalTickets += qty;
             ticketQuantities[i] = qty;
         }
@@ -328,19 +330,21 @@ contract Pack is IPack, S1Vendor, RarityProvider {
     ) internal returns (uint256) {
 
         (uint start, uint end) = _getPacksBookends(_commitment);
-        if (end - start == 0) {
+        uint len = end.sub(start);
+        if (len == 0) {
             return 0;
         }
 
         uint256 randomness = _getRandomness(_commitmentID, _commitment);
-        uint cardCount = (end - start) * 5;
+        uint cardCount = len.mul(5);
         uint16[] memory protos = new uint16[](cardCount);
         uint8[] memory qualities = new uint8[](cardCount);
-        for (uint i = start; i < end; i++) {
-            (protos[i], qualities[i]) = _getCardDetails(i, randomness);
+        uint cardStart = start.mul(5);
+        for (uint i = 0; i < cardCount; i++) {
+            (protos[i], qualities[i]) = _getCardDetails(cardStart.add(i), randomness);
         }
         uint256 lowTokenID = cards.mintCards(_recipient, protos, qualities);
-        uint256 highTokenID = lowTokenID + protos.length;
+        uint256 highTokenID = lowTokenID.add(protos.length);
 
         emit PackCardsMinted(_commitmentID, start, end, lowTokenID, highTokenID);
         emit PaymentERC721RangeMinted(

@@ -1,4 +1,4 @@
-import { Address } from '@imtbl/common-types';
+
 import { RaffleItem } from '../../src/contracts';
 
 import 'jest';
@@ -34,7 +34,7 @@ describe('Raffle Item', () => {
 
   describe('#mint', () => {
     let raffleItem: RaffleItem;
-    let callerDestination: Address;
+    let callerDestination: string;
     let callerWallet;
 
     beforeEach(async () => {

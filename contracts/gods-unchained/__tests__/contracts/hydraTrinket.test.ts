@@ -1,4 +1,4 @@
-import { Address } from '@imtbl/common-types';
+
 import 'jest';
 jest.setTimeout(30000);
 
@@ -33,7 +33,7 @@ describe('Hydra Trinket', () => {
 
   describe('#mint', () => {
     let hydraTrinket: HydraTrinket;
-    let callerDestination: Address;
+    let callerDestination: string;
     let callerHeads: number;
     let callerWallet: Wallet;
 

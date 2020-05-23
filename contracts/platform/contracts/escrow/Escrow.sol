@@ -33,10 +33,8 @@ contract Escrow is Ownable {
     bool public escrowMutexLocked;
     // Mutex on asset release
     bool public releaseMutexLocked;
-    // Whether batch transfers are enabled for this asset
-    mapping(address => bool) public batchTransferEnabled;
-    // Whether list transfers are enabled for this asset
-    mapping(address => bool) public listTransferEnabled;
+    // Whether this asset uses a custom agent
+    mapping(address => address) public customAgent;
     // All Escrow vaults stored in this contract
     Vault[] public vaults;
 
@@ -259,10 +257,6 @@ contract Escrow is Ownable {
      */
     function setListTransferEnabled(address _asset, bool _enabled) external onlyOwner {
         listTransferEnabled[_asset] = _enabled;
-    }
-
-    function _checkVault(Vault memory _vault) internal {
-        
     }
 
     function _escrow(Vault memory _vault) internal returns (uint256) {

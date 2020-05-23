@@ -6,9 +6,9 @@ import {
   CreditCardEscrow,
   TestERC721Token,
   TestCreditCardPack,
-} from '../../../../src/contracts';
+} from '../../../src/contracts';
 
-import { Ganache, Blockchain,expectRevert, generatedWallets } from '@imtbl/test-utils';
+import { Ganache, Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
 
 const provider = new Ganache(Ganache.DefaultOptions);

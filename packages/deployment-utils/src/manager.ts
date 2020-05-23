@@ -4,18 +4,15 @@ import {
   DEPLOYMENT_NETWORK_KEY,
   PRIVATE_KEY,
   RPC_URL,
+  writeAddress,
   findDependency,
-  getContractAddress,
-  getContractCode,
-  writeTypescriptOutputs,
-  isCorrectNetworkId,
-  removeContractAddress,
-  removeNetwork,
-  returnOutputs,
-  sortOutputs,
-  writeContractToOutputs,
-  writeStateToOutputs,
+  getAddress,
+  removeAll,
+  returnAddressesFile,
+  removeAddress,
+  Repo,
 } from './utils/outputHelpers';
+
 import { Wallet, ethers, utils } from 'ethers';
 
 import { DeploymentStage } from './DeploymentStage';
@@ -80,7 +77,7 @@ export class Manager {
             return this.contractExists(name);
           },
           async (name, address, dependency) => {
-            await writeContractToOutputs(name, address, dependency);
+            await writeAddress(name, address, dependency);
           },
           async (address) => {
             const contract = await new ethers.Contract(address, ownershipABI, this._wallet);
@@ -96,12 +93,7 @@ export class Manager {
             }
           },
         );
-
-        await writeStateToOutputs('last_deployment_stage', parseInt(stage));
       });
-
-      await sortOutputs();
-      await writeTypescriptOutputs();
     } catch (error) {
       console.log(error);
     }
@@ -110,7 +102,6 @@ export class Manager {
   async checkInputParameters() {
     await this.configureIfDevelopment();
 
-    const correctNetworkId = await isCorrectNetworkId();
     const rpcURL = RPC_URL || '';
     const privateKey = PRIVATE_KEY || '';
     const networkId = DEPLOYMENT_NETWORK_ID || 0;
@@ -128,12 +119,6 @@ export class Manager {
       throw Error('.env variable DEPLOYMENT_CONSTANT is missing');
     }
 
-    if (!correctNetworkId) {
-      throw Error(
-        '.env variable DEPLOYMENT_NETWORK_ID does not match `network_id` in outputs.json',
-      );
-    }
-
     if (!privateKey) {
       throw Error('Please make sure the private key exists');
     }
@@ -145,15 +130,20 @@ export class Manager {
   }
 
   async configureIfDevelopment() {
-    const currentOutputs = await returnOutputs();
+    const currentOutputs = await returnAddressesFile();
+    console.log(currentOutputs);
+    if (!currentOutputs[DEPLOYMENT_NETWORK_KEY].hasOwnProperty('addresses')) {
+      return;
+    }
+
     const allKeys = Object.keys(currentOutputs[DEPLOYMENT_NETWORK_KEY]['addresses']);
     await this._wallet.getTransactionCount();
-
     await asyncForEach(allKeys, async (name) => {
-      const code = await getContractCode(name, this._wallet.provider);
+      const address = await getAddress(name);
+      const code = await this._wallet.provider.getCode(address);
       if (code.length < 3) {
         console.log(`*** Removing ${name} as no instanace found ***`);
-        await removeContractAddress(name, false);
+        await removeAddress(name);
       }
     });
   }
@@ -161,12 +151,15 @@ export class Manager {
   async clearAdddresses(reason: string) {
     const key = await DEPLOYMENT_NETWORK_KEY;
     console.log(`\n*** Clearing all addresses for ${key}. Reason: ${reason} ***\n`);
-    await removeNetwork(key);
+    await removeAll();
   }
 
   async contractExists(name: string) {
     try {
-      const address = (await findDependency(name)) || (await getContractAddress(name, false));
+      const address =
+        (await findDependency(name)) ||
+        (await getAddress(name, Repo.GodsUncahined)) ||
+        (await getAddress(name, Repo.Platform));
       return address || '';
     } catch {
       return '';

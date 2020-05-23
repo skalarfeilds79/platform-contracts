@@ -22,10 +22,10 @@ import {
   Payment,
   ETHUSDMockOracle,
   getETHPayment,
-} from '@imtbl/platform';
-import { Blockchain } from '@imtbl/test-utils';
+  getPlatformAddresses,
+} from '@imtbl/platform/src';
 
-import { getAddressBook } from '@imtbl/addresses';
+import { Blockchain } from '@imtbl/test-utils';
 
 import {
   GU_S1_EPIC_PACK_SKU,
@@ -34,6 +34,7 @@ import {
   GU_S1_SHINY_PACK_SKU,
 } from '../../deployment/constants';
 import { asyncForEach, parseLogs } from '@imtbl/utils';
+import { getGodsUnchainedAddresses } from '../../src/addresses/index';
 
 const config = require('dotenv').config({ path: '../../.env' }).parsed;
 const provider = new ethers.providers.JsonRpcProvider(config.RPC_ENDPOINT);
@@ -41,7 +42,15 @@ const blockchain = new Blockchain();
 
 const wallet: Wallet = new ethers.Wallet(config.PRIVATE_KEY, provider);
 
-const addressBook = getAddressBook(config.DEPLOYMENT_NETWORK_ID, config.DEPLOYMENT_ENVIRONMENT);
+const godUnchainedAddressBook = getGodsUnchainedAddresses(
+  config.DEPLOYMENT_NETWORK_ID,
+  config.DEPLOYMENT_ENVIRONMENT,
+);
+
+const platformAddressBook = getPlatformAddresses(
+  config.DEPLOYMENT_NETWORK_ID,
+  config.DEPLOYMENT_ENVIRONMENT,
+);
 
 describe('02_season_one', () => {
   let nonce: number = 0;
@@ -72,20 +81,22 @@ describe('02_season_one', () => {
   const defaultQuantity = 1;
 
   beforeAll(async () => {
-    beacon = await Beacon.at(wallet, addressBook.platform.beaconAddress);
-    processor = await PurchaseProcessor.at(wallet, addressBook.platform.processorAddress);
-    escrow = await Escrow.at(wallet, addressBook.platform.escrowAddress);
-    cards = Cards.at(wallet, addressBook.godsUnchained.cardsAddress);
-    s1Raffle = Raffle.at(wallet, addressBook.godsUnchained.seasonOne.raffleAddress);
-    s1Sale = S1Sale.at(wallet, addressBook.godsUnchained.seasonOne.saleAddress);
-    s1Referral = Referral.at(wallet, addressBook.godsUnchained.seasonOne.referralAddress);
-    epicPack = EpicPack.at(wallet, addressBook.godsUnchained.seasonOne.epicPackAddress);
-    rarePack = RarePack.at(wallet, addressBook.godsUnchained.seasonOne.rarePackAddress);
-    shinyPack = ShinyPack.at(wallet, addressBook.godsUnchained.seasonOne.shinyPackAddress);
-    oracle = ETHUSDMockOracle.at(wallet, addressBook.platform.ethUSDMockOracleAddress);
-    legendaryPack = LegendaryPack.at(
+    beacon = await Beacon.at(wallet, platformAddressBook.beaconAddress);
+    processor = await PurchaseProcessor.at(wallet, platformAddressBook.processorAddress);
+    escrow = await Escrow.at(wallet, platformAddressBook.escrowAddress);
+    cards = await Cards.at(wallet, godUnchainedAddressBook.cardsAddress);
+    s1Raffle = await Raffle.at(wallet, godUnchainedAddressBook.seasonOne.raffleAddress);
+    s1Sale = await S1Sale.at(wallet, godUnchainedAddressBook.seasonOne.saleAddress);
+    s1Referral = await Referral.at(wallet, godUnchainedAddressBook.seasonOne.referralAddress);
+    epicPack = await EpicPack.at(wallet, godUnchainedAddressBook.seasonOne.epicPackAddress);
+    rarePack = await RarePack.at(wallet, godUnchainedAddressBook.seasonOne.rarePackAddress);
+    shinyPack = await ShinyPack.at(wallet, godUnchainedAddressBook.seasonOne.shinyPackAddress);
+
+    oracle = await ETHUSDMockOracle.at(wallet, platformAddressBook.ethUSDMockOracleAddress);
+
+    legendaryPack = await LegendaryPack.at(
       wallet,
-      addressBook.godsUnchained.seasonOne.legendaryPackAddress,
+      godUnchainedAddressBook.seasonOne.legendaryPackAddress,
     );
 
     epicCost = (await epicPack.price()).toNumber();
@@ -252,7 +263,7 @@ describe('02_season_one', () => {
       changeRecipient: packAddress,
       totalPrice: cost * quantity,
       currency: Currency.USDCents,
-      alreadyPaid: 0
+      alreadyPaid: 0,
     };
 
     const params = { nonce, escrowFor: 360, value: cost * quantity };

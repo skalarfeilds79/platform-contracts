@@ -1,8 +1,8 @@
 import 'jest';
 
-import { Escrow, TestERC20Token, TestChest, MaliciousChest } from '../../../src/contracts';
+import { Escrow, TestERC20Token, TestChest, MaliciousChest } from '../../src/contracts';
 
-import { Ganache, Blockchain,expectRevert, generatedWallets } from '@imtbl/test-utils';
+import { Ganache, Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);

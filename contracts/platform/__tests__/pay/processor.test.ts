@@ -1,8 +1,8 @@
 import 'jest';
 
-import { PurchaseProcessor } from '../../../src/contracts';
+import { PurchaseProcessor } from '../../src/contracts';
 
-import { Ganache, Blockchain,expectRevert, generatedWallets } from '@imtbl/test-utils';
+import { Ganache, Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { ethers, Wallet } from 'ethers';
 import { keccak256 } from 'ethers/utils';
 

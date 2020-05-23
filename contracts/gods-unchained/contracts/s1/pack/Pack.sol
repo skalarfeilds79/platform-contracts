@@ -105,6 +105,11 @@ contract Pack is IPack, S1Vendor, RarityProvider {
             "S1Pack: must be a valid commitment"
         );
 
+        require(
+            _canMint(commitment),
+            "S1Pack: must be able to mint"
+        );
+
         if (commitment.escrowFor == 0) {
             _createCards(_commitmentID, commitment, commitment.recipient);
             _createTickets(_commitmentID, commitment, commitment.recipient);
@@ -112,6 +117,13 @@ contract Pack is IPack, S1Vendor, RarityProvider {
             _escrowCards(_commitmentID, commitment);
             _escrowTickets(_commitmentID, commitment);
         }
+    }
+
+    function _canMint(Commitment memory _commitment) internal returns (bool) {
+        return (
+            _commitment.packsMinted < _commitment.packQuantity ||
+            _commitment.ticketsMinted < _commitment.ticketQuantity
+        );
     }
 
     function _escrowCards(uint256 _commitmentID, Commitment memory _commitment) internal {
@@ -153,20 +165,30 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         return uint256(hashed);
     }
 
+    function _getTicketsBookends(Commitment memory _commitment) internal returns (uint256 start, uint256 end) {
+        uint start = _commitment.ticketsMinted;
+        uint remaining = _commitment.ticketQuantity.sub(_commitment.ticketsMinted);
+        uint end = remaining > MAX_MINT ? _commitment.ticketsMinted + MAX_MINT : _commitment.ticketQuantity;
+        return (start, end);
+    }
+
+    function _getPacksBookends(Commitment memory _commitment) internal returns (uint256 start, uint256 end) {
+        uint start = _commitment.packsMinted;
+        uint remaining = _commitment.packQuantity.sub(_commitment.packsMinted);
+        uint end = remaining > MAX_MINT ? _commitment.packsMinted + MAX_MINT : _commitment.packQuantity;
+        return (start, end);
+    }
+
     function _escrowTickets(
         uint256 _commitmentID,
         Commitment memory _commitment
     )
         internal
     {
-
-        if (_commitment.ticketQuantity == 0) {
-            return;
-        }
-
+        (uint start, uint end) = _getTicketsBookends(_commitment);
         uint randomness = _getRandomness(_commitmentID, _commitment);
         uint totalTickets = 0;
-        for (uint i = 0; i < _commitment.ticketQuantity; i++) {
+        for (uint i = start; i < end; i++) {
             uint16 qty = _getTicketsInPack(i, randomness);
             totalTickets += qty;
         }
@@ -208,11 +230,13 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         );
 
         uint256 end = _createTickets(_commitmentID, commitment, protocol);
-        // if all minting has finished, clear this purchase
-        if (commitment.ticketQuantity == end && commitment.packQuantity == commitment.packsMinted) {
-            delete commitments[_commitmentID];
-        } else {
-            commitments[_commitmentID].ticketsMinted = end;
+        if (end != 0) {
+            // if all minting has finished, clear this purchase
+            if (commitment.ticketQuantity == end && commitment.packQuantity == commitment.packsMinted) {
+                delete commitments[_commitmentID];
+            } else {
+                commitments[_commitmentID].ticketsMinted = end;
+            }
         }
     }
 
@@ -227,11 +251,13 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         Commitment memory commitment = commitments[_commitmentID];
 
         uint256 end = _createCards(_commitmentID, commitment, protocol);
-        // if all minting has finished, clear this purchase
-        if (commitment.ticketQuantity == end && commitment.packQuantity == commitment.packsMinted) {
-            delete commitments[_commitmentID];
-        } else {
-            commitments[_commitmentID].ticketsMinted = end;
+        if (end != 0) {
+            // if all minting has finished, clear this purchase
+            if (commitment.ticketQuantity == end && commitment.packQuantity == commitment.packsMinted) {
+                delete commitments[_commitmentID];
+            } else {
+                commitments[_commitmentID].ticketsMinted = end;
+            }
         }
     }
 
@@ -272,12 +298,9 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         address _recipient
     ) internal returns (uint256) {
 
-        uint start = _commitment.ticketsMinted;
-        uint remaining = _commitment.ticketQuantity.sub(_commitment.ticketsMinted);
-        uint end =  > MAX_MINT ? _commitment.ticketsMinted + MAX_MINT : _commitment.ticketQuantity;
-
+        (uint start, uint end) = _getTicketsBookends(_commitment);
         if (end - start == 0) {
-            return;
+            return 0;
         }
 
         uint randomness = _getRandomness(_commitmentID, _commitment);
@@ -304,12 +327,9 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         address _recipient
     ) internal returns (uint256) {
 
-        uint start = _commitment.packsMinted;
-        uint remaining = _commitment.packQuantity.sub(_commitment.packsMinted);
-        uint end =  > MAX_MINT ? _commitment.packsMinted + MAX_MINT : _commitment.packQuantity;
-
+        (uint start, uint end) = _getPacksBookends(_commitment);
         if (end - start == 0) {
-            return;
+            return 0;
         }
 
         uint256 randomness = _getRandomness(_commitmentID, _commitment);
@@ -344,7 +364,8 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         Commitment memory commitment = Commitment({
             commitBlock: commitBlock,
             packQuantity: _quantity * 6,
-            minted: 0,
+            ticketsMinted: 0,
+            packsMinted: 0,
             recipient: _recipient,
             escrowFor: 0,
             paymentID: 0,
@@ -368,7 +389,8 @@ contract Pack is IPack, S1Vendor, RarityProvider {
             commitBlock: commitBlock,
             packQuantity: _quantity,
             recipient: _recipient,
-            minted: 0,
+            ticketsMinted: 0,
+            packsMinted: 0,
             escrowFor: _escrowFor,
             paymentID: _paymentID,
             ticketQuantity: _quantity

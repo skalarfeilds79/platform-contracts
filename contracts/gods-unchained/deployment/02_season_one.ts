@@ -118,7 +118,7 @@ export class SeasonOneStage implements DeploymentStage {
         escrow,
         processor,
       ));
-    onDeployment('GU_S1_Shiny_Pack', shinyPack, false);
+    await onDeployment('GU_S1_Shiny_Pack', shinyPack, false);
 
     if (GU_S1_LEGENDARY_PACK_SKU.length === 0) {
       throw '*** No Shiny Pack SKU set! Cannot deploy ShinyPack. ***';
@@ -164,19 +164,17 @@ export class SeasonOneStage implements DeploymentStage {
 
   async deployRaffle(): Promise<string> {
     console.log('** Deploying Raffle **');
-    const raffle = await Raffle.awaitDeployment(
-      this.wallet,
-      { nonce: await this.wallet.getTransactionCount()}
-    );
+    const raffle = await Raffle.awaitDeployment(this.wallet, {
+      nonce: await this.wallet.getTransactionCount(),
+    });
     return raffle.address;
   }
 
   async deploySale(): Promise<string> {
     console.log('** Deploying S1Sale **');
-    const sale = await S1Sale.awaitDeployment(
-      this.wallet,
-      { nonce: await this.wallet.getTransactionCount()}
-    );
+    const sale = await S1Sale.awaitDeployment(this.wallet, {
+      nonce: await this.wallet.getTransactionCount(),
+    });
     return sale.address;
   }
 
@@ -192,12 +190,9 @@ export class SeasonOneStage implements DeploymentStage {
 
   async deployReferral(): Promise<string> {
     console.log('** Deploying Referral **');
-    const sale = await Referral.awaitDeployment(
-      this.wallet,
-      90,
-      10,
-      { nonce: await this.wallet.getTransactionCount()}
-    );
+    const sale = await Referral.awaitDeployment(this.wallet, 90, 10, {
+      nonce: await this.wallet.getTransactionCount(),
+    });
     return sale.address;
   }
 
@@ -222,7 +217,7 @@ export class SeasonOneStage implements DeploymentStage {
       sku,
       escrow,
       processor,
-      { nonce: await this.wallet.getTransactionCount()}
+      { nonce: await this.wallet.getTransactionCount() },
     );
     return epic.address;
   }
@@ -248,7 +243,7 @@ export class SeasonOneStage implements DeploymentStage {
       sku,
       escrow,
       processor,
-      { nonce: await this.wallet.getTransactionCount()}
+      { nonce: await this.wallet.getTransactionCount() },
     );
     return rare.address;
   }
@@ -274,7 +269,7 @@ export class SeasonOneStage implements DeploymentStage {
       sku,
       escrow,
       processor,
-      { nonce: await this.wallet.getTransactionCount()}
+      { nonce: await this.wallet.getTransactionCount() },
     );
     return shiny.address;
   }
@@ -300,7 +295,7 @@ export class SeasonOneStage implements DeploymentStage {
       sku,
       escrow,
       processor,
-      { nonce: await this.wallet.getTransactionCount()}
+      { nonce: await this.wallet.getTransactionCount() },
     );
     return legendary.address;
   }
@@ -319,7 +314,7 @@ export class SeasonOneStage implements DeploymentStage {
       RARE_CHEST_PRICE,
       escrow,
       processor,
-      { nonce: await this.wallet.getTransactionCount()}
+      { nonce: await this.wallet.getTransactionCount() },
     );
     return chest.address;
   }
@@ -344,7 +339,7 @@ export class SeasonOneStage implements DeploymentStage {
       LEGENDARY_CHEST_PRICE,
       escrow,
       processor,
-      { nonce: await this.wallet.getTransactionCount()}
+      { nonce: await this.wallet.getTransactionCount() },
     );
     return chest.address;
   }

@@ -7,7 +7,6 @@ import { Cards, PromoFactory } from '../../src/contracts';
 import { Wallet, ethers } from 'ethers';
 ethers.errors.setLogLevel('error');
 
-import { Address } from '@imtbl/common-types';
 import { asyncForEach } from '@imtbl/utils';
 
 const provider = new Ganache(Ganache.DefaultOptions);
@@ -126,7 +125,7 @@ describe('Core', () => {
   });
 
   describe('#removePromoMinter', () => {
-    let promoFactoryAddress: Address;
+    let promoFactoryAddress: string;
 
     let caller: Wallet;
     let callerProto: number;
@@ -207,10 +206,10 @@ describe('Core', () => {
   });
 
   describe('#addAdminMinter', () => {
-    let promoFactoryAddress: Address;
+    let promoFactoryAddress: string;
 
     let caller: Wallet;
-    let callerMinter: Address;
+    let callerMinter: string;
 
     beforeEach(async () => {
       caller = ownerWallet;
@@ -308,10 +307,10 @@ describe('Core', () => {
   });
 
   describe('#removeAdminMinter', () => {
-    let promoFactoryAddress: Address;
+    let promoFactoryAddress: string;
 
     let caller: Wallet;
-    let callerMinter: Address;
+    let callerMinter: string;
 
     beforeEach(async () => {
       caller = ownerWallet;
@@ -370,11 +369,11 @@ describe('Core', () => {
   });
 
   describe('#adminMintCards', () => {
-    let promoFactoryAddress: Address;
-    let cardsAddress: Address;
+    let promoFactoryAddress: string;
+    let cardsAddress: string;
 
     let caller: Wallet;
-    let callerTo: Address;
+    let callerTo: string;
     let callerProtos: number[];
     let callerQualities: number[];
 

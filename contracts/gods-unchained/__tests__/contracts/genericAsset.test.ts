@@ -1,4 +1,4 @@
-import { Address } from '@imtbl/common-types';
+
 import { GenericAsset } from './../../src/contracts';
 import 'jest';
 
@@ -29,7 +29,7 @@ describe('Generic Asset', () => {
   describe('#setMinterStatus', () => {
     let genericAsset: GenericAsset;
     let callerWallet: Wallet;
-    let callerMinter: Address;
+    let callerMinter: string;
     let callerStatus: boolean;
 
     beforeEach(async () => {

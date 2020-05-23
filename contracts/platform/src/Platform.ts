@@ -1,9 +1,9 @@
 import EscrowModule from './modules/escrowModule';
-import { PlatformAddresses } from '@imtbl/common-types';
+import { PlatformAddresses } from '../src';
 import { Wallet } from 'ethers';
 import { Escrow } from './contracts';
 
-class Platform {
+export class Platform {
   private wallet: Wallet;
 
   public addresses: PlatformAddresses;
@@ -21,5 +21,3 @@ class Platform {
     return this;
   }
 }
-
-export default Platform;

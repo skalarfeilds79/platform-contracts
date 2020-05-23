@@ -1,6 +1,5 @@
 import { asyncForEach, parseLogs } from '@imtbl/utils';
 
-import { Address } from '@imtbl/common-types';
 import { Fusing, OpenMinter, PromoFactory, Cards } from '../contracts';
 import { Wallet } from 'ethers';
 
@@ -11,7 +10,7 @@ type Season = {
 };
 
 type Factory = {
-  minter: Address;
+  minter: string;
   season: number;
 };
 
@@ -86,7 +85,7 @@ export class CardsWrapper {
     });
   }
 
-  async mint(to: Address, proto: number, quality: number, quantity: number = 1): Promise<number[]> {
+  async mint(to: string, proto: number, quality: number, quantity: number = 1): Promise<number[]> {
     const protos = [];
     const qualities = [];
 

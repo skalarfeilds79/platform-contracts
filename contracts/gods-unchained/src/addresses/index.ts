@@ -1,11 +1,11 @@
 import fs from 'fs-extra';
 
 import {
-  DeploymentEnvironment,
-  DeploymentNetwork,
   DependencyAddresses,
   GodsUnchainedAddresses,
-} from '@imtbl/common-types';
+} from '../../src';
+
+import { DeploymentEnvironment, DeploymentNetwork } from '@imtbl/deployment-utils';
 
 export function getGodsUnchainedAddresses(
   network: DeploymentNetwork,

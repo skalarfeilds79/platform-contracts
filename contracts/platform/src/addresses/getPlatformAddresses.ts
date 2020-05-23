@@ -1,6 +1,7 @@
 import fs from 'fs-extra';
 
-import { DeploymentEnvironment, DeploymentNetwork, PlatformAddresses } from '@imtbl/common-types';
+import { DeploymentEnvironment, DeploymentNetwork } from '@imtbl/deployment-utils';
+import { PlatformAddresses } from '../../src';
 
 export function getPlatformAddresses(
   network: DeploymentNetwork,

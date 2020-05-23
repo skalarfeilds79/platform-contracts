@@ -27,10 +27,8 @@
   "dependencies": {
     "@0x/contracts-exchange-libs": "^3.0.8",
     "@0x/order-utils": "^8.4.0",
-    "@imtbl/common-types": "^2.0.0-alpha.7",
     "@imtbl/deployment-utils": "^2.0.4",
     "@imtbl/platform": "^2.0.13",
-    "@imtbl/types": "1.0.10",
     "@imtbl/utils": "^1.1.7",
     "@openzeppelin/contracts": "^2.3.0",
     "ethers": "^4.0.42",

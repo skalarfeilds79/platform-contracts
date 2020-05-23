@@ -46,19 +46,6 @@
     reflect-metadata "^0.1.12"
     tslib "^1.8.1"
 
-"@imtbl/addresses@^2.0.0-alpha.7":
-  version "2.0.0-alpha.7"
-  resolved "https://registry.yarnpkg.com/@imtbl/addresses/-/addresses-2.0.0-alpha.7.tgz#136b0890a09ccaa116d107444d2ff7c3db3a95df"
-  integrity sha512-UWxKf1jRibS93eLFTpQ1Lo8s2I/GyylhDMLNi7bR5OF23fl15ruE1i7JjPXOSfSF7IfE/E31+sTWCRhPHPIpwA==
-  dependencies:
-    "@imtbl/common-types" "^2.0.0-alpha.7"
-    ethers "^4.0.47"
-
-"@imtbl/common-types@^2.0.0-alpha.7":
-  version "2.0.0-alpha.7"
-  resolved "https://registry.yarnpkg.com/@imtbl/common-types/-/common-types-2.0.0-alpha.7.tgz#377db40294835e16a46449f01a76ecceafecd565"
-  integrity sha512-gH76ayzr3OhX75aJwS/OOXI72ESw9RaIusJwbFEidu78hy77KAy0X9XK9Rs89RuY5orfBe9wBVuAoKFMkqOcOA==
-
 "@types/bignumber.js@^5.0.0":
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/@types/bignumber.js/-/bignumber.js-5.0.0.tgz#d9f1a378509f3010a3255e9cc822ad0eeb4ab969"
@@ -694,7 +681,7 @@ ethereum-types@^2.1.4:
     "@types/node" "*"
     bignumber.js "~8.0.2"
 
-ethers@^4.0.42, ethers@^4.0.47:
+ethers@^4.0.42:
   version "4.0.47"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-4.0.47.tgz#91b9cd80473b1136dd547095ff9171bd1fc68c85"
   integrity sha512-hssRYhngV4hiDNeZmVU/k5/E8xmLG8UpcNUzg6mb7lqhgpFPH/t7nuv20RjRrEf0gblzvi2XwR5Te+V3ZFc9pQ==

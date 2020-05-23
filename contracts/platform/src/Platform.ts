@@ -1,5 +1,5 @@
 import EscrowModule from './modules/escrowModule';
-import { PlatformAddresses } from '@imtbl/common-types';
+import { PlatformAddresses } from '../src';
 import { Wallet } from 'ethers';
 import { Escrow } from './contracts';
 

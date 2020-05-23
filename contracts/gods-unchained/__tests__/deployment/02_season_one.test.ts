@@ -36,6 +36,8 @@ import {
 import { asyncForEach, parseLogs } from '@imtbl/utils';
 import { getGodsUnchainedAddresses } from '../../src/addresses/index';
 
+ethers.errors.setLogLevel('error');
+
 const config = require('dotenv').config({ path: '../../.env' }).parsed;
 const provider = new ethers.providers.JsonRpcProvider(config.RPC_ENDPOINT);
 const blockchain = new Blockchain();

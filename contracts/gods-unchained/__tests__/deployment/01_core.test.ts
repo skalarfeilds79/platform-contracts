@@ -2,7 +2,8 @@ import 'jest';
 
 import { Cards, Fusing, OpenMinter } from '../../src/contracts';
 import { Wallet, ethers } from 'ethers';
-import { getGodsUnchainedAddresses } from '../../src/addresses/index';
+import { getGodsUnchainedAddresses } from '../../src/addresses';
+ethers.errors.setLogLevel('error');
 
 const config = require('dotenv').config({ path: '../../.env' }).parsed;
 

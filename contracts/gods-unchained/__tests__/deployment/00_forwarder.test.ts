@@ -2,7 +2,10 @@ import 'jest';
 
 import { Forwarder } from '../../src/contracts';
 import { Wallet, ethers } from 'ethers';
-import { getDependencies, getGodsUnchainedAddresses } from '../../src/addresses/index';
+
+import { getDependencies, getGodsUnchainedAddresses } from '../../src/addresses';
+
+ethers.errors.setLogLevel('error');
 
 const config = require('dotenv').config({ path: '../../.env' }).parsed;
 

@@ -83,7 +83,7 @@ export class SeasonOneStage implements DeploymentStage {
         escrow,
         processor,
       ));
-    await onDeployment('GU_S1_Epic_Pack', epicPack, false);
+    onDeployment('GU_S1_Epic_Pack', epicPack, false);
 
     if (GU_S1_RARE_PACK_SKU.length === 0) {
       throw '*** No Rare Pack SKU set! Cannot deploy RarePack. ***';
@@ -99,7 +99,7 @@ export class SeasonOneStage implements DeploymentStage {
         escrow,
         processor,
       ));
-    await onDeployment('GU_S1_Rare_Pack', rarePack, false);
+    onDeployment('GU_S1_Rare_Pack', rarePack, false);
 
     if (GU_S1_SHINY_PACK_SKU.length === 0) {
       throw '*** No Shiny Pack SKU set! Cannot deploy ShinyPack. ***';
@@ -131,17 +131,17 @@ export class SeasonOneStage implements DeploymentStage {
         escrow,
         processor,
       ));
-    await onDeployment('GU_S1_Legendary_Pack', legendaryPack, false);
+    onDeployment('GU_S1_Legendary_Pack', legendaryPack, false);
 
     const rareChest =
       (await findInstance('GU_S1_Rare_Chest')) ||
       (await this.deployRareChest(rarePack, referral, escrow, processor));
-    await onDeployment('GU_S1_Rare_Chest', rareChest, false);
+    onDeployment('GU_S1_Rare_Chest', rareChest, false);
 
     const legendaryChest =
       (await findInstance('GU_S1_Legendary_Chest')) ||
       (await this.deployLegendaryChest(legendaryPack, referral, escrow, processor));
-    await onDeployment('GU_S1_Legendary_Chest', legendaryChest, false);
+    onDeployment('GU_S1_Legendary_Chest', legendaryChest, false);
 
     const packAddresses = [rarePack, shinyPack, legendaryPack, epicPack];
     await this.setupCardsContract(cards, 'Season One', 1000, 1500, packAddresses);

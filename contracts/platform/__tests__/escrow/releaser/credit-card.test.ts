@@ -18,6 +18,8 @@ const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
 ethers.errors.setLogLevel('error');
 
+jest.setTimeout(20000);
+
 describe('CreditCardEscrow', () => {
   const [user, other] = generatedWallets(provider);
 

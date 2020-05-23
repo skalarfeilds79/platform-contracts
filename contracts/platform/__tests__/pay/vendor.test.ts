@@ -3,11 +3,16 @@ import 'jest';
 import { TestVendor, PurchaseProcessor } from '../../src/contracts';
 import { Ganache, Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { keccak256, BigNumber } from 'ethers/utils';
+
 import { getETHPayment, getSignedPayment, Order, PaymentParams, Currency } from '../../src';
-import { ETHUSDMockOracle } from '../../src/contracts/ETHUSDMockOracle';
+import { ETHUSDMockOracle } from '../../src/contracts';
+import { ethers } from 'ethers';
 
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
+
+jest.setTimeout(10000);
+ethers.errors.setLogLevel('error');
 
 describe('Vendor', () => {
   const [user, treasury, other] = generatedWallets(provider);

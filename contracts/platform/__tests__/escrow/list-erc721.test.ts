@@ -12,6 +12,8 @@ ethers.errors.setLogLevel('error');
 
 const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
+jest.setTimeout(10000);
+
 describe('ListERC271Escrow', () => {
   const [user, other] = generatedWallets(provider);
 

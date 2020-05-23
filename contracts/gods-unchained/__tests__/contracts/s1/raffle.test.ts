@@ -153,7 +153,7 @@ describe('Raffle', () => {
       await raffle.setMinterApproval(rare.address, true);
       await processor.setSellerApproval(rare.address, [rarePackSKU], true);
       await processor.setSignerLimit(owner.address, 1000000000000000);
-      await cards.startSeason('S1', 1, 10000);
+      await cards.startSeason('S1', 800, 1000);
       await cards.addFactory(rare.address, 1);
     });
 
@@ -270,13 +270,13 @@ describe('Raffle', () => {
         processor.address,
       );
       await rare.setChest(chest.address);
-      await cards.startSeason('S1', 1, 10000);
+      await cards.startSeason('S1', 800, 1000);
       await cards.addFactory(rare.address, 1);
     });
 
     async function purchaseAndOpenChests(quantity: number, pause = false) {
       if (pause) {
-        await rare.setPaused(true);
+        await rare.pause();
       }
       await processor.setSellerApproval(chest.address, [rareChestSKU], true);
       const balance = await chest.balanceOf(owner.address);

@@ -13,7 +13,7 @@ const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
 
 ethers.errors.setLogLevel('error');
-jest.setTimeout(10000);
+jest.setTimeout(20000);
 
 describe('Chest', () => {
   const [owner, other] = generatedWallets(provider);

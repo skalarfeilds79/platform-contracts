@@ -128,7 +128,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
 
     function _escrowCards(uint256 _commitmentID, Commitment memory _commitment) internal {
 
-        (uint start, uint end) = _getPacksBookends(_commitment);
+        (uint start, uint end) = _getPacksBoundaries(_commitment);
         uint low = cards.nextBatch();
         uint len = end.sub(start);
         uint high = low.add(len);
@@ -166,14 +166,14 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         return uint256(hashed);
     }
 
-    function _getTicketsBookends(Commitment memory _commitment) internal pure returns (uint256, uint256) {
+    function _getTicketsBoundaries(Commitment memory _commitment) internal pure returns (uint256, uint256) {
         uint start = _commitment.ticketsMinted;
         uint remaining = _commitment.ticketQuantity.sub(_commitment.ticketsMinted);
         uint end = remaining > MAX_MINT ? _commitment.ticketsMinted + MAX_MINT : _commitment.ticketQuantity;
         return (start, end);
     }
 
-    function _getPacksBookends(Commitment memory _commitment) internal pure returns (uint256, uint256) {
+    function _getPacksBoundaries(Commitment memory _commitment) internal pure returns (uint256, uint256) {
         uint start = _commitment.packsMinted;
         uint remaining = _commitment.packQuantity.sub(_commitment.packsMinted);
         uint end = remaining > MAX_MINT ? _commitment.packsMinted + MAX_MINT : _commitment.packQuantity;
@@ -186,7 +186,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
     )
         internal
     {
-        (uint start, uint end) = _getTicketsBookends(_commitment);
+        (uint start, uint end) = _getTicketsBoundaries(_commitment);
         uint randomness = _getRandomness(_commitmentID, _commitment);
         uint totalTickets = 0;
         for (uint i = start; i < end; i++) {
@@ -225,11 +225,6 @@ contract Pack is IPack, S1Vendor, RarityProvider {
 
         Commitment memory commitment = commitments[_commitmentID];
 
-        require(
-            commitment.ticketQuantity > 0,
-            "S1Pack: must have tickets available"
-        );
-
         uint256 end = _createTickets(_commitmentID, commitment, protocol);
         if (end != 0) {
             // if all minting has finished, clear this purchase
@@ -254,10 +249,10 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         uint256 end = _createCards(_commitmentID, commitment, protocol);
         if (end != 0) {
             // if all minting has finished, clear this purchase
-            if (commitment.ticketQuantity == end && commitment.packQuantity == commitment.packsMinted) {
+            if (commitment.packQuantity == end && commitment.ticketQuantity == commitment.ticketsMinted) {
                 delete commitments[_commitmentID];
             } else {
-                commitments[_commitmentID].ticketsMinted = end;
+                commitments[_commitmentID].packsMinted = end;
             }
         }
     }
@@ -299,7 +294,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         address _recipient
     ) internal returns (uint256) {
 
-        (uint start, uint end) = _getTicketsBookends(_commitment);
+        (uint start, uint end) = _getTicketsBoundaries(_commitment);
         uint len = end.sub(start);
         if (len == 0) {
             return 0;
@@ -329,7 +324,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         address _recipient
     ) internal returns (uint256) {
 
-        (uint start, uint end) = _getPacksBookends(_commitment);
+        (uint start, uint end) = _getPacksBoundaries(_commitment);
         uint len = end.sub(start);
         if (len == 0) {
             return 0;

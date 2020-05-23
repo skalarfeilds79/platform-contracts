@@ -1,4 +1,3 @@
-import { Address } from '@imtbl/common-types';
 import { GenesisBoard } from '../../src/contracts';
 
 import 'jest';
@@ -40,7 +39,7 @@ describe('Genesis Board', () => {
 
   describe('#mint', () => {
     let genesisBoard: GenesisBoard;
-    let callerDestination: Address;
+    let callerDestination: string;
     let callerLevel: number;
     let callerWallet;
 

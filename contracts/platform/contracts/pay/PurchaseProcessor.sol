@@ -137,7 +137,7 @@ contract PurchaseProcessor is Ownable {
         Order memory order,
         PaymentParams memory payment
     )
-        public
+        external
         payable returns (Receipt memory)
     {
 
@@ -164,6 +164,9 @@ contract PurchaseProcessor is Ownable {
         mutexLocked = true;
 
         uint256 amount;
+
+        uint id = count++;
+
         // What is the order itself priced in
         if (order.currency == Currency.USDCents) {
             // What currency is the payment given in
@@ -190,8 +193,6 @@ contract PurchaseProcessor is Ownable {
         } else {
             require(false, "IM:PurchaseProcessor: unknown order currency");
         }
-
-        uint id = count++;
 
         Receipt memory receipt = Receipt({
             id: id,

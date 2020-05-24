@@ -19,7 +19,7 @@ contract ETHUSDMockOracle is IOracle {
     function setPrice(
         uint256 value
     )
-        public
+        external
     {
         _price = value;
     }
@@ -29,7 +29,7 @@ contract ETHUSDMockOracle is IOracle {
         uint8 to,
         uint256 amount
     )
-        public
+        external
         view
         returns (uint256 returned)
     {
@@ -45,12 +45,12 @@ contract ETHUSDMockOracle is IOracle {
 
         // ETH = 0, USDCents = 1, ETH -> USD Cents
         if (from == 0 && to == 1) {
-            return price().div(10**16).mul(amount);
+            return price().mul(amount).div(10**16);
         }
 
         // ETH = 0, USDCents = 1, USD Cents -> ETH
         if (from == 1 && to == 0) {
-            return uint256(10**34).div(price()).mul(amount);
+            return uint256(10**34).mul(amount).div(price());
         }
     }
 

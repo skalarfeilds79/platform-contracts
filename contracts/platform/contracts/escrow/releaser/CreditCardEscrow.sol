@@ -134,7 +134,7 @@ contract CreditCardEscrow is Ownable {
      *
      * @param _custodian Address of the custodian account
      */
-    function setCustodian(address _custodian) public onlyOwner {
+    function setCustodian(address _custodian) external onlyOwner {
         require(
             _custodian != custodian,
             "IM:CreditCardEscrow: must change existing custodian"
@@ -358,7 +358,10 @@ contract CreditCardEscrow is Ownable {
         bytes memory _callbackData,
         uint256 _paymentID,
         uint256 _duration
-    ) public returns (uint) {
+    )
+        external
+        returns (uint)
+    {
 
         require(
             _duration > 0,
@@ -379,7 +382,11 @@ contract CreditCardEscrow is Ownable {
         return escrowID;
     }
 
-    function getProtocol() public view returns (Escrow) {
+    function getProtocol()
+        public
+        view
+        returns (Escrow)
+    {
         return escrowProtocol;
     }
 

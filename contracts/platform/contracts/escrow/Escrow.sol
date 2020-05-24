@@ -48,10 +48,13 @@ contract Escrow is Ownable {
      * @param _callbackData the data to pass to the callback transaction
      */
     function callbackEscrow(
-        Vault memory _vault,
+        Vault calldata _vault,
         address _callbackTo,
-        bytes memory _callbackData
-    ) public returns (uint256) {
+        bytes calldata _callbackData
+    )
+        external
+        returns (uint256)
+    {
 
         require(
             !escrowMutexLocked,
@@ -262,7 +265,7 @@ contract Escrow is Ownable {
     }
 
     function _checkVault(Vault memory _vault) internal {
-        
+
     }
 
     function _escrow(Vault memory _vault) internal returns (uint256) {

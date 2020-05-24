@@ -83,7 +83,7 @@ contract S1Vendor is IVendor, Pausable, Ownable {
         PurchaseProcessor.Order memory order = PurchaseProcessor.Order({
             currency: PurchaseProcessor.Currency.USDCents,
             totalPrice: totalPrice,
-            alreadyPaid: _payment.currency == ETH ? toReferrer : 0,
+            alreadyPaid: _payment.currency == PurchaseProcessor.Currency.ETH ? toReferrer : 0,
             sku: sku,
             quantity: _quantity,
             assetRecipient: _recipient,

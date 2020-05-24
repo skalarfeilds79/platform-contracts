@@ -1,18 +1,18 @@
 import { Wallet, ethers } from 'ethers';
 import { Forwarder } from '../src/contracts';
-import { DeploymentStage } from '@imtbl/deployment-utils';
+import { DeploymentStage, DeploymentParams } from '@imtbl/deployment-utils';
 
 export class ForwarderStage implements DeploymentStage {
   private wallet: Wallet;
 
-  constructor(privateKey: string, rpcUrl: string) {
-    this.wallet = new ethers.Wallet(privateKey, new ethers.providers.JsonRpcProvider(rpcUrl));
+  constructor(params: DeploymentParams) {
+    this.wallet = new ethers.Wallet(params.private_key, new ethers.providers.JsonRpcProvider(params.rpc_url));
   }
 
   async deploy(
     findInstance: (name: string) => Promise<string>,
     onDeployment: (name: string, address: string, dependency: boolean) => void,
-    transferOwnership: (addresses: string[]) => void,
+    transferOwnership: (address: string) => void,
   ) {
     await this.wallet.getTransactionCount();
     const exchange = await findInstance('ZERO_EX_EXCHANGE');
@@ -22,7 +22,7 @@ export class ForwarderStage implements DeploymentStage {
     const weth = await findInstance('WETH');
 
     try {
-      const unsignedTx = await Forwarder.getDeployTransaction(
+      const unsignedTx = Forwarder.getDeployTransaction(
         this.wallet,
         exchange,
         erc20Proxy,
@@ -33,7 +33,7 @@ export class ForwarderStage implements DeploymentStage {
       const signedTx = await this.wallet.sendTransaction(unsignedTx);
       const receipt = await signedTx.wait();
 
-      await onDeployment('GU_Forwarder', receipt.contractAddress, false);
+      onDeployment('GU_Forwarder', receipt.contractAddress, false);
     } catch (e) {
       console.log('*** Non-critical: Failed to deploy forwarder ***');
     }

@@ -1,17 +1,15 @@
 import { Wallet, ethers } from 'ethers';
 
-import { DeploymentStage } from '@imtbl/deployment-utils';
+import { DeploymentStage, DeploymentEnvironment, DeploymentParams } from '@imtbl/deployment-utils';
 import { asyncForEach } from '@imtbl/utils';
-import {
-  GU_S1_RARE_CHEST_SKU,
-  GU_S1_LEGENDARY_CHEST_SKU,
-  LEGENDARY_CHEST_PRICE,
-} from './constants';
 
 import {
-  RARE_CHEST_CAP,
-  LEGENDARY_CHEST_CAP,
-  RARE_CHEST_PRICE,
+  GU_S1_RARE_CHEST_CAP,
+  GU_S1_LEGENDARY_CHEST_CAP,
+  GU_S1_RARE_CHEST_PRICE,
+  GU_S1_LEGENDARY_CHEST_PRICE,
+  GU_S1_RARE_CHEST_SKU,
+  GU_S1_LEGENDARY_CHEST_SKU,
   GU_S1_EPIC_PACK_SKU,
   GU_S1_RARE_PACK_SKU,
   GU_S1_SHINY_PACK_SKU,
@@ -30,25 +28,26 @@ import {
   Cards,
   Chest,
 } from '../src/contracts';
+import { getPlatformAddresses } from '@imtbl/platform';
 
 export class SeasonOneStage implements DeploymentStage {
+  
   private wallet: Wallet;
   private networkId: number;
+  private env: DeploymentEnvironment;
 
-  constructor(privateKey: string, rpcUrl: string, networkId: number) {
-    this.wallet = new ethers.Wallet(privateKey, new ethers.providers.JsonRpcProvider(rpcUrl));
-    this.networkId = networkId;
+  constructor(params: DeploymentParams) {
+    this.wallet = new ethers.Wallet(params.private_key, new ethers.providers.JsonRpcProvider(params.rpc_url));
+    this.networkId = params.network_id;
+    this.env = params.environment;
   }
 
   async deploy(
     findInstance: (name: string) => Promise<string>,
     onDeployment: (name: string, address: string, dependency: boolean) => void,
-    transferOwnership: (addresses: string[]) => void,
+    transferOwnership: (address: string) => void,
   ) {
-    const processorAddress = await findInstance('IM_Processor');
-    if (!processorAddress || processorAddress.length === 0) {
-      throw '*** IM_Processor not deloyed! Run `yarn deploy --core` inside contracts/platform';
-    }
+    
 
     const raffle = (await findInstance('GU_S1_Raffle')) || (await this.deployRaffle());
     onDeployment('GU_S1_Raffle', raffle, false);
@@ -59,15 +58,17 @@ export class SeasonOneStage implements DeploymentStage {
     const referral = (await findInstance('GU_S1_Referral')) || (await this.deployReferral());
     onDeployment('GU_S1_Referral', referral, false);
 
-    const beacon = await findInstance('IM_Beacon');
-    const cards = await findInstance('GU_Cards');
-    const escrow = await findInstance('IM_Escrow_CreditCard');
-    const processor = await findInstance('IM_Processor');
+    const platform = getPlatformAddresses(this.networkId, this.env);
 
-    console.log('beacon', beacon);
-    console.log('cards', cards);
-    console.log('escrow', escrow);
-    console.log('processor', processor);
+    const processorAddress = platform.processorAddress; // await findInstance('IM_Processor');
+    if (!processorAddress || processorAddress.length === 0) {
+      throw '*** IM_Processor not deployed! Run `yarn deploy --core` inside contracts/platform';
+    }
+    
+    const beacon = platform.beaconAddress; // await findInstance('IM_Beacon');
+    const cards = await findInstance('GU_Cards');
+    const escrow = platform.creditCardAddress; // await findInstance('IM_Escrow_CreditCard');
+    const processor = platform.processorAddress; // await findInstance('IM_Processor');
 
     if (GU_S1_EPIC_PACK_SKU.length === 0) {
       throw '*** No Epic Pack SKU set! Cannot deploy EpicPack. ***';
@@ -115,7 +116,7 @@ export class SeasonOneStage implements DeploymentStage {
         escrow,
         processor,
       ));
-    await onDeployment('GU_S1_Shiny_Pack', shinyPack, false);
+    onDeployment('GU_S1_Shiny_Pack', shinyPack, false);
 
     if (GU_S1_LEGENDARY_PACK_SKU.length === 0) {
       throw '*** No Shiny Pack SKU set! Cannot deploy ShinyPack. ***';
@@ -285,10 +286,10 @@ export class SeasonOneStage implements DeploymentStage {
       'GU:S1: Rare Chest',
       'GUS1RC',
       rarePack,
-      RARE_CHEST_CAP,
+      GU_S1_RARE_CHEST_CAP,
       referral,
       GU_S1_RARE_CHEST_SKU,
-      RARE_CHEST_PRICE,
+      GU_S1_RARE_CHEST_PRICE,
       escrow,
       processor,
       { nonce: await this.wallet.getTransactionCount() },
@@ -308,10 +309,10 @@ export class SeasonOneStage implements DeploymentStage {
       'GU:S1: Legendary Chest',
       'GUS1LC',
       legendaryPack,
-      LEGENDARY_CHEST_CAP,
+      GU_S1_LEGENDARY_CHEST_CAP,
       referral,
       GU_S1_LEGENDARY_CHEST_SKU,
-      LEGENDARY_CHEST_PRICE,
+      GU_S1_LEGENDARY_CHEST_PRICE,
       escrow,
       processor,
       { nonce: await this.wallet.getTransactionCount() },
@@ -379,3 +380,4 @@ export class SeasonOneStage implements DeploymentStage {
     });
   }
 }
+

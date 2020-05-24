@@ -11,12 +11,13 @@ const provider = new ethers.providers.JsonRpcProvider(config.RPC_ENDPOINT);
 
 const wallet: Wallet = new ethers.Wallet(config.PRIVATE_KEY, provider);
 
-const addressBook = getGodsUnchainedAddresses(
-  config.DEPLOYMENT_NETWORK_ID,
-  config.DEPLOYMENT_ENVIRONMENT,
-);
+describe('01_core', async () => {
 
-describe('01_core', () => {
+  const addressBook = await getGodsUnchainedAddresses(
+    config.DEPLOYMENT_NETWORK_ID,
+    config.DEPLOYMENT_ENVIRONMENT,
+  );
+
   let cards: Cards;
   let openMinter: OpenMinter;
   let fusing: Fusing;

@@ -59,17 +59,15 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
         address payable _referrer
     ) public payable returns (PurchaseProcessor.Receipt memory) {
 
-        require(cap == 0 || cap >= sold + _quantity, "IM:CappedVendor: product cap has been exhausted");
+        require(cap == 0 || cap >= sold.add(_quantity), "IM:CappedVendor: product cap has been exhausted");
 
-
-        sold += _quantity;
+        sold = sold.add(_quantity);
         PurchaseProcessor.Receipt memory receipt = super.purchaseFor(
             _user,
             _quantity,
             _payment,
             _referrer
         );
-
 
         if (_payment.currency == PurchaseProcessor.Currency.ETH || _payment.escrowFor == 0) {
             _mintChests(_user, _quantity, receipt.id);

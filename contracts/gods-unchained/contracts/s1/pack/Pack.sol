@@ -193,7 +193,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         uint totalTickets = 0;
         for (uint i = start; i < end; i++) {
             uint16 qty = _getTicketsInPack(i, randomness);
-            totalTickets += qty;
+            totalTickets = totalTickets.add(qty);
         }
 
         Escrow.Vault memory vault = Escrow.Vault({
@@ -290,8 +290,8 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         uint16[] memory ticketQuantities = new uint16[](len);
         uint totalTickets = 0;
         for (uint i = 0; i < len; i++) {
-            uint16 qty = _getTicketsInPack(start+i, randomness);
-            totalTickets += qty;
+            uint16 qty = _getTicketsInPack(start.add(i), randomness);
+            totalTickets = totalTickets.add(qty);
             ticketQuantities[i] = qty;
         }
         raffle.mint(_recipient, totalTickets);
@@ -358,13 +358,13 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         uint256 commitBlock = beacon.commit(0);
         Commitment memory commitment = Commitment({
             commitBlock: commitBlock,
-            packQuantity: _quantity * 6,
             ticketsMinted: 0,
             packsMinted: 0,
+            packQuantity: _quantity.mul(6),
             recipient: _recipient,
             escrowFor: 0,
             paymentID: 0,
-            ticketQuantity: paused() ? 0 : _quantity * 6
+            ticketQuantity: paused() ? 0 : _quantity.mul(6)
         });
 
         commitments[commitmentID] = commitment;

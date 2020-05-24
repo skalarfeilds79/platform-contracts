@@ -171,14 +171,14 @@ contract Pack is IPack, S1Vendor, RarityProvider {
     function _getTicketsBoundaries(Commitment memory _commitment) internal view returns (uint256, uint256) {
         uint start = _commitment.ticketsMinted;
         uint remaining = _commitment.ticketQuantity.sub(_commitment.ticketsMinted);
-        uint end = remaining > maxMint ? _commitment.ticketsMinted + maxMint : _commitment.ticketQuantity;
+        uint end = remaining > maxMint ? _commitment.ticketsMinted.add(maxMint) : _commitment.ticketQuantity;
         return (start, end);
     }
 
     function _getPacksBoundaries(Commitment memory _commitment) internal view returns (uint256, uint256) {
         uint start = _commitment.packsMinted;
         uint remaining = _commitment.packQuantity.sub(_commitment.packsMinted);
-        uint end = remaining > maxMint ? _commitment.packsMinted + maxMint : _commitment.packQuantity;
+        uint end = remaining > maxMint ? _commitment.packsMinted.add(maxMint) : _commitment.packQuantity;
         return (start, end);
     }
 

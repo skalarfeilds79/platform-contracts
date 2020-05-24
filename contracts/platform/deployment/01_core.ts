@@ -1,11 +1,11 @@
 import { Wallet, ethers } from 'ethers';
 import { DeploymentStage } from '@imtbl/deployment-utils';
-import { asyncForEach } from '@imtbl/utils';
 import { Escrow, CreditCardEscrow, Beacon, PurchaseProcessor } from '../src/contracts';
 
 export const IM_PROCESSOR_LIMIT = 100000000;
 
 export class CoreStage implements DeploymentStage {
+  
   private wallet: Wallet;
   private networkId: number;
 
@@ -55,7 +55,7 @@ export class CoreStage implements DeploymentStage {
         ESCROW_CUSTODIAN,
         ESCROW_RELEASE_DELAY,
       ));
-    await onDeployment('IM_Escrow_CreditCard', creditCardEscrow, false);
+    onDeployment('IM_Escrow_CreditCard', creditCardEscrow, false);
 
     await this.setPaymentProcessorSigner(processor, firstSigner);
   }
@@ -106,7 +106,6 @@ export class CoreStage implements DeploymentStage {
 
   async setPaymentProcessorSigner(processor: string, signer: string) {
     console.log('*** Setting payment processor signer *** ');
-    await this.wallet.getTransactionCount();
     const contract = PurchaseProcessor.at(this.wallet, processor);
     if ((await contract.signerLimits(signer)).total.toNumber() === 0) {
       console.log(`${signer} | $${IM_PROCESSOR_LIMIT / 100} LIMIT`);

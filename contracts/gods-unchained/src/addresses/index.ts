@@ -1,5 +1,3 @@
-import fs from 'fs-extra';
-
 import {
   DependencyAddresses,
   GodsUnchainedAddresses,
@@ -7,27 +5,27 @@ import {
 
 import { AddressBook, DeploymentEnvironment, DeploymentNetwork } from '@imtbl/deployment-utils';
 
-export async function getGodsUnchainedAddresses(
+const book = require('./addresses.json');
+
+export function getGodsUnchainedAddresses(
   network: DeploymentNetwork,
   environment: DeploymentEnvironment,
-): Promise<GodsUnchainedAddresses> {
-  
-  const book = new AddressBook('./addresses.json', environment, network);
+): GodsUnchainedAddresses {
 
   return {
-    cardsAddress: await book.get('GU_Cards'),
-    openMinterAddress: await book.get('GU_OpenMinter'),
-    forwarderAddress: await book.get('GU_Forwarder'),
-    fusingAddress: await book.get('GU_Fusing'),
+    cardsAddress: book.environments[environment].addresses['GU_Cards'],
+    openMinterAddress: book.environments[environment].addresses['GU_OpenMinter'],
+    forwarderAddress: book.environments[environment].addresses['GU_Forwarder'],
+    fusingAddress: book.environments[environment].addresses['GU_Fusing'],
     seasonOne: {
-      vendorAddress: await book.get('GU_S1_Vendor'),
-      raffleAddress: await book.get('GU_S1_Raffle'),
-      saleAddress: await book.get('GU_S1_Sale'),
-      referralAddress: await book.get('GU_S1_Referral'),
-      epicPackAddress: await book.get('GU_S1_Epic_Pack'),
-      rarePackAddress: await book.get('GU_S1_Rare_Pack'),
-      shinyPackAddress: await book.get('GU_S1_Shiny_Pack'),
-      legendaryPackAddress: await book.get('GU_S1_Legendary_Pack'),
+      vendorAddress: book.environments[environment].addresses['GU_S1_Vendor'],
+      raffleAddress: book.environments[environment].addresses['GU_S1_Raffle'],
+      saleAddress: book.environments[environment].addresses['GU_S1_Sale'],
+      referralAddress: book.environments[environment].addresses['GU_S1_Referral'],
+      epicPackAddress: book.environments[environment].addresses['GU_S1_Epic_Pack'],
+      rarePackAddress: book.environments[environment].addresses['GU_S1_Rare_Pack'],
+      shinyPackAddress: book.environments[environment].addresses['GU_S1_Shiny_Pack'],
+      legendaryPackAddress: book.environments[environment].addresses['GU_S1_Legendary_Pack'],
     },
   };
 }
@@ -37,11 +35,9 @@ export async function getDependencies(
   environment: DeploymentEnvironment,
 ): Promise<DependencyAddresses> {
 
-  const book = new AddressBook('./addresses.json', environment, network);
-
   return {
-    zeroExExchangeAddress: await book.getDependency('ZERO_EX_EXCHANGE'),
-    zeroExERC20ProxyAddress: await book.getDependency('ZERO_EX_ERC20_PROXY'),
-    zeroExERC721ProxyAddress: await book.getDependency('ZERO_EX_ERC721_PROXY'),
+    zeroExExchangeAddress: book.environments[environment].dependencies['ZERO_EX_EXCHANGE'],
+    zeroExERC20ProxyAddress: book.environments[environment].dependencies['ZERO_EX_ERC20_PROXY'],
+    zeroExERC721ProxyAddress: book.environments[environment].dependencies['ZERO_EX_ERC721_PROXY'],
   };
 }

@@ -40,7 +40,6 @@ export type EscrowReturnInfo = {
 export declare type PlatformAddresses = {
   beaconAddress?: string;
   processorAddress?: string;
-  testVendorAddress?: string;
   escrowAddress?: string;
   creditCardAddress?: string;
   ethUSDMakerOracleAddress?: string;

@@ -4,8 +4,8 @@
       "addresses": {
         "IM_Beacon": "0x46c6A737C75cE3a58c6b2De14970E8841c72DcEF",
         "IM_Processor": "0x1a488d7B42C1Ec1539b78f772BF13eCCB723f5fa",
-        "IM_Escrow": "0x965D352283a3C8A016b9BBbC9bf6306665d495E7",
-        "IM_Escrow_CreditCard": "0x9a1df498af690a7EB43E10A28AB51345a3A33F75"
+        "IM_Escrow": "0x6975548516e60ce4d005Aa42De1e96DddD9d23eD",
+        "IM_Escrow_CreditCard": "0x31eA5a7ecD8B188e850B6376730435Bf045e7894"
       },
       "dependencies": {}
     }

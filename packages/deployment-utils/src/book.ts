@@ -143,12 +143,10 @@ export class AddressBook {
         } catch (error) {
             data = new BookData();
         }
-        console.log('book data loaded', data);
         return data;
     }
 
     private async save(book: BookData) {
-        console.log('book data saved', book);
         await fs.outputFile(this.root, JSON.stringify(book, null, 2));
     }
 

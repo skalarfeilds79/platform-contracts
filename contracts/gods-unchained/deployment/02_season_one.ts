@@ -1,8 +1,7 @@
 import { Wallet, ethers } from 'ethers';
 
-import { DeploymentStage } from '@imtbl/deployment-utils';
+import { DeploymentStage, DeploymentEnvironment } from '@imtbl/deployment-utils';
 import { asyncForEach } from '@imtbl/utils';
-import { getPlatformAddresses } from '@imtbl/platform';
 
 import {
   GU_S1_RARE_CHEST_CAP,
@@ -29,6 +28,7 @@ import {
   Cards,
   Chest,
 } from '../src/contracts';
+import { getPlatformAddresses } from '@imtbl/platform';
 
 export class SeasonOneStage implements DeploymentStage {
   
@@ -45,10 +45,7 @@ export class SeasonOneStage implements DeploymentStage {
     onDeployment: (name: string, address: string, dependency: boolean) => void,
     transferOwnership: (address: string) => void,
   ) {
-    const processorAddress = await findInstance('IM_Processor');
-    if (!processorAddress || processorAddress.length === 0) {
-      throw '*** IM_Processor not deloyed! Run `yarn deploy --core` inside contracts/platform';
-    }
+    
 
     const raffle = (await findInstance('GU_S1_Raffle')) || (await this.deployRaffle());
     onDeployment('GU_S1_Raffle', raffle, false);
@@ -59,10 +56,20 @@ export class SeasonOneStage implements DeploymentStage {
     const referral = (await findInstance('GU_S1_Referral')) || (await this.deployReferral());
     onDeployment('GU_S1_Referral', referral, false);
 
-    const beacon = await findInstance('IM_Beacon');
+    // TODO: remove hardcoded environment
+    const platform = getPlatformAddresses(this.networkId, DeploymentEnvironment.Development);
+
+    console.log(platform);
+
+    const processorAddress = platform.processorAddress; // await findInstance('IM_Processor');
+    if (!processorAddress || processorAddress.length === 0) {
+      throw '*** IM_Processor not deloyed! Run `yarn deploy --core` inside contracts/platform';
+    }
+    
+    const beacon = platform.beaconAddress; // await findInstance('IM_Beacon');
     const cards = await findInstance('GU_Cards');
-    const escrow = await findInstance('IM_Escrow_CreditCard');
-    const processor = await findInstance('IM_Processor');
+    const escrow = platform.creditCardAddress; // await findInstance('IM_Escrow_CreditCard');
+    const processor = platform.processorAddress; // await findInstance('IM_Processor');
 
     if (GU_S1_EPIC_PACK_SKU.length === 0) {
       throw '*** No Epic Pack SKU set! Cannot deploy EpicPack. ***';
@@ -374,3 +381,4 @@ export class SeasonOneStage implements DeploymentStage {
     });
   }
 }
+

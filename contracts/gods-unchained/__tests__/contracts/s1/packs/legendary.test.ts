@@ -8,18 +8,16 @@ import {
   Chest,
   Raffle
 } from '../../../../src/contracts';
-import { Wallet, ethers } from 'ethers';
-import { keccak256 } from 'ethers/utils';
+import { ethers } from 'ethers';
 import { PurchaseProcessor, CreditCardEscrow, Escrow, Beacon, getSignedPayment, Currency } from '@imtbl/platform';
 import { parseLogs } from '@imtbl/utils';
 import { rares, legendaries, epics } from './protos';
+import { GU_S1_LEGENDARY_PACK_SKU, GU_S1_LEGENDARY_PACK_PRICE, GU_S1_LEGENDARY_CHEST_SKU, GU_S1_LEGENDARY_CHEST_PRICE } from '../../../../deployment/constants';
 
 jest.setTimeout(600000);
 
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
-
-const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
 ethers.errors.setLogLevel('error');
 
@@ -41,21 +39,18 @@ describe('Legendary Pack', () => {
     let beacon: Beacon;
     let referral: Referral;
     let processor: PurchaseProcessor;
-
     let raffle: Raffle;
-
     let escrow: Escrow;
     let cc: CreditCardEscrow;
-    const sku = keccak256('0x00');
 
     beforeAll(async() => {
       escrow = await Escrow.deploy(owner);
       cc = await CreditCardEscrow.deploy(
         owner,
         escrow.address,
-        ZERO_EX,
+        ethers.constants.AddressZero,
         100,
-        ZERO_EX,
+        ethers.constants.AddressZero,
         100
       );
       beacon = await Beacon.deploy(owner);
@@ -68,7 +63,7 @@ describe('Legendary Pack', () => {
       await LegendaryPack.deploy(
         owner,
         raffle.address,
-        beacon.address, ZERO_EX, referral.address, sku,
+        beacon.address, ethers.constants.AddressZero, referral.address, GU_S1_LEGENDARY_PACK_SKU,
         cc.address, processor.address
       );
     });
@@ -81,14 +76,10 @@ describe('Legendary Pack', () => {
     let referral: Referral;
     let processor: PurchaseProcessor;
     let raffle: Raffle;
-
     let escrow: Escrow;
     let cc: CreditCardEscrow;
-    const legendaryPackSKU = keccak256('0x00');
     let cards: Cards;
-
     let legendary: LegendaryPack;
-    const cost = 2499;
 
     beforeEach(async() => {
       escrow = await Escrow.deploy(owner);
@@ -108,28 +99,28 @@ describe('Legendary Pack', () => {
       legendary = await LegendaryPack.deploy(
         owner,
         raffle.address,
-        beacon.address, cards.address, referral.address, legendaryPackSKU,
+        beacon.address, cards.address, referral.address, GU_S1_LEGENDARY_PACK_SKU,
         cc.address, processor.address
       );
-      await processor.setSellerApproval(legendary.address, [legendaryPackSKU], true);
+      await processor.setSellerApproval(legendary.address, [GU_S1_LEGENDARY_PACK_SKU], true);
       await processor.setSignerLimit(owner.address, 1000000000000000);
     });
 
     async function purchasePacks(quantity: number) {
       const order = {
         quantity,
-        sku: legendaryPackSKU,
+        sku: GU_S1_LEGENDARY_PACK_SKU,
         assetRecipient: owner.address,
         changeRecipient: owner.address,
-        totalPrice: cost * quantity,
+        totalPrice: GU_S1_LEGENDARY_PACK_PRICE * quantity,
         currency: Currency.USDCents,
         alreadyPaid: 0
       };
-      const params = { escrowFor: 0, nonce: 0, value: cost * quantity };
+      const params = { escrowFor: 0, nonce: 0, value: GU_S1_LEGENDARY_PACK_PRICE * quantity };
       const payment = await getSignedPayment(
          owner, processor.address, legendary.address, order, params
        );
-      const tx = await legendary.purchase(quantity, payment, ZERO_EX);
+      const tx = await legendary.purchase(quantity, payment, ethers.constants.AddressZero);
       const receipt = await tx.wait();
       const parsed = parseLogs(receipt.logs, LegendaryPack.ABI);
       expect(parsed.length).toBe(1);
@@ -152,14 +143,10 @@ describe('Legendary Pack', () => {
     let referral: Referral;
     let processor: PurchaseProcessor;
     let raffle: Raffle;
-
     let escrow: Escrow;
     let cc: CreditCardEscrow;
-    const legendaryPackSKU = keccak256('0x00');
     let cards: Cards;
-
     let legendary: LegendaryPack;
-    const cost = 2499;
 
     beforeEach(async() => {
       escrow = await Escrow.deploy(owner);
@@ -175,10 +162,10 @@ describe('Legendary Pack', () => {
       legendary = await LegendaryPack.deploy(
         owner,
         raffle.address,
-        beacon.address, cards.address, referral.address, legendaryPackSKU,
+        beacon.address, cards.address, referral.address, GU_S1_LEGENDARY_PACK_SKU,
         cc.address, processor.address
       );
-      await processor.setSellerApproval(legendary.address, [legendaryPackSKU], true);
+      await processor.setSellerApproval(legendary.address, [GU_S1_LEGENDARY_PACK_SKU], true);
       await processor.setSignerLimit(owner.address, 1000000000000000);
       await cards.startSeason('S1', 800, 1000);
       await cards.addFactory(legendary.address, 1);
@@ -188,18 +175,18 @@ describe('Legendary Pack', () => {
     async function purchase(quantity: number, escrowFor: number) {
       const order = {
         quantity,
-        sku: legendaryPackSKU,
+        sku: GU_S1_LEGENDARY_PACK_SKU,
         assetRecipient: owner.address,
         changeRecipient: owner.address,
-        totalPrice: cost * quantity,
+        totalPrice: GU_S1_LEGENDARY_PACK_PRICE * quantity,
         currency: Currency.USDCents,
         alreadyPaid: 0
       };
-      const params = { escrowFor, nonce: 0, value: cost * quantity };
+      const params = { escrowFor, nonce: 0, value: GU_S1_LEGENDARY_PACK_PRICE * quantity };
       const payment = await getSignedPayment(
         owner, processor.address, legendary.address, order, params
       );
-      await legendary.purchase(quantity, payment, ZERO_EX);
+      await legendary.purchase(quantity, payment, ethers.constants.AddressZero);
     }
 
     async function mintTrackGas(id: number, description: string) {
@@ -249,15 +236,10 @@ describe('Legendary Pack', () => {
     let referral: Referral;
     let processor: PurchaseProcessor;
     let raffle: Raffle;
-
     let escrow: Escrow;
     let cc: CreditCardEscrow;
-    const legendaryPackSKU = keccak256('0x00');
-    const rareChestSKU = keccak256('0x01');
     let cards: Cards;
     let chest: Chest;
-    const rareChestPrice = 100;
-
     let legendary: LegendaryPack;
 
     beforeEach(async() => {
@@ -274,7 +256,7 @@ describe('Legendary Pack', () => {
       legendary = await LegendaryPack.deploy(
         owner,
         raffle.address,
-        beacon.address, cards.address, referral.address, legendaryPackSKU,
+        beacon.address, cards.address, referral.address, GU_S1_LEGENDARY_CHEST_SKU,
         cc.address, processor.address
       );
       await raffle.setMinterApproval(legendary.address, true);
@@ -285,8 +267,8 @@ describe('Legendary Pack', () => {
         legendary.address,
         0,
         referral.address,
-        rareChestSKU,
-        rareChestPrice,
+        GU_S1_LEGENDARY_CHEST_SKU,
+        GU_S1_LEGENDARY_CHEST_PRICE,
         escrow.address,
         processor.address
       );
@@ -294,15 +276,14 @@ describe('Legendary Pack', () => {
     });
 
     async function purchaseAndOpenChests(quantity: number) {
-      await processor.setSellerApproval(chest.address, [rareChestSKU], true);
+      await processor.setSellerApproval(chest.address, [GU_S1_LEGENDARY_CHEST_SKU], true);
       const balance = await chest.balanceOf(owner.address);
       expect(balance.toNumber()).toBe(0);
       await processor.setSignerLimit(owner.address, 10000000000);
-      await processor.setSellerApproval(chest.address, [rareChestSKU], true);
-      const value = rareChestPrice * quantity;
+      const value = GU_S1_LEGENDARY_CHEST_PRICE * quantity;
       const order = {
         quantity,
-        sku: rareChestSKU,
+        sku: GU_S1_LEGENDARY_CHEST_SKU,
         assetRecipient: owner.address,
         changeRecipient: owner.address,
         currency: Currency.USDCents,
@@ -313,7 +294,7 @@ describe('Legendary Pack', () => {
       const payment = await getSignedPayment(
          owner, processor.address, chest.address, order, params
        );
-      await chest.purchase(quantity, payment, ZERO_EX);
+      await chest.purchase(quantity, payment, ethers.constants.AddressZero);
       await chest.open(quantity);
       const purchase = await legendary.commitments(0);
       expect(purchase.packQuantity.toNumber()).toBe(quantity * 6);

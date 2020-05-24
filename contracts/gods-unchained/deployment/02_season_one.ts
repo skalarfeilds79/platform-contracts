@@ -51,13 +51,13 @@ export class SeasonOneStage implements DeploymentStage {
     }
 
     const raffle = (await findInstance('GU_S1_Raffle')) || (await this.deployRaffle());
-    await onDeployment('GU_S1_Raffle', raffle, false);
+    onDeployment('GU_S1_Raffle', raffle, false);
 
     const s1sale = (await findInstance('GU_S1_Sale')) || (await this.deploySale());
-    await onDeployment('GU_S1_Sale', s1sale, false);
+    onDeployment('GU_S1_Sale', s1sale, false);
 
     const referral = (await findInstance('GU_S1_Referral')) || (await this.deployReferral());
-    await onDeployment('GU_S1_Referral', referral, false);
+    onDeployment('GU_S1_Referral', referral, false);
 
     const beacon = await findInstance('IM_Beacon');
     const cards = await findInstance('GU_Cards');

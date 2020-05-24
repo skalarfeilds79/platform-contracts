@@ -8,17 +8,15 @@ import {
   Raffle
 } from '../../../../src/contracts';
 import { ethers } from 'ethers';
-import { keccak256 } from 'ethers/utils';
 import { PurchaseProcessor, CreditCardEscrow, Escrow, Beacon, getSignedPayment, Currency } from '@imtbl/platform';
 import { parseLogs } from '@imtbl/utils';
 import { rares, epics, legendaries } from './protos';
+import { GU_S1_SHINY_PACK_PRICE, GU_S1_SHINY_PACK_SKU } from '../../../../deployment/constants';
 
 jest.setTimeout(600000);
 
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
-
-const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
 ethers.errors.setLogLevel('error');
 
@@ -40,21 +38,18 @@ describe('Shiny Pack', () => {
     let beacon: Beacon;
     let referral: Referral;
     let processor: PurchaseProcessor;
-
     let raffle: Raffle;
-
     let escrow: Escrow;
     let cc: CreditCardEscrow;
-    const sku = keccak256('0x00');
 
     beforeAll(async() => {
       escrow = await Escrow.deploy(owner);
       cc = await CreditCardEscrow.deploy(
         owner,
         escrow.address,
-        ZERO_EX,
+        ethers.constants.AddressZero,
         100,
-        ZERO_EX,
+        ethers.constants.AddressZero,
         100
       );
       beacon = await Beacon.deploy(owner);
@@ -67,7 +62,7 @@ describe('Shiny Pack', () => {
       await ShinyPack.deploy(
         owner,
         raffle.address,
-        beacon.address, ZERO_EX, referral.address, sku,
+        beacon.address, ethers.constants.AddressZero, referral.address, GU_S1_SHINY_PACK_SKU,
         cc.address, processor.address
       );
     });
@@ -80,14 +75,10 @@ describe('Shiny Pack', () => {
     let referral: Referral;
     let processor: PurchaseProcessor;
     let raffle: Raffle;
-
     let escrow: Escrow;
     let cc: CreditCardEscrow;
-    const shinyPackSKU = keccak256('0x00');
     let cards: Cards;
-
     let shiny: ShinyPack;
-    const cost = 14999;
 
     beforeEach(async() => {
       escrow = await Escrow.deploy(owner);
@@ -107,27 +98,27 @@ describe('Shiny Pack', () => {
       shiny = await ShinyPack.deploy(
         owner,
         raffle.address,
-        beacon.address, cards.address, referral.address, shinyPackSKU,
+        beacon.address, cards.address, referral.address, GU_S1_SHINY_PACK_SKU,
         cc.address, processor.address
       );
-      await processor.setSellerApproval(shiny.address, [shinyPackSKU], true);
+      await processor.setSellerApproval(shiny.address, [GU_S1_SHINY_PACK_SKU], true);
       await processor.setSignerLimit(owner.address, 1000000000000000);
     });
 
     async function purchasePacks(quantity: number) {
       const order = {
-        quantity, sku: shinyPackSKU,
+        quantity, sku: GU_S1_SHINY_PACK_SKU,
         assetRecipient: owner.address,
         changeRecipient: owner.address,
-        totalPrice: cost * quantity,
+        totalPrice: GU_S1_SHINY_PACK_PRICE * quantity,
         alreadyPaid: 0,
         currency: Currency.USDCents
       };
-      const params = { escrowFor: 0, nonce: 0, value: cost * quantity };
+      const params = { escrowFor: 0, nonce: 0, value: GU_S1_SHINY_PACK_PRICE * quantity };
       const payment = await getSignedPayment(
          owner, processor.address, shiny.address, order, params
        );
-      const tx = await shiny.purchase(quantity, payment, ZERO_EX);
+      const tx = await shiny.purchase(quantity, payment, ethers.constants.AddressZero);
       const receipt = await tx.wait();
       const parsed = parseLogs(receipt.logs, ShinyPack.ABI);
       expect(parsed.length).toBe(1);
@@ -150,14 +141,10 @@ describe('Shiny Pack', () => {
     let referral: Referral;
     let processor: PurchaseProcessor;
     let raffle: Raffle;
-
     let escrow: Escrow;
     let cc: CreditCardEscrow;
-    const shinyPackSKU = keccak256('0x00');
     let cards: Cards;
-
     let shiny: ShinyPack;
-    const cost = 14999;
 
     beforeEach(async() => {
       escrow = await Escrow.deploy(owner);
@@ -173,10 +160,10 @@ describe('Shiny Pack', () => {
       shiny = await ShinyPack.deploy(
         owner,
         raffle.address,
-        beacon.address, cards.address, referral.address, shinyPackSKU,
+        beacon.address, cards.address, referral.address, GU_S1_SHINY_PACK_SKU,
         cc.address, processor.address
       );
-      await processor.setSellerApproval(shiny.address, [shinyPackSKU], true);
+      await processor.setSellerApproval(shiny.address, [GU_S1_SHINY_PACK_SKU], true);
       await processor.setSignerLimit(owner.address, 1000000000000000);
       await cards.startSeason('S1', 800, 1000);
       await cards.addFactory(shiny.address, 1);
@@ -186,14 +173,14 @@ describe('Shiny Pack', () => {
     async function purchase(quantity: number, escrowFor: number) {
       const order = {
         quantity,
-        sku: shinyPackSKU,
+        sku: GU_S1_SHINY_PACK_SKU,
         assetRecipient: owner.address,
         changeRecipient: owner.address,
-        totalPrice: cost * quantity,
+        totalPrice: GU_S1_SHINY_PACK_PRICE * quantity,
         alreadyPaid: 0,
         currency: Currency.USDCents
       };
-      const params = { escrowFor, nonce: 0, value: cost * quantity };
+      const params = { escrowFor, nonce: 0, value: GU_S1_SHINY_PACK_PRICE * quantity };
       const payment = await getSignedPayment(
         owner,
         processor.address,
@@ -201,7 +188,7 @@ describe('Shiny Pack', () => {
         order,
         params
       );
-      await shiny.purchase(quantity, payment, ZERO_EX);
+      await shiny.purchase(quantity, payment, ethers.constants.AddressZero);
     }
 
     async function mintTrackGas(id: number, description: string) {

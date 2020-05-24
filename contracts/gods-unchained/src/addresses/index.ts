@@ -5,44 +5,43 @@ import {
   GodsUnchainedAddresses,
 } from '../../src';
 
-import { DeploymentEnvironment, DeploymentNetwork } from '@imtbl/deployment-utils';
+import { AddressBook, DeploymentEnvironment, DeploymentNetwork } from '@imtbl/deployment-utils';
 
-export function getGodsUnchainedAddresses(
+export async function getGodsUnchainedAddresses(
   network: DeploymentNetwork,
   environment: DeploymentEnvironment,
-): GodsUnchainedAddresses {
-  const config = fs.readJson(`./${network}.json`);
-
-  const addresses = config['addresses'];
+): Promise<GodsUnchainedAddresses> {
+  
+  const book = new AddressBook('./addresses.json', environment);
 
   return {
-    cardsAddress: addresses['GU_Cards'],
-    openMinterAddress: addresses['GU_OpenMinter'],
-    forwarderAddress: addresses['GU_Forwarder'],
-    fusingAddress: addresses['GU_Fusing'],
+    cardsAddress: await book.get('GU_Cards'),
+    openMinterAddress: await book.get('GU_OpenMinter'),
+    forwarderAddress: await book.get('GU_Forwarder'),
+    fusingAddress: await book.get('GU_Fusing'),
     seasonOne: {
-      vendorAddress: addresses['GU_S1_Vendor'],
-      raffleAddress: addresses['GU_S1_Raffle'],
-      saleAddress: addresses['GU_S1_Sale'],
-      referralAddress: addresses['GU_S1_Referral'],
-      epicPackAddress: addresses['GU_S1_Epic_Pack'],
-      rarePackAddress: addresses['GU_S1_Rare_Pack'],
-      shinyPackAddress: addresses['GU_S1_Shiny_Pack'],
-      legendaryPackAddress: addresses['GU_S1_Legendary_Pack'],
+      vendorAddress: await book.get('GU_S1_Vendor'),
+      raffleAddress: await book.get('GU_S1_Raffle'),
+      saleAddress: await book.get('GU_S1_Sale'),
+      referralAddress: await book.get('GU_S1_Referral'),
+      epicPackAddress: await book.get('GU_S1_Epic_Pack'),
+      rarePackAddress: await book.get('GU_S1_Rare_Pack'),
+      shinyPackAddress: await book.get('GU_S1_Shiny_Pack'),
+      legendaryPackAddress: await book.get('GU_S1_Legendary_Pack'),
     },
   };
 }
 
-export function getDependencies(
+export async function getDependencies(
   network: DeploymentNetwork,
   environment: DeploymentEnvironment,
-): DependencyAddresses {
-  const config = fs.readJson(`./${network}.json`);
-  const dependencies = config['dependencies'];
+): Promise<DependencyAddresses> {
+
+  const book = new AddressBook('./addresses.json', environment);
 
   return {
-    zeroExExchangeAddress: dependencies['ZERO_EX_EXCHANGE'],
-    zeroExERC20ProxyAddress: dependencies['ZERO_EX_ERC20_PROXY'],
-    zeroExERC721ProxyAddress: dependencies['ZERO_EX_ERC721_PROXY'],
+    zeroExExchangeAddress: await book.getDependency('ZERO_EX_EXCHANGE'),
+    zeroExERC20ProxyAddress: await book.getDependency('ZERO_EX_ERC20_PROXY'),
+    zeroExERC721ProxyAddress: await book.getDependency('ZERO_EX_ERC721_PROXY'),
   };
 }

@@ -3,6 +3,7 @@ import { DeploymentStage, Manager } from '@imtbl/deployment-utils';
 
 import { CoreStage } from './01_core';
 import { ForwarderStage } from './00_forwarder';
+import { AddressBook } from '../../../packages/deployment-utils/src/book';
 
 const config = require('dotenv').config({ path: '../../.env' }).parsed;
 
@@ -33,7 +34,9 @@ async function start() {
     );
   }
 
-  const newManager = new Manager(stages);
+  const book = new AddressBook('../src/addresses/addresses.json', config.DEPLOYMENT_ENVIRONMENT);
+
+  const newManager = new Manager(stages, book);
 
   try {
     await newManager.deploy();

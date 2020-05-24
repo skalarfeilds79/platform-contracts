@@ -2,16 +2,14 @@ import { Wallet, ethers } from 'ethers';
 
 import { DeploymentStage } from '@imtbl/deployment-utils';
 import { asyncForEach } from '@imtbl/utils';
-import {
-  GU_S1_RARE_CHEST_SKU,
-  GU_S1_LEGENDARY_CHEST_SKU,
-  LEGENDARY_CHEST_PRICE,
-} from './constants';
 
 import {
-  RARE_CHEST_CAP,
-  LEGENDARY_CHEST_CAP,
-  RARE_CHEST_PRICE,
+  GU_S1_RARE_CHEST_CAP,
+  GU_S1_LEGENDARY_CHEST_CAP,
+  GU_S1_RARE_CHEST_PRICE,
+  GU_S1_LEGENDARY_CHEST_PRICE,
+  GU_S1_RARE_CHEST_SKU,
+  GU_S1_LEGENDARY_CHEST_SKU,
   GU_S1_EPIC_PACK_SKU,
   GU_S1_RARE_PACK_SKU,
   GU_S1_SHINY_PACK_SKU,
@@ -32,6 +30,7 @@ import {
 } from '../src/contracts';
 
 export class SeasonOneStage implements DeploymentStage {
+  
   private wallet: Wallet;
   private networkId: number;
 
@@ -43,7 +42,7 @@ export class SeasonOneStage implements DeploymentStage {
   async deploy(
     findInstance: (name: string) => Promise<string>,
     onDeployment: (name: string, address: string, dependency: boolean) => void,
-    transferOwnership: (addresses: string[]) => void,
+    transferOwnership: (address: string) => void,
   ) {
     const processorAddress = await findInstance('IM_Processor');
     if (!processorAddress || processorAddress.length === 0) {
@@ -115,7 +114,7 @@ export class SeasonOneStage implements DeploymentStage {
         escrow,
         processor,
       ));
-    await onDeployment('GU_S1_Shiny_Pack', shinyPack, false);
+    onDeployment('GU_S1_Shiny_Pack', shinyPack, false);
 
     if (GU_S1_LEGENDARY_PACK_SKU.length === 0) {
       throw '*** No Shiny Pack SKU set! Cannot deploy ShinyPack. ***';
@@ -288,7 +287,7 @@ export class SeasonOneStage implements DeploymentStage {
       RARE_CHEST_CAP,
       referral,
       GU_S1_RARE_CHEST_SKU,
-      RARE_CHEST_PRICE,
+      GU_S1_RARE_CHEST_PRICE,
       escrow,
       processor,
       { nonce: await this.wallet.getTransactionCount() },
@@ -311,7 +310,7 @@ export class SeasonOneStage implements DeploymentStage {
       LEGENDARY_CHEST_CAP,
       referral,
       GU_S1_LEGENDARY_CHEST_SKU,
-      LEGENDARY_CHEST_PRICE,
+      GU_S1_LEGENDARY_CHEST_PRICE,
       escrow,
       processor,
       { nonce: await this.wallet.getTransactionCount() },

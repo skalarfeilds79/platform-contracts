@@ -1,23 +1,20 @@
-import fs from 'fs-extra';
-
-import { DeploymentEnvironment, DeploymentNetwork } from '@imtbl/deployment-utils';
+import { AddressBook, DeploymentEnvironment, DeploymentNetwork } from '@imtbl/deployment-utils';
 import { PlatformAddresses } from '../../src';
 
-export function getPlatformAddresses(
+export async function getPlatformAddresses(
   network: DeploymentNetwork,
   environment: DeploymentEnvironment,
-): PlatformAddresses {
-  const config = fs.readJson(`./${network}.json`);
+): Promise<PlatformAddresses> {
 
-  const addresses = config['addresses'];
+  const book = new AddressBook('./addresses.json', environment);
 
   return {
-    beaconAddress: addresses['IM_Beacon'],
-    processorAddress: addresses['IM_Processor'],
-    testVendorAddress: addresses['IM_TestVendor'],
-    escrowAddress: addresses['IM_Escrow'],
-    creditCardAddress: addresses['IM_Escrow_CreditCard'],
-    ethUSDMakerOracleAddress: addresses['IM_Oracle_ETHUSDMaker'],
-    ethUSDMockOracleAddress: addresses['IM_Oracle_ETHUSDMock'],
+    beaconAddress: await book.get('IM_Beacon'),
+    processorAddress: await book.get('IM_Processor'),
+    testVendorAddress: await book.get('IM_TestVendor'),
+    escrowAddress: await book.get('IM_Escrow'),
+    creditCardAddress: await book.get('IM_Escrow_CreditCard'),
+    ethUSDMakerOracleAddress: await book.get('IM_Oracle_ETHUSDMaker'),
+    ethUSDMockOracleAddress: await book.get('IM_Oracle_ETHUSDMock'),
   };
 }

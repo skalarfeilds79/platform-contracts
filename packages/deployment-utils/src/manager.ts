@@ -1,24 +1,15 @@
-import {
-  DEPLOYMENT_ENVIRONMENT,
-  DEPLOYMENT_NETWORK_ID,
-  DEPLOYMENT_NETWORK_KEY,
-  PRIVATE_KEY,
-  RPC_URL,
-  writeAddress,
-  findDependency,
-  getAddress,
-  removeAll,
-  returnAddressesFile,
-  removeAddress,
-  Repo,
-} from './utils/outputHelpers';
 
-import { Wallet, ethers, utils } from 'ethers';
+import { Wallet, ethers } from 'ethers';
 
-import { DeploymentStage } from './DeploymentStage';
+import { AddressBook } from './book';
+import { DeploymentStage } from './stage';
 import { asyncForEach } from '@imtbl/utils';
-import dependencies from './dependencies';
-import fs from 'fs-extra';
+
+export const PRIVATE_KEY: string = process.env.PRIVATE_KEY;
+export const DEPLOYMENT_ENVIRONMENT: string = process.env.DEPLOYMENT_ENVIRONMENT;
+export const DEPLOYMENT_NETWORK_ID: number = parseInt(process.env.DEPLOYMENT_NETWORK_ID);
+export const DEPLOYMENT_NETWORK_KEY: string = `${DEPLOYMENT_ENVIRONMENT}`;
+export const RPC_URL: string = process.env.RPC_ENDPOINT;
 
 const ownershipABI = [
   {
@@ -54,37 +45,41 @@ const ownershipABI = [
 ];
 
 export class Manager {
-  private _networkId: number;
+
   private _wallet: Wallet;
-
   private _stages: DeploymentStage[] = [];
+  private book: AddressBook;
 
-  constructor(stages: DeploymentStage[]) {
-    this._networkId = DEPLOYMENT_NETWORK_ID;
+  constructor(stages: DeploymentStage[], book: AddressBook) {
     this._wallet = new Wallet(PRIVATE_KEY, new ethers.providers.JsonRpcProvider(RPC_URL));
     this._stages = stages;
+    this.book = book;
   }
 
   async deploy() {
     try {
       await this.checkInputParameters();
 
-      await asyncForEach(this._stages, async (stage, index) => {
+      await asyncForEach(this._stages, async (stage: DeploymentStage, index) => {
         console.log(`Stage: ${index + 1}/${Object.keys(this._stages).length}`);
 
         await stage.deploy(
           async (name) => {
-            return this.contractExists(name);
+            return this.getAddress(name);
           },
           async (name, address, dependency) => {
-            await writeAddress(name, address, dependency);
+            if (dependency) {
+              await this.book.setDependency(name, address);
+            } else {
+              await this.book.set(name, address);
+            }
           },
           async (address) => {
-            const contract = await new ethers.Contract(address, ownershipABI, this._wallet);
+            const contract = new ethers.Contract(address, ownershipABI, this._wallet);
             try {
               console.log(`*** Transferring ownership of ${address} `);
               const currentOwner = await contract.functions.owner();
-              const intendedOwner = await findDependency('INTENDED_OWNER');
+              const intendedOwner = await this.book.getDependency('INTENDED_OWNER');
               if (intendedOwner.length > 0 && currentOwner != intendedOwner) {
                 await contract.functions.transferOwnership(intendedOwner);
               }
@@ -130,36 +125,19 @@ export class Manager {
   }
 
   async configureIfDevelopment() {
-    const currentOutputs = await returnAddressesFile();
-    console.log(currentOutputs);
-    if (!currentOutputs[DEPLOYMENT_NETWORK_KEY].hasOwnProperty('addresses')) {
-      return;
-    }
-
-    const allKeys = Object.keys(currentOutputs[DEPLOYMENT_NETWORK_KEY]['addresses']);
-    await this._wallet.getTransactionCount();
-    await asyncForEach(allKeys, async (name) => {
-      const address = await getAddress(name);
-      const code = await this._wallet.provider.getCode(address);
-      if (code.length < 3) {
-        console.log(`*** Removing ${name} as no instanace found ***`);
-        await removeAddress(name);
-      }
-    });
+    await this.book.validate(this._wallet.provider);
   }
 
   async clearAdddresses(reason: string) {
-    const key = await DEPLOYMENT_NETWORK_KEY;
-    console.log(`\n*** Clearing all addresses for ${key}. Reason: ${reason} ***\n`);
-    await removeAll();
+    console.log(`\n*** Clearing all addresses for ${DEPLOYMENT_NETWORK_KEY}. Reason: ${reason} ***\n`);
+    await this.book.clear();
   }
 
-  async contractExists(name: string) {
+  async getAddress(name: string): Promise<string> {
     try {
       const address =
-        (await findDependency(name)) ||
-        (await getAddress(name, Repo.GodsUncahined)) ||
-        (await getAddress(name, Repo.Platform));
+        (await this.book.getDependency(name)) ||
+        (await this.book.get(name))
       return address || '';
     } catch {
       return '';

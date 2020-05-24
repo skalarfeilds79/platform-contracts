@@ -12,7 +12,7 @@ export class ForwarderStage implements DeploymentStage {
   async deploy(
     findInstance: (name: string) => Promise<string>,
     onDeployment: (name: string, address: string, dependency: boolean) => void,
-    transferOwnership: (addresses: string[]) => void,
+    transferOwnership: (address: string) => void,
   ) {
     await this.wallet.getTransactionCount();
     const exchange = await findInstance('ZERO_EX_EXCHANGE');

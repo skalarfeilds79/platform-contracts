@@ -6,6 +6,7 @@ import "./Pack.sol";
 contract ShinyPack is Pack {
 
     constructor(
+        uint256 _maxMint,
         IRaffle _raffle,
         Beacon _beacon,
         ICards _cards,
@@ -14,6 +15,7 @@ contract ShinyPack is Pack {
         CreditCardEscrow _escrow,
         PurchaseProcessor _pay
     ) public Pack(
+        _maxMint,
         _raffle,
         _beacon,
         _cards,

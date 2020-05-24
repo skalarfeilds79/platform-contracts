@@ -23,7 +23,7 @@ import {
   ETHUSDMockOracle,
   getETHPayment,
   getPlatformAddresses,
-} from '@imtbl/platform/src';
+} from '@imtbl/platform';
 
 import { Blockchain } from '@imtbl/test-utils';
 

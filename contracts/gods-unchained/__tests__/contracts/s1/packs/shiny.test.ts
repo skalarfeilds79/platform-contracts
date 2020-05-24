@@ -17,6 +17,7 @@ jest.setTimeout(600000);
 
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
+const MAX_MINT = 5;
 
 ethers.errors.setLogLevel('error');
 
@@ -61,6 +62,7 @@ describe('Shiny Pack', () => {
     it('should deploy rare pack', async () => {
       await ShinyPack.deploy(
         owner,
+        MAX_MINT,
         raffle.address,
         beacon.address, ethers.constants.AddressZero, referral.address, GU_S1_SHINY_PACK_SKU,
         cc.address, processor.address
@@ -97,6 +99,7 @@ describe('Shiny Pack', () => {
       raffle = await Raffle.deploy(owner);
       shiny = await ShinyPack.deploy(
         owner,
+        MAX_MINT,
         raffle.address,
         beacon.address, cards.address, referral.address, GU_S1_SHINY_PACK_SKU,
         cc.address, processor.address
@@ -159,6 +162,7 @@ describe('Shiny Pack', () => {
       raffle = await Raffle.deploy(owner);
       shiny = await ShinyPack.deploy(
         owner,
+        MAX_MINT,
         raffle.address,
         beacon.address, cards.address, referral.address, GU_S1_SHINY_PACK_SKU,
         cc.address, processor.address

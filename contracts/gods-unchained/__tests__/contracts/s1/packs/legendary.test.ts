@@ -19,6 +19,8 @@ jest.setTimeout(600000);
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
 
+const MAX_MINT = 5;
+
 ethers.errors.setLogLevel('error');
 
 describe('Legendary Pack', () => {
@@ -62,6 +64,7 @@ describe('Legendary Pack', () => {
     it('should deploy rare pack', async () => {
       await LegendaryPack.deploy(
         owner,
+        MAX_MINT,
         raffle.address,
         beacon.address, ethers.constants.AddressZero, referral.address, GU_S1_LEGENDARY_PACK_SKU,
         cc.address, processor.address
@@ -98,6 +101,7 @@ describe('Legendary Pack', () => {
       raffle = await Raffle.deploy(owner);
       legendary = await LegendaryPack.deploy(
         owner,
+        MAX_MINT,
         raffle.address,
         beacon.address, cards.address, referral.address, GU_S1_LEGENDARY_PACK_SKU,
         cc.address, processor.address
@@ -161,6 +165,7 @@ describe('Legendary Pack', () => {
       raffle = await Raffle.deploy(owner);
       legendary = await LegendaryPack.deploy(
         owner,
+        MAX_MINT,
         raffle.address,
         beacon.address, cards.address, referral.address, GU_S1_LEGENDARY_PACK_SKU,
         cc.address, processor.address
@@ -255,6 +260,7 @@ describe('Legendary Pack', () => {
       raffle = await Raffle.deploy(owner);
       legendary = await LegendaryPack.deploy(
         owner,
+        MAX_MINT,
         raffle.address,
         beacon.address, cards.address, referral.address, GU_S1_LEGENDARY_CHEST_SKU,
         cc.address, processor.address

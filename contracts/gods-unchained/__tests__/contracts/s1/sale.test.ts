@@ -13,6 +13,8 @@ const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
 ethers.errors.setLogLevel('error');
 
+const MAX_MINT = 5;
+
 describe('Sale', () => {
   const [owner, other] = generatedWallets(provider);
 
@@ -46,6 +48,7 @@ describe('Sale', () => {
       raffle = await Raffle.deploy(owner);
       rare = await RarePack.deploy(
         owner,
+        MAX_MINT,
         raffle.address,
         beacon.address,
         ethers.constants.AddressZero,
@@ -112,6 +115,7 @@ describe('Sale', () => {
       raffle = await Raffle.deploy(owner);
       rare = await RarePack.deploy(
         owner,
+        MAX_MINT,
         raffle.address,
         beacon.address,
         ethers.constants.AddressZero,
@@ -180,6 +184,7 @@ describe('Sale', () => {
       raffle = await Raffle.deploy(owner);
       rare = await RarePack.deploy(
         owner,
+        MAX_MINT,
         raffle.address,
         beacon.address,
         ethers.constants.AddressZero,
@@ -239,6 +244,7 @@ describe('Sale', () => {
       raffle = await Raffle.deploy(owner);
       rare = await RarePack.deploy(
         owner,
+        MAX_MINT,
         raffle.address,
         beacon.address,
         ethers.constants.AddressZero,

@@ -20,7 +20,7 @@ const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
 
 const ZERO_EX = '0x0000000000000000000000000000000000000000';
-
+const MAX_MINT = 5;
 ethers.errors.setLogLevel('error');
 
 describe('Legendary Pack', () => {
@@ -67,6 +67,7 @@ describe('Legendary Pack', () => {
     it('should deploy rare pack', async () => {
       await LegendaryPack.deploy(
         owner,
+        MAX_MINT,
         raffle.address,
         beacon.address, ZERO_EX, referral.address, sku,
         cc.address, processor.address
@@ -107,6 +108,7 @@ describe('Legendary Pack', () => {
       raffle = await Raffle.deploy(owner);
       legendary = await LegendaryPack.deploy(
         owner,
+        MAX_MINT,
         raffle.address,
         beacon.address, cards.address, referral.address, legendaryPackSKU,
         cc.address, processor.address
@@ -174,6 +176,7 @@ describe('Legendary Pack', () => {
       raffle = await Raffle.deploy(owner);
       legendary = await LegendaryPack.deploy(
         owner,
+        MAX_MINT,
         raffle.address,
         beacon.address, cards.address, referral.address, legendaryPackSKU,
         cc.address, processor.address
@@ -273,6 +276,7 @@ describe('Legendary Pack', () => {
       raffle = await Raffle.deploy(owner);
       legendary = await LegendaryPack.deploy(
         owner,
+        MAX_MINT,
         raffle.address,
         beacon.address, cards.address, referral.address, legendaryPackSKU,
         cc.address, processor.address

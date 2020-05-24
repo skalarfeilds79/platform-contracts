@@ -12,7 +12,7 @@ ethers.errors.setLogLevel('error');
 
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
-
+const MAX_MINT = 5;
 const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
 describe('Raffle', () => {
@@ -68,6 +68,7 @@ describe('Raffle', () => {
       raffle = await Raffle.deploy(owner);
       rare = await RarePack.deploy(
         owner,
+        MAX_MINT,
         raffle.address,
         beacon.address,
         cards.address,
@@ -142,6 +143,7 @@ describe('Raffle', () => {
       raffle = await Raffle.deploy(owner);
       rare = await RarePack.deploy(
         owner,
+        MAX_MINT,
         raffle.address,
         beacon.address,
         cards.address,
@@ -248,6 +250,7 @@ describe('Raffle', () => {
       raffle = await Raffle.deploy(owner);
       rare = await RarePack.deploy(
         owner,
+        MAX_MINT,
         raffle.address,
         beacon.address,
         cards.address,

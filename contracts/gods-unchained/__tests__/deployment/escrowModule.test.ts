@@ -8,7 +8,7 @@ import { parseLogs } from '@imtbl/utils';
 import { Currency, Platform } from '@imtbl/platform';
 
 import { RarePack, CreditCardEscrow, S1Sale } from '../../src';
-import { getSignedPayment, getPlatformAddresses } from '@imtbl/platform/src';
+import { getSignedPayment, getPlatformAddresses } from '@imtbl/platform';
 
 import { getGodsUnchainedAddresses } from '../../src/addresses/index';
 import { GU_S1_RARE_PACK_SKU } from '../../deployment/constants';

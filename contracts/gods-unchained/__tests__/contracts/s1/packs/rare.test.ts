@@ -19,7 +19,7 @@ jest.setTimeout(600000);
 
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
-
+const MAX_MINT = 5;
 const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
 ethers.errors.setLogLevel('error');
@@ -59,6 +59,7 @@ describe('Rare Pack', () => {
     it('should deploy rare pack', async () => {
       await RarePack.deploy(
         owner,
+        MAX_MINT,
         raffle.address,
         beacon.address,
         ZERO_EX,
@@ -101,6 +102,7 @@ describe('Rare Pack', () => {
       raffle = await Raffle.deploy(owner);
       rare = await RarePack.deploy(
         owner,
+        MAX_MINT,
         raffle.address,
         beacon.address,
         cards.address,
@@ -175,6 +177,7 @@ describe('Rare Pack', () => {
       raffle = await Raffle.deploy(owner);
       rare = await RarePack.deploy(
         owner,
+        MAX_MINT,
         raffle.address,
         beacon.address,
         cards.address,
@@ -277,6 +280,7 @@ describe('Rare Pack', () => {
       raffle = await Raffle.deploy(owner);
       rare = await RarePack.deploy(
         owner,
+        MAX_MINT,
         raffle.address,
         beacon.address,
         cards.address,

@@ -5,14 +5,14 @@ import { S1Sale, Referral, RarePack, Raffle } from '../../../src/contracts';
 import { ethers } from 'ethers';
 import { keccak256 } from 'ethers/utils';
 import { PurchaseProcessor, CreditCardEscrow, Escrow, Beacon, getSignedPayment, Currency } from '@imtbl/platform';
-import { Order, getETHPayment, ETHUSDMockOracle } from '@imtbl/platform/src';
+import { Order, getETHPayment, ETHUSDMockOracle } from '@imtbl/platform';
 
 jest.setTimeout(600000);
 
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
 ethers.errors.setLogLevel('error');
-
+const MAX_MINT = 5;
 const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
 describe('Sale', () => {
@@ -50,6 +50,7 @@ describe('Sale', () => {
       raffle = await Raffle.deploy(owner);
       rare = await RarePack.deploy(
         owner,
+        MAX_MINT,
         raffle.address,
         beacon.address,
         ZERO_EX,
@@ -118,6 +119,7 @@ describe('Sale', () => {
       raffle = await Raffle.deploy(owner);
       rare = await RarePack.deploy(
         owner,
+        MAX_MINT,
         raffle.address,
         beacon.address,
         ZERO_EX,
@@ -188,6 +190,7 @@ describe('Sale', () => {
       raffle = await Raffle.deploy(owner);
       rare = await RarePack.deploy(
         owner,
+        MAX_MINT,
         raffle.address,
         beacon.address,
         ZERO_EX,
@@ -249,6 +252,7 @@ describe('Sale', () => {
       raffle = await Raffle.deploy(owner);
       rare = await RarePack.deploy(
         owner,
+        MAX_MINT,
         raffle.address,
         beacon.address,
         ZERO_EX,

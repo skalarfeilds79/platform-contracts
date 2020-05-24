@@ -1,6 +1,6 @@
 import 'jest';
 
-import { Ganache, Blockchain, generatedWallets } from '@imtbl/test-utils';
+import { Ganache, Blockchain, generatedWallets, expectRevert } from '@imtbl/test-utils';
 import {
   Referral,
   EpicPack,
@@ -16,7 +16,6 @@ import {
   ETHUSDMockOracle,
   getETHPayment,
 } from '@imtbl/platform';
-import { parseLogs } from '@imtbl/utils';
 
 jest.setTimeout(600000);
 
@@ -38,10 +37,6 @@ describe('EpicPack', () => {
 
   afterEach(async () => {
     await blockchain.revertAsync();
-  });
-
-  afterAll(async() => {
-    provider.stop();
   });
 
   describe('deployment', () => {
@@ -126,6 +121,9 @@ describe('EpicPack', () => {
       await processor.setOracle(oracle.address);
       await processor.setSellerApproval(epic.address, [epicPackSKU], true);
       await processor.setSignerLimit(owner.address, 1000000000000000);
+      await cards.startSeason("Season One", 800, 1000);
+      await cards.addFactory(epic.address, 1);
+      await raffle.setMinterApproval(epic.address, true);
     });
 
     async function purchasePacks(quantity: number) {
@@ -141,19 +139,22 @@ describe('EpicPack', () => {
       const payment = await getSignedPayment(
          owner, processor.address, epic.address, order, params
       );
-      const tx = await epic.purchase(quantity, payment, ZERO_EX);
-      const receipt = await tx.wait();
-      const parsed = parseLogs(receipt.logs, EpicPack.ABI);
-      expect(parsed.length).toBe(1);
-      expect(parsed[0].name).toBe('CommitmentRecorded');
+      await epic.purchase(quantity, payment, ZERO_EX);
+      for (let i = 0; i < quantity; i += MAX_MINT) {
+        await epic.mint(0);
+      }
     }
 
-    it('should purchase one pack with USD', async () => {
-      await purchasePacks(1);
+    it('should purchase max + 1 packs with USD', async () => {
+      await purchasePacks(MAX_MINT + 1);
+      // should have minted everything
+      await expectRevert(epic.mint(0));
     });
 
-    it('should purchase five packs with USD', async () => {
-      await purchasePacks(5);
+    it('should purchase 2 * max + 1 packs with USD', async () => {
+      await purchasePacks(2 * MAX_MINT + 1);
+      // should have minted everything
+      await expectRevert(epic.mint(0));
     });
 
   });
@@ -165,12 +166,11 @@ describe('EpicPack', () => {
     let oracle: ETHUSDMockOracle;
     let processor: PurchaseProcessor;
     let raffle: Raffle;
-
     let escrow: Escrow;
     let cc: CreditCardEscrow;
     const epicPackSKU = keccak256('0x00');
     let cards: Cards;
-
+    const max_mint = 5;
     let epic: EpicPack;
     const cost = 649;
 
@@ -197,37 +197,33 @@ describe('EpicPack', () => {
         beacon.address, cards.address, referral.address, epicPackSKU,
         cc.address, processor.address
       );
+      await cards.startSeason("Season One", 800, 1000);
+      await cards.addFactory(epic.address, 1);
       await processor.setOracle(oracle.address);
       await processor.setSellerApproval(epic.address, [epicPackSKU], true);
       await processor.setSignerLimit(owner.address, 1000000000000000);
+      await raffle.setMinterApproval(epic.address, true);
     });
 
     async function purchasePacks(quantity: number) {
-      const order = {
-        quantity,
-        sku: epicPackSKU,
-        assetRecipient: owner.address,
-        changeRecipient: owner.address,
-        totalPrice: cost * quantity,
-        alreadyPaid: 0,
-        currency: Currency.USDCents
-      };
-      const params = { escrowFor: 0, nonce: 0, value: cost * quantity };
       const payment = getETHPayment();
       const ethRequired = await oracle.convert(1, 0, cost * quantity);
-      const tx = await epic.purchase(quantity, payment, ZERO_EX, { value: ethRequired });
-      const receipt = await tx.wait();
-      const parsed = parseLogs(receipt.logs, EpicPack.ABI);
-      expect(parsed.length).toBe(1);
-      expect(parsed[0].name).toBe('CommitmentRecorded');
+      await epic.purchase(quantity, payment, ZERO_EX, { value: ethRequired });
+      for (let i = 0; i < quantity; i += MAX_MINT) {
+        await epic.mint(0);
+      }
     }
 
-    it('should purchase one pack with ETH', async () => {
-      await purchasePacks(1);
+    it('should purchase 6 with ETH', async () => {
+      await purchasePacks(MAX_MINT + 1);
+      // should have minted everything
+      await expectRevert(epic.mint(0));
     });
 
-    it('should purchase five packs with ETH', async () => {
-      await purchasePacks(5);
+    it('should purchase 11 with ETH', async () => {
+      await purchasePacks(2 * MAX_MINT + 1);
+      // should have minted everything
+      await expectRevert(epic.mint(0));
     });
 
   });

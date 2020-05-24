@@ -54,8 +54,8 @@ contract Pack is IPack, S1Vendor, RarityProvider {
     address public chest;
     // The number of commitments
     uint256 public commitmentCount;
-
-    uint256 constant MAX_MINT = 50;
+    // The max number of packs which can be minted in one transaction
+    uint256 public maxMint;
 
     function _getCardDetails(uint _index, uint _random)
         internal
@@ -68,6 +68,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         returns (uint16);
 
     constructor(
+        uint256 _maxMint,
         IRaffle _raffle,
         Beacon _beacon,
         ICards _cards,
@@ -80,6 +81,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         raffle = _raffle;
         beacon = _beacon;
         cards = _cards;
+        maxMint = _maxMint;
     }
 
     /** @dev Set the chest address for this contract
@@ -166,17 +168,17 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         return uint256(hashed);
     }
 
-    function _getTicketsBoundaries(Commitment memory _commitment) internal pure returns (uint256, uint256) {
+    function _getTicketsBoundaries(Commitment memory _commitment) internal view returns (uint256, uint256) {
         uint start = _commitment.ticketsMinted;
         uint remaining = _commitment.ticketQuantity.sub(_commitment.ticketsMinted);
-        uint end = remaining > MAX_MINT ? _commitment.ticketsMinted + MAX_MINT : _commitment.ticketQuantity;
+        uint end = remaining > maxMint ? _commitment.ticketsMinted + maxMint : _commitment.ticketQuantity;
         return (start, end);
     }
 
-    function _getPacksBoundaries(Commitment memory _commitment) internal pure returns (uint256, uint256) {
+    function _getPacksBoundaries(Commitment memory _commitment) internal view returns (uint256, uint256) {
         uint start = _commitment.packsMinted;
         uint remaining = _commitment.packQuantity.sub(_commitment.packsMinted);
-        uint end = remaining > MAX_MINT ? _commitment.packsMinted + MAX_MINT : _commitment.packQuantity;
+        uint end = remaining > maxMint ? _commitment.packsMinted + maxMint : _commitment.packQuantity;
         return (start, end);
     }
 
@@ -225,15 +227,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
 
         Commitment memory commitment = commitments[_commitmentID];
 
-        uint256 end = _createTickets(_commitmentID, commitment, protocol);
-        if (end != 0) {
-            // if all minting has finished, clear this purchase
-            if (commitment.ticketQuantity == end && commitment.packQuantity == commitment.packsMinted) {
-                delete commitments[_commitmentID];
-            } else {
-                commitments[_commitmentID].ticketsMinted = end;
-            }
-        }
+        _createTickets(_commitmentID, commitment, protocol);
     }
 
     function cardsEscrowHook(uint256 _commitmentID) external {
@@ -246,15 +240,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
 
         Commitment memory commitment = commitments[_commitmentID];
 
-        uint256 end = _createCards(_commitmentID, commitment, protocol);
-        if (end != 0) {
-            // if all minting has finished, clear this purchase
-            if (commitment.packQuantity == end && commitment.ticketQuantity == commitment.ticketsMinted) {
-                delete commitments[_commitmentID];
-            } else {
-                commitments[_commitmentID].packsMinted = end;
-            }
-        }
+        _createCards(_commitmentID, commitment, protocol);
     }
 
     /** @dev Purchase packs for a user
@@ -292,12 +278,12 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         uint256 _commitmentID,
         Commitment memory _commitment,
         address _recipient
-    ) internal returns (uint256) {
+    ) internal {
 
         (uint start, uint end) = _getTicketsBoundaries(_commitment);
         uint len = end.sub(start);
         if (len == 0) {
-            return 0;
+            return;
         }
 
         uint randomness = _getRandomness(_commitmentID, _commitment);
@@ -315,19 +301,24 @@ contract Pack is IPack, S1Vendor, RarityProvider {
             address(raffle),
             totalTickets
         );
-        return end;
+        // if all minting has finished, clear this purchase
+        if (_commitment.ticketQuantity == end && _commitment.packQuantity == _commitment.packsMinted) {
+            delete commitments[_commitmentID];
+        } else {
+            commitments[_commitmentID].ticketsMinted = end;
+        }
     }
 
     function _createCards(
         uint256 _commitmentID,
         Commitment memory _commitment,
         address _recipient
-    ) internal returns (uint256) {
+    ) internal {
 
         (uint start, uint end) = _getPacksBoundaries(_commitment);
         uint len = end.sub(start);
         if (len == 0) {
-            return 0;
+            return;
         }
 
         uint256 randomness = _getRandomness(_commitmentID, _commitment);
@@ -349,7 +340,12 @@ contract Pack is IPack, S1Vendor, RarityProvider {
             highTokenID
         );
 
-        return end;
+         // if all minting has finished, clear this purchase
+        if (_commitment.packQuantity == end && _commitment.ticketQuantity == _commitment.ticketsMinted) {
+            delete commitments[_commitmentID];
+        } else {
+            commitments[_commitmentID].packsMinted = end;
+        }
     }
 
     function openChests(address _recipient, uint256 _quantity) external {

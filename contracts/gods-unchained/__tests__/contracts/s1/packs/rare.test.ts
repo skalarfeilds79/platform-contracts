@@ -116,11 +116,11 @@ describe('Rare Pack', () => {
         sku: GU_S1_RARE_PACK_SKU,
         assetRecipient: owner.address,
         changeRecipient: owner.address,
-        totalPrice: GU_S1_RARE_CHEST_PRICE * quantity,
+        totalPrice: GU_S1_RARE_PACK_PRICE * quantity,
         alreadyPaid: 0,
         currency: Currency.USDCents,
       };
-      const params = { escrowFor: 0, nonce: 0, value: GU_S1_RARE_CHEST_PRICE * quantity };
+      const params = { escrowFor: 0, nonce: 0, value: GU_S1_RARE_PACK_PRICE * quantity };
       const payment = await getSignedPayment(
          owner, processor.address, rare.address, order, params
        );

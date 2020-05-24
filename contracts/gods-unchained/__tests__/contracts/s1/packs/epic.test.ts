@@ -40,10 +40,6 @@ describe('EpicPack', () => {
     await blockchain.revertAsync();
   });
 
-  afterAll(async() => {
-    provider.stop();
-  });
-
   describe('deployment', () => {
 
     let beacon: Beacon;

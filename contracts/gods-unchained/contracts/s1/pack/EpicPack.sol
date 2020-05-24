@@ -21,7 +21,7 @@ contract EpicPack is Pack {
         _cards,
         _referral,
         _sku,
-        649,
+        699,
         _escrow,
         _pay
     ) {}

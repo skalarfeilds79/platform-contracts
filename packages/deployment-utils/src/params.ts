@@ -14,7 +14,7 @@ export enum DeploymentEnvironment {
 export interface DeploymentParams {
     private_key: string;
     rpc_url: string;
-    environment: string;
-    network_id: number;
+    environment: DeploymentEnvironment;
+    network_id: DeploymentNetwork;
     network_key: string;
 }

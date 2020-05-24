@@ -1,5 +1,5 @@
 import { Wallet, ethers } from 'ethers';
-import { DeploymentStage } from '@imtbl/deployment-utils';
+import { DeploymentEnvironment, DeploymentStage, DeploymentParams } from '@imtbl/deployment-utils';
 import { Escrow, CreditCardEscrow, Beacon, PurchaseProcessor } from '../src/contracts';
 
 export const IM_PROCESSOR_LIMIT = 100000000;
@@ -8,10 +8,11 @@ export class CoreStage implements DeploymentStage {
   
   private wallet: Wallet;
   private networkId: number;
+  private env: DeploymentEnvironment;
 
-  constructor(privateKey: string, rpcUrl: string, networkId: number) {
-    this.wallet = new ethers.Wallet(privateKey, new ethers.providers.JsonRpcProvider(rpcUrl));
-    this.networkId = networkId;
+  constructor(params: DeploymentParams) {
+    this.wallet = new ethers.Wallet(params.private_key, new ethers.providers.JsonRpcProvider(params.rpc_url));
+    this.networkId = params.network_id;
   }
 
   async deploy(

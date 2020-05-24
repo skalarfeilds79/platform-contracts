@@ -1,6 +1,6 @@
 import { Wallet, ethers } from 'ethers';
 
-import { DeploymentStage, DeploymentEnvironment } from '@imtbl/deployment-utils';
+import { DeploymentStage, DeploymentEnvironment, DeploymentParams } from '@imtbl/deployment-utils';
 import { asyncForEach } from '@imtbl/utils';
 
 import {
@@ -34,10 +34,12 @@ export class SeasonOneStage implements DeploymentStage {
   
   private wallet: Wallet;
   private networkId: number;
+  private env: DeploymentEnvironment;
 
-  constructor(privateKey: string, rpcUrl: string, networkId: number) {
-    this.wallet = new ethers.Wallet(privateKey, new ethers.providers.JsonRpcProvider(rpcUrl));
-    this.networkId = networkId;
+  constructor(params: DeploymentParams) {
+    this.wallet = new ethers.Wallet(params.private_key, new ethers.providers.JsonRpcProvider(params.rpc_url));
+    this.networkId = params.network_id;
+    this.env = params.environment;
   }
 
   async deploy(
@@ -56,14 +58,11 @@ export class SeasonOneStage implements DeploymentStage {
     const referral = (await findInstance('GU_S1_Referral')) || (await this.deployReferral());
     onDeployment('GU_S1_Referral', referral, false);
 
-    // TODO: remove hardcoded environment
-    const platform = getPlatformAddresses(this.networkId, DeploymentEnvironment.Development);
-
-    console.log(platform);
+    const platform = getPlatformAddresses(this.networkId, this.env);
 
     const processorAddress = platform.processorAddress; // await findInstance('IM_Processor');
     if (!processorAddress || processorAddress.length === 0) {
-      throw '*** IM_Processor not deloyed! Run `yarn deploy --core` inside contracts/platform';
+      throw '*** IM_Processor not deployed! Run `yarn deploy --core` inside contracts/platform';
     }
     
     const beacon = platform.beaconAddress; // await findInstance('IM_Beacon');

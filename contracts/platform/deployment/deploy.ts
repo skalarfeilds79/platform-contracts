@@ -1,4 +1,4 @@
-import { DeploymentParams, AddressBook, DeploymentStage, Manager } from '@imtbl/deployment-utils';
+import { DeploymentParams, AddressBook, DeploymentStage, Manager, DeploymentEnvironment } from '@imtbl/deployment-utils';
 
 import { CoreStage } from './01_core';
 
@@ -6,7 +6,7 @@ const config = require('dotenv').config({ path: '../../.env' }).parsed;
 
 export const params: DeploymentParams = {
   private_key: process.env.PRIVATE_KEY,
-  environment: process.env.DEPLOYMENT_ENVIRONMENT,
+  environment: process.env.DEPLOYMENT_ENVIRONMENT as DeploymentEnvironment,
   network_id: parseInt(process.env.DEPLOYMENT_NETWORK_ID),
   network_key: `${process.env.DEPLOYMENT_ENVIRONMENT}`,
   rpc_url: process.env.RPC_ENDPOINT
@@ -23,7 +23,7 @@ async function start() {
 
   if (args.core) {
     stages.push(
-      new CoreStage(config.PRIVATE_KEY, config.RPC_ENDPOINT, config.DEPLOYMENT_NETWORK_ID),
+      new CoreStage(params),
     );
   }
 

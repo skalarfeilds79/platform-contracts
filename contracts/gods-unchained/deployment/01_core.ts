@@ -2,16 +2,16 @@ import { Wallet, ethers } from 'ethers';
 
 import { Cards, Fusing } from '../src/contracts';
 import { CardsWrapper } from './../src/wrappers/cardsWrapper';
-import { DeploymentStage } from '@imtbl/deployment-utils';
+import { DeploymentStage, DeploymentParams } from '@imtbl/deployment-utils';
 import { asyncForEach } from '@imtbl/utils';
 
 export class CoreStage implements DeploymentStage {
   private wallet: Wallet;
   private networkId: number;
 
-  constructor(privateKey: string, rpcUrl: string, networkId: number) {
-    this.wallet = new ethers.Wallet(privateKey, new ethers.providers.JsonRpcProvider(rpcUrl));
-    this.networkId = networkId;
+  constructor(params: DeploymentParams) {
+    this.wallet = new ethers.Wallet(params.private_key, new ethers.providers.JsonRpcProvider(params.rpc_url));
+    this.networkId = params.network_id;
   }
 
   async deploy(

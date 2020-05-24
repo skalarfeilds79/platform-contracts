@@ -14,7 +14,7 @@ import { ethers } from 'ethers';
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
 
-const ZERO_EX = '0x0000000000000000000000000000000000000000';
+
 
 ethers.errors.setLogLevel('error');
 
@@ -66,7 +66,7 @@ describe('CreditCardEscrow', () => {
       erc20 = await TestERC20Token.deploy(user);
       erc721 = await TestERC721Token.deploy(user);
       escrow = await Escrow.deploy(user);
-      cc = await CreditCardEscrow.deploy(user, escrow.address, ZERO_EX, 100, ZERO_EX, 100);
+      cc = await CreditCardEscrow.deploy(user, escrow.address, ethers.constants.AddressZero, 100, ethers.constants.AddressZero, 100);
       pack = await TestCreditCardPack.deploy(user, cc.address, erc20.address, erc721.address);
     });
 
@@ -90,7 +90,7 @@ describe('CreditCardEscrow', () => {
       erc20 = await TestERC20Token.deploy(user);
       erc721 = await TestERC721Token.deploy(user);
       escrow = await Escrow.deploy(user);
-      cc = await CreditCardEscrow.deploy(user, escrow.address, ZERO_EX, 100, ZERO_EX, 100);
+      cc = await CreditCardEscrow.deploy(user, escrow.address, ethers.constants.AddressZero, 100, ethers.constants.AddressZero, 100);
       pack = await TestCreditCardPack.deploy(user, cc.address, erc20.address, erc721.address);
     });
 
@@ -117,7 +117,7 @@ describe('CreditCardEscrow', () => {
     });
 
     it('should not be able to directly release a custodial vault', async () => {
-      await pack.purchaseERC721(ZERO_EX, 1, 10);
+      await pack.purchaseERC721(ethers.constants.AddressZero, 1, 10);
       await blockchain.increaseTimeAsync(10);
       await expectRevert(cc.release(0));
     });
@@ -150,12 +150,12 @@ describe('CreditCardEscrow', () => {
     });
 
     it('should be able to request destroy immediately', async () => {
-      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await pack.purchaseERC20(ethers.constants.AddressZero, 1, 10);
       await cc.requestDestruction(0);
     });
 
     it('should not be able to request rescission twice', async () => {
-      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await pack.purchaseERC20(ethers.constants.AddressZero, 1, 10);
       await cc.requestDestruction(0);
       await expectRevert(cc.requestDestruction(0));
     });
@@ -166,7 +166,7 @@ describe('CreditCardEscrow', () => {
     });
 
     it('should not be able to destroy a purchase without a successful request', async () => {
-      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await pack.purchaseERC20(ethers.constants.AddressZero, 1, 10);
       await expectRevert(cc.destroy(0));
     });
 
@@ -176,14 +176,14 @@ describe('CreditCardEscrow', () => {
     });
 
     it('should be able to release after successful request', async () => {
-      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await pack.purchaseERC20(ethers.constants.AddressZero, 1, 10);
       await cc.requestDestruction(0);
       await blockchain.increaseTimeAsync(destructionDelay);
       await cc.destroy(0);
     });
 
     it('should be destroyed successfully', async () => {
-      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await pack.purchaseERC20(ethers.constants.AddressZero, 1, 10);
       await cc.requestDestruction(0);
       await blockchain.increaseTimeAsync(destructionDelay);
       await cc.destroy(0);
@@ -192,7 +192,7 @@ describe('CreditCardEscrow', () => {
     });
 
     it('should not be able to be destroyed twice', async () => {
-      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await pack.purchaseERC20(ethers.constants.AddressZero, 1, 10);
       await cc.requestDestruction(0);
       await blockchain.increaseTimeAsync(destructionDelay);
       await cc.destroy(0);
@@ -227,32 +227,32 @@ describe('CreditCardEscrow', () => {
     });
 
     it('should be able to cancel a destruction request immediately', async () => {
-      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await pack.purchaseERC20(ethers.constants.AddressZero, 1, 10);
       await cc.requestDestruction(0);
       await cc.cancelDestruction(0);
     });
 
     it('should not be able to cancel a destruction request which is not in progress', async () => {
-      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await pack.purchaseERC20(ethers.constants.AddressZero, 1, 10);
       await expectRevert(cc.cancelDestruction(0));
     });
 
     it('should not be able to cancel a destruction request twice', async () => {
-      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await pack.purchaseERC20(ethers.constants.AddressZero, 1, 10);
       await cc.requestDestruction(0);
       await cc.cancelDestruction(0);
       await expectRevert(cc.cancelDestruction(0));
     });
 
     it('should be able to restart a request post-cancellation', async () => {
-      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await pack.purchaseERC20(ethers.constants.AddressZero, 1, 10);
       await cc.requestDestruction(0);
       await cc.cancelDestruction(0);
       await cc.requestDestruction(0);
     });
 
     it('should not be able to release mid-destruction', async () => {
-      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await pack.purchaseERC20(ethers.constants.AddressZero, 1, 10);
       await cc.requestDestruction(0);
       await expectRevert(cc.requestRelease(0, user.address));
     });
@@ -285,25 +285,25 @@ describe('CreditCardEscrow', () => {
     });
 
     it('should be able to cancel a release request immediately', async () => {
-      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await pack.purchaseERC20(ethers.constants.AddressZero, 1, 10);
       await cc.requestRelease(0, user.address);
       await cc.cancelRelease(0);
     });
 
     it('should not be able to cancel a destruction request which is not in progress', async () => {
-      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await pack.purchaseERC20(ethers.constants.AddressZero, 1, 10);
       await expectRevert(cc.cancelRelease(0));
     });
 
     it('should not be able to cancel a destruction request twice', async () => {
-      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await pack.purchaseERC20(ethers.constants.AddressZero, 1, 10);
       await cc.requestRelease(0, user.address);
       await cc.cancelRelease(0);
       await expectRevert(cc.cancelRelease(0));
     });
 
     it('should be able to restart a request post-cancellation', async () => {
-      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await pack.purchaseERC20(ethers.constants.AddressZero, 1, 10);
       await cc.requestRelease(0, user.address);
       await cc.cancelRelease(0);
       await cc.requestRelease(0, user.address);
@@ -337,18 +337,18 @@ describe('CreditCardEscrow', () => {
     });
 
     it('should be able to request release immediately', async () => {
-      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await pack.purchaseERC20(ethers.constants.AddressZero, 1, 10);
       await cc.requestRelease(0, user.address);
     });
 
     it('should not be able to request release twice', async () => {
-      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await pack.purchaseERC20(ethers.constants.AddressZero, 1, 10);
       await cc.requestRelease(0, user.address);
       await expectRevert(cc.requestRelease(0, user.address));
     });
 
     it('should be able to release after successful request', async () => {
-      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await pack.purchaseERC20(ethers.constants.AddressZero, 1, 10);
       await blockchain.increaseTimeAsync(10);
       await cc.requestRelease(0, user.address);
       await blockchain.increaseTimeAsync(releaseDelay);
@@ -356,7 +356,7 @@ describe('CreditCardEscrow', () => {
     });
 
     it('should be released to the correct user after a successful request', async () => {
-      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await pack.purchaseERC20(ethers.constants.AddressZero, 1, 10);
       await blockchain.increaseTimeAsync(10);
       await cc.requestRelease(0, user.address);
       await blockchain.increaseTimeAsync(releaseDelay);
@@ -366,7 +366,7 @@ describe('CreditCardEscrow', () => {
     });
 
     it('should not be able to release twice after successful request', async () => {
-      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await pack.purchaseERC20(ethers.constants.AddressZero, 1, 10);
       await blockchain.increaseTimeAsync(10);
       await cc.requestRelease(0, user.address);
       await blockchain.increaseTimeAsync(releaseDelay);

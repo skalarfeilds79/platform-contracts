@@ -16,7 +16,7 @@ const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
 
 jest.setTimeout(20000);
-const ZERO_EX = '0x0000000000000000000000000000000000000000';
+
 
 ethers.errors.setLogLevel('error');
 
@@ -66,7 +66,7 @@ describe('CreditCardEscrow', () => {
     });
 
     it('should not be able to do anything after destruction', async () => {
-      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await pack.purchaseERC20(ethers.constants.AddressZero, 1, 10);
       await cc.requestDestruction(0);
       await blockchain.increaseTimeAsync(destructionDelay);
       await cc.destroy(0);
@@ -79,7 +79,7 @@ describe('CreditCardEscrow', () => {
     });
 
     it('should not be able to destroy after destruction cancelled', async () => {
-      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await pack.purchaseERC20(ethers.constants.AddressZero, 1, 10);
       await cc.requestDestruction(0);
       await cc.cancelDestruction(0);
       await blockchain.increaseTimeAsync(destructionDelay);
@@ -87,7 +87,7 @@ describe('CreditCardEscrow', () => {
     });
 
     it('should not be able to release after release cancelled', async () => {
-      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await pack.purchaseERC20(ethers.constants.AddressZero, 1, 10);
       await blockchain.increaseTimeAsync(10);
       await cc.requestRelease(0, user.address);
       await cc.cancelRelease(0);
@@ -96,7 +96,7 @@ describe('CreditCardEscrow', () => {
     });
 
     it('should not be able to re-escrow ERC20s post destruction', async () => {
-      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await pack.purchaseERC20(ethers.constants.AddressZero, 1, 10);
       await cc.requestDestruction(0);
       await blockchain.increaseTimeAsync(destructionDelay);
       await cc.destroy(0);
@@ -104,7 +104,7 @@ describe('CreditCardEscrow', () => {
     });
 
     it('should not be able to re-escrow ERC721s post destruction', async () => {
-      await pack.purchaseERC20(ZERO_EX, 1, 10);
+      await pack.purchaseERC20(ethers.constants.AddressZero, 1, 10);
       await cc.requestDestruction(0);
       await blockchain.increaseTimeAsync(destructionDelay);
       await cc.destroy(0);

@@ -10,7 +10,7 @@ const blockchain = new Blockchain(provider);
 
 ethers.errors.setLogLevel('error');
 
-const ZERO_EX = '0x0000000000000000000000000000000000000000';
+
 
 jest.setTimeout(10000);
 
@@ -83,7 +83,7 @@ describe('ListERC271Escrow', () => {
       const vault = {
         player: user.address,
         admin: user.address,
-        asset: ZERO_EX,
+        asset: ethers.constants.AddressZero,
         balance: 0,
         lowTokenID: 0,
         highTokenID: 0,
@@ -97,7 +97,7 @@ describe('ListERC271Escrow', () => {
       await erc721.setApprovalForAll(escrow.address, true);
       const vault = {
         player: user.address,
-        admin: ZERO_EX,
+        admin: ethers.constants.AddressZero,
         asset: erc721.address,
         balance: 0,
         lowTokenID: 0,

@@ -5,6 +5,7 @@ import { Referral, RarePack, Cards, Chest, Raffle } from '../../../src/contracts
 import { Wallet, ethers } from 'ethers';
 import { keccak256 } from 'ethers/utils';
 import { getSignedPayment, Currency, PurchaseProcessor, CreditCardEscrow, Escrow, Beacon } from '@imtbl/platform';
+import { GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_SKU, GU_S1_RARE_CHEST_SKU, GU_S1_RARE_CHEST_PRICE } from '../../../deployment/constants';
 
 jest.setTimeout(600000);
 
@@ -13,7 +14,6 @@ ethers.errors.setLogLevel('error');
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
 const MAX_MINT = 5;
-const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
 describe('Raffle', () => {
   const [owner] = generatedWallets(provider);
@@ -38,18 +38,15 @@ describe('Raffle', () => {
   });
 
   describe('purchase', () => {
+
     let beacon: Beacon;
     let referral: Referral;
     let processor: PurchaseProcessor;
     let raffle: Raffle;
-
     let escrow: Escrow;
     let cc: CreditCardEscrow;
-    const rarePackSKU = keccak256('0x00');
     let cards: Cards;
-
     let rare: RarePack;
-    const cost = 249;
 
     beforeEach(async () => {
       escrow = await Escrow.deploy(owner);
@@ -73,27 +70,27 @@ describe('Raffle', () => {
         beacon.address,
         cards.address,
         referral.address,
-        rarePackSKU,
+        GU_S1_RARE_PACK_SKU,
         cc.address,
         processor.address,
       );
-      await processor.setSellerApproval(rare.address, [rarePackSKU], true);
+      await processor.setSellerApproval(rare.address, [GU_S1_RARE_PACK_SKU], true);
       await processor.setSignerLimit(owner.address, 1000000000000000);
     });
 
     async function purchasePacks(quantity: number) {
       const order = {
         quantity,
-        sku: rarePackSKU,
+        sku: GU_S1_RARE_PACK_SKU,
         assetRecipient: owner.address,
         changeRecipient: owner.address,
-        totalPrice: cost * quantity,
+        totalPrice: GU_S1_RARE_PACK_PRICE * quantity,
         alreadyPaid: 0,
         currency: Currency.USDCents,
       };
-      const params = { escrowFor: 0, nonce: 0, value: cost * quantity };
+      const params = { escrowFor: 0, nonce: 0, value: GU_S1_RARE_PACK_PRICE * quantity };
       const payment = await getSignedPayment(owner, processor.address, rare.address, order, params);
-      await rare.purchase(quantity, payment, ZERO_EX);
+      await rare.purchase(quantity, payment, ethers.constants.AddressZero);
     }
 
     it('should purchase one pack with USD', async () => {
@@ -113,18 +110,15 @@ describe('Raffle', () => {
   });
 
   describe('mint', () => {
+
     let beacon: Beacon;
     let referral: Referral;
     let processor: PurchaseProcessor;
     let raffle: Raffle;
-
     let escrow: Escrow;
     let cc: CreditCardEscrow;
-    const rarePackSKU = keccak256('0x00');
     let cards: Cards;
-
     let rare: RarePack;
-    const cost = 249;
 
     beforeEach(async () => {
       escrow = await Escrow.deploy(owner);
@@ -148,12 +142,12 @@ describe('Raffle', () => {
         beacon.address,
         cards.address,
         referral.address,
-        rarePackSKU,
+        GU_S1_RARE_PACK_SKU,
         cc.address,
         processor.address,
       );
       await raffle.setMinterApproval(rare.address, true);
-      await processor.setSellerApproval(rare.address, [rarePackSKU], true);
+      await processor.setSellerApproval(rare.address, [GU_S1_RARE_PACK_SKU], true);
       await processor.setSignerLimit(owner.address, 1000000000000000);
       await cards.startSeason('S1', 800, 1000);
       await cards.addFactory(rare.address, 1);
@@ -162,16 +156,16 @@ describe('Raffle', () => {
     async function purchase(quantity: number, escrowFor: number) {
       const order = {
         quantity,
-        sku: rarePackSKU,
+        sku: GU_S1_RARE_PACK_SKU,
         assetRecipient: owner.address,
         changeRecipient: owner.address,
-        totalPrice: cost * quantity,
+        totalPrice: GU_S1_RARE_PACK_PRICE * quantity,
         currency: Currency.USDCents,
         alreadyPaid: 0
       };
-      const params = { escrowFor, nonce: 0, value: cost * quantity };
+      const params = { escrowFor, nonce: 0, value: GU_S1_RARE_PACK_PRICE * quantity };
       const payment = await getSignedPayment(owner, processor.address, rare.address, order, params);
-      await rare.purchase(quantity, payment, ZERO_EX);
+      await rare.purchase(quantity, payment, ethers.constants.AddressZero);
     }
 
     async function mintTrackGas(id: number, description: string) {
@@ -218,19 +212,15 @@ describe('Raffle', () => {
   });
 
   describe('openChest', () => {
+    
     let beacon: Beacon;
     let referral: Referral;
     let processor: PurchaseProcessor;
     let raffle: Raffle;
-
     let escrow: Escrow;
     let cc: CreditCardEscrow;
-    const rarePackSKU = keccak256('0x00');
-    const rareChestSKU = keccak256('0x01');
     let cards: Cards;
     let chest: Chest;
-    const rareChestPrice = 100;
-
     let rare: RarePack;
 
     beforeEach(async () => {
@@ -255,7 +245,7 @@ describe('Raffle', () => {
         beacon.address,
         cards.address,
         referral.address,
-        rarePackSKU,
+        GU_S1_RARE_PACK_SKU,
         cc.address,
         processor.address,
       );
@@ -267,8 +257,8 @@ describe('Raffle', () => {
         rare.address,
         0,
         referral.address,
-        rareChestSKU,
-        rareChestPrice,
+        GU_S1_RARE_CHEST_SKU,
+        GU_S1_RARE_CHEST_PRICE,
         escrow.address,
         processor.address,
       );
@@ -281,15 +271,14 @@ describe('Raffle', () => {
       if (pause) {
         await rare.pause();
       }
-      await processor.setSellerApproval(chest.address, [rareChestSKU], true);
+      await processor.setSellerApproval(chest.address, [GU_S1_RARE_CHEST_SKU], true);
       const balance = await chest.balanceOf(owner.address);
       expect(balance.toNumber()).toBe(0);
       await processor.setSignerLimit(owner.address, 10000000000);
-      await processor.setSellerApproval(chest.address, [rareChestSKU], true);
-      const value = rareChestPrice * quantity;
+      const value = GU_S1_RARE_CHEST_PRICE * quantity;
       const order = {
         quantity,
-        sku: rareChestSKU,
+        sku: GU_S1_RARE_CHEST_SKU,
         assetRecipient: owner.address,
         changeRecipient: owner.address,
         currency: Currency.USDCents,
@@ -304,7 +293,7 @@ describe('Raffle', () => {
         order,
         params,
       );
-      await chest.purchase(quantity, payment, ZERO_EX);
+      await chest.purchase(quantity, payment, ethers.constants.AddressZero);
       await chest.open(quantity);
       const purchase = await rare.commitments(0);
       expect(purchase.packQuantity.toNumber()).toBe(quantity * 6);

@@ -16,8 +16,8 @@
     "generate-typings": "npx @imtbl/isaac build -o src/contracts",
     "build": "yarn lint:sol && yarn truffle compile && npx truffle-json-compress --keep bytecode && yarn generate-typings && yarn tsc",
     "deploy": "yarn ts-node deployment/deploy.ts",
-    "test": "yarn build && yarn jest __tests__/",
-    "test:watch": "yarn jest __tests__/ --watch",
+    "test": "yarn build && yarn jest __tests__/escrow/batch*",
+    "test:watch": "yarn jest __tests__/escrow/batch* --watch",
     "prepare": "yarn build"
   },
   "author": "",

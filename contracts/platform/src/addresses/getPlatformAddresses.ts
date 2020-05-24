@@ -8,12 +8,17 @@ export function getPlatformAddresses(
   environment: DeploymentEnvironment,
 ): PlatformAddresses {
 
+  const env = book.environments[environment];
+  if (!env || !env.addresses) {
+    throw Error(`Unknown environment: ${environment}`);
+  }
+
   return {
-    beaconAddress: book.environments[environment].addresses['IM_Beacon'],
-    processorAddress: book.environments[environment].addresses['IM_Processor'],
-    escrowAddress: book.environments[environment].addresses['IM_Escrow'],
-    creditCardAddress: book.environments[environment].addresses['IM_Escrow_CreditCard'],
-    ethUSDMakerOracleAddress: book.environments[environment].addresses['IM_Oracle_ETHUSDMaker'],
-    ethUSDMockOracleAddress: book.environments[environment].addresses['IM_Oracle_ETHUSDMock'],
+    beaconAddress: env.addresses['IM_Beacon'],
+    processorAddress: env.addresses['IM_Processor'],
+    escrowAddress: env.addresses['IM_Escrow'],
+    creditCardAddress: env.addresses['IM_Escrow_CreditCard'],
+    ethUSDMakerOracleAddress: env.addresses['IM_Oracle_ETHUSDMaker'],
+    ethUSDMockOracleAddress: env.addresses['IM_Oracle_ETHUSDMock'],
   };
 }

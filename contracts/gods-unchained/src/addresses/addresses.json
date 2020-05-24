@@ -2,19 +2,19 @@
   "environments": {
     "development": {
       "addresses": {
-        "GU_Cards": "0xF96b018E8dE3A229DbaCed8439DF9e3034e263c1",
-        "GU_OpenMinter": "0x5D3AD3561A1235273cbCb4E82fCe63A0073d19be",
-        "GU_Fusing": "0xB48E1B16829C7f5Bd62B76cb878A6Bb1c4625D7A",
-        "GU_PromoFactory": "0xc4CC602A7345518d0B7A84049d4Bc8575eBF3398",
-        "GU_S1_Raffle": "0xA4b3e1659c473623287b2cc13b194705cd792525",
-        "GU_S1_Sale": "0x2C530e4Ecc573F11bd72CF5Fdf580d134d25f15F",
-        "GU_S1_Referral": "0x72D5A2213bfE46dF9FbDa08E22f536aC6Ca8907e",
-        "GU_S1_Epic_Pack": "0x2eBb94Cc79D7D0F1195300aAf191d118F53292a8",
-        "GU_S1_Rare_Pack": "0x5315e44798395d4a952530d131249fE00f554565",
-        "GU_S1_Shiny_Pack": "0xDFF540fE764855D3175DcfAe9d91AE8aEE5C6D6F",
-        "GU_S1_Legendary_Pack": "0xC1bE2c0bb387aa13d5019a9c518E8BC93cb53360",
-        "GU_S1_Rare_Chest": "0xda54ecF5A234D6CD85Ce93A955860834aCA75878",
-        "GU_S1_Legendary_Chest": "0x33DeF1aA867Be09809F3a01CE41d5eC1888846c9"
+        "GU_Cards": "0x1a488d7B42C1Ec1539b78f772BF13eCCB723f5fa",
+        "GU_OpenMinter": "0x53b56c2dB09865a21B3242B8Bd5Fae00a0dFf119",
+        "GU_Fusing": "0x588352A251aAC2EC0e868fC13612Fa2edd604f23",
+        "GU_PromoFactory": "0xdc1e388E6548d8E7D7a3Dfe4BFa6acd33EfB03f1",
+        "GU_S1_Raffle": "0x169fAc5b75C23FfD1807488C54056BacBb99D002",
+        "GU_S1_Sale": "0x086500820BE8974C48108Bf6C732148ED27b7420",
+        "GU_S1_Referral": "0xd3771D58F901C5d50b093501f38659016863Eb6C",
+        "GU_S1_Epic_Pack": "0x786DB8abB27721811aA3F6C1c99dB7A04854a4cd",
+        "GU_S1_Rare_Pack": "0x3666FD6449699337320675B96A0BC75e2c21489b",
+        "GU_S1_Shiny_Pack": "0xB44e19c3C2D3B17A37c266F67fB38E2d7cD88Ff8",
+        "GU_S1_Legendary_Pack": "0x55D8C9bAe15019bFB02b52CB3ceEd05b783ea275",
+        "GU_S1_Rare_Chest": "0x3Da6832fF6BF2aFA2dAEdA1e148A45c647cfB668",
+        "GU_S1_Legendary_Chest": "0x54102fA75B2446837b2c7472d4b533366eCd2811"
       },
       "dependencies": {
         "ZERO_EX_EXCHANGE": "0x48bacb9266a570d521063ef5dd96e61686dbe788",

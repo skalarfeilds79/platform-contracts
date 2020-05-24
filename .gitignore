@@ -14,4 +14,3 @@ yarn-error.log
 contracts/.DS_Store
 lerna-debug.log
 .env
-50.json

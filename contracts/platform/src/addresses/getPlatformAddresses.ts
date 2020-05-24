@@ -6,7 +6,7 @@ export async function getPlatformAddresses(
   environment: DeploymentEnvironment,
 ): Promise<PlatformAddresses> {
 
-  const book = new AddressBook('./addresses.json', environment);
+  const book = new AddressBook('./addresses.json', environment, network);
 
   return {
     beaconAddress: await book.get('IM_Beacon'),

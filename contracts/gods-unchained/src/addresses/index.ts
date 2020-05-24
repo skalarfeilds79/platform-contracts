@@ -12,7 +12,7 @@ export async function getGodsUnchainedAddresses(
   environment: DeploymentEnvironment,
 ): Promise<GodsUnchainedAddresses> {
   
-  const book = new AddressBook('./addresses.json', environment);
+  const book = new AddressBook('./addresses.json', environment, network);
 
   return {
     cardsAddress: await book.get('GU_Cards'),
@@ -37,7 +37,7 @@ export async function getDependencies(
   environment: DeploymentEnvironment,
 ): Promise<DependencyAddresses> {
 
-  const book = new AddressBook('./addresses.json', environment);
+  const book = new AddressBook('./addresses.json', environment, network);
 
   return {
     zeroExExchangeAddress: await book.getDependency('ZERO_EX_EXCHANGE'),

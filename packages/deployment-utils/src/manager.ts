@@ -4,12 +4,7 @@ import { Wallet, ethers } from 'ethers';
 import { AddressBook } from './book';
 import { DeploymentStage } from './stage';
 import { asyncForEach } from '@imtbl/utils';
-
-export const PRIVATE_KEY: string = process.env.PRIVATE_KEY;
-export const DEPLOYMENT_ENVIRONMENT: string = process.env.DEPLOYMENT_ENVIRONMENT;
-export const DEPLOYMENT_NETWORK_ID: number = parseInt(process.env.DEPLOYMENT_NETWORK_ID);
-export const DEPLOYMENT_NETWORK_KEY: string = `${DEPLOYMENT_ENVIRONMENT}`;
-export const RPC_URL: string = process.env.RPC_ENDPOINT;
+import { DeploymentParams } from './params';
 
 const ownershipABI = [
   {
@@ -49,16 +44,18 @@ export class Manager {
   private _wallet: Wallet;
   private _stages: DeploymentStage[] = [];
   private book: AddressBook;
+  private params: DeploymentParams;
 
-  constructor(stages: DeploymentStage[], book: AddressBook) {
-    this._wallet = new Wallet(PRIVATE_KEY, new ethers.providers.JsonRpcProvider(RPC_URL));
+  constructor(stages: DeploymentStage[], book: AddressBook, params: DeploymentParams) {
+    this._wallet = new Wallet(params.private_key, new ethers.providers.JsonRpcProvider(params.rpc_url));
     this._stages = stages;
     this.book = book;
+    this.params = params;
   }
 
   async deploy() {
     try {
-      await this.checkInputParameters();
+      await this.checkInputParameters(this.params);
 
       await asyncForEach(this._stages, async (stage: DeploymentStage, index) => {
         console.log(`Stage: ${index + 1}/${Object.keys(this._stages).length}`);
@@ -94,32 +91,22 @@ export class Manager {
     }
   }
 
-  async checkInputParameters() {
+  async checkInputParameters(params: DeploymentParams) {
     await this.configureIfDevelopment();
 
-    const rpcURL = RPC_URL || '';
-    const privateKey = PRIVATE_KEY || '';
-    const networkId = DEPLOYMENT_NETWORK_ID || 0;
-    const networkConstant = DEPLOYMENT_ENVIRONMENT || '';
-
-    if (!privateKey) {
-      throw Error('.env variable DEPLOYMENT_PRIVATE_KEY is missing');
-    }
-
-    if (!networkId) {
+    if (!params.network_id) {
       throw Error('.env variable DEPLOYMENT_NETWORK_ID is missing');
     }
 
-    if (!networkConstant) {
+    if (!params.environment) {
       throw Error('.env variable DEPLOYMENT_CONSTANT is missing');
     }
 
-    if (!privateKey) {
+    if (!params.private_key) {
       throw Error('Please make sure the private key exists');
     }
 
-    if ((!rpcURL || rpcURL.length === 0) && networkId !== 50) {
-      console.log(networkId);
+    if ((!params.rpc_url || params.rpc_url.length === 0) && params.network_id !== 50) {
       throw Error('.env variable RPC_URL is missing');
     }
   }
@@ -128,8 +115,8 @@ export class Manager {
     await this.book.validate(this._wallet.provider);
   }
 
-  async clearAdddresses(reason: string) {
-    console.log(`\n*** Clearing all addresses for ${DEPLOYMENT_NETWORK_KEY}. Reason: ${reason} ***\n`);
+  async clearAddresses(env: string, reason: string) {
+    console.log(`\n*** Clearing all addresses for ${env}. Reason: ${reason} ***\n`);
     await this.book.clear();
   }
 

@@ -10,3 +10,11 @@ export enum DeploymentEnvironment {
     Staging = 'staging',
     Production = 'production',
 }
+
+export interface DeploymentParams {
+    private_key: string;
+    rpc_url: string;
+    environment: string;
+    network_id: number;
+    network_key: string;
+}

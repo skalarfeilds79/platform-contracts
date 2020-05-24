@@ -1,7 +1,7 @@
 import { Wallet, ethers } from 'ethers';
 import { DeploymentStage } from '@imtbl/deployment-utils';
 import { asyncForEach } from '@imtbl/utils';
-import { Escrow, CreditCardEscrow, Beacon, PurchaseProcessor, TestVendor } from '../src/contracts';
+import { Escrow, CreditCardEscrow, Beacon, PurchaseProcessor } from '../src/contracts';
 
 export const IM_PROCESSOR_LIMIT = 100000000;
 
@@ -37,13 +37,14 @@ export class CoreStage implements DeploymentStage {
     }
 
     const beacon = (await findInstance('IM_Beacon')) || (await this.deployBeacon());
-    await onDeployment('IM_Beacon', beacon, false);
+    console.log('beacon', beacon);
+    onDeployment('IM_Beacon', beacon, false);
 
     const processor = (await findInstance('IM_Processor')) || (await this.deployProcessor());
-    await onDeployment('IM_Processor', processor, false);
+    onDeployment('IM_Processor', processor, false);
 
     const escrow = (await findInstance('IM_Escrow')) || (await this.deployEscrow());
-    await onDeployment('IM_Escrow', escrow, false);
+    onDeployment('IM_Escrow', escrow, false);
 
     const creditCardEscrow =
       (await findInstance('IM_Escrow_CreditCard')) ||

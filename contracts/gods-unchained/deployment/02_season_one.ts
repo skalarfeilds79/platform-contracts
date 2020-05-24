@@ -2,6 +2,7 @@ import { Wallet, ethers } from 'ethers';
 
 import { DeploymentStage } from '@imtbl/deployment-utils';
 import { asyncForEach } from '@imtbl/utils';
+import { getPlatformAddresses } from '@imtbl/platform';
 
 import {
   GU_S1_RARE_CHEST_CAP,
@@ -62,11 +63,6 @@ export class SeasonOneStage implements DeploymentStage {
     const cards = await findInstance('GU_Cards');
     const escrow = await findInstance('IM_Escrow_CreditCard');
     const processor = await findInstance('IM_Processor');
-
-    console.log('beacon', beacon);
-    console.log('cards', cards);
-    console.log('escrow', escrow);
-    console.log('processor', processor);
 
     if (GU_S1_EPIC_PACK_SKU.length === 0) {
       throw '*** No Epic Pack SKU set! Cannot deploy EpicPack. ***';
@@ -284,7 +280,7 @@ export class SeasonOneStage implements DeploymentStage {
       'GU:S1: Rare Chest',
       'GUS1RC',
       rarePack,
-      RARE_CHEST_CAP,
+      GU_S1_RARE_CHEST_CAP,
       referral,
       GU_S1_RARE_CHEST_SKU,
       GU_S1_RARE_CHEST_PRICE,
@@ -307,7 +303,7 @@ export class SeasonOneStage implements DeploymentStage {
       'GU:S1: Legendary Chest',
       'GUS1LC',
       legendaryPack,
-      LEGENDARY_CHEST_CAP,
+      GU_S1_LEGENDARY_CHEST_CAP,
       referral,
       GU_S1_LEGENDARY_CHEST_SKU,
       GU_S1_LEGENDARY_CHEST_PRICE,

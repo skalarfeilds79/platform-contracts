@@ -1,0 +1,38 @@
+{
+  "environments": {
+    "production": {
+      "addresses": {
+        "LegacyCards": "0x6EbeAf8e8E946F0716E6533A6f2cefc83f60e8Ab",
+        "Cards": "0x0e3a2a1f2146d86a604adc220b4967a898d7fe07",
+        "Forwarder": "0xb04239b53806ab31141e6cd47c63fb3480cac908",
+        "Fusing": "0x7c633611d9199Faff68bCE5c5Ad97d3514319B77",
+        "S3PromoFactory": "0x28A54b2b798Bb8b8751D1Cd423A435472a009272",
+        "S5PromoFactory": "0x8eB207F54846614Aebe3335DF2BD351823a04316",
+        "Forge": "0x604b7a4a8ad3c4bc876c660a74b1a6e147b156c0",
+        "BLACKLIST_Fusing": "0x833EA312aC6Ef27d2ca40BF247B0c5edbe991314",
+        "EtherbotsMigration": "0xa777967d22043BE43f8fAd3552AD486f3765FD29",
+        "ChimeraMigration": "0xc0f1eE9884Be19c4bB2e31F505f7a18FdB9c8025"
+      },
+      "dependencies": {
+        "WETH": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+        "ZERO_EX_EXCHANGE": "0x080bf510fcbf18b91105470639e9561022937712",
+        "ZERO_EX_ERC20_PROXY": "0x95e6f48254609a6ee006f7d493c8e5fb97094cef",
+        "ZERO_EX_ERC721_PROXY": "0xefc70a1b18c432bdc64b596838b4d138f6bc6cad"
+      }
+    },
+    "development": {
+      "addresses": {
+        "GU_Cards": "0xe092f6C9fDC20D23207E96A9845E0989ab94385c",
+        "GU_OpenMinter": "0x169fAc5b75C23FfD1807488C54056BacBb99D002",
+        "GU_Fusing": "0x086500820BE8974C48108Bf6C732148ED27b7420",
+        "GU_PromoFactory": "0xd3771D58F901C5d50b093501f38659016863Eb6C"
+      },
+      "dependencies": {
+        "ZERO_EX_EXCHANGE": "0x48bacb9266a570d521063ef5dd96e61686dbe788",
+        "ZERO_EX_ERC20_PROXY": "0x1dc4c1cefef38a777b15aa20260a54e584b16c48",
+        "ZERO_EX_ERC721_PROXY": "0x1d7022f5b17d2f8b695918fb48fa1089c9f85401",
+        "WETH": "0x0b1ba0af832d7c05fd64161e0db78e85978e8082"
+      }
+    }
+  }
+}

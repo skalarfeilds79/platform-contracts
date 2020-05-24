@@ -14,6 +14,7 @@ import {
   GU_S1_RARE_PACK_SKU,
   GU_S1_SHINY_PACK_SKU,
   GU_S1_LEGENDARY_PACK_SKU,
+  GU_S1_MAX_MINT,
 } from './constants';
 
 import {
@@ -195,6 +196,7 @@ export class SeasonOneStage implements DeploymentStage {
     console.log('** Deploying EpicPack **');
     const epic = await EpicPack.awaitDeployment(
       this.wallet,
+      GU_S1_MAX_MINT,
       raffle,
       beacon,
       cards,
@@ -219,6 +221,7 @@ export class SeasonOneStage implements DeploymentStage {
     console.log('** Deploying RarePack **');
     const rare = await RarePack.awaitDeployment(
       this.wallet,
+      GU_S1_MAX_MINT,
       raffle,
       beacon,
       cards,
@@ -243,6 +246,7 @@ export class SeasonOneStage implements DeploymentStage {
     console.log('** Deploying ShinyPack **');
     const shiny = await ShinyPack.awaitDeployment(
       this.wallet,
+      GU_S1_MAX_MINT,
       raffle,
       beacon,
       cards,
@@ -267,6 +271,7 @@ export class SeasonOneStage implements DeploymentStage {
     console.log('** Deploying LegendaryPack **');
     const legendary = await LegendaryPack.awaitDeployment(
       this.wallet,
+      GU_S1_MAX_MINT,
       raffle,
       beacon,
       cards,

@@ -3,7 +3,7 @@ import { ethers } from 'ethers';
 
 export const GU_S1_LEGENDARY_CHEST_CAP = 3250;
 export const GU_S1_RARE_CHEST_CAP = 8000;
-
+export const GU_S1_MAX_MINT = 50;
 export const GU_S1_RARE_PACK_PRICE = 249;
 export const GU_S1_EPIC_PACK_PRICE = 699;
 export const GU_S1_LEGENDARY_PACK_PRICE = 2499;

@@ -22,6 +22,7 @@
         "build:all": "yarn build",
         "build": "lerna run build --parallel",
         "test": "lerna run test --parallel",
+        "clean": "lerna run clean --parallel",
         "ci:clear-addresses": "node scripts/clearDevAddresses"
     },
     "dependencies": {

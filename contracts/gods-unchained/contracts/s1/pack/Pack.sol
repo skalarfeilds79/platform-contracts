@@ -101,9 +101,9 @@ contract Pack is IPack, S1Vendor, RarityProvider {
 
     function _escrowCards(uint256 _commitmentID, Commitment memory _commitment) internal {
 
-        uint cardCount = _commitment.packQuantity * 5;
+        uint cardCount = _commitment.packQuantity.mul(5);
         uint low = cards.nextBatch();
-        uint high = low + cardCount;
+        uint high = low.add(cardCount);
 
         Escrow.Vault memory vault = Escrow.Vault({
             player: _commitment.recipient,
@@ -153,7 +153,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         uint totalTickets = 0;
         for (uint i = 0; i < _commitment.ticketQuantity; i++) {
             uint16 qty = _getTicketsInPack(i, randomness);
-            totalTickets += qty;
+            totalTickets = totalTickets.add(qty);
         }
 
         Escrow.Vault memory vault = Escrow.Vault({
@@ -271,7 +271,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         uint totalTickets = 0;
         for (uint i = 0; i < _commitment.ticketQuantity; i++) {
             uint16 qty = _getTicketsInPack(i, randomness);
-            totalTickets += qty;
+            totalTickets = totalTickets.add(qty);
             ticketQuantities[i] = qty;
         }
         raffle.mint(_recipient, totalTickets);
@@ -296,7 +296,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
             (protos[i], qualities[i]) = _getCardDetails(i, randomness);
         }
         uint256 lowTokenID = cards.mintCards(_recipient, protos, qualities);
-        uint256 highTokenID = lowTokenID + protos.length;
+        uint256 highTokenID = lowTokenID.add(protos.length);
 
         emit PackCardsMinted(_commitmentID, lowTokenID, highTokenID);
         emit PaymentERC721RangeMinted(
@@ -317,11 +317,11 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         uint256 commitBlock = beacon.commit(0);
         Commitment memory commitment = Commitment({
             commitBlock: commitBlock,
-            packQuantity: _quantity * 6,
+            packQuantity: _quantity.mul(6),
             recipient: _recipient,
             escrowFor: 0,
             paymentID: 0,
-            ticketQuantity: paused() ? 0 : _quantity * 6
+            ticketQuantity: paused() ? 0 : _quantity.mul(6)
         });
 
         commitments[commitmentID] = commitment;

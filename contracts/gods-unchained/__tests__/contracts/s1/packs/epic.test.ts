@@ -9,7 +9,7 @@ import {
 } from '../../../../src/contracts';
 import { ethers } from 'ethers';
 import { keccak256 } from 'ethers/utils';
-import { PurchaseProcessor, CreditCardEscrow, Escrow, Beacon } from '@imtbl/platform/src/contracts';
+import { PurchaseProcessor, CreditCardEscrow, Escrow, Beacon } from '@imtbl/platform';
 import { getSignedPayment, Currency, Order } from '@imtbl/platform';
 
 import {

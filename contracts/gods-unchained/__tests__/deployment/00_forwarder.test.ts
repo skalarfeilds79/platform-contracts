@@ -15,11 +15,11 @@ const wallet: Wallet = new ethers.Wallet(config.PRIVATE_KEY, provider);
 
 describe('00_forwarder', async () => {
 
-  const dependencyAddresses = await getDependencies(
+  const dependencyAddresses = getDependencies(
     config.DEPLOYMENT_NETWORK_ID,
     config.DEPLOYMENT_ENVIRONMENT,
   );
-  const godsUnchainedAddresses = await getGodsUnchainedAddresses(
+  const godsUnchainedAddresses = getGodsUnchainedAddresses(
     config.DEPLOYMENT_NETWORK_ID,
     config.DEPLOYMENT_ENVIRONMENT,
   );

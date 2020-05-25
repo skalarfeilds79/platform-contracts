@@ -148,4 +148,12 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
         emit TradabilityChanged(true);
     }
 
+    /** @dev Update pack contract in case of upgrade
+     *
+     * @param _pack new pack contract to use
+     */
+    function setPack(IPack _pack) external onlyOwner {
+        pack = _pack;
+    }
+
 }

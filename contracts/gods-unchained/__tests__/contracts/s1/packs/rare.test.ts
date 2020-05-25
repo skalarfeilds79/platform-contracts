@@ -5,22 +5,20 @@ import {
   Referral,
   RarePack,
   Cards,
-  Chest,
-  Raffle
+  Chest
 } from '../../../../src/contracts';
 
 import { parseLogs } from '@imtbl/utils';
 import { rares, epics, legendaries } from './protos';
 import { ethers } from 'ethers';
-import { keccak256 } from 'ethers/utils';
-import { PurchaseProcessor, CreditCardEscrow, Escrow, Beacon, getSignedPayment, Currency } from '@imtbl/platform';
+import { getSignedPayment, Currency } from '@imtbl/platform';
 import { GU_S1_RARE_PACK_SKU, GU_S1_RARE_PACK_PRICE, GU_S1_RARE_CHEST_SKU, GU_S1_RARE_CHEST_PRICE } from '../../../../deployment/constants';
+import { deployRarePack, deployStandards, deployRareChest, StandardContracts } from '../utils';
 
 jest.setTimeout(600000);
 
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
-const MAX_MINT = 5;
 
 ethers.errors.setLogLevel('error');
 
@@ -38,76 +36,29 @@ describe('Rare Pack', () => {
 
   describe('deployment', () => {
 
-    let beacon: Beacon;
-    let referral: Referral;
-    let processor: PurchaseProcessor;
-    let raffle: Raffle;
-    let escrow: Escrow;
-    let cc: CreditCardEscrow;
+    let shared: StandardContracts;
 
-    beforeAll(async () => {
-      escrow = await Escrow.deploy(owner);
-      cc = await CreditCardEscrow.deploy(owner, escrow.address, ethers.constants.AddressZero, 100, ethers.constants.AddressZero, 100);
-      beacon = await Beacon.deploy(owner);
-      referral = await Referral.deploy(owner, 90, 10);
-      processor = await PurchaseProcessor.deploy(owner, owner.address);
-      raffle = await Raffle.deploy(owner);
+    beforeAll(async() => {
+      shared = await deployStandards(owner);
     });
 
     it('should deploy rare pack', async () => {
-      await RarePack.deploy(
-        owner,
-        MAX_MINT,
-        raffle.address,
-        beacon.address,
-        ethers.constants.AddressZero,
-        referral.address,
-        GU_S1_RARE_PACK_SKU,
-        cc.address,
-        processor.address,
-      );
+      await deployRarePack(owner, shared);
     });
+
   });
 
   describe('purchase', () => {
 
-    let beacon: Beacon;
-    let referral: Referral;
-    let processor: PurchaseProcessor;
-    let raffle: Raffle;
-    let escrow: Escrow;
-    let cc: CreditCardEscrow;
-    let cards: Cards;
+    let shared: StandardContracts;
     let rare: RarePack;
 
-    beforeEach(async () => {
-      escrow = await Escrow.deploy(owner);
-      cc = await CreditCardEscrow.deploy(
-        owner,
-        escrow.address,
-        owner.address,
-        100,
-        owner.address,
-        100,
-      );
-      beacon = await Beacon.deploy(owner);
-      referral = await Referral.deploy(owner, 90, 10);
-      processor = await PurchaseProcessor.deploy(owner, owner.address);
-      cards = await Cards.deploy(owner, 1250, 'Cards', 'CARD');
-      raffle = await Raffle.deploy(owner);
-      rare = await RarePack.deploy(
-        owner,
-        MAX_MINT,
-        raffle.address,
-        beacon.address,
-        cards.address,
-        referral.address,
-        GU_S1_RARE_PACK_SKU,
-        cc.address,
-        processor.address,
-      );
-      await processor.setSellerApproval(rare.address, [GU_S1_RARE_PACK_SKU], true);
-      await processor.setSignerLimit(owner.address, 1000000000000000);
+    beforeAll(async() => {
+      shared = await deployStandards(owner);
+    });
+
+    beforeEach(async() => {
+      rare = await deployRarePack(owner, shared);
     });
 
     async function purchasePacks(quantity: number) {
@@ -122,7 +73,7 @@ describe('Rare Pack', () => {
       };
       const params = { escrowFor: 0, nonce: 0, value: GU_S1_RARE_PACK_PRICE * quantity };
       const payment = await getSignedPayment(
-         owner, processor.address, rare.address, order, params
+         owner, shared.processor.address, rare.address, order, params
        );
       const tx = await rare.purchase(quantity, payment, ethers.constants.AddressZero);
       const receipt = await tx.wait();
@@ -143,46 +94,15 @@ describe('Rare Pack', () => {
 
   describe('mint', () => {
 
-    let beacon: Beacon;
-    let referral: Referral;
-    let processor: PurchaseProcessor;
-    let raffle: Raffle;
-    let escrow: Escrow;
-    let cc: CreditCardEscrow;
-    let cards: Cards;
+    let shared: StandardContracts;
     let rare: RarePack;
 
-    beforeEach(async () => {
-      escrow = await Escrow.deploy(owner);
-      cc = await CreditCardEscrow.deploy(
-        owner,
-        escrow.address,
-        owner.address,
-        100,
-        owner.address,
-        100,
-      );
-      beacon = await Beacon.deploy(owner);
-      referral = await Referral.deploy(owner, 90, 10);
-      processor = await PurchaseProcessor.deploy(owner, owner.address);
-      cards = await Cards.deploy(owner, 1250, 'Cards', 'CARD');
-      raffle = await Raffle.deploy(owner);
-      rare = await RarePack.deploy(
-        owner,
-        MAX_MINT,
-        raffle.address,
-        beacon.address,
-        cards.address,
-        referral.address,
-        GU_S1_RARE_PACK_SKU,
-        cc.address,
-        processor.address,
-      );
-      await processor.setSellerApproval(rare.address, [GU_S1_RARE_PACK_SKU], true);
-      await processor.setSignerLimit(owner.address, 1000000000000000);
-      await cards.startSeason('S1', 800, 1000);
-      await cards.addFactory(rare.address, 1);
-      await raffle.setMinterApproval(rare.address, true);
+    beforeAll(async() => {
+      shared = await deployStandards(owner);
+    });
+
+    beforeEach(async() => {
+      rare = await deployRarePack(owner, shared);
     });
 
     async function purchase(quantity: number, escrowFor: number) {
@@ -196,7 +116,7 @@ describe('Rare Pack', () => {
         currency: Currency.USDCents,
       };
       const params = { escrowFor, nonce: 0, value: GU_S1_RARE_PACK_PRICE * quantity };
-      const payment = await getSignedPayment(owner, processor.address, rare.address, order, params);
+      const payment = await getSignedPayment(owner, shared.processor.address, rare.address, order, params);
       await rare.purchase(quantity, payment, ethers.constants.AddressZero);
     }
 
@@ -206,7 +126,7 @@ describe('Rare Pack', () => {
       const receipt = await tx.wait();
       console.log(description, receipt.gasUsed.toNumber());
       // we only care about events from the core contract
-      const logs = receipt.logs.filter(log => log.address === cards.address);
+      const logs = receipt.logs.filter(log => log.address === shared.cards.address);
       const parsed = parseLogs(logs, Cards.ABI);
       // the last event will be the minted event
       const log = parsed[parsed.length - 1];
@@ -241,63 +161,22 @@ describe('Rare Pack', () => {
 
   describe('openChest', () => {
 
-    let beacon: Beacon;
-    let referral: Referral;
-    let processor: PurchaseProcessor;
-    let raffle: Raffle;
-    let escrow: Escrow;
-    let cc: CreditCardEscrow;
-    let cards: Cards;
-    let chest: Chest;
+    let shared: StandardContracts;
     let rare: RarePack;
+    let chest: Chest;
 
-    beforeEach(async () => {
-      escrow = await Escrow.deploy(owner);
-      cc = await CreditCardEscrow.deploy(
-        owner,
-        escrow.address,
-        owner.address,
-        100,
-        owner.address,
-        100,
-      );
-      beacon = await Beacon.deploy(owner);
-      referral = await Referral.deploy(owner, 90, 10);
-      processor = await PurchaseProcessor.deploy(owner, owner.address);
-      cards = await Cards.deploy(owner, 1250, 'Cards', 'CARD');
-      raffle = await Raffle.deploy(owner);
-      rare = await RarePack.deploy(
-        owner,
-        MAX_MINT,
-        raffle.address,
-        beacon.address,
-        cards.address,
-        referral.address,
-        GU_S1_RARE_PACK_SKU,
-        cc.address,
-        processor.address,
-      );
-      await raffle.setMinterApproval(rare.address, true);
-      chest = await Chest.deploy(
-        owner,
-        'GU: S1 Rare Chest',
-        'GU:1:RC',
-        rare.address,
-        0,
-        referral.address,
-        GU_S1_RARE_CHEST_SKU,
-        GU_S1_RARE_CHEST_PRICE,
-        escrow.address,
-        processor.address,
-      );
-      await rare.setChest(chest.address);
+    beforeAll(async() => {
+      shared = await deployStandards(owner);
+    });
+
+    beforeEach(async() => {
+      rare = await deployRarePack(owner, shared);
+      chest = await deployRareChest(owner, rare, shared);
     });
 
     async function purchaseAndOpenChests(quantity: number) {
-      await processor.setSellerApproval(chest.address, [GU_S1_RARE_CHEST_SKU], true);
       const balance = await chest.balanceOf(owner.address);
       expect(balance.toNumber()).toBe(0);
-      await processor.setSignerLimit(owner.address, 10000000000);
       const value = GU_S1_RARE_CHEST_PRICE * quantity;
       const order = {
         quantity,
@@ -311,7 +190,7 @@ describe('Rare Pack', () => {
       const params = { value, escrowFor: 0, nonce: 0 };
       const payment = await getSignedPayment(
         owner,
-        processor.address,
+        shared.processor.address,
         chest.address,
         order,
         params,
@@ -332,8 +211,6 @@ describe('Rare Pack', () => {
 
     it('should create cards from an opened chest', async () => {
       await purchaseAndOpenChests(1);
-      await cards.startSeason('S1', 800, 1000);
-      await cards.addFactory(rare.address, 1);
       await rare.mint(0);
     });
   });

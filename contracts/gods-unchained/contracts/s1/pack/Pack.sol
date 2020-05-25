@@ -130,7 +130,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
 
     function _escrowCards(uint256 _commitmentID, Commitment memory _commitment) internal {
 
-        (uint start, uint end) = _getPacksBoundaries(_commitment);
+        (uint start, uint end) = _getBoundaries(_commitment.packsMinted, _commitment.packQuantity);
         uint low = cards.nextBatch();
         uint len = end.sub(start);
         uint high = low.add(len);
@@ -168,17 +168,10 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         return uint256(hashed);
     }
 
-    function _getTicketsBoundaries(Commitment memory _commitment) internal view returns (uint256, uint256) {
-        uint start = _commitment.ticketsMinted;
-        uint remaining = _commitment.ticketQuantity.sub(_commitment.ticketsMinted);
-        uint end = remaining > maxMint ? _commitment.ticketsMinted.add(maxMint) : _commitment.ticketQuantity;
-        return (start, end);
-    }
-
-    function _getPacksBoundaries(Commitment memory _commitment) internal view returns (uint256, uint256) {
-        uint start = _commitment.packsMinted;
-        uint remaining = _commitment.packQuantity.sub(_commitment.packsMinted);
-        uint end = remaining > maxMint ? _commitment.packsMinted.add(maxMint) : _commitment.packQuantity;
+    function _getBoundaries(uint256 _minted, uint256 _total) internal view returns (uint256, uint256) {
+        uint start = _minted;
+        uint remaining = _total.sub(_minted);
+        uint end = remaining > maxMint ? _minted.add(maxMint) : _total;
         return (start, end);
     }
 
@@ -188,7 +181,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
     )
         internal
     {
-        (uint start, uint end) = _getTicketsBoundaries(_commitment);
+        (uint start, uint end) = _getBoundaries(_commitment.ticketsMinted, _commitment.ticketQuantity);
         uint randomness = _getRandomness(_commitmentID, _commitment);
         uint totalTickets = 0;
         for (uint i = start; i < end; i++) {
@@ -280,7 +273,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         address _recipient
     ) internal {
 
-        (uint start, uint end) = _getTicketsBoundaries(_commitment);
+        (uint start, uint end) = _getBoundaries(_commitment.ticketsMinted, _commitment.ticketQuantity);
         uint len = end.sub(start);
         if (len == 0) {
             return;
@@ -315,7 +308,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         address _recipient
     ) internal {
 
-        (uint start, uint end) = _getPacksBoundaries(_commitment);
+        (uint start, uint end) = _getBoundaries(_commitment.packsMinted, _commitment.packQuantity);
         uint len = end.sub(start);
         if (len == 0) {
             return;

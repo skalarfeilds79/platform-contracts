@@ -13,7 +13,7 @@ const wallet: Wallet = new ethers.Wallet(config.PRIVATE_KEY, provider);
 
 describe('01_core', async () => {
 
-  const addressBook = await getGodsUnchainedAddresses(
+  const addressBook = getGodsUnchainedAddresses(
     config.DEPLOYMENT_NETWORK_ID,
     config.DEPLOYMENT_ENVIRONMENT,
   );

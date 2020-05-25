@@ -13,6 +13,7 @@ export class CoreStage implements DeploymentStage {
   constructor(params: DeploymentParams) {
     this.wallet = new ethers.Wallet(params.private_key, new ethers.providers.JsonRpcProvider(params.rpc_url));
     this.networkId = params.network_id;
+    this.env = params.environment;
   }
 
   async deploy(

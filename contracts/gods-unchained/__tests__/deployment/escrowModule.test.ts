@@ -20,17 +20,15 @@ jest.setTimeout(60000);
 
 const config = require('dotenv').config({ path: '../../.env' }).parsed;
 
-
-
 describe('EscrowModule', async () => {
   const [ownerWallet, userWallet, treasuryWallet] = generatedWallets(provider);
 
-  const guAddressBook = await getGodsUnchainedAddresses(
+  const guAddressBook = getGodsUnchainedAddresses(
     config.DEPLOYMENT_NETWORK_ID,
     config.DEPLOYMENT_ENVIRONMENT,
   );
   
-  const platformAddressBook = await getPlatformAddresses(
+  const platformAddressBook = getPlatformAddresses(
     config.DEPLOYMENT_NETWORK_ID,
     config.DEPLOYMENT_ENVIRONMENT,
   );

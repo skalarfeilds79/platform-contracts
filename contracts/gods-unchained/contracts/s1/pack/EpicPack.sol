@@ -12,6 +12,7 @@ contract EpicPack is Pack {
         ICards _cards,
         IReferral _referral,
         bytes32 _sku,
+        uint256 _price,
         CreditCardEscrow _escrow,
         PurchaseProcessor _pay
     ) public Pack(
@@ -21,7 +22,7 @@ contract EpicPack is Pack {
         _cards,
         _referral,
         _sku,
-        699,
+        _price,
         _escrow,
         _pay
     ) {}

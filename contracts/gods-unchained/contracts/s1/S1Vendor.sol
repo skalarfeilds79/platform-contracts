@@ -96,6 +96,8 @@ contract S1Vendor is IVendor, Pausable, Ownable {
             changeRecipient: address(uint160(address(this)))
         });
 
+        cap.update(order.totalPrice - order.alreadyPaid);
+
         PurchaseProcessor.Receipt memory receipt = pay.process.value(msg.value)(order, _payment);
 
         // if the user is paying in ETH, we can pay affiliate fees instantly!
@@ -114,8 +116,6 @@ contract S1Vendor is IVendor, Pausable, Ownable {
             // solium-disable-next-line
             msg.sender.call.value(address(this).balance)("");
         }
-
-        cap.update(totalPrice);
 
         return receipt;
     }

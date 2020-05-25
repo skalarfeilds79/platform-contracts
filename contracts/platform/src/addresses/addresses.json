@@ -2,10 +2,10 @@
   "environments": {
     "development": {
       "addresses": {
-        "IM_Beacon": "0x96EccEa4E124322a6aA0a004da1b91d9a3024C73",
-        "IM_Processor": "0xDDb2B738682AD218eD87CF6f3a466798644e5d8D",
-        "IM_Escrow": "0xd2aa8d362b1CaA68553642831b86Abb3D24B4579",
-        "IM_Escrow_CreditCard": "0x434f1EB003B78c0EAbe034313F1aFf47920e0860"
+        "IM_Beacon": "0x1dC4c1cEFEF38a777b15aA20260a54E584b16C48",
+        "IM_Processor": "0x1D7022f5B17d2F8B695918FB48fa1089C9f85401",
+        "IM_Escrow": "0x871DD7C2B4b25E1Aa18728e9D5f2Af4C4e431f5c",
+        "IM_Escrow_CreditCard": "0x0B1ba0af832d7C05fD64161E0Db78E85978E8082"
       },
       "dependencies": {}
     }

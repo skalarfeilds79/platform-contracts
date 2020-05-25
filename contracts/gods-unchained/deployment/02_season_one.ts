@@ -15,6 +15,10 @@ import {
   GU_S1_SHINY_PACK_SKU,
   GU_S1_LEGENDARY_PACK_SKU,
   GU_S1_MAX_MINT,
+  GU_S1_RARE_PACK_PRICE,
+  GU_S1_SHINY_PACK_PRICE,
+  GU_S1_LEGENDARY_PACK_PRICE,
+  GU_S1_EPIC_PACK_PRICE,
 } from './constants';
 
 import {
@@ -81,7 +85,6 @@ export class SeasonOneStage implements DeploymentStage {
         beacon,
         cards,
         referral,
-        GU_S1_EPIC_PACK_SKU,
         escrow,
         processor,
       ));
@@ -97,7 +100,6 @@ export class SeasonOneStage implements DeploymentStage {
         beacon,
         cards,
         referral,
-        GU_S1_RARE_PACK_SKU,
         escrow,
         processor,
       ));
@@ -113,7 +115,6 @@ export class SeasonOneStage implements DeploymentStage {
         beacon,
         cards,
         referral,
-        GU_S1_SHINY_PACK_SKU,
         escrow,
         processor,
       ));
@@ -129,7 +130,6 @@ export class SeasonOneStage implements DeploymentStage {
         beacon,
         cards,
         referral,
-        GU_S1_LEGENDARY_PACK_SKU,
         escrow,
         processor,
       ));
@@ -189,7 +189,6 @@ export class SeasonOneStage implements DeploymentStage {
     beacon: string,
     cards: string,
     referral: string,
-    sku: string,
     escrow: string,
     processor: string,
   ): Promise<string> {
@@ -201,7 +200,8 @@ export class SeasonOneStage implements DeploymentStage {
       beacon,
       cards,
       referral,
-      sku,
+      GU_S1_EPIC_PACK_SKU,
+      GU_S1_EPIC_PACK_PRICE,
       escrow,
       processor,
       { nonce: await this.wallet.getTransactionCount() },
@@ -214,7 +214,6 @@ export class SeasonOneStage implements DeploymentStage {
     beacon: string,
     cards: string,
     referral: string,
-    sku: string,
     escrow: string,
     processor: string,
   ): Promise<string> {
@@ -226,7 +225,8 @@ export class SeasonOneStage implements DeploymentStage {
       beacon,
       cards,
       referral,
-      sku,
+      GU_S1_RARE_PACK_SKU,
+      GU_S1_RARE_PACK_PRICE,
       escrow,
       processor,
       { nonce: await this.wallet.getTransactionCount() },
@@ -239,7 +239,6 @@ export class SeasonOneStage implements DeploymentStage {
     beacon: string,
     cards: string,
     referral: string,
-    sku: string,
     escrow: string,
     processor: string,
   ): Promise<string> {
@@ -251,7 +250,8 @@ export class SeasonOneStage implements DeploymentStage {
       beacon,
       cards,
       referral,
-      sku,
+      GU_S1_SHINY_PACK_SKU,
+      GU_S1_SHINY_PACK_PRICE,
       escrow,
       processor,
       { nonce: await this.wallet.getTransactionCount() },
@@ -264,7 +264,6 @@ export class SeasonOneStage implements DeploymentStage {
     beacon: string,
     cards: string,
     referral: string,
-    sku: string,
     escrow: string,
     processor: string,
   ): Promise<string> {
@@ -276,7 +275,8 @@ export class SeasonOneStage implements DeploymentStage {
       beacon,
       cards,
       referral,
-      sku,
+      GU_S1_LEGENDARY_PACK_SKU,
+      GU_S1_LEGENDARY_PACK_PRICE,
       escrow,
       processor,
       { nonce: await this.wallet.getTransactionCount() },

@@ -26,7 +26,7 @@ const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
 ethers.errors.setLogLevel('error');
 
-describe('EpicPack', () => {
+describe('Multi-Mint Pack', () => {
 
   const [owner] = generatedWallets(provider);
 
@@ -69,7 +69,8 @@ describe('EpicPack', () => {
         owner,
         MAX_MINT,
         raffle.address,
-        beacon.address, ZERO_EX, referral.address, GU_S1_EPIC_PACK_SKU,
+        beacon.address, ZERO_EX, referral.address,
+        GU_S1_EPIC_PACK_SKU, GU_S1_EPIC_PACK_PRICE,
         cc.address, processor.address
       );
     });
@@ -108,7 +109,8 @@ describe('EpicPack', () => {
         owner,
         MAX_MINT,
         raffle.address,
-        beacon.address, cards.address, referral.address, GU_S1_EPIC_PACK_SKU,
+        beacon.address, cards.address, referral.address,
+        GU_S1_EPIC_PACK_SKU, GU_S1_EPIC_PACK_PRICE,
         cc.address, processor.address
       );
       await processor.setOracle(oracle.address);
@@ -184,7 +186,8 @@ describe('EpicPack', () => {
         owner,
         MAX_MINT,
         raffle.address,
-        beacon.address, cards.address, referral.address, GU_S1_EPIC_PACK_SKU,
+        beacon.address, cards.address, referral.address,
+        GU_S1_EPIC_PACK_SKU, GU_S1_EPIC_PACK_PRICE,
         cc.address, processor.address
       );
       await cards.startSeason("Season One", 800, 1000);

@@ -35,10 +35,10 @@ export function getGodsUnchainedAddresses(
   };
 }
 
-export async function getDependencies(
+export function getDependencies(
   network: DeploymentNetwork,
   environment: DeploymentEnvironment,
-): Promise<DependencyAddresses> {
+): DependencyAddresses {
 
   const env = book['environments'][environment]
   if (!env || !env['dependencies']) {

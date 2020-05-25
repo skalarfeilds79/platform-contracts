@@ -8,16 +8,16 @@ import {
   Raffle
 } from '../../../../src/contracts';
 import { ethers } from 'ethers';
-import { PurchaseProcessor, CreditCardEscrow, Escrow, Beacon, getSignedPayment, Currency } from '@imtbl/platform';
+import { getSignedPayment, Currency } from '@imtbl/platform';
 import { parseLogs } from '@imtbl/utils';
 import { rares, epics, legendaries } from './protos';
 import { GU_S1_SHINY_PACK_PRICE, GU_S1_SHINY_PACK_SKU } from '../../../../deployment/constants';
+import { deployStandards, deployShinyPack, StandardContracts } from '../utils';
 
 jest.setTimeout(600000);
 
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
-const MAX_MINT = 5;
 
 ethers.errors.setLogLevel('error');
 
@@ -36,76 +36,29 @@ describe('Shiny Pack', () => {
 
   describe('deployment', () => {
 
-    let beacon: Beacon;
-    let referral: Referral;
-    let processor: PurchaseProcessor;
-    let raffle: Raffle;
-    let escrow: Escrow;
-    let cc: CreditCardEscrow;
+    let shared: StandardContracts;
 
     beforeAll(async() => {
-      escrow = await Escrow.deploy(owner);
-      cc = await CreditCardEscrow.deploy(
-        owner,
-        escrow.address,
-        ethers.constants.AddressZero,
-        100,
-        ethers.constants.AddressZero,
-        100
-      );
-      beacon = await Beacon.deploy(owner);
-      referral = await Referral.deploy(owner, 90, 10);
-      processor = await PurchaseProcessor.deploy(owner, owner.address);
-      raffle = await Raffle.deploy(owner);
+      shared = await deployStandards(owner);
     });
 
-    it('should deploy rare pack', async () => {
-      await ShinyPack.deploy(
-        owner,
-        MAX_MINT,
-        raffle.address,
-        beacon.address, ethers.constants.AddressZero, referral.address, GU_S1_SHINY_PACK_SKU,
-        cc.address, processor.address
-      );
+    it('should deploy shiny pack', async () => {
+      await deployShinyPack(owner, shared);
     });
 
   });
 
   describe('purchase', () => {
 
-    let beacon: Beacon;
-    let referral: Referral;
-    let processor: PurchaseProcessor;
-    let raffle: Raffle;
-    let escrow: Escrow;
-    let cc: CreditCardEscrow;
-    let cards: Cards;
+    let shared: StandardContracts;
     let shiny: ShinyPack;
 
+    beforeAll(async() => {
+      shared = await deployStandards(owner);
+    });
+
     beforeEach(async() => {
-      escrow = await Escrow.deploy(owner);
-      cc = await CreditCardEscrow.deploy(
-        owner,
-        escrow.address,
-        owner.address,
-        100,
-        owner.address,
-        100
-      );
-      beacon = await Beacon.deploy(owner);
-      referral = await Referral.deploy(owner, 90, 10);
-      processor = await PurchaseProcessor.deploy(owner, owner.address);
-      cards = await Cards.deploy(owner, 1250, 'Cards', 'CARD');
-      raffle = await Raffle.deploy(owner);
-      shiny = await ShinyPack.deploy(
-        owner,
-        MAX_MINT,
-        raffle.address,
-        beacon.address, cards.address, referral.address, GU_S1_SHINY_PACK_SKU,
-        cc.address, processor.address
-      );
-      await processor.setSellerApproval(shiny.address, [GU_S1_SHINY_PACK_SKU], true);
-      await processor.setSignerLimit(owner.address, 1000000000000000);
+      shiny = await deployShinyPack(owner, shared);
     });
 
     async function purchasePacks(quantity: number) {
@@ -119,7 +72,7 @@ describe('Shiny Pack', () => {
       };
       const params = { escrowFor: 0, nonce: 0, value: GU_S1_SHINY_PACK_PRICE * quantity };
       const payment = await getSignedPayment(
-         owner, processor.address, shiny.address, order, params
+         owner, shared.processor.address, shiny.address, order, params
        );
       const tx = await shiny.purchase(quantity, payment, ethers.constants.AddressZero);
       const receipt = await tx.wait();
@@ -140,38 +93,15 @@ describe('Shiny Pack', () => {
 
   describe('mint', () => {
 
-    let beacon: Beacon;
-    let referral: Referral;
-    let processor: PurchaseProcessor;
-    let raffle: Raffle;
-    let escrow: Escrow;
-    let cc: CreditCardEscrow;
-    let cards: Cards;
+    let shared: StandardContracts;
     let shiny: ShinyPack;
 
+    beforeAll(async() => {
+      shared = await deployStandards(owner);
+    });
+
     beforeEach(async() => {
-      escrow = await Escrow.deploy(owner);
-      cc = await CreditCardEscrow.deploy(
-        owner,
-        escrow.address, owner.address, 100, owner.address, 100
-      );
-      beacon = await Beacon.deploy(owner);
-      referral = await Referral.deploy(owner, 90, 10);
-      processor = await PurchaseProcessor.deploy(owner, owner.address);
-      cards = await Cards.deploy(owner, 1250, 'Cards', 'CARD');
-      raffle = await Raffle.deploy(owner);
-      shiny = await ShinyPack.deploy(
-        owner,
-        MAX_MINT,
-        raffle.address,
-        beacon.address, cards.address, referral.address, GU_S1_SHINY_PACK_SKU,
-        cc.address, processor.address
-      );
-      await processor.setSellerApproval(shiny.address, [GU_S1_SHINY_PACK_SKU], true);
-      await processor.setSignerLimit(owner.address, 1000000000000000);
-      await cards.startSeason('S1', 800, 1000);
-      await cards.addFactory(shiny.address, 1);
-      await raffle.setMinterApproval(shiny.address, true);
+      shiny = await deployShinyPack(owner, shared);
     });
 
     async function purchase(quantity: number, escrowFor: number) {
@@ -187,7 +117,7 @@ describe('Shiny Pack', () => {
       const params = { escrowFor, nonce: 0, value: GU_S1_SHINY_PACK_PRICE * quantity };
       const payment = await getSignedPayment(
         owner,
-        processor.address,
+        shared.processor.address,
         shiny.address,
         order,
         params
@@ -201,7 +131,7 @@ describe('Shiny Pack', () => {
       const receipt = await tx.wait();
       console.log(description, receipt.gasUsed.toNumber());
       // we only care about events from the core contract
-      const logs = receipt.logs.filter(log => log.address === cards.address);
+      const logs = receipt.logs.filter(log => log.address === shared.cards.address);
       const parsed = parseLogs(logs, Cards.ABI);
       // the last event will be the minted event
       const log = parsed[parsed.length - 1];

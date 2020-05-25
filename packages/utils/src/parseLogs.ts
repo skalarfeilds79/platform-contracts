@@ -1,6 +1,9 @@
 import { ethers } from 'ethers';
 import { LogDescription } from 'ethers/utils';
 
+// suppress ABI warnings e.g. Multiple definitions for safeTransferFrom
+ethers.errors.setLogLevel("error");
+
 export function parseLogs(logs: ethers.providers.Log[], ...abis: string[]): any[] {
   let abi = '';
   if (abis.length > 1) {

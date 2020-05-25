@@ -6,6 +6,7 @@ import "./Pack.sol";
 contract RarePack is Pack {
 
     constructor(
+        S1Cap _cap,
         uint256 _maxMint,
         IRaffle _raffle,
         Beacon _beacon,
@@ -16,6 +17,7 @@ contract RarePack is Pack {
         CreditCardEscrow _escrow,
         PurchaseProcessor _pay
     ) public Pack(
+        _cap,
         _maxMint,
         _raffle,
         _beacon,

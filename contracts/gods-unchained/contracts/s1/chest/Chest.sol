@@ -15,7 +15,7 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
     }
 
     // Cap on sold assets
-    uint public cap;
+    uint public productCap;
     // Number of assets sold
     uint public sold;
     // Pack contract in which these chests can be opened
@@ -27,21 +27,22 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
         string memory _name,
         string memory _symbol,
         IPack _pack,
-        uint256 _cap,
+        uint256 _productCap,
+        S1Cap _cap,
         IReferral _referral,
         bytes32 _sku,
         uint256 _price,
         CreditCardEscrow _escrow,
         PurchaseProcessor _pay
     ) public
-        S1Vendor(_referral, _sku, _price, _escrow, _pay)
+        S1Vendor(_cap, _referral, _sku, _price, _escrow, _pay)
         TradeToggleERC20(_name, _symbol, 0)
     {
         require(
             address(_pack) != address(0),
             "S1Chest: pack must be set on construction"
         );
-        cap = _cap;
+        productCap = _productCap;
         pack = _pack;
     }
 
@@ -59,9 +60,13 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
         address payable _referrer
     ) public payable returns (PurchaseProcessor.Receipt memory) {
 
-        require(cap == 0 || cap >= sold.add(_quantity), "IM:CappedVendor: product cap has been exhausted");
+        require(
+            productCap == 0 || productCap >= sold.add(_quantity),
+            "IM:CappedVendor: product cap has been exhausted"
+        );
 
         sold = sold.add(_quantity);
+
         PurchaseProcessor.Receipt memory receipt = super.purchaseFor(
             _user,
             _quantity,
@@ -134,7 +139,7 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
 
     /** @dev Get the number of products still available for sale */
     function available() external view returns (uint256) {
-        return cap.sub(sold);
+        return productCap.sub(sold);
     }
 
     /** @dev One way switch to enable trading */

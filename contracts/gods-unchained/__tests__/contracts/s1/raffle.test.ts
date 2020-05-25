@@ -1,6 +1,7 @@
 import 'jest';
 
 import { Ganache, Blockchain,generatedWallets } from '@imtbl/test-utils';
+
 import { RarePack, Chest, Raffle } from '../../../src/contracts';
 import { ethers } from 'ethers';
 import { getSignedPayment, Currency } from '@imtbl/platform';
@@ -110,9 +111,10 @@ describe('Raffle', () => {
     }
 
     async function mintTrackGas(id: number, description: string) {
-      const tx = await rare.mint(id);
-      const receipt = await tx.wait();
-      console.log(description, receipt.gasUsed.toNumber());
+      await rare.mint(id);
+      // const tx = await rare.mint(id);
+      // const receipt = await tx.wait();
+      // console.log(description, receipt.gasUsed.toNumber());
     }
 
     it('should create cards from 1 pack', async () => {

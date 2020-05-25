@@ -68,6 +68,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         returns (uint16);
 
     constructor(
+        S1Cap _cap,
         uint256 _maxMint,
         IRaffle _raffle,
         Beacon _beacon,
@@ -77,7 +78,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         uint256 _price,
         CreditCardEscrow _escrow,
         PurchaseProcessor _pay
-    ) public S1Vendor(_referral, _sku, _price, _escrow, _pay) {
+    ) public S1Vendor(_cap, _referral, _sku, _price, _escrow, _pay) {
         raffle = _raffle;
         beacon = _beacon;
         cards = _cards;

@@ -1,6 +1,7 @@
 import 'jest';
 
 import {
+  S1Cap,
   Cards,
   Beacon,
   PurchaseProcessor,
@@ -64,6 +65,7 @@ describe('02_season_one', async () => {
   let cards: Cards;
   let s1Raffle: Raffle;
   let s1Sale: S1Sale;
+  let cap: S1Cap;
   let s1Referral: Referral;
   let epicPack: EpicPack;
   let rarePack: RarePack;
@@ -84,6 +86,7 @@ describe('02_season_one', async () => {
   const defaultQuantity = 1;
 
   beforeAll(async () => {
+
     beacon = Beacon.at(wallet, platformAddressBook.beaconAddress);
     processor = PurchaseProcessor.at(wallet, platformAddressBook.processorAddress);
     escrow = Escrow.at(wallet, platformAddressBook.escrowAddress);

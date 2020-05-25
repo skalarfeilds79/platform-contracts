@@ -1,13 +1,7 @@
 import 'jest';
 
 import { Ganache, Blockchain,generatedWallets } from '@imtbl/test-utils';
-import {
-  Referral,
-  RarePack,
-  Cards,
-  Chest
-} from '../../../../src/contracts';
-
+import { RarePack, Cards, Chest } from '../../../../src/contracts';
 import { parseLogs } from '@imtbl/utils';
 import { rares, epics, legendaries } from './protos';
 import { ethers } from 'ethers';
@@ -124,7 +118,7 @@ describe('Rare Pack', () => {
       const commitment = await rare.commitments(id);
       const tx = await rare.mint(id);
       const receipt = await tx.wait();
-      console.log(description, receipt.gasUsed.toNumber());
+      // console.log(description, receipt.gasUsed.toNumber());
       // we only care about events from the core contract
       const logs = receipt.logs.filter(log => log.address === shared.cards.address);
       const parsed = parseLogs(logs, Cards.ABI);

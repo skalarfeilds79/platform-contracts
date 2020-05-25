@@ -1,6 +1,7 @@
 import { keccak256 } from 'ethers/utils';
 import { ethers } from 'ethers';
 
+export const GU_S1_CAP = 4 * 1000000 * 100; // $4m USD
 export const GU_S1_LEGENDARY_CHEST_CAP = 3250;
 export const GU_S1_RARE_CHEST_CAP = 8000;
 export const GU_S1_MAX_MINT = 50;

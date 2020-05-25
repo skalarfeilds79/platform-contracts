@@ -125,7 +125,7 @@ describe('Legendary Pack', () => {
       const commitment = await legendary.commitments(id);
       const tx = await legendary.mint(id);
       const receipt = await tx.wait();
-      console.log(description, receipt.gasUsed.toNumber());
+      // console.log(description, receipt.gasUsed.toNumber());
       // we only care about events from the core contract
       const logs = receipt.logs.filter(log => log.address === shared.cards.address);
       const parsed = parseLogs(logs, Cards.ABI);

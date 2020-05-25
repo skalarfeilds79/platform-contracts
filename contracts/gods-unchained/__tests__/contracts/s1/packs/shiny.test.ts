@@ -1,12 +1,7 @@
 import 'jest';
 
 import { Ganache, Blockchain,generatedWallets } from '@imtbl/test-utils';
-import {
-  Referral,
-  ShinyPack,
-  Cards,
-  Raffle
-} from '../../../../src/contracts';
+import { ShinyPack, Cards } from '../../../../src/contracts';
 import { ethers } from 'ethers';
 import { getSignedPayment, Currency } from '@imtbl/platform';
 import { parseLogs } from '@imtbl/utils';
@@ -15,10 +10,8 @@ import { GU_S1_SHINY_PACK_PRICE, GU_S1_SHINY_PACK_SKU } from '../../../../deploy
 import { deployStandards, deployShinyPack, StandardContracts } from '../utils';
 
 jest.setTimeout(600000);
-
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
-
 ethers.errors.setLogLevel('error');
 
 describe('Shiny Pack', () => {
@@ -129,7 +122,7 @@ describe('Shiny Pack', () => {
       const commitment = await shiny.commitments(id);
       const tx = await shiny.mint(id);
       const receipt = await tx.wait();
-      console.log(description, receipt.gasUsed.toNumber());
+      // console.log(description, receipt.gasUsed.toNumber());
       // we only care about events from the core contract
       const logs = receipt.logs.filter(log => log.address === shared.cards.address);
       const parsed = parseLogs(logs, Cards.ABI);

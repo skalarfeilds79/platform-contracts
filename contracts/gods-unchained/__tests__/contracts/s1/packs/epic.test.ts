@@ -1,6 +1,7 @@
 import 'jest';
 
 import { Ganache, Blockchain, generatedWallets } from '@imtbl/test-utils';
+
 import { EpicPack } from '../../../../src/contracts';
 import { ethers } from 'ethers';
 import { getSignedPayment, Currency, Order } from '@imtbl/platform';

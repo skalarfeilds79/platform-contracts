@@ -9,22 +9,24 @@ import {
     ShinyPack,
     Cards,
     Raffle,
-    Chest
-  } from '../../../src/contracts';
-  import { ethers } from 'ethers';
-  import { PurchaseProcessor, CreditCardEscrow, Escrow, Beacon, ETHUSDMockOracle } from '@imtbl/platform';
+    Chest,
+    S1Cap
+} from '../../../src/contracts';
+import { ethers } from 'ethers';
+import { PurchaseProcessor, CreditCardEscrow, Escrow, Beacon, ETHUSDMockOracle } from '@imtbl/platform';
 import { 
     GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_SKU,
     GU_S1_EPIC_PACK_PRICE, GU_S1_EPIC_PACK_SKU,
     GU_S1_LEGENDARY_PACK_PRICE, GU_S1_LEGENDARY_PACK_SKU,
     GU_S1_SHINY_PACK_PRICE, GU_S1_SHINY_PACK_SKU, GU_S1_RARE_CHEST_SKU, 
     GU_S1_LEGENDARY_CHEST_SKU, GU_S1_LEGENDARY_CHEST_PRICE, 
-    GU_S1_LEGENDARY_CHEST_CAP, GU_S1_RARE_CHEST_CAP, GU_S1_RARE_CHEST_PRICE
+    GU_S1_LEGENDARY_CHEST_CAP, GU_S1_RARE_CHEST_CAP, GU_S1_RARE_CHEST_PRICE, GU_S1_CAP
 } from '../../../deployment/constants';
 
 const MAX_MINT = 5;
 
 export interface StandardContracts {
+    cap: S1Cap;
     escrow: Escrow;
     cc: CreditCardEscrow;
     referral: Referral;
@@ -36,6 +38,7 @@ export interface StandardContracts {
 }
 
 export async function deployStandards(owner: Wallet): Promise<StandardContracts>  {
+    const cap = await S1Cap.deploy(owner, GU_S1_CAP);
     const escrow = await Escrow.deploy(owner);
     const cc = await CreditCardEscrow.deploy(owner, escrow.address, ethers.constants.AddressZero, 100, ethers.constants.AddressZero, 100);
     const beacon = await Beacon.deploy(owner);
@@ -48,6 +51,7 @@ export async function deployStandards(owner: Wallet): Promise<StandardContracts>
     await processor.setSignerLimit(owner.address, 1000000000000000);
     await cards.startSeason('S1', 800, 1000);
     return {
+        cap: cap,
         escrow: escrow,
         cc: cc,
         beacon: beacon,
@@ -62,6 +66,7 @@ export async function deployStandards(owner: Wallet): Promise<StandardContracts>
 export async function deployEpicPack(owner: Wallet, params: StandardContracts) {
     const pack = await EpicPack.deploy(
         owner,
+        params.cap.address,
         MAX_MINT,
         params.raffle.address,
         params.beacon.address,
@@ -79,6 +84,7 @@ export async function deployEpicPack(owner: Wallet, params: StandardContracts) {
 export async function deployRarePack(owner: Wallet, params: StandardContracts) {
     const pack = await RarePack.deploy(
         owner,
+        params.cap.address,
         MAX_MINT,
         params.raffle.address,
         params.beacon.address,
@@ -96,6 +102,7 @@ export async function deployRarePack(owner: Wallet, params: StandardContracts) {
 export async function deployLegendaryPack(owner: Wallet, params: any) {
     const pack = await LegendaryPack.deploy(
         owner,
+        params.cap.address,
         MAX_MINT,
         params.raffle.address,
         params.beacon.address,
@@ -113,6 +120,7 @@ export async function deployLegendaryPack(owner: Wallet, params: any) {
 export async function deployShinyPack(owner: Wallet, params: StandardContracts) {
     const pack = await ShinyPack.deploy(
         owner,
+        params.cap.address,
         MAX_MINT,
         params.raffle.address,
         params.beacon.address,
@@ -134,6 +142,7 @@ export async function deployRareChest(owner: Wallet, rare: RarePack, params: Sta
         'GU:1:RC',
         rare.address,
         GU_S1_RARE_CHEST_CAP,
+        params.cap.address,
         params.referral.address,
         GU_S1_RARE_CHEST_SKU,
         GU_S1_RARE_CHEST_PRICE,
@@ -142,6 +151,7 @@ export async function deployRareChest(owner: Wallet, rare: RarePack, params: Sta
     );
     await rare.setChest(chest.address);
     await params.processor.setSellerApproval(chest.address, [GU_S1_RARE_CHEST_SKU], true);
+    await params.cap.setCanUpdate([chest.address], true);
     return chest;
 }
 
@@ -152,6 +162,7 @@ export async function deployLegendaryChest(owner: Wallet, legendary: LegendaryPa
         'GU:1:LC',
         legendary.address,
         GU_S1_LEGENDARY_CHEST_CAP,
+        params.cap.address,
         params.referral.address,
         GU_S1_LEGENDARY_CHEST_SKU,
         GU_S1_LEGENDARY_CHEST_PRICE,
@@ -160,6 +171,7 @@ export async function deployLegendaryChest(owner: Wallet, legendary: LegendaryPa
     );
     await legendary.setChest(chest.address);
     await params.processor.setSellerApproval(chest.address, [GU_S1_LEGENDARY_CHEST_SKU], true);
+    await params.cap.setCanUpdate([chest.address], true);
     return chest;
 }
 
@@ -167,4 +179,5 @@ async function approvePack(packAddress: string, sku: string, params: any) {
     await params.processor.setSellerApproval(packAddress, [sku], true);
     await params.cards.addFactory(packAddress, 1);
     await params.raffle.setMinterApproval(packAddress, true);
+    await params.cap.setCanUpdate([packAddress], true);
 }

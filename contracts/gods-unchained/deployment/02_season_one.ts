@@ -1,22 +1,25 @@
 import { Wallet, ethers } from 'ethers';
 
-import { DeploymentStage } from '@imtbl/deployment-utils';
+import { DeploymentStage, DeploymentEnvironment, DeploymentParams } from '@imtbl/deployment-utils';
 import { asyncForEach } from '@imtbl/utils';
-import {
-  GU_S1_RARE_CHEST_SKU,
-  GU_S1_LEGENDARY_CHEST_SKU,
-  LEGENDARY_CHEST_PRICE,
-} from './constants';
 
 import {
-  RARE_CHEST_CAP,
-  LEGENDARY_CHEST_CAP,
-  RARE_CHEST_PRICE,
+  GU_S1_RARE_CHEST_CAP,
+  GU_S1_LEGENDARY_CHEST_CAP,
+  GU_S1_RARE_CHEST_PRICE,
+  GU_S1_LEGENDARY_CHEST_PRICE,
+  GU_S1_RARE_CHEST_SKU,
+  GU_S1_LEGENDARY_CHEST_SKU,
   GU_S1_EPIC_PACK_SKU,
   GU_S1_RARE_PACK_SKU,
   GU_S1_SHINY_PACK_SKU,
   GU_S1_LEGENDARY_PACK_SKU,
-  SEASON_ONE_CAP
+  GU_S1_CAP,
+  GU_S1_MAX_MINT,
+  GU_S1_RARE_PACK_PRICE,
+  GU_S1_SHINY_PACK_PRICE,
+  GU_S1_LEGENDARY_PACK_PRICE,
+  GU_S1_EPIC_PACK_PRICE,
 } from './constants';
 
 import {
@@ -32,25 +35,26 @@ import {
   Chest,
   S1Cap
 } from '../src/contracts';
+import { getPlatformAddresses } from '@imtbl/platform';
 
 export class SeasonOneStage implements DeploymentStage {
+  
   private wallet: Wallet;
   private networkId: number;
+  private env: DeploymentEnvironment;
 
-  constructor(privateKey: string, rpcUrl: string, networkId: number) {
-    this.wallet = new ethers.Wallet(privateKey, new ethers.providers.JsonRpcProvider(rpcUrl));
-    this.networkId = networkId;
+  constructor(params: DeploymentParams) {
+    this.wallet = new ethers.Wallet(params.private_key, new ethers.providers.JsonRpcProvider(params.rpc_url));
+    this.networkId = params.network_id;
+    this.env = params.environment;
   }
 
   async deploy(
     findInstance: (name: string) => Promise<string>,
     onDeployment: (name: string, address: string, dependency: boolean) => void,
-    transferOwnership: (addresses: string[]) => void,
+    transferOwnership: (address: string) => void,
   ) {
-    const processorAddress = await findInstance('IM_Processor');
-    if (!processorAddress || processorAddress.length === 0) {
-      throw '*** IM_Processor not deloyed! Run `yarn deploy --core` inside contracts/platform';
-    }
+    
 
     const raffle = (await findInstance('GU_S1_Raffle')) || (await this.deployRaffle());
     onDeployment('GU_S1_Raffle', raffle, false);
@@ -64,10 +68,17 @@ export class SeasonOneStage implements DeploymentStage {
     const s1Cap = (await findInstance('GU_S1_Cap')) || (await this.deployCap());
     onDeployment('GU_S1_Cap', s1Cap, false);
 
-    const beacon = await findInstance('IM_Beacon');
+    const platform = getPlatformAddresses(this.networkId, this.env);
+
+    const processorAddress = platform.processorAddress; // await findInstance('IM_Processor');
+    if (!processorAddress || processorAddress.length === 0) {
+      throw '*** IM_Processor not deployed! Run `yarn deploy --core` inside contracts/platform';
+    }
+    
+    const beacon = platform.beaconAddress; // await findInstance('IM_Beacon');
     const cards = await findInstance('GU_Cards');
-    const escrow = await findInstance('IM_Escrow_CreditCard');
-    const processor = await findInstance('IM_Processor');
+    const escrow = platform.creditCardAddress; // await findInstance('IM_Escrow_CreditCard');
+    const processor = platform.processorAddress; // await findInstance('IM_Processor');
 
     if (GU_S1_EPIC_PACK_SKU.length === 0) {
       throw '*** No Epic Pack SKU set! Cannot deploy EpicPack. ***';
@@ -80,7 +91,6 @@ export class SeasonOneStage implements DeploymentStage {
         beacon,
         cards,
         referral,
-        GU_S1_EPIC_PACK_SKU,
         escrow,
         processor,
       ));
@@ -97,7 +107,6 @@ export class SeasonOneStage implements DeploymentStage {
         beacon,
         cards,
         referral,
-        GU_S1_RARE_PACK_SKU,
         escrow,
         processor,
       ));
@@ -114,11 +123,10 @@ export class SeasonOneStage implements DeploymentStage {
         beacon,
         cards,
         referral,
-        GU_S1_SHINY_PACK_SKU,
         escrow,
         processor,
       ));
-    await onDeployment('GU_S1_Shiny_Pack', shinyPack, false);
+    onDeployment('GU_S1_Shiny_Pack', shinyPack, false);
 
     if (GU_S1_LEGENDARY_PACK_SKU.length === 0) {
       throw '*** No Shiny Pack SKU set! Cannot deploy ShinyPack. ***';
@@ -131,7 +139,6 @@ export class SeasonOneStage implements DeploymentStage {
         beacon,
         cards,
         referral,
-        GU_S1_LEGENDARY_PACK_SKU,
         escrow,
         processor,
       ));
@@ -182,7 +189,7 @@ export class SeasonOneStage implements DeploymentStage {
     console.log('** Deploying S1Cap **');
     const cap = await S1Cap.awaitDeployment(
       this.wallet,
-      SEASON_ONE_CAP,
+      GU_S1_CAP,
       { nonce: await this.wallet.getTransactionCount()}
     );
     return cap.address;
@@ -202,7 +209,6 @@ export class SeasonOneStage implements DeploymentStage {
     beacon: string,
     cards: string,
     referral: string,
-    sku: string,
     escrow: string,
     processor: string,
   ): Promise<string> {
@@ -210,11 +216,13 @@ export class SeasonOneStage implements DeploymentStage {
     const epic = await EpicPack.awaitDeployment(
       this.wallet,
       cap,
+      GU_S1_MAX_MINT,
       raffle,
       beacon,
       cards,
       referral,
-      sku,
+      GU_S1_EPIC_PACK_SKU,
+      GU_S1_EPIC_PACK_PRICE,
       escrow,
       processor,
       { nonce: await this.wallet.getTransactionCount() },
@@ -228,7 +236,6 @@ export class SeasonOneStage implements DeploymentStage {
     beacon: string,
     cards: string,
     referral: string,
-    sku: string,
     escrow: string,
     processor: string,
   ): Promise<string> {
@@ -236,11 +243,13 @@ export class SeasonOneStage implements DeploymentStage {
     const rare = await RarePack.awaitDeployment(
       this.wallet,
       cap,
+      GU_S1_MAX_MINT,
       raffle,
       beacon,
       cards,
       referral,
-      sku,
+      GU_S1_RARE_PACK_SKU,
+      GU_S1_RARE_PACK_PRICE,
       escrow,
       processor,
       { nonce: await this.wallet.getTransactionCount() },
@@ -254,7 +263,6 @@ export class SeasonOneStage implements DeploymentStage {
     beacon: string,
     cards: string,
     referral: string,
-    sku: string,
     escrow: string,
     processor: string,
   ): Promise<string> {
@@ -262,11 +270,13 @@ export class SeasonOneStage implements DeploymentStage {
     const shiny = await ShinyPack.awaitDeployment(
       this.wallet,
       cap,
+      GU_S1_MAX_MINT,
       raffle,
       beacon,
       cards,
       referral,
-      sku,
+      GU_S1_SHINY_PACK_SKU,
+      GU_S1_SHINY_PACK_PRICE,
       escrow,
       processor,
       { nonce: await this.wallet.getTransactionCount() },
@@ -280,7 +290,6 @@ export class SeasonOneStage implements DeploymentStage {
     beacon: string,
     cards: string,
     referral: string,
-    sku: string,
     escrow: string,
     processor: string,
   ): Promise<string> {
@@ -288,11 +297,13 @@ export class SeasonOneStage implements DeploymentStage {
     const legendary = await LegendaryPack.awaitDeployment(
       this.wallet,
       cap,
+      GU_S1_MAX_MINT,
       raffle,
       beacon,
       cards,
       referral,
-      sku,
+      GU_S1_LEGENDARY_PACK_SKU,
+      GU_S1_LEGENDARY_PACK_PRICE,
       escrow,
       processor,
       { nonce: await this.wallet.getTransactionCount() },
@@ -307,11 +318,11 @@ export class SeasonOneStage implements DeploymentStage {
       'GU:S1: Rare Chest',
       'GUS1RC',
       rarePack,
-      RARE_CHEST_CAP,
       cap,
+      GU_S1_RARE_CHEST_CAP,
       referral,
       GU_S1_RARE_CHEST_SKU,
-      RARE_CHEST_PRICE,
+      GU_S1_RARE_CHEST_PRICE,
       escrow,
       processor,
       { nonce: await this.wallet.getTransactionCount() },
@@ -332,11 +343,11 @@ export class SeasonOneStage implements DeploymentStage {
       'GU:S1: Legendary Chest',
       'GUS1LC',
       legendaryPack,
-      LEGENDARY_CHEST_CAP,
       cap,
+      GU_S1_LEGENDARY_CHEST_CAP,
       referral,
       GU_S1_LEGENDARY_CHEST_SKU,
-      LEGENDARY_CHEST_PRICE,
+      GU_S1_LEGENDARY_CHEST_PRICE,
       escrow,
       processor,
       { nonce: await this.wallet.getTransactionCount() },
@@ -404,3 +415,4 @@ export class SeasonOneStage implements DeploymentStage {
     });
   }
 }
+

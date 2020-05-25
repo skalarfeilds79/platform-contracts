@@ -9,7 +9,7 @@ import { BigNumber, BigNumberish } from 'ethers/utils';
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
 
-jest.setTimeout(10000);
+jest.setTimeout(20000);
 ethers.errors.setLogLevel('error');
 
 function parseLogs(abi: string, logs: ethers.providers.Log[]): any[] {

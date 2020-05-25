@@ -161,6 +161,11 @@ contract CreditCardEscrow is Ownable {
         );
 
         require(
+            lock.destructionTimestamp == 0,
+            "IM:CreditCardEscrow: must not be marked for destruction"
+        );
+
+        require(
             block.timestamp >= lock.endTimestamp,
             "IM:CreditCardEscrow: escrow period must have expired"
         );

@@ -1,19 +1,18 @@
 import 'jest';
 
 import { Ganache, Blockchain,expectRevert, generatedWallets } from '@imtbl/test-utils';
-import { S1Cap, Chest, Referral, TestPack, Escrow } from '../../../src/contracts';
 
 import { ethers } from 'ethers';
-import { keccak256 } from 'ethers/utils';
-import { ETHUSDMockOracle, PurchaseProcessor, CreditCardEscrow, getETHPayment, getSignedPayment, Currency } from '@imtbl/platform';
-
-const ZERO_EX = '0x0000000000000000000000000000000000000000';
+import { getETHPayment, getSignedPayment, Currency } from '@imtbl/platform';
+import { GU_S1_RARE_CHEST_SKU, GU_S1_RARE_CHEST_PRICE } from '../../../deployment/constants';
+import { deployStandards, deployRareChest, deployRarePack, StandardContracts } from './utils';
+import { RarePack, Chest } from '../../../src';
 
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
 
 ethers.errors.setLogLevel('error');
-jest.setTimeout(10000);
+jest.setTimeout(60000);
 
 describe('Chest', () => {
   const [owner, other] = generatedWallets(provider);
@@ -28,55 +27,25 @@ describe('Chest', () => {
   });
 
   describe('#purchase ETH', () => {
+
+    let shared: StandardContracts;
+    let rare: RarePack;
     let chest: Chest;
-    let processor: PurchaseProcessor;
-    let escrowProtocol: Escrow;
-    let escrow: CreditCardEscrow;
-    let referral: Referral;
-    let cap: S1Cap;
-    let pack: TestPack;
-    let oracle: ETHUSDMockOracle;
-    const rareChestSKU = keccak256('0x00');
-    const rareChestPrice = 100;
+
+    beforeAll(async() => {
+      shared = await deployStandards(owner);
+    });
 
     beforeEach(async () => {
-      cap = await S1Cap.deploy(owner, 400000000);
-      referral = await Referral.deploy(owner, 90, 10);
-      processor = await PurchaseProcessor.deploy(owner, owner.address);
-      pack = await TestPack.deploy(owner);
-      escrowProtocol = await Escrow.deploy(owner);
-      oracle = await ETHUSDMockOracle.deploy(owner);
-      escrow = await CreditCardEscrow.deploy(
-        owner,
-        escrowProtocol.address,
-        ZERO_EX,
-        100,
-        ZERO_EX,
-        100,
-      );
-      chest = await Chest.deploy(
-        owner,
-        'GU: S1 Rare Chest',
-        'GU:1:RC',
-        pack.address,
-        0,
-        cap.address,
-        referral.address,
-        rareChestSKU,
-        rareChestPrice,
-        escrow.address,
-        processor.address,
-      );
-      await processor.setOracle(oracle.address);
-      await processor.setSellerApproval(chest.address, [rareChestSKU], true);
-      await cap.setCanUpdate([chest.address], true);
+      rare = await deployRarePack(owner, shared);
+      chest = await deployRareChest(owner, rare, shared);
     });
 
     async function purchaseChests(quantity: number) {
       let balance = await chest.balanceOf(owner.address);
       expect(balance.toNumber()).toBe(0);
-      const ethRequired = await oracle.convert(1, 0, rareChestPrice * quantity);
-      await chest.purchase(quantity, getETHPayment(), ZERO_EX, { value: ethRequired});
+      const ethRequired = await shared.oracle.convert(1, 0, GU_S1_RARE_CHEST_PRICE * quantity);
+      await chest.purchase(quantity, getETHPayment(), ethers.constants.AddressZero, { value: ethRequired});
       balance = await chest.balanceOf(owner.address);
       expect(balance.toNumber()).toBe(quantity);
     }
@@ -92,55 +61,26 @@ describe('Chest', () => {
 
   describe('#purchase USD', () => {
 
+    let shared: StandardContracts;
+    let rare: RarePack;
     let chest: Chest;
-    let cap: S1Cap;
-    let processor: PurchaseProcessor;
-    let escrowProtocol: Escrow;
-    let escrow: CreditCardEscrow;
-    let referral: Referral;
-    let pack: TestPack;
-    const rareChestSKU = keccak256('0x00');
-    const rareChestPrice = 100;
+
+    beforeAll(async() => {
+      shared = await deployStandards(owner);
+    });
 
     beforeEach(async () => {
-      cap = await S1Cap.deploy(owner, 400000000);
-      processor = await PurchaseProcessor.deploy(owner, owner.address);
-      referral = await Referral.deploy(owner, 90, 10);
-      pack = await TestPack.deploy(owner);
-      escrowProtocol = await Escrow.deploy(owner);
-      escrow = await CreditCardEscrow.deploy(
-        owner,
-        escrowProtocol.address,
-        ZERO_EX,
-        100,
-        ZERO_EX,
-        100,
-      );
-      chest = await Chest.deploy(
-        owner,
-        'GU: S1 Rare Chest',
-        'GU:1:RC',
-        pack.address,
-        0,
-        cap.address,
-        referral.address,
-        rareChestSKU,
-        rareChestPrice,
-        escrow.address,
-        processor.address,
-      );
-      await cap.setCanUpdate([chest.address], true);
+      rare = await deployRarePack(owner, shared);
+      chest = await deployRareChest(owner, rare, shared);
     });
 
     async function purchaseChests(quantity: number, escrowFor: number) {
-      await processor.setSignerLimit(owner.address, 10000000000);
-      await processor.setSellerApproval(chest.address, [rareChestSKU], true);
-      const value = rareChestPrice * quantity;
+      const value = GU_S1_RARE_CHEST_PRICE * quantity;
       const order = {
         quantity,
-        sku: rareChestSKU,
+        sku: GU_S1_RARE_CHEST_SKU,
         assetRecipient: owner.address,
-        changeRecipient: pack.address,
+        changeRecipient: rare.address,
         currency: Currency.USDCents,
         totalPrice: value,
         alreadyPaid: 0
@@ -148,12 +88,12 @@ describe('Chest', () => {
       const params = { value, escrowFor, nonce: 0 };
       const payment = await getSignedPayment(
         owner,
-        processor.address,
+        shared.processor.address,
         chest.address,
         order,
         params,
       );
-      await chest.purchase(quantity, payment, ZERO_EX);
+      await chest.purchase(quantity, payment, ethers.constants.AddressZero);
       let expectedUserBalance: number;
       let expectedEscrowBalance: number;
       if (escrowFor > 0) {
@@ -163,7 +103,7 @@ describe('Chest', () => {
         expectedUserBalance = quantity;
         expectedEscrowBalance = 0;
       }
-      const escrowBalance = await chest.balanceOf(escrowProtocol.address);
+      const escrowBalance = await chest.balanceOf(shared.escrow.address);
       const userBalance = await chest.balanceOf(owner.address);
       expect(userBalance.toNumber()).toBe(expectedUserBalance);
       expect(escrowBalance.toNumber()).toBe(expectedEscrowBalance);
@@ -187,48 +127,18 @@ describe('Chest', () => {
   });
 
   describe('#open', () => {
+
+    let shared: StandardContracts;
+    let rare: RarePack;
     let chest: Chest;
-    let processor: PurchaseProcessor;
-    let escrowProtocol: Escrow;
-    let escrow: CreditCardEscrow;
-    let referral: Referral;
-    let pack: TestPack;
-    let cap: S1Cap;
-    let oracle: ETHUSDMockOracle;
-    const rareChestSKU = keccak256('0x00');
-    const rareChestCost = 2000;
+
+    beforeAll(async() => {
+      shared = await deployStandards(owner);
+    });
 
     beforeEach(async () => {
-      cap = await S1Cap.deploy(owner, 400000000);
-      processor = await PurchaseProcessor.deploy(owner, owner.address);
-      referral = await Referral.deploy(owner, 90, 10);
-      pack = await TestPack.deploy(owner);
-      escrowProtocol = await Escrow.deploy(owner);
-      oracle = await ETHUSDMockOracle.deploy(owner);
-      escrow = await CreditCardEscrow.deploy(
-        owner,
-        escrowProtocol.address,
-        ZERO_EX,
-        100,
-        ZERO_EX,
-        100,
-      );
-      chest = await Chest.deploy(
-        owner,
-        'GU: S1 Rare Chest',
-        'GU:1:RC',
-        pack.address,
-        0,
-        cap.address,
-        referral.address,
-        rareChestSKU,
-        rareChestCost,
-        escrow.address,
-        processor.address,
-      );
-      await processor.setSellerApproval(chest.address, [rareChestSKU], true);
-      await processor.setOracle(oracle.address);
-      await cap.setCanUpdate([chest.address], true);
+      rare = await deployRarePack(owner, shared);
+      chest = await deployRareChest(owner, rare, shared);
     });
 
     async function openChests(quantity: number) {
@@ -244,16 +154,16 @@ describe('Chest', () => {
     });
 
     it('should be able to open 1 chest', async () => {
-      const ethRequired = await oracle.convert(1, 0, rareChestCost);
+      const ethRequired = await shared.oracle.convert(1, 0, GU_S1_RARE_CHEST_PRICE);
       const payment = getETHPayment();
-      await chest.purchase(1, payment, ZERO_EX, { value: ethRequired });
+      await chest.purchase(1, payment, ethers.constants.AddressZero, { value: ethRequired });
       await openChests(1);
     });
 
     it('should be able to open 5 chests', async () => {
-      const ethRequired = await oracle.convert(1, 0, rareChestCost * 5);
+      const ethRequired = await shared.oracle.convert(1, 0, GU_S1_RARE_CHEST_PRICE * 5);
       const payment = getETHPayment();
-      await chest.purchase(5, payment, ZERO_EX, { value: ethRequired });
+      await chest.purchase(5, payment, ethers.constants.AddressZero, { value: ethRequired });
       await openChests(5);
     });
   });

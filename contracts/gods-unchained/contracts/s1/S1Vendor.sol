@@ -82,14 +82,14 @@ contract S1Vendor is IVendor, Pausable, Ownable {
 
         uint256 toReferrer = 0;
 
-        if (_payment.currency == PurchaseProcessor.Currency.ETH && _referrer != address(0)) {
+        if (_referrer != address(0)) {
             (, toReferrer) = referral.getSplit(_recipient, totalPrice, _referrer);
         }
 
         PurchaseProcessor.Order memory order = PurchaseProcessor.Order({
             currency: PurchaseProcessor.Currency.USDCents,
             totalPrice: totalPrice,
-            alreadyPaid: toReferrer,
+            alreadyPaid: _payment.currency == PurchaseProcessor.Currency.ETH ? toReferrer : 0,
             sku: sku,
             quantity: _quantity,
             assetRecipient: _recipient,
@@ -99,10 +99,13 @@ contract S1Vendor is IVendor, Pausable, Ownable {
         PurchaseProcessor.Receipt memory receipt = pay.process.value(msg.value)(order, _payment);
 
         // if the user is paying in ETH, we can pay affiliate fees instantly!
-        if (_payment.currency == PurchaseProcessor.Currency.ETH && _referrer != address(0)) {
-            uint256 payoutAmount = pay.convertUSDToETH(toReferrer);
-            // solium-disable-next-line
-            _referrer.call.value(payoutAmount)("");
+        if (_referrer != address(0)) {
+            uint256 payoutAmount = 0;
+            if (_payment.currency == PurchaseProcessor.Currency.ETH) {
+                payoutAmount = pay.convertUSDToETH(toReferrer);
+                // solium-disable-next-line
+                _referrer.call.value(payoutAmount)("");
+            }
             emit PurchaseReferred(receipt.id, _referrer, toReferrer, payoutAmount);
         }
 

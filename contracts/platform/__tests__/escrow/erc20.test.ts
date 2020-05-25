@@ -9,7 +9,7 @@ import { ethers } from 'ethers';
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
 
-const ZERO_EX = '0x0000000000000000000000000000000000000000';
+
 
 jest.setTimeout(10000);
 ethers.errors.setLogLevel('error');
@@ -84,7 +84,7 @@ describe('ERC20Escrow', () => {
       await erc20.approve(escrow.address, 1000);
       const vault = {
         player: user.address,
-        admin: ZERO_EX,
+        admin: ethers.constants.AddressZero,
         asset: erc20.address,
         balance: 100,
         lowTokenID: 0,

@@ -1,4 +1,4 @@
 export * from './manager';
-export * from './DeploymentStage';
-export * from './dependencies';
-export * from './types';
+export * from './stage';
+export * from './params';
+export * from './book';

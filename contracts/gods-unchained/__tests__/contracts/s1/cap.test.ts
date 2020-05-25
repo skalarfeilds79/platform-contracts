@@ -1,19 +1,8 @@
 import 'jest';
 
 import { Ganache, Blockchain,generatedWallets, expectRevert } from '@imtbl/test-utils';
-import {
-  S1Cap,
-  Referral,
-  RarePack,
-  Cards,
-  Chest,
-  Raffle
-} from '../../../src/contracts';
-
-import { parseLogs } from '@imtbl/utils';
-import { Wallet, ethers } from 'ethers';
-import { keccak256 } from 'ethers/utils';
-import { PurchaseProcessor, CreditCardEscrow, Escrow, Beacon, getSignedPayment, Currency } from '@imtbl/platform';
+import { S1Cap } from '../../../src/contracts';
+import { ethers } from 'ethers';
 
 jest.setTimeout(600000);
 

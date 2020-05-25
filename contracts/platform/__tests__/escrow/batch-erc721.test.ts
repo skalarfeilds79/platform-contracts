@@ -3,6 +3,7 @@ import 'jest';
 import {
   Escrow,
   TestERC721Token,
+  TestBatchToken,
   MaliciousBatchPack,
   TestBatchPack,
   TestERC20Token,
@@ -14,10 +15,9 @@ import { ethers } from 'ethers';
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
 
-const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
 
-jest.setTimeout(10000);
+jest.setTimeout(600000);
 ethers.errors.setLogLevel('error');
 
 describe('BatchERC271Escrow', () => {
@@ -106,7 +106,7 @@ describe('BatchERC271Escrow', () => {
       const vault = {
         player: user.address,
         admin: user.address,
-        asset: ZERO_EX,
+        asset: ethers.constants.AddressZero,
         balance: 0,
         lowTokenID: 0,
         highTokenID: 1,
@@ -120,7 +120,7 @@ describe('BatchERC271Escrow', () => {
       await erc721.setApprovalForAll(escrow.address, true);
       const vault = {
         player: user.address,
-        admin: ZERO_EX,
+        admin: ethers.constants.AddressZero,
         asset: erc721.address,
         balance: 0,
         lowTokenID: 0,
@@ -261,6 +261,44 @@ describe('BatchERC271Escrow', () => {
       await escrow.release(0, user.address);
       await checkBalance(erc721, user.address, 1);
       await checkBalance(erc721, escrow.address, 0);
+    });
+
+  });
+
+  describe('#release BatchToken', () => {
+    
+    let escrow: Escrow;
+    let batch: TestBatchToken;
+
+    beforeEach(async () => {
+      escrow = await Escrow.deploy(user);
+      batch = await TestBatchToken.deploy(user, 1250);
+      await escrow.setBatchTransferEnabled(batch.address, true);
+    });
+
+    it('should release medium batch', async () => {
+      const size = 120;
+      await batch.mint(user.address, size);
+      await checkBalance(batch, user.address, size);
+      await checkBalance(batch, escrow.address, 0);
+      await batch.setApprovalForAll(escrow.address, true);
+      const vault = {
+        player: user.address,
+        admin: user.address,
+        asset: batch.address,
+        balance: 0,
+        lowTokenID: 0,
+        highTokenID: size,
+        tokenIDs: [],
+      };
+      await escrow.escrow(vault, user.address);
+      await checkBalance(batch, user.address, 0);
+      await checkBalance(batch, escrow.address, size);
+      const tx = await escrow.release(0, user.address);
+      const receipt = await tx.wait();
+      console.log(receipt.gasUsed.toNumber());
+      await checkBalance(batch, user.address, size);
+      await checkBalance(batch, escrow.address, 0);
     });
   });
 

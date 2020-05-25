@@ -16,12 +16,13 @@
         "build:gods-unchained": "yarn --cwd contracts/gods-unchained build",
         "deploy:platform": "yarn --cwd contracts/platform deploy --all",
         "deploy:gods-unchained": "yarn --cwd contracts/gods-unchained deploy --all",
-        "deploy:all": "yarn deploy:platform && yarn deploy:gods-unchained",
+        "deploy:all": "yarn deploy:platform && lerna bootstrap && yarn deploy:gods-unchained",
         "setup": "lerna bootstrap && yarn build",
         "watch": "tsc -p . --watch --preserveWatchOutput",
         "build:all": "yarn build",
         "build": "lerna run build --parallel",
         "test": "lerna run test --parallel",
+        "clean": "lerna run clean --parallel",
         "ci:clear-addresses": "node scripts/clearDevAddresses"
     },
     "dependencies": {
@@ -30,7 +31,9 @@
         "fs": "^0.0.1-security",
         "global": "^4.4.0",
         "lerna": "^3.20.2",
-        "typescript": "3.7.5"
+        "truffle-json-compress": "^1.0.2",
+        "typescript": "3.7.5",
+        "weak-napi": "^2.0.1"
     },
     "devDependencies": {
         "@types/jest": "^25.1.1",

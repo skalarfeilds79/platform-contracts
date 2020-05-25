@@ -1,23 +1,24 @@
-import fs from 'fs-extra';
-
 import { DeploymentEnvironment, DeploymentNetwork } from '@imtbl/deployment-utils';
 import { PlatformAddresses } from '../../src';
+
+import * as book from './addresses.json';
 
 export function getPlatformAddresses(
   network: DeploymentNetwork,
   environment: DeploymentEnvironment,
 ): PlatformAddresses {
-  const config = fs.readJson(`./${network}.json`);
 
-  const addresses = config['addresses'];
+  const env = book['environments'][environment];
+  if (!env || !env['addresses']) {
+    throw Error(`Unknown environment: ${environment}`);
+  }
 
   return {
-    beaconAddress: addresses['IM_Beacon'],
-    processorAddress: addresses['IM_Processor'],
-    testVendorAddress: addresses['IM_TestVendor'],
-    escrowAddress: addresses['IM_Escrow'],
-    creditCardAddress: addresses['IM_Escrow_CreditCard'],
-    ethUSDMakerOracleAddress: addresses['IM_Oracle_ETHUSDMaker'],
-    ethUSDMockOracleAddress: addresses['IM_Oracle_ETHUSDMock'],
+    beaconAddress: env['addresses']['IM_Beacon'],
+    processorAddress: env['addresses']['IM_Processor'],
+    escrowAddress: env['addresses']['IM_Escrow'],
+    creditCardAddress: env['addresses']['IM_Escrow_CreditCard'],
+    ethUSDMakerOracleAddress: env['addresses']['IM_Oracle_ETHUSDMaker'],
+    ethUSDMockOracleAddress: env['addresses']['IM_Oracle_ETHUSDMock'],
   };
 }

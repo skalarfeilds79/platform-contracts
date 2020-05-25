@@ -1,10 +1,19 @@
 import { SeasonOneStage } from './02_season_one';
-import { DeploymentStage, Manager } from '@imtbl/deployment-utils';
+import { DeploymentParams, AddressBook, DeploymentStage, Manager, DeploymentEnvironment } from '@imtbl/deployment-utils';
 
 import { CoreStage } from './01_core';
 import { ForwarderStage } from './00_forwarder';
 
 const config = require('dotenv').config({ path: '../../.env' }).parsed;
+
+export const params: DeploymentParams = {
+  private_key: process.env.PRIVATE_KEY,
+  environment: process.env.DEPLOYMENT_ENVIRONMENT as DeploymentEnvironment,
+  network_id: parseInt(process.env.DEPLOYMENT_NETWORK_ID),
+  network_key: `${process.env.DEPLOYMENT_ENVIRONMENT}`,
+  rpc_url: process.env.RPC_ENDPOINT
+};
+
 
 async function start() {
   const args = require('minimist')(process.argv.slice(2));
@@ -18,22 +27,28 @@ async function start() {
   }
 
   if (args.forwarder) {
-    stages.push(new ForwarderStage(config.PRIVATE_KEY, config.RPC_ENDPOINT));
+    stages.push(new ForwarderStage(params));
   }
 
   if (args.core) {
     stages.push(
-      new CoreStage(config.PRIVATE_KEY, config.RPC_ENDPOINT, config.DEPLOYMENT_NETWORK_ID),
+      new CoreStage(params),
     );
   }
 
   if (args.seasonone) {
     stages.push(
-      new SeasonOneStage(config.PRIVATE_KEY, config.RPC_ENDPOINT, config.DEPLOYMENT_NETWORK_ID),
+      new SeasonOneStage(params),
     );
   }
 
-  const newManager = new Manager(stages);
+  const book = new AddressBook(
+    './src/addresses/addresses.json', 
+    config.DEPLOYMENT_ENVIRONMENT,
+    config.DEPLOYMENT_NETWORK_ID
+  );
+
+  const newManager = new Manager(stages, book, params);
 
   try {
     await newManager.deploy();

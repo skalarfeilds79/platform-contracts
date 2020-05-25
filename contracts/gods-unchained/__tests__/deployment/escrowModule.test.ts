@@ -8,7 +8,7 @@ import { parseLogs } from '@imtbl/utils';
 import { Currency, Platform } from '@imtbl/platform';
 
 import { RarePack, CreditCardEscrow, S1Sale } from '../../src';
-import { getSignedPayment, getPlatformAddresses } from '@imtbl/platform/src';
+import { getSignedPayment, getPlatformAddresses } from '@imtbl/platform';
 
 import { getGodsUnchainedAddresses } from '../../src/addresses/index';
 import { GU_S1_RARE_PACK_SKU } from '../../deployment/constants';
@@ -20,18 +20,18 @@ jest.setTimeout(60000);
 
 const config = require('dotenv').config({ path: '../../.env' }).parsed;
 
-const guAddressBook = getGodsUnchainedAddresses(
-  config.DEPLOYMENT_NETWORK_ID,
-  config.DEPLOYMENT_ENVIRONMENT,
-);
-
-const platformAddressBook = getPlatformAddresses(
-  config.DEPLOYMENT_NETWORK_ID,
-  config.DEPLOYMENT_ENVIRONMENT,
-);
-
-describe('EscrowModule', () => {
+describe('EscrowModule', async () => {
   const [ownerWallet, userWallet, treasuryWallet] = generatedWallets(provider);
+
+  const guAddressBook = getGodsUnchainedAddresses(
+    config.DEPLOYMENT_NETWORK_ID,
+    config.DEPLOYMENT_ENVIRONMENT,
+  );
+  
+  const platformAddressBook = getPlatformAddresses(
+    config.DEPLOYMENT_NETWORK_ID,
+    config.DEPLOYMENT_ENVIRONMENT,
+  );
 
   const sku = keccak256('0x00');
 
@@ -43,8 +43,8 @@ describe('EscrowModule', () => {
     await blockchain.resetAsync();
     await blockchain.saveSnapshotAsync();
 
-    s1Sale = await S1Sale.at(ownerWallet, guAddressBook.seasonOne.saleAddress);
-    rarePack = await RarePack.at(ownerWallet, guAddressBook.seasonOne.rarePackAddress);
+    s1Sale = S1Sale.at(ownerWallet, guAddressBook.seasonOne.saleAddress);
+    rarePack = RarePack.at(ownerWallet, guAddressBook.seasonOne.rarePackAddress);
 
     platform = await new Platform().init(ownerWallet, platformAddressBook);
   });

@@ -1,23 +1,33 @@
 import 'jest';
 
-import { Ganache, Blockchain, generatedWallets } from '@imtbl/test-utils';
-
-import { EpicPack } from '../../../../src/contracts';
+import { Ganache, Blockchain, generatedWallets, expectRevert } from '@imtbl/test-utils';
+import {
+  Referral,
+  EpicPack,
+  Cards,
+  Raffle
+} from '../../../../src/contracts';
 import { ethers } from 'ethers';
+import { PurchaseProcessor, CreditCardEscrow, Escrow, Beacon } from '@imtbl/platform';
 import { getSignedPayment, Currency, Order } from '@imtbl/platform';
-import { getETHPayment } from '@imtbl/platform';
-import { parseLogs } from '@imtbl/utils';
+
+import {
+  ETHUSDMockOracle,
+  getETHPayment,
+} from '@imtbl/platform';
 import { GU_S1_EPIC_PACK_SKU, GU_S1_EPIC_PACK_PRICE } from '../../../../deployment/constants';
-import { deployStandards, deployEpicPack, StandardContracts } from '../utils';
+import { deployStandards, StandardContracts, deployEpicPack } from '../utils';
 
 jest.setTimeout(600000);
 
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
+const MAX_MINT = 5;
+const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
 ethers.errors.setLogLevel('error');
 
-describe('EpicPack', () => {
+describe('Multi-Mint Pack', () => {
 
   const [owner] = generatedWallets(provider);
 
@@ -28,20 +38,6 @@ describe('EpicPack', () => {
 
   afterEach(async () => {
     await blockchain.revertAsync();
-  });
-
-  describe('deployment', () => {
-
-    let shared: StandardContracts;
-
-    beforeAll(async() => {
-      shared = await deployStandards(owner);
-    });
-
-    it('should deploy epic pack', async () => {
-      await deployEpicPack(owner, shared);
-    });
-
   });
 
   describe('purchase USD', () => {
@@ -70,19 +66,22 @@ describe('EpicPack', () => {
       const payment = await getSignedPayment(
          owner, shared.processor.address, epic.address, order, params
       );
-      const tx = await epic.purchase(quantity, payment, ethers.constants.AddressZero);
-      const receipt = await tx.wait();
-      const parsed = parseLogs(receipt.logs, EpicPack.ABI);
-      expect(parsed.length).toBe(1);
-      expect(parsed[0].name).toBe('CommitmentRecorded');
+      await epic.purchase(quantity, payment, ZERO_EX);
+      for (let i = 0; i < quantity; i += MAX_MINT) {
+        await epic.mint(0);
+      }
     }
 
-    it('should purchase one pack with USD', async () => {
-      await purchasePacks(1);
+    it('should purchase max + 1 packs with USD', async () => {
+      await purchasePacks(MAX_MINT + 1);
+      // should have minted everything
+      await expectRevert(epic.mint(0));
     });
 
-    it('should purchase five packs with USD', async () => {
-      await purchasePacks(5);
+    it('should purchase 2 * max + 1 packs with USD', async () => {
+      await purchasePacks(2 * MAX_MINT + 1);
+      // should have minted everything
+      await expectRevert(epic.mint(0));
     });
 
   });
@@ -98,34 +97,27 @@ describe('EpicPack', () => {
 
     beforeEach(async() => {
       epic = await deployEpicPack(owner, shared);
-    })
-
-    async function purchasePacks(quantity: number) {
-      const order = {
-        quantity,
-        sku: GU_S1_EPIC_PACK_SKU,
-        assetRecipient: owner.address,
-        changeRecipient: owner.address,
-        totalPrice: GU_S1_EPIC_PACK_PRICE * quantity,
-        alreadyPaid: 0,
-        currency: Currency.USDCents
-      };
-      const params = { escrowFor: 0, nonce: 0, value: GU_S1_EPIC_PACK_PRICE * quantity };
-      const payment = getETHPayment();
-      const ethRequired = await shared.oracle.convert(1, 0, GU_S1_EPIC_PACK_PRICE * quantity);
-      const tx = await epic.purchase(quantity, payment, ethers.constants.AddressZero, { value: ethRequired });
-      const receipt = await tx.wait();
-      const parsed = parseLogs(receipt.logs, EpicPack.ABI);
-      expect(parsed.length).toBe(1);
-      expect(parsed[0].name).toBe('CommitmentRecorded');
-    }
-
-    it('should purchase one pack with ETH', async () => {
-      await purchasePacks(1);
     });
 
-    it('should purchase five packs with ETH', async () => {
-      await purchasePacks(5);
+    async function purchasePacks(quantity: number) {
+      const payment = getETHPayment();
+      const ethRequired = await shared.oracle.convert(1, 0, GU_S1_EPIC_PACK_PRICE * quantity);
+      await epic.purchase(quantity, payment, ZERO_EX, { value: ethRequired });
+      for (let i = 0; i < quantity; i += MAX_MINT) {
+        await epic.mint(0);
+      }
+    }
+
+    it('should purchase 6 with ETH', async () => {
+      await purchasePacks(MAX_MINT + 1);
+      // should have minted everything
+      await expectRevert(epic.mint(0));
+    });
+
+    it('should purchase 11 with ETH', async () => {
+      await purchasePacks(2 * MAX_MINT + 1);
+      // should have minted everything
+      await expectRevert(epic.mint(0));
     });
 
   });

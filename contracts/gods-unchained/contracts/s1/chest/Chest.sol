@@ -60,16 +60,19 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
         address payable _referrer
     ) public payable returns (PurchaseProcessor.Receipt memory) {
 
-        require(productCap == 0 || productCap >= sold + _quantity, "IM:CappedVendor: product cap has been exhausted");
+        require(
+            productCap == 0 || productCap >= sold.add(_quantity),
+            "IM:CappedVendor: product cap has been exhausted"
+        );
 
-        sold += _quantity;
+        sold = sold.add(_quantity);
+
         PurchaseProcessor.Receipt memory receipt = super.purchaseFor(
             _user,
             _quantity,
             _payment,
             _referrer
         );
-
 
         if (_payment.currency == PurchaseProcessor.Currency.ETH || _payment.escrowFor == 0) {
             _mintChests(_user, _quantity, receipt.id);
@@ -148,6 +151,14 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
 
         tradable = true;
         emit TradabilityChanged(true);
+    }
+
+    /** @dev Update pack contract in case of upgrade
+     *
+     * @param _pack new pack contract to use
+     */
+    function setPack(IPack _pack) external onlyOwner {
+        pack = _pack;
     }
 
 }

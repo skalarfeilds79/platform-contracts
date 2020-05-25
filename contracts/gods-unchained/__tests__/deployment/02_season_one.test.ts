@@ -24,7 +24,7 @@ import {
   ETHUSDMockOracle,
   getETHPayment,
   getPlatformAddresses,
-} from '@imtbl/platform/src';
+} from '@imtbl/platform';
 
 import { Blockchain } from '@imtbl/test-utils';
 
@@ -45,17 +45,18 @@ const blockchain = new Blockchain();
 
 const wallet: Wallet = new ethers.Wallet(config.PRIVATE_KEY, provider);
 
-const godUnchainedAddressBook = getGodsUnchainedAddresses(
-  config.DEPLOYMENT_NETWORK_ID,
-  config.DEPLOYMENT_ENVIRONMENT,
-);
+describe('02_season_one', async () => {
 
-const platformAddressBook = getPlatformAddresses(
-  config.DEPLOYMENT_NETWORK_ID,
-  config.DEPLOYMENT_ENVIRONMENT,
-);
+  const godUnchainedAddressBook = getGodsUnchainedAddresses(
+    config.DEPLOYMENT_NETWORK_ID,
+    config.DEPLOYMENT_ENVIRONMENT,
+  );
+  
+  const platformAddressBook = getPlatformAddresses(
+    config.DEPLOYMENT_NETWORK_ID,
+    config.DEPLOYMENT_ENVIRONMENT,
+  );
 
-describe('02_season_one', () => {
   let nonce: number = 0;
 
   let beacon: Beacon;

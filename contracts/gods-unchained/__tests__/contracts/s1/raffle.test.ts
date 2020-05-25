@@ -5,7 +5,7 @@ import { Ganache, Blockchain,generatedWallets } from '@imtbl/test-utils';
 import { RarePack, Chest, Raffle } from '../../../src/contracts';
 import { ethers } from 'ethers';
 import { getSignedPayment, Currency } from '@imtbl/platform';
-import { GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_SKU, GU_S1_RARE_CHEST_SKU, GU_S1_RARE_CHEST_PRICE } from '../../../deployment/constants';
+import { GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_SKU, GU_S1_RARE_CHEST_SKU, GU_S1_RARE_CHEST_PRICE, GU_S1_RAFFLE_TOKEN_NAME, GU_S1_RAFFLE_TOKEN_SYMBOL } from '../../../deployment/constants';
 import { deployRarePack, deployStandards, deployRareChest, StandardContracts } from './utils';
 
 jest.setTimeout(600000);
@@ -30,7 +30,7 @@ describe('Raffle', () => {
 
   describe('deployment', () => {
     beforeEach(async () => {
-      await Raffle.deploy(owner);
+      await Raffle.deploy(owner, GU_S1_RAFFLE_TOKEN_NAME, GU_S1_RAFFLE_TOKEN_SYMBOL);
     });
 
     it('should deploy raffle contract', async () => {});

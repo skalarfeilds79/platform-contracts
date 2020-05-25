@@ -55,7 +55,7 @@ describe('EpicPack', () => {
 
     beforeEach(async() => {
       epic = await deployEpicPack(owner, shared);
-    })
+    });
 
     async function purchasePacks(quantity: number) {
       const order: Order = {

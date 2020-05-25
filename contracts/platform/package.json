@@ -9,7 +9,7 @@
     "dist"
   ],
   "scripts": {
-    "clean": "rm -rf build; rm -rf dist; rm -rf src/contracts; > src/addresses/addresses.json",
+    "clean": "rm -rf build; rm -rf dist; rm -rf src/contracts;",
     "lint:sol": "yarn solhint \"contracts/**/*.sol\" --config solhint.json",
     "lint:ts": "tslint -t verbose '__tests__/**/*.ts'",
     "lint": "yarn lint:ts && yarn lint:sol",

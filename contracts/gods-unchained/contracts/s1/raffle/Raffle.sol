@@ -11,7 +11,7 @@ contract Raffle is Ownable, TradeToggleERC20 {
     // Records which contracts are approved to mint raffle tickets
     mapping(address => bool) public isApprovedMinter;
 
-    constructor() public TradeToggleERC20("GU:S1:Raffle", "GU:S1:R", 0) {
+    constructor(string memory _name, string memory _symbol) public TradeToggleERC20(_name, _symbol, 0) {
         tradable = true;
     }
 
@@ -23,7 +23,7 @@ contract Raffle is Ownable, TradeToggleERC20 {
     function mint(address _user, uint256 _amount) public {
         require(
             isApprovedMinter[msg.sender],
-            "Raffle: must be approved minter"
+            "S1:Raffle: must be approved minter"
         );
         _mint(_user, _amount);
     }
@@ -34,7 +34,7 @@ contract Raffle is Ownable, TradeToggleERC20 {
     function makeUntradable() external onlyOwner {
         require(
             tradable,
-            "Raffle: must be currently tradable"
+            "S1:Raffle: must be currently tradable"
         );
         tradable = false;
         emit TradabilityChanged(false);

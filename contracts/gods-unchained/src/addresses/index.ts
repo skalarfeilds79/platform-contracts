@@ -1,11 +1,34 @@
-import {
-  DependencyAddresses,
-  GodsUnchainedAddresses,
-} from '../../src';
-
 import { DeploymentEnvironment, DeploymentNetwork } from '@imtbl/deployment-utils';
 
 import * as book from './addresses.json';
+
+export declare type SeasonOneAddresses = {
+  capAddress?: string;
+  raffleAddress?: string;
+  saleAddress?: string;
+  referralAddress?: string;
+  epicPackAddress?: string;
+  rarePackAddress?: string;
+  shinyPackAddress?: string;
+  legendaryPackAddress?: string;
+  rareChestAddress?: string;
+  legendaryChestAddress?: string;
+};
+
+export declare type GodsUnchainedAddresses = {
+  cardsAddress?: string;
+  openMinterAddress?: string;
+  forwarderAddress?: string;
+  fusingAddress?: string;
+  seasonOne?: SeasonOneAddresses;
+};
+
+export declare type DependencyAddresses = {
+  wethAddress?: string;
+  zeroExExchangeAddress?: string;
+  zeroExERC20ProxyAddress?: string;
+  zeroExERC721ProxyAddress?: string;
+};
 
 export function getGodsUnchainedAddresses(
   network: DeploymentNetwork,
@@ -23,7 +46,7 @@ export function getGodsUnchainedAddresses(
     forwarderAddress: env['addresses']['GU_Forwarder'],
     fusingAddress: env['addresses']['GU_Fusing'],
     seasonOne: {
-      vendorAddress: env['addresses']['GU_S1_Vendor'],
+      capAddress: env['addresses']['GU_S1_Cap'],
       raffleAddress: env['addresses']['GU_S1_Raffle'],
       saleAddress: env['addresses']['GU_S1_Sale'],
       referralAddress: env['addresses']['GU_S1_Referral'],
@@ -31,6 +54,8 @@ export function getGodsUnchainedAddresses(
       rarePackAddress: env['addresses']['GU_S1_Rare_Pack'],
       shinyPackAddress: env['addresses']['GU_S1_Shiny_Pack'],
       legendaryPackAddress: env['addresses']['GU_S1_Legendary_Pack'],
+      rareChestAddress: env['addresses']['GU_S1_Rare_Chest'],
+      legendaryChestAddress: env['addresses']['GU_S1_Legendary_Chest'],
     },
   };
 }

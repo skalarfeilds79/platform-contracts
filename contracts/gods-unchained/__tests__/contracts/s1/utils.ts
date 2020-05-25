@@ -20,7 +20,9 @@ import {
     GU_S1_LEGENDARY_PACK_PRICE, GU_S1_LEGENDARY_PACK_SKU,
     GU_S1_SHINY_PACK_PRICE, GU_S1_SHINY_PACK_SKU, GU_S1_RARE_CHEST_SKU, 
     GU_S1_LEGENDARY_CHEST_SKU, GU_S1_LEGENDARY_CHEST_PRICE, 
-    GU_S1_LEGENDARY_CHEST_CAP, GU_S1_RARE_CHEST_CAP, GU_S1_RARE_CHEST_PRICE, GU_S1_CAP
+    GU_S1_LEGENDARY_CHEST_CAP, GU_S1_RARE_CHEST_CAP, GU_S1_RARE_CHEST_PRICE, 
+    GU_S1_CAP, GU_S1_LEGENDARY_CHEST_TOKEN_NAME, GU_S1_LEGENDARY_CHEST_TOKEN_SYMBOL, 
+    GU_S1_RARE_CHEST_TOKEN_NAME, GU_S1_RARE_CHEST_TOKEN_SYMBOL, GU_S1_RAFFLE_TOKEN_NAME, GU_S1_RAFFLE_TOKEN_SYMBOL
 } from '../../../deployment/constants';
 
 const MAX_MINT = 5;
@@ -44,7 +46,7 @@ export async function deployStandards(owner: Wallet): Promise<StandardContracts>
     const beacon = await Beacon.deploy(owner);
     const referral = await Referral.deploy(owner, 90, 10);
     const processor = await PurchaseProcessor.deploy(owner, owner.address);
-    const raffle = await Raffle.deploy(owner);
+    const raffle = await Raffle.deploy(owner, GU_S1_RAFFLE_TOKEN_NAME, GU_S1_RAFFLE_TOKEN_SYMBOL);
     const oracle = await ETHUSDMockOracle.deploy(owner);
     const cards = await Cards.deploy(owner, 1250, 'Cards', 'CARD');
     await processor.setOracle(oracle.address);
@@ -138,8 +140,8 @@ export async function deployShinyPack(owner: Wallet, params: StandardContracts) 
 export async function deployRareChest(owner: Wallet, rare: RarePack, params: StandardContracts): Promise<Chest> {
     const chest = await Chest.deploy(
         owner,
-        'GU: S1 Rare Chest',
-        'GU:1:RC',
+        GU_S1_RARE_CHEST_TOKEN_NAME,
+        GU_S1_RARE_CHEST_TOKEN_SYMBOL,
         rare.address,
         GU_S1_RARE_CHEST_CAP,
         params.cap.address,
@@ -158,8 +160,8 @@ export async function deployRareChest(owner: Wallet, rare: RarePack, params: Sta
 export async function deployLegendaryChest(owner: Wallet, legendary: LegendaryPack, params: StandardContracts): Promise<Chest> {
     const chest = await Chest.deploy(
         owner,
-        'GU: S1 Legendary Chest',
-        'GU:1:LC',
+        GU_S1_LEGENDARY_CHEST_TOKEN_NAME,
+        GU_S1_LEGENDARY_CHEST_TOKEN_SYMBOL,
         legendary.address,
         GU_S1_LEGENDARY_CHEST_CAP,
         params.cap.address,

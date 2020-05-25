@@ -1,20 +1,9 @@
 import 'jest';
 
 import { Ganache, Blockchain, generatedWallets, expectRevert } from '@imtbl/test-utils';
-import {
-  Referral,
-  EpicPack,
-  Cards,
-  Raffle
-} from '../../../../src/contracts';
+import { EpicPack } from '../../../../src/contracts';
 import { ethers } from 'ethers';
-import { PurchaseProcessor, CreditCardEscrow, Escrow, Beacon } from '@imtbl/platform';
-import { getSignedPayment, Currency, Order } from '@imtbl/platform';
-
-import {
-  ETHUSDMockOracle,
-  getETHPayment,
-} from '@imtbl/platform';
+import { getETHPayment, getSignedPayment, Currency, Order } from '@imtbl/platform';
 import { GU_S1_EPIC_PACK_SKU, GU_S1_EPIC_PACK_PRICE } from '../../../../deployment/constants';
 import { deployStandards, StandardContracts, deployEpicPack } from '../utils';
 

@@ -20,6 +20,12 @@ import {
   GU_S1_SHINY_PACK_PRICE,
   GU_S1_LEGENDARY_PACK_PRICE,
   GU_S1_EPIC_PACK_PRICE,
+  GU_S1_RARE_CHEST_TOKEN_SYMBOL,
+  GU_S1_RARE_CHEST_TOKEN_NAME,
+  GU_S1_LEGENDARY_CHEST_TOKEN_SYMBOL,
+  GU_S1_LEGENDARY_CHEST_TOKEN_NAME,
+  GU_S1_RAFFLE_TOKEN_NAME,
+  GU_S1_RAFFLE_TOKEN_SYMBOL,
 } from './constants';
 
 import {
@@ -171,9 +177,12 @@ export class SeasonOneStage implements DeploymentStage {
 
   async deployRaffle(): Promise<string> {
     console.log('** Deploying Raffle **');
-    const raffle = await Raffle.awaitDeployment(this.wallet, {
-      nonce: await this.wallet.getTransactionCount(),
-    });
+    const raffle = await Raffle.awaitDeployment(
+      this.wallet, 
+      GU_S1_RAFFLE_TOKEN_NAME,
+      GU_S1_RAFFLE_TOKEN_SYMBOL,
+      { nonce: await this.wallet.getTransactionCount()}
+    );
     return raffle.address;
   }
 
@@ -315,11 +324,11 @@ export class SeasonOneStage implements DeploymentStage {
     console.log('** Deploying Rare Chest **');
     const chest = await Chest.awaitDeployment(
       this.wallet,
-      'GU:S1: Rare Chest',
-      'GUS1RC',
+      GU_S1_RARE_CHEST_TOKEN_NAME,
+      GU_S1_RARE_CHEST_TOKEN_SYMBOL,
       rarePack,
-      cap,
       GU_S1_RARE_CHEST_CAP,
+      cap,
       referral,
       GU_S1_RARE_CHEST_SKU,
       GU_S1_RARE_CHEST_PRICE,
@@ -340,11 +349,11 @@ export class SeasonOneStage implements DeploymentStage {
     console.log('** Deploying Legendary Chest **');
     const chest = await Chest.awaitDeployment(
       this.wallet,
-      'GU:S1: Legendary Chest',
-      'GUS1LC',
+      GU_S1_LEGENDARY_CHEST_TOKEN_NAME,
+      GU_S1_LEGENDARY_CHEST_TOKEN_SYMBOL,
       legendaryPack,
-      cap,
       GU_S1_LEGENDARY_CHEST_CAP,
+      cap,
       referral,
       GU_S1_LEGENDARY_CHEST_SKU,
       GU_S1_LEGENDARY_CHEST_PRICE,

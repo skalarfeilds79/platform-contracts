@@ -1,13 +1,12 @@
-import 'jest';
-
-import { Ganache, Blockchain,generatedWallets } from '@imtbl/test-utils';
-import { ShinyPack, Cards } from '../../../../src/contracts';
-import { ethers } from 'ethers';
-import { getSignedPayment, Currency } from '@imtbl/platform';
+import { Currency, getSignedPayment } from '@imtbl/platform';
+import { Blockchain, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { parseLogs } from '@imtbl/utils';
-import { rares, epics, legendaries } from './protos';
+import { ethers } from 'ethers';
+import 'jest';
 import { GU_S1_SHINY_PACK_PRICE, GU_S1_SHINY_PACK_SKU } from '../../../../deployment/constants';
-import { deployStandards, deployShinyPack, StandardContracts } from '../utils';
+import { Cards, ShinyPack } from '../../../../src/contracts';
+import { deployShinyPack, deployStandards, StandardContracts } from '../utils';
+import { epics, legendaries, rares } from './protos';
 
 jest.setTimeout(600000);
 const provider = new Ganache(Ganache.DefaultOptions);

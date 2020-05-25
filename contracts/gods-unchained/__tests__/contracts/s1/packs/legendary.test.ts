@@ -1,24 +1,17 @@
-import 'jest';
-
-import { Ganache, Blockchain,generatedWallets } from '@imtbl/test-utils';
-import {
-  LegendaryPack,
-  Cards,
-  Chest
-} from '../../../../src/contracts';
-import { ethers } from 'ethers';
-import { getSignedPayment, Currency } from '@imtbl/platform';
+import { Currency, getSignedPayment } from '@imtbl/platform';
+import { Blockchain, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { parseLogs } from '@imtbl/utils';
-import { rares, legendaries, epics } from './protos';
-import { GU_S1_LEGENDARY_PACK_SKU, GU_S1_LEGENDARY_PACK_PRICE, GU_S1_LEGENDARY_CHEST_SKU, GU_S1_LEGENDARY_CHEST_PRICE, GU_S1_LEGENDARY_CHEST_CAP } from '../../../../deployment/constants';
-import { deployStandards, deployLegendaryPack, deployLegendaryChest, StandardContracts } from '../utils';
+import { ethers } from 'ethers';
+import 'jest';
+import { GU_S1_LEGENDARY_CHEST_PRICE, GU_S1_LEGENDARY_CHEST_SKU, GU_S1_LEGENDARY_PACK_PRICE, GU_S1_LEGENDARY_PACK_SKU } from '../../../../deployment/constants';
+import { Cards, Chest, LegendaryPack } from '../../../../src/contracts';
+import { deployLegendaryChest, deployLegendaryPack, deployStandards, StandardContracts } from '../utils';
+import { epics, legendaries, rares } from './protos';
 
 jest.setTimeout(600000);
-
+ethers.errors.setLogLevel('error');
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
-
-ethers.errors.setLogLevel('error');
 
 describe('Legendary Pack', () => {
 

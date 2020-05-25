@@ -1,12 +1,12 @@
-import 'jest';
-
-import { Ganache, Blockchain,generatedWallets } from '@imtbl/test-utils';
-
-import { RarePack, Chest, Raffle } from '../../../src/contracts';
+import { Currency, getSignedPayment } from '@imtbl/platform';
+import { Blockchain, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
-import { getSignedPayment, Currency } from '@imtbl/platform';
-import { GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_SKU, GU_S1_RARE_CHEST_SKU, GU_S1_RARE_CHEST_PRICE, GU_S1_RAFFLE_TOKEN_NAME, GU_S1_RAFFLE_TOKEN_SYMBOL } from '../../../deployment/constants';
-import { deployRarePack, deployStandards, deployRareChest, StandardContracts } from './utils';
+import 'jest';
+import { GU_S1_RAFFLE_TOKEN_NAME, GU_S1_RAFFLE_TOKEN_SYMBOL, GU_S1_RARE_CHEST_PRICE, GU_S1_RARE_CHEST_SKU, GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_SKU } from '../../../deployment/constants';
+import { Chest, Raffle, RarePack } from '../../../src/contracts';
+import { deployRareChest, deployRarePack, deployStandards, StandardContracts } from './utils';
+
+
 
 jest.setTimeout(600000);
 

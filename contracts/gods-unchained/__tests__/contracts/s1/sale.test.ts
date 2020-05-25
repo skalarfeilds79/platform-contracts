@@ -1,15 +1,12 @@
-import 'jest';
-
-import { Ganache, Blockchain,generatedWallets } from '@imtbl/test-utils';
-
-import { S1Sale, RarePack } from '../../../src/contracts';
+import { Currency, getETHPayment, getSignedPayment, Order } from '@imtbl/platform';
+import { Blockchain, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
-import { getSignedPayment, Currency, Order, getETHPayment } from '@imtbl/platform';
-import { GU_S1_RARE_PACK_SKU, GU_S1_RARE_PACK_PRICE } from '../../../deployment/constants';
-import { deployStandards, deployRarePack, StandardContracts } from './utils';
+import 'jest';
+import { GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_SKU } from '../../../deployment/constants';
+import { RarePack, S1Sale } from '../../../src/contracts';
+import { deployRarePack, deployStandards, StandardContracts } from './utils';
 
 jest.setTimeout(600000);
-
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
 ethers.errors.setLogLevel('error');

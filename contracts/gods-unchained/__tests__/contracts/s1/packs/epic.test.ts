@@ -1,17 +1,14 @@
-import 'jest';
-
-import { Ganache, Blockchain, generatedWallets } from '@imtbl/test-utils';
-
-import { EpicPack } from '../../../../src/contracts';
-import { ethers } from 'ethers';
-import { getSignedPayment, Currency, Order } from '@imtbl/platform';
-import { getETHPayment } from '@imtbl/platform';
+import { Currency, getETHPayment, getSignedPayment, Order } from '@imtbl/platform';
+import { Blockchain, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { parseLogs } from '@imtbl/utils';
-import { GU_S1_EPIC_PACK_SKU, GU_S1_EPIC_PACK_PRICE } from '../../../../deployment/constants';
-import { deployStandards, deployEpicPack, StandardContracts } from '../utils';
+import { ethers } from 'ethers';
+import 'jest';
+import { GU_S1_EPIC_PACK_PRICE, GU_S1_EPIC_PACK_SKU } from '../../../../deployment/constants';
+import { EpicPack } from '../../../../src/contracts';
+import { deployEpicPack, deployStandards, StandardContracts } from '../utils';
+
 
 jest.setTimeout(600000);
-
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
 

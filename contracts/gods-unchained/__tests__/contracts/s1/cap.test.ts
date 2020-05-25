@@ -1,8 +1,8 @@
-import 'jest';
-
-import { Ganache, Blockchain,generatedWallets, expectRevert } from '@imtbl/test-utils';
-import { S1Cap } from '../../../src/contracts';
+import { Blockchain, expectRevert, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
+import 'jest';
+import { S1Cap } from '../../../src/contracts';
+
 
 jest.setTimeout(600000);
 

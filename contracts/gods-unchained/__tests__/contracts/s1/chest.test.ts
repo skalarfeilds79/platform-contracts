@@ -1,12 +1,10 @@
-import 'jest';
-
-import { Ganache, Blockchain,expectRevert, generatedWallets } from '@imtbl/test-utils';
-
+import { Currency, getETHPayment, getSignedPayment } from '@imtbl/platform';
+import { Blockchain, expectRevert, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
-import { getETHPayment, getSignedPayment, Currency } from '@imtbl/platform';
-import { GU_S1_RARE_CHEST_SKU, GU_S1_RARE_CHEST_PRICE } from '../../../deployment/constants';
-import { deployStandards, deployRareChest, deployRarePack, StandardContracts } from './utils';
-import { RarePack, Chest } from '../../../src';
+import 'jest';
+import { GU_S1_RARE_CHEST_PRICE, GU_S1_RARE_CHEST_SKU } from '../../../deployment/constants';
+import { Chest, RarePack } from '../../../src';
+import { deployRareChest, deployRarePack, deployStandards, StandardContracts } from './utils';
 
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);

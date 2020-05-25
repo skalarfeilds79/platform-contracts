@@ -1,10 +1,10 @@
+import { Blockchain, expectRevert, Ganache, generatedWallets } from '@imtbl/test-utils';
+import { ethers, Wallet } from 'ethers';
 import 'jest';
+import { Cards } from '../../src/contracts';
 
 jest.setTimeout(30000);
 
-import { Ganache, Blockchain,expectRevert, generatedWallets } from '@imtbl/test-utils';
-import { Cards } from '../../src/contracts';
-import { Wallet, ethers } from 'ethers';
 
 ethers.errors.setLogLevel('error');
 const provider = new Ganache(Ganache.DefaultOptions);

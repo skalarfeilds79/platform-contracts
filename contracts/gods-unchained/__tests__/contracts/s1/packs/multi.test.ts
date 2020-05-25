@@ -1,11 +1,11 @@
-import 'jest';
-
-import { Ganache, Blockchain, generatedWallets, expectRevert } from '@imtbl/test-utils';
-import { EpicPack } from '../../../../src/contracts';
+import { Currency, getETHPayment, getSignedPayment, Order } from '@imtbl/platform';
+import { Blockchain, expectRevert, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
-import { getETHPayment, getSignedPayment, Currency, Order } from '@imtbl/platform';
-import { GU_S1_EPIC_PACK_SKU, GU_S1_EPIC_PACK_PRICE } from '../../../../deployment/constants';
-import { deployStandards, StandardContracts, deployEpicPack } from '../utils';
+import 'jest';
+import { GU_S1_EPIC_PACK_PRICE, GU_S1_EPIC_PACK_SKU } from '../../../../deployment/constants';
+import { EpicPack } from '../../../../src/contracts';
+import { deployEpicPack, deployStandards, StandardContracts } from '../utils';
+
 
 jest.setTimeout(600000);
 

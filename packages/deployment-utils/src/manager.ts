@@ -81,7 +81,9 @@ export class Manager {
                 await contract.functions.transferOwnership(intendedOwner);
               }
             } catch {
-              console.log(`* Failed to transfer ownership of ${address}`);
+              const errorReason = `* Failed to transfer ownership of ${address}`;
+              console.log(errorReason);
+              throw errorReason;
             }
           },
         );

@@ -88,6 +88,7 @@ export class Manager {
       });
     } catch (error) {
       console.log(error);
+      throw error;
     }
   }
 

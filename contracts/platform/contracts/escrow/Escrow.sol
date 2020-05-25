@@ -48,11 +48,11 @@ contract Escrow is Ownable {
      * @param _callbackData the data to pass to the callback transaction
      */
     function callbackEscrow(
-        Vault calldata _vault,
+        Vault memory _vault,
         address _callbackTo,
-        bytes calldata _callbackData
+        bytes memory _callbackData
     )
-        external
+        public
         returns (uint256)
     {
 

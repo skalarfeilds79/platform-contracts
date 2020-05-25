@@ -359,7 +359,7 @@ contract CreditCardEscrow is Ownable {
         uint256 _paymentID,
         uint256 _duration
     )
-        external
+        public
         returns (uint)
     {
 

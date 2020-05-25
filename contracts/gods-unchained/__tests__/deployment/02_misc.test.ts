@@ -4,11 +4,9 @@ import { Wallet, ethers } from 'ethers';
 
 import { Blockchain } from '@imtbl/test-utils';
 import { PurchaseProcessor, Cards, Escrow, RarePack } from '../../src';
-import { Beacon, CreditCardEscrow } from '@imtbl/platform';
-import { getPlatformAddresses } from '../../../platform/src/addresses/getPlatformAddresses';
+import { Beacon, CreditCardEscrow, getPlatformAddresses } from '@imtbl/platform';
 import { getGodsUnchainedAddresses } from '../../src/addresses/index';
-import { generatedWallets } from '../../../../packages/test-utils/src/generatedWallets';
-import { expectRevert } from '../../../../packages/test-utils/src/expectRevert';
+import { expectRevert, generatedWallets } from '@imtbl/test-utils/';
 
 const config = require('dotenv').config({ path: '../../.env' }).parsed;
 const provider = new ethers.providers.JsonRpcProvider(config.RPC_ENDPOINT);

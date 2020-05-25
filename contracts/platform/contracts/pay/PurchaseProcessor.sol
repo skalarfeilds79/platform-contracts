@@ -137,7 +137,7 @@ contract PurchaseProcessor is Ownable {
         Order memory order,
         PaymentParams memory payment
     )
-        external
+        public
         payable returns (Receipt memory)
     {
 

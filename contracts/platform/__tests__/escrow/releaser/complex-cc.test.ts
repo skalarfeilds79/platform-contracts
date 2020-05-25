@@ -1,23 +1,11 @@
-import 'jest';
-
-import {
-  Escrow,
-  TestERC20Token,
-  CreditCardEscrow,
-  TestERC721Token,
-  TestCreditCardPack,
-  MaliciousCCP,
-} from '../../../src/contracts';
-
-import { Ganache, Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
+import { Blockchain, expectRevert, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
+import 'jest';
+import { CreditCardEscrow, Escrow, MaliciousCCP, TestCreditCardPack, TestERC20Token, TestERC721Token } from '../../../src/contracts';
 
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
-
 jest.setTimeout(20000);
-
-
 ethers.errors.setLogLevel('error');
 
 describe('CreditCardEscrow', () => {

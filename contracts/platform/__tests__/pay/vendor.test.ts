@@ -1,12 +1,9 @@
-import 'jest';
-
-import { TestVendor, PurchaseProcessor } from '../../src/contracts';
-import { Ganache, Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
-import { keccak256, BigNumber } from 'ethers/utils';
-
-import { getETHPayment, getSignedPayment, Order, PaymentParams, Currency } from '../../src';
-import { ETHUSDMockOracle } from '../../src/contracts';
+import { Blockchain, expectRevert, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
+import { BigNumber, keccak256 } from 'ethers/utils';
+import 'jest';
+import { Currency, getETHPayment, getSignedPayment, Order, PaymentParams } from '../../src';
+import { ETHUSDMockOracle, PurchaseProcessor, TestVendor } from '../../src/contracts';
 
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);

@@ -1,13 +1,10 @@
-import 'jest';
-
 import { Ganache, generatedWallets } from '@imtbl/test-utils';
+import { ethers } from 'ethers';
 import { BigNumber } from 'ethers/utils';
+import 'jest';
 import { ETHUSDMockOracle } from '../../src/contracts/ETHUSDMockOracle';
 
-import { ethers } from 'ethers';
-
 ethers.errors.setLogLevel('error');
-
 const provider = new Ganache(Ganache.DefaultOptions);
 
 describe('ETHUSDMockOracle', () => {

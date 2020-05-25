@@ -1,16 +1,10 @@
-import 'jest';
-
-import { Escrow, TestERC20Token, TestChest, MaliciousChest } from '../../src/contracts';
-
-import { Ganache, Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
-
+import { Blockchain, expectRevert, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
+import 'jest';
+import { Escrow, MaliciousChest, TestChest, TestERC20Token } from '../../src/contracts';
 
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
-
-
-
 jest.setTimeout(10000);
 ethers.errors.setLogLevel('error');
 

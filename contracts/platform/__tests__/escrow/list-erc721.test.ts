@@ -1,17 +1,11 @@
-import 'jest';
-
-import { Escrow, TestERC721Token, MaliciousListPack, TestListPack } from '../../src/contracts';
-
-import { Ganache, Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
+import { Blockchain, expectRevert, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
+import 'jest';
+import { Escrow, MaliciousListPack, TestERC721Token, TestListPack } from '../../src/contracts';
 
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
-
 ethers.errors.setLogLevel('error');
-
-
-
 jest.setTimeout(10000);
 
 describe('ListERC271Escrow', () => {

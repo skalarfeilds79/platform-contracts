@@ -1,10 +1,8 @@
-import 'jest';
-
-import { PurchaseProcessor } from '../../src/contracts';
-
-import { Ganache, Blockchain, expectRevert, generatedWallets } from '@imtbl/test-utils';
+import { Blockchain, expectRevert, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { ethers, Wallet } from 'ethers';
 import { keccak256 } from 'ethers/utils';
+import 'jest';
+import { PurchaseProcessor } from '../../src/contracts';
 
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);

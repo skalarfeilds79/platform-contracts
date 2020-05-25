@@ -1,14 +1,11 @@
+import { ethers, Wallet } from 'ethers';
 import 'jest';
-
-import { Cards, Fusing, OpenMinter } from '../../src/contracts';
-import { Wallet, ethers } from 'ethers';
 import { getGodsUnchainedAddresses } from '../../src/addresses';
+import { Cards, Fusing, OpenMinter } from '../../src/contracts';
+
 ethers.errors.setLogLevel('error');
-
 const config = require('dotenv').config({ path: '../../.env' }).parsed;
-
 const provider = new ethers.providers.JsonRpcProvider(config.RPC_ENDPOINT);
-
 const wallet: Wallet = new ethers.Wallet(config.PRIVATE_KEY, provider);
 
 describe('01_core', async () => {

@@ -1,23 +1,16 @@
-import 'jest';
-
-import { ethers } from 'ethers';
-import { generatedWallets, Blockchain } from '@imtbl/test-utils';
-import { keccak256 } from 'ethers/utils';
+import { Currency, getPlatformAddresses, getSignedPayment, Platform } from '@imtbl/platform';
+import { Blockchain, generatedWallets } from '@imtbl/test-utils';
 import { parseLogs } from '@imtbl/utils';
-
-import { Currency, Platform } from '@imtbl/platform';
-
-import { RarePack, CreditCardEscrow, S1Sale } from '../../src';
-import { getSignedPayment, getPlatformAddresses } from '@imtbl/platform';
-
-import { getGodsUnchainedAddresses } from '../../src/addresses/index';
+import { ethers } from 'ethers';
+import { keccak256 } from 'ethers/utils';
+import 'jest';
 import { GU_S1_RARE_PACK_SKU } from '../../deployment/constants';
+import { CreditCardEscrow, RarePack, S1Sale } from '../../src';
+import { getGodsUnchainedAddresses } from '../../src/addresses/index';
 
 const provider = new ethers.providers.JsonRpcProvider();
 const blockchain = new Blockchain();
-
 jest.setTimeout(60000);
-
 const config = require('dotenv').config({ path: '../../.env' }).parsed;
 
 describe('EscrowModule', async () => {

@@ -1,41 +1,12 @@
-import 'jest';
-
-import {
-  S1Cap,
-  Cards,
-  Beacon,
-  PurchaseProcessor,
-  Escrow,
-  Raffle,
-  S1Sale,
-  Referral,
-  EpicPack,
-  RarePack,
-  ShinyPack,
-  LegendaryPack,
-} from '../../src/contracts';
-
-import { Wallet, ethers } from 'ethers';
-import { ContractReceipt } from 'ethers/contract';
-import {
-  getSignedPayment,
-  Currency,
-  Payment,
-  ETHUSDMockOracle,
-  getETHPayment,
-  getPlatformAddresses,
-} from '@imtbl/platform';
-
+import { Currency, ETHUSDMockOracle, getETHPayment, getPlatformAddresses, getSignedPayment, Payment } from '@imtbl/platform';
 import { Blockchain } from '@imtbl/test-utils';
-
-import {
-  GU_S1_EPIC_PACK_SKU,
-  GU_S1_RARE_PACK_SKU,
-  GU_S1_LEGENDARY_PACK_SKU,
-  GU_S1_SHINY_PACK_SKU,
-} from '../../deployment/constants';
 import { asyncForEach, parseLogs } from '@imtbl/utils';
+import { ethers, Wallet } from 'ethers';
+import { ContractReceipt } from 'ethers/contract';
+import 'jest';
+import { GU_S1_EPIC_PACK_SKU, GU_S1_LEGENDARY_PACK_SKU, GU_S1_RARE_PACK_SKU, GU_S1_SHINY_PACK_SKU } from '../../deployment/constants';
 import { getGodsUnchainedAddresses } from '../../src/addresses/index';
+import { Beacon, Cards, EpicPack, Escrow, LegendaryPack, PurchaseProcessor, Raffle, RarePack, Referral, S1Cap, S1Sale, ShinyPack } from '../../src/contracts';
 
 ethers.errors.setLogLevel('error');
 

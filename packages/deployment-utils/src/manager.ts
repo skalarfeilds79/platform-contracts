@@ -1,10 +1,9 @@
 
-import { Wallet, ethers } from 'ethers';
-
-import { AddressBook } from './book';
-import { DeploymentStage } from './stage';
 import { asyncForEach } from '@imtbl/utils';
+import { ethers, Wallet } from 'ethers';
+import { AddressBook } from './book';
 import { DeploymentParams } from './params';
+import { DeploymentStage } from './stage';
 
 const ownershipABI = [
   {

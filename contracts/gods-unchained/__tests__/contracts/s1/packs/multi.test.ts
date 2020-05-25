@@ -6,14 +6,10 @@ import { GU_S1_EPIC_PACK_PRICE, GU_S1_EPIC_PACK_SKU } from '../../../../deployme
 import { EpicPack } from '../../../../src/contracts';
 import { deployEpicPack, deployStandards, StandardContracts } from '../utils';
 
-
 jest.setTimeout(600000);
-
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
 const MAX_MINT = 5;
-const ZERO_EX = '0x0000000000000000000000000000000000000000';
-
 ethers.errors.setLogLevel('error');
 
 describe('Multi-Mint Pack', () => {
@@ -55,7 +51,7 @@ describe('Multi-Mint Pack', () => {
       const payment = await getSignedPayment(
          owner, shared.processor.address, epic.address, order, params
       );
-      await epic.purchase(quantity, payment, ZERO_EX);
+      await epic.purchase(quantity, payment, ethers.constants.AddressZero);
       for (let i = 0; i < quantity; i += MAX_MINT) {
         await epic.mint(0);
       }
@@ -91,7 +87,7 @@ describe('Multi-Mint Pack', () => {
     async function purchasePacks(quantity: number) {
       const payment = getETHPayment();
       const ethRequired = await shared.oracle.convert(1, 0, GU_S1_EPIC_PACK_PRICE * quantity);
-      await epic.purchase(quantity, payment, ZERO_EX, { value: ethRequired });
+      await epic.purchase(quantity, payment, ethers.constants.AddressZero, { value: ethRequired });
       for (let i = 0; i < quantity; i += MAX_MINT) {
         await epic.mint(0);
       }

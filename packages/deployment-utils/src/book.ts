@@ -1,7 +1,6 @@
-import fs from 'fs-extra';
-import { Provider } from 'ethers/providers';
 import { asyncForEach } from '@imtbl/utils';
-
+import { Provider } from 'ethers/providers';
+import fs from 'fs-extra';
 import dependencies from './dependencies';
 import { DeploymentEnvironment, DeploymentNetwork } from './params';
 

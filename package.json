@@ -32,13 +32,13 @@
         "global": "^4.4.0",
         "lerna": "^3.20.2",
         "truffle-json-compress": "^1.0.2",
-        "typescript": "3.7.5",
-        "weak-napi": "^2.0.1"
+        "typescript": "3.7.5"
     },
     "devDependencies": {
         "@types/jest": "^25.1.1",
         "@types/node": "11.15.0",
-        "ganache-cli": "^6.7.0"
+        "ganache-cli": "^6.7.0",
+        "weak-napi": "^2.0.1"
     },
     "engines": {
         "node": "^12.16.0"

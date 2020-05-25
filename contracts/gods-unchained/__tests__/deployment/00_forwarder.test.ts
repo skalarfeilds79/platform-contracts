@@ -1,16 +1,11 @@
+import { ethers, Wallet } from 'ethers';
 import 'jest';
-
-import { Forwarder } from '../../src/contracts';
-import { Wallet, ethers } from 'ethers';
-
 import { getDependencies, getGodsUnchainedAddresses } from '../../src/addresses';
+import { Forwarder } from '../../src/contracts';
 
 ethers.errors.setLogLevel('error');
-
 const config = require('dotenv').config({ path: '../../.env' }).parsed;
-
 const provider = new ethers.providers.JsonRpcProvider(config.RPC_ENDPOINT);
-
 const wallet: Wallet = new ethers.Wallet(config.PRIVATE_KEY, provider);
 
 describe('00_forwarder', async () => {

@@ -148,7 +148,7 @@ export async function deployRareChest(owner: Wallet, rare: RarePack, params: Sta
         params.referral.address,
         GU_S1_RARE_CHEST_SKU,
         GU_S1_RARE_CHEST_PRICE,
-        params.escrow.address,
+        params.cc.address,
         params.processor.address,
     );
     await rare.setChest(chest.address);
@@ -168,7 +168,7 @@ export async function deployLegendaryChest(owner: Wallet, legendary: LegendaryPa
         params.referral.address,
         GU_S1_LEGENDARY_CHEST_SKU,
         GU_S1_LEGENDARY_CHEST_PRICE,
-        params.escrow.address,
+        params.cc.address,
         params.processor.address,
     );
     await legendary.setChest(chest.address);

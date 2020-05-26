@@ -23,14 +23,13 @@ export const GU_S1_LEGENDARY_CHEST_TOKEN_SYMBOL = 'GU:S1:LC';
 export const GU_S1_RAFFLE_TOKEN_NAME = 'GU:S1: Raffle Ticket';
 export const GU_S1_RAFFLE_TOKEN_SYMBOL = 'GU:S1:RT';
 
-export const GU_S1_EPIC_PACK_SKU = skuify('epic.pack');
-export const GU_S1_RARE_PACK_SKU = skuify('rare.pack');
-export const GU_S1_SHINY_PACK_SKU = skuify('shiny.pack');
-export const GU_S1_LEGENDARY_PACK_SKU = skuify('legendary.pack');
+export const GU_S1_EPIC_PACK_SKU = skuify('s1.pack.epic');
+export const GU_S1_RARE_PACK_SKU = skuify('s1.pack.rare');
+export const GU_S1_SHINY_PACK_SKU = skuify('s1.pack.shiny');
+export const GU_S1_LEGENDARY_PACK_SKU = skuify('s1.pack.legendary');
 
-export const GU_S1_RARE_CHEST_SKU = skuify('rare.chest');
-export const GU_S1_LEGENDARY_CHEST_SKU = skuify('legendary.chest');
-
+export const GU_S1_RARE_CHEST_SKU = skuify('s1.chest.rare');
+export const GU_S1_LEGENDARY_CHEST_SKU = skuify('s1.chest.legendary');
 
 function skuify(key: string): string {
   return keccak256(ethers.utils.formatBytes32String(key));

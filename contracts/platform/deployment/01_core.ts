@@ -1,21 +1,25 @@
 import { Wallet, ethers } from 'ethers';
-import { DeploymentStage } from '@imtbl/deployment-utils';
+import { DeploymentEnvironment, DeploymentStage, DeploymentParams } from '@imtbl/deployment-utils';
 import { Escrow, CreditCardEscrow, Beacon, PurchaseProcessor } from '../src/contracts';
-import { IM_PROCESSOR_LIMIT } from '@imtbl/addresses';
+
+export const IM_PROCESSOR_LIMIT = 100000000;
 
 export class CoreStage implements DeploymentStage {
+  
   private wallet: Wallet;
   private networkId: number;
+  private env: DeploymentEnvironment;
 
-  constructor(privateKey: string, rpcUrl: string, networkId: number) {
-    this.wallet = new ethers.Wallet(privateKey, new ethers.providers.JsonRpcProvider(rpcUrl));
-    this.networkId = networkId;
+  constructor(params: DeploymentParams) {
+    this.wallet = new ethers.Wallet(params.private_key, new ethers.providers.JsonRpcProvider(params.rpc_url));
+    this.networkId = params.network_id;
+    this.env = params.environment;
   }
 
   async deploy(
     findInstance: (name: string) => Promise<string>,
     onDeployment: (name: string, address: string, dependency: boolean) => void,
-    transferOwnership: (addresses: string[]) => void,
+    transferOwnership: (address: string) => void,
   ) {
     await this.wallet.getTransactionCount();
 
@@ -35,6 +39,7 @@ export class CoreStage implements DeploymentStage {
     }
 
     const beacon = (await findInstance('IM_Beacon')) || (await this.deployBeacon());
+    console.log('beacon', beacon);
     onDeployment('IM_Beacon', beacon, false);
 
     const processor = (await findInstance('IM_Processor')) || (await this.deployProcessor());
@@ -59,29 +64,25 @@ export class CoreStage implements DeploymentStage {
 
   async deployBeacon(): Promise<string> {
     console.log('** Deploying Beacon **');
-    const beacon = await Beacon.awaitDeployment(
-      this.wallet,
-      { nonce: await this.wallet.getTransactionCount()}
-    );
+    const beacon = await Beacon.awaitDeployment(this.wallet, {
+      nonce: await this.wallet.getTransactionCount(),
+    });
     return beacon.address;
   }
 
   async deployProcessor(): Promise<string> {
     console.log('** Deploying PurchaseProcessor **');
-    const processor = await PurchaseProcessor.awaitDeployment(
-      this.wallet,
-      this.wallet.address,
-      { nonce: await this.wallet.getTransactionCount()}
-    );
+    const processor = await PurchaseProcessor.awaitDeployment(this.wallet, this.wallet.address, {
+      nonce: await this.wallet.getTransactionCount(),
+    });
     return processor.address;
   }
 
   async deployEscrow(): Promise<string> {
     console.log('** Deploying Escrow **');
-    const escrow = await Escrow.awaitDeployment(
-      this.wallet,
-      { nonce: await this.wallet.getTransactionCount()}
-    );
+    const escrow = await Escrow.awaitDeployment(this.wallet, {
+      nonce: await this.wallet.getTransactionCount(),
+    });
     return escrow.address;
   }
 
@@ -100,14 +101,13 @@ export class CoreStage implements DeploymentStage {
       destructionDelay,
       custodian,
       custodianDelay,
-      { nonce: await this.wallet.getTransactionCount()}
+      { nonce: await this.wallet.getTransactionCount() },
     );
     return cc.address;
   }
 
   async setPaymentProcessorSigner(processor: string, signer: string) {
     console.log('*** Setting payment processor signer *** ');
-    await this.wallet.getTransactionCount();
     const contract = PurchaseProcessor.at(this.wallet, processor);
     if ((await contract.signerLimits(signer)).total.toNumber() === 0) {
       console.log(`${signer} | $${IM_PROCESSOR_LIMIT / 100} LIMIT`);

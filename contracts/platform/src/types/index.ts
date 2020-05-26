@@ -36,3 +36,12 @@ export type EscrowReturnInfo = {
   asset: string;
   ids?: number[];
 };
+
+export declare type PlatformAddresses = {
+  beaconAddress?: string;
+  processorAddress?: string;
+  escrowAddress?: string;
+  creditCardAddress?: string;
+  ethUSDMakerOracleAddress?: string;
+  ethUSDMockOracleAddress?: string;
+};

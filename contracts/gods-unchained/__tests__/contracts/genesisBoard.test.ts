@@ -1,16 +1,11 @@
-import { Address } from '@imtbl/common-types';
+import { Blockchain, expectRevert, Ganache, generatedWallets } from '@imtbl/test-utils';
+import { parseLogs } from '@imtbl/utils';
+import { ethers, Wallet } from 'ethers';
+import 'jest';
 import { GenesisBoard } from '../../src/contracts';
 
-import 'jest';
 jest.setTimeout(30000);
-
-import { Ganache, Blockchain,expectRevert, generatedWallets } from '@imtbl/test-utils';
-import { Wallet, ethers } from 'ethers';
-
 ethers.errors.setLogLevel('error');
-
-import { parseLogs } from '@imtbl/utils';
-
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
 
@@ -40,7 +35,7 @@ describe('Genesis Board', () => {
 
   describe('#mint', () => {
     let genesisBoard: GenesisBoard;
-    let callerDestination: Address;
+    let callerDestination: string;
     let callerLevel: number;
     let callerWallet;
 

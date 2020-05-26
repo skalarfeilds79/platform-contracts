@@ -12,11 +12,22 @@ import "../S1Vendor.sol";
 contract Pack is IPack, S1Vendor, RarityProvider {
 
     // Emitted when the cards from a commitment are actually minted
-    event PackCardsMinted(uint256 indexed commitmentID, uint256 lowTokenID, uint256 highTokenID);
+    event PackCardsMinted(
+        uint256 indexed commitmentID,
+        uint256 mintIndexStart,
+        uint256 mintIndexEnd,
+        uint256 lowTokenID,
+        uint256 highTokenID
+    );
     // Emitted when a card commitment is recorded (either purchase or opening a chest)
     event CommitmentRecorded(uint256 indexed commitmentID, Commitment commitment);
     // Emitted when the tickets from a commitment are actually minted
-    event TicketsMinted(uint256 indexed commitmentID, uint16[] ticketCounts);
+    event TicketsMinted(
+        uint256 indexed commitmentID,
+        uint256 mintIndexStart,
+        uint256 mintIndexEnd,
+        uint16[] ticketCounts
+    );
 
     // A commitment to generating a certain number of packs for a certain user
     // Prefer commitment to purchase (includes cards opened from chests)
@@ -26,6 +37,8 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         uint256 packQuantity;
         uint256 ticketQuantity;
         uint256 escrowFor;
+        uint256 packsMinted;
+        uint256 ticketsMinted;
         address recipient;
     }
 
@@ -41,6 +54,8 @@ contract Pack is IPack, S1Vendor, RarityProvider {
     address public chest;
     // The number of commitments
     uint256 public commitmentCount;
+    // The max number of packs which can be minted in one transaction
+    uint256 public maxMint;
 
     function _getCardDetails(uint _index, uint _random)
         internal
@@ -53,6 +68,8 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         returns (uint16);
 
     constructor(
+        S1Cap _cap,
+        uint256 _maxMint,
         IRaffle _raffle,
         Beacon _beacon,
         ICards _cards,
@@ -61,10 +78,11 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         uint256 _price,
         CreditCardEscrow _escrow,
         PurchaseProcessor _pay
-    ) public S1Vendor(_referral, _sku, _price, _escrow, _pay) {
+    ) public S1Vendor(_cap, _referral, _sku, _price, _escrow, _pay) {
         raffle = _raffle;
         beacon = _beacon;
         cards = _cards;
+        maxMint = _maxMint;
     }
 
     /** @dev Set the chest address for this contract
@@ -90,6 +108,11 @@ contract Pack is IPack, S1Vendor, RarityProvider {
             "S1Pack: must be a valid commitment"
         );
 
+        require(
+            _canMint(commitment),
+            "S1Pack: must be able to mint"
+        );
+
         if (commitment.escrowFor == 0) {
             _createCards(_commitmentID, commitment, commitment.recipient);
             _createTickets(_commitmentID, commitment, commitment.recipient);
@@ -99,11 +122,19 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         }
     }
 
+    function _canMint(Commitment memory _commitment) internal pure returns (bool) {
+        return (
+            _commitment.packsMinted < _commitment.packQuantity ||
+            _commitment.ticketsMinted < _commitment.ticketQuantity
+        );
+    }
+
     function _escrowCards(uint256 _commitmentID, Commitment memory _commitment) internal {
 
-        uint cardCount = _commitment.packQuantity * 5;
+        (uint start, uint end) = _getBoundaries(_commitment.packsMinted, _commitment.packQuantity);
         uint low = cards.nextBatch();
-        uint high = low + cardCount;
+        uint len = end.sub(start);
+        uint high = low.add(len);
 
         Escrow.Vault memory vault = Escrow.Vault({
             player: _commitment.recipient,
@@ -138,22 +169,25 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         return uint256(hashed);
     }
 
+    function _getBoundaries(uint256 _minted, uint256 _total) internal view returns (uint256, uint256) {
+        uint start = _minted;
+        uint remaining = _total.sub(_minted);
+        uint end = remaining > maxMint ? _minted.add(maxMint) : _total;
+        return (start, end);
+    }
+
     function _escrowTickets(
         uint256 _commitmentID,
         Commitment memory _commitment
     )
         internal
     {
-
-        if (_commitment.ticketQuantity == 0) {
-            return;
-        }
-
+        (uint start, uint end) = _getBoundaries(_commitment.ticketsMinted, _commitment.ticketQuantity);
         uint randomness = _getRandomness(_commitmentID, _commitment);
         uint totalTickets = 0;
-        for (uint i = 0; i < _commitment.ticketQuantity; i++) {
+        for (uint i = start; i < end; i++) {
             uint16 qty = _getTicketsInPack(i, randomness);
-            totalTickets += qty;
+            totalTickets = totalTickets.add(qty);
         }
 
         Escrow.Vault memory vault = Escrow.Vault({
@@ -187,17 +221,6 @@ contract Pack is IPack, S1Vendor, RarityProvider {
 
         Commitment memory commitment = commitments[_commitmentID];
 
-        require(
-            commitment.ticketQuantity > 0,
-            "S1Pack: must have tickets available"
-        );
-
-        // if there's nothing left to do on this purchase, clear it
-        if (commitments[_commitmentID].packQuantity == 0) {
-            delete commitments[_commitmentID];
-        } else {
-            commitments[_commitmentID].ticketQuantity = 0;
-        }
         _createTickets(_commitmentID, commitment, protocol);
     }
 
@@ -211,17 +234,6 @@ contract Pack is IPack, S1Vendor, RarityProvider {
 
         Commitment memory commitment = commitments[_commitmentID];
 
-        require(
-            commitment.packQuantity > 0,
-            "S1Pack: must have cards available"
-        );
-
-        // if there's nothing left to do on this purchase, clear it
-        if (commitments[_commitmentID].ticketQuantity == 0) {
-            delete commitments[_commitmentID];
-        } else {
-            commitments[_commitmentID].packQuantity = 0;
-        }
         _createCards(_commitmentID, commitment, protocol);
     }
 
@@ -262,25 +274,33 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         address _recipient
     ) internal {
 
-        if (_commitment.ticketQuantity == 0) {
+        (uint start, uint end) = _getBoundaries(_commitment.ticketsMinted, _commitment.ticketQuantity);
+        uint len = end.sub(start);
+        if (len == 0) {
             return;
         }
 
         uint randomness = _getRandomness(_commitmentID, _commitment);
-        uint16[] memory ticketQuantities = new uint16[](_commitment.ticketQuantity);
+        uint16[] memory ticketQuantities = new uint16[](len);
         uint totalTickets = 0;
-        for (uint i = 0; i < _commitment.ticketQuantity; i++) {
-            uint16 qty = _getTicketsInPack(i, randomness);
-            totalTickets += qty;
+        for (uint i = 0; i < len; i++) {
+            uint16 qty = _getTicketsInPack(start.add(i), randomness);
+            totalTickets = totalTickets.add(qty);
             ticketQuantities[i] = qty;
         }
         raffle.mint(_recipient, totalTickets);
-        emit TicketsMinted(_commitmentID, ticketQuantities);
+        emit TicketsMinted(_commitmentID, start, end, ticketQuantities);
         emit PaymentERC20Minted(
             _commitment.paymentID,
             address(raffle),
             totalTickets
         );
+        // if all minting has finished, clear this purchase
+        if (_commitment.ticketQuantity == end && _commitment.packQuantity == _commitment.packsMinted) {
+            delete commitments[_commitmentID];
+        } else {
+            commitments[_commitmentID].ticketsMinted = end;
+        }
     }
 
     function _createCards(
@@ -288,23 +308,38 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         Commitment memory _commitment,
         address _recipient
     ) internal {
+
+        (uint start, uint end) = _getBoundaries(_commitment.packsMinted, _commitment.packQuantity);
+        uint len = end.sub(start);
+        if (len == 0) {
+            return;
+        }
+
         uint256 randomness = _getRandomness(_commitmentID, _commitment);
-        uint cardCount = _commitment.packQuantity * 5;
+        uint cardCount = len.mul(5);
         uint16[] memory protos = new uint16[](cardCount);
         uint8[] memory qualities = new uint8[](cardCount);
+        uint cardStart = start.mul(5);
         for (uint i = 0; i < cardCount; i++) {
-            (protos[i], qualities[i]) = _getCardDetails(i, randomness);
+            (protos[i], qualities[i]) = _getCardDetails(cardStart.add(i), randomness);
         }
         uint256 lowTokenID = cards.mintCards(_recipient, protos, qualities);
-        uint256 highTokenID = lowTokenID + protos.length;
+        uint256 highTokenID = lowTokenID.add(protos.length);
 
-        emit PackCardsMinted(_commitmentID, lowTokenID, highTokenID);
+        emit PackCardsMinted(_commitmentID, start, end, lowTokenID, highTokenID);
         emit PaymentERC721RangeMinted(
             _commitment.paymentID,
             address(cards),
             lowTokenID,
             highTokenID
         );
+
+         // if all minting has finished, clear this purchase
+        if (_commitment.packQuantity == end && _commitment.ticketQuantity == _commitment.ticketsMinted) {
+            delete commitments[_commitmentID];
+        } else {
+            commitments[_commitmentID].packsMinted = end;
+        }
     }
 
     function openChests(address _recipient, uint256 _quantity) external {
@@ -317,11 +352,13 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         uint256 commitBlock = beacon.commit(0);
         Commitment memory commitment = Commitment({
             commitBlock: commitBlock,
-            packQuantity: _quantity * 6,
+            ticketsMinted: 0,
+            packsMinted: 0,
+            packQuantity: _quantity.mul(6),
             recipient: _recipient,
             escrowFor: 0,
             paymentID: 0,
-            ticketQuantity: paused() ? 0 : _quantity * 6
+            ticketQuantity: paused() ? 0 : _quantity.mul(6)
         });
 
         commitments[commitmentID] = commitment;
@@ -341,6 +378,8 @@ contract Pack is IPack, S1Vendor, RarityProvider {
             commitBlock: commitBlock,
             packQuantity: _quantity,
             recipient: _recipient,
+            ticketsMinted: 0,
+            packsMinted: 0,
             escrowFor: _escrowFor,
             paymentID: _paymentID,
             ticketQuantity: _quantity

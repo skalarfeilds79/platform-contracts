@@ -1,15 +1,13 @@
+import { Blockchain, expectRevert, Ganache, generatedWallets } from '@imtbl/test-utils';
+import { parseLogs } from '@imtbl/utils';
+import { ethers, Wallet } from 'ethers';
+import { ContractReceipt } from 'ethers/contract';
 import 'jest';
-
-jest.setTimeout(30000);
-
-import { Ganache, Blockchain,expectRevert, generatedWallets } from '@imtbl/test-utils';
 import { Cards, Fusing } from '../../src/contracts';
 import { CardsWrapper } from '../../src/wrappers';
-import { Wallet, ethers } from 'ethers';
-ethers.errors.setLogLevel('error');
-import { ContractReceipt } from 'ethers/contract';
-import { parseLogs } from '@imtbl/utils';
 
+jest.setTimeout(30000);
+ethers.errors.setLogLevel('error');
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
 

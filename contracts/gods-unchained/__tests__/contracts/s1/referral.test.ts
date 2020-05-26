@@ -1,11 +1,9 @@
-import 'jest';
-
+import { Blockchain, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
+import 'jest';
+import { Referral } from '../../../src/contracts';
 
 ethers.errors.setLogLevel('error');
-
-import { Ganache, Blockchain,generatedWallets } from '@imtbl/test-utils';
-import { Referral } from '../../../src/contracts';
 
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);

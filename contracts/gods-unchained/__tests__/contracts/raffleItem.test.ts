@@ -1,14 +1,11 @@
-import { Address } from '@imtbl/common-types';
+
+import { Blockchain, expectRevert, Ganache, generatedWallets } from '@imtbl/test-utils';
+import { ethers } from 'ethers';
+import 'jest';
 import { RaffleItem } from '../../src/contracts';
 
-import 'jest';
-
 jest.setTimeout(30000);
-
-import { Ganache, Blockchain,expectRevert, generatedWallets } from '@imtbl/test-utils';
-import { Wallet, ethers } from 'ethers';
 ethers.errors.setLogLevel('error');
-
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
 
@@ -34,7 +31,7 @@ describe('Raffle Item', () => {
 
   describe('#mint', () => {
     let raffleItem: RaffleItem;
-    let callerDestination: Address;
+    let callerDestination: string;
     let callerWallet;
 
     beforeEach(async () => {

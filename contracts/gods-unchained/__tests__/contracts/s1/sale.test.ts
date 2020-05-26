@@ -1,19 +1,15 @@
-import 'jest';
-
-import { Ganache, Blockchain,generatedWallets } from '@imtbl/test-utils';
-import { S1Sale, Referral, RarePack, Raffle } from '../../../src/contracts';
+import { Currency, getETHPayment, getSignedPayment, Order } from '@imtbl/platform';
+import { Blockchain, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
-import { keccak256 } from 'ethers/utils';
-import { PurchaseProcessor, CreditCardEscrow, Escrow, Beacon, getSignedPayment, Currency } from '@imtbl/platform';
-import { Order, getETHPayment, ETHUSDMockOracle } from '@imtbl/platform/src';
+import 'jest';
+import { GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_SKU } from '../../../deployment/constants';
+import { RarePack, S1Sale } from '../../../src/contracts';
+import { deployRarePack, deployStandards, StandardContracts } from './utils';
 
 jest.setTimeout(600000);
-
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
 ethers.errors.setLogLevel('error');
-
-const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
 describe('Sale', () => {
   const [owner, other] = generatedWallets(provider);
@@ -28,38 +24,18 @@ describe('Sale', () => {
   });
 
   describe('purchaseFor with USD', () => {
-    let beacon: Beacon;
-    let referral: Referral;
-    let processor: PurchaseProcessor;
-    let raffle: Raffle;
 
-    let escrow: Escrow;
-    let cc: CreditCardEscrow;
-    const rarePackSKU = keccak256('0x00');
-
-    let sale: S1Sale;
+    let shared: StandardContracts;
     let rare: RarePack;
+    let sale: S1Sale;
 
-    beforeEach(async () => {
-      escrow = await Escrow.deploy(owner);
-      cc = await CreditCardEscrow.deploy(owner, escrow.address, ZERO_EX, 100, ZERO_EX, 100);
-      beacon = await Beacon.deploy(owner);
-      referral = await Referral.deploy(owner, 90, 10);
-      processor = await PurchaseProcessor.deploy(owner, owner.address);
+    beforeAll(async() => {
+      shared = await deployStandards(owner);
+    });
+
+    beforeEach(async() => {
+      rare = await deployRarePack(owner, shared);
       sale = await S1Sale.deploy(owner);
-      raffle = await Raffle.deploy(owner);
-      rare = await RarePack.deploy(
-        owner,
-        raffle.address,
-        beacon.address,
-        ZERO_EX,
-        referral.address,
-        rarePackSKU,
-        cc.address,
-        processor.address,
-      );
-      await processor.setSellerApproval(rare.address, [rarePackSKU], true);
-      await processor.setSignerLimit(owner.address, 1000000000000000);
     });
 
     async function purchasePacks(products: string[], quantities: number[], prices: number[]) {
@@ -68,7 +44,7 @@ describe('Sale', () => {
           const cost = prices[i];
           const order: Order = {
             quantity,
-            sku: rarePackSKU,
+            sku: GU_S1_RARE_PACK_SKU,
             assetRecipient: owner.address,
             changeRecipient: sale.address,
             totalPrice: cost * quantity,
@@ -78,56 +54,36 @@ describe('Sale', () => {
           const params = { escrowFor: 0, nonce: i, value: cost * quantity };
           return {
             quantity,
-            payment: await getSignedPayment(owner, processor.address, rare.address, order, params),
+            payment: await getSignedPayment(owner, shared.processor.address, rare.address, order, params),
             vendor: products[i],
           };
         }),
       );
-      await sale.purchaseFor(owner.address, payments, ZERO_EX);
+      await sale.purchaseFor(owner.address, payments, ethers.constants.AddressZero);
     }
 
     it('should purchase one item', async () => {
-      await purchasePacks([rare.address], [1], [249]);
+      await purchasePacks([rare.address], [1], [GU_S1_RARE_PACK_PRICE]);
     });
 
     it('should purchase two items', async () => {
-      await purchasePacks([rare.address, rare.address], [1, 1], [249, 249]);
+      await purchasePacks([rare.address, rare.address], [1, 1], [GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_PRICE]);
     });
   });
 
   describe('referred purchaseFor with USD', () => {
-    let beacon: Beacon;
-    let referral: Referral;
-    let processor: PurchaseProcessor;
-    let raffle: Raffle;
 
-    let escrow: Escrow;
-    let cc: CreditCardEscrow;
-    const rarePackSKU = keccak256('0x00');
-
-    let sale: S1Sale;
+    let shared: StandardContracts;
     let rare: RarePack;
+    let sale: S1Sale;
 
-    beforeEach(async () => {
-      escrow = await Escrow.deploy(owner);
-      cc = await CreditCardEscrow.deploy(owner, escrow.address, ZERO_EX, 100, ZERO_EX, 100);
-      beacon = await Beacon.deploy(owner);
-      referral = await Referral.deploy(owner, 90, 10);
-      processor = await PurchaseProcessor.deploy(owner, owner.address);
+    beforeAll(async() => {
+      shared = await deployStandards(owner);
+    });
+
+    beforeEach(async() => {
+      rare = await deployRarePack(owner, shared);
       sale = await S1Sale.deploy(owner);
-      raffle = await Raffle.deploy(owner);
-      rare = await RarePack.deploy(
-        owner,
-        raffle.address,
-        beacon.address,
-        ZERO_EX,
-        referral.address,
-        rarePackSKU,
-        cc.address,
-        processor.address,
-      );
-      await processor.setSellerApproval(rare.address, [rarePackSKU], true);
-      await processor.setSignerLimit(owner.address, 1000000000000000);
     });
 
     async function purchasePacks(products: string[], quantities: number[], prices: number[]) {
@@ -136,7 +92,7 @@ describe('Sale', () => {
           const cost = prices[i];
           const order: Order = {
             quantity,
-            sku: rarePackSKU,
+            sku: GU_S1_RARE_PACK_SKU,
             assetRecipient: owner.address,
             changeRecipient: sale.address,
             totalPrice: cost * quantity,
@@ -146,7 +102,7 @@ describe('Sale', () => {
           const params = { escrowFor: 0, nonce: i, value: cost * quantity };
           return {
             quantity,
-            payment: await getSignedPayment(owner, processor.address, rare.address, order, params),
+            payment: await getSignedPayment(owner, shared.processor.address, rare.address, order, params),
             vendor: products[i],
           };
         }),
@@ -155,50 +111,27 @@ describe('Sale', () => {
     }
 
     it('should purchase one item', async () => {
-      await purchasePacks([rare.address], [1], [249]);
+      await purchasePacks([rare.address], [1], [GU_S1_RARE_PACK_PRICE]);
     });
 
     it('should purchase two items', async () => {
-      await purchasePacks([rare.address, rare.address], [1, 1], [249, 249]);
+      await purchasePacks([rare.address, rare.address], [1, 1], [GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_PRICE]);
     });
   });
 
   describe('purchaseFor with ETH', () => {
-    let beacon: Beacon;
-    let referral: Referral;
-    let processor: PurchaseProcessor;
-    let raffle: Raffle;
-    let oracle: ETHUSDMockOracle;
-
-    let escrow: Escrow;
-    let cc: CreditCardEscrow;
-    const rarePackSKU = keccak256('0x00');
-
-    let sale: S1Sale;
+    
+    let shared: StandardContracts;
     let rare: RarePack;
+    let sale: S1Sale;
 
-    beforeEach(async () => {
-      escrow = await Escrow.deploy(owner);
-      cc = await CreditCardEscrow.deploy(owner, escrow.address, ZERO_EX, 100, ZERO_EX, 100);
-      beacon = await Beacon.deploy(owner);
-      referral = await Referral.deploy(owner, 90, 10);
-      oracle = await ETHUSDMockOracle.deploy(owner);
-      processor = await PurchaseProcessor.deploy(owner, owner.address);
+    beforeAll(async() => {
+      shared = await deployStandards(owner);
+    });
+
+    beforeEach(async() => {
+      rare = await deployRarePack(owner, shared);
       sale = await S1Sale.deploy(owner);
-      raffle = await Raffle.deploy(owner);
-      rare = await RarePack.deploy(
-        owner,
-        raffle.address,
-        beacon.address,
-        ZERO_EX,
-        referral.address,
-        rarePackSKU,
-        cc.address,
-        processor.address,
-      );
-      await processor.setOracle(oracle.address);
-      await processor.setSellerApproval(rare.address, [rarePackSKU], true);
-      await processor.setSignerLimit(owner.address, 1000000000000000);
     });
 
     async function purchasePacks(products: string[], quantities: number[], prices: number[]) {
@@ -211,55 +144,32 @@ describe('Sale', () => {
           vendor: products[i],
         };
       });
-      const ethRequired = await oracle.convert(1, 0, totalCost);
-      await sale.purchaseFor(owner.address, payments, ZERO_EX, { value: ethRequired.mul(10) });
+      const ethRequired = await shared.oracle.convert(1, 0, totalCost);
+      await sale.purchaseFor(owner.address, payments, ethers.constants.AddressZero, { value: ethRequired.mul(10) });
     }
 
     it('should purchase one item', async () => {
-      await purchasePacks([rare.address], [1], [249]);
+      await purchasePacks([rare.address], [1], [GU_S1_RARE_PACK_PRICE]);
     });
 
     it('should purchase two items', async () => {
-      await purchasePacks([rare.address, rare.address], [1, 1], [249, 249]);
+      await purchasePacks([rare.address, rare.address], [1, 1], [GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_PRICE]);
     });
   });
 
   describe('referred purchaseFor with ETH', () => {
-    let beacon: Beacon;
-    let referral: Referral;
-    let processor: PurchaseProcessor;
-    let raffle: Raffle;
-    let oracle: ETHUSDMockOracle;
-
-    let escrow: Escrow;
-    let cc: CreditCardEscrow;
-    const rarePackSKU = keccak256('0x00');
-
-    let sale: S1Sale;
+    
+    let shared: StandardContracts;
     let rare: RarePack;
+    let sale: S1Sale;
 
-    beforeEach(async () => {
-      escrow = await Escrow.deploy(owner);
-      cc = await CreditCardEscrow.deploy(owner, escrow.address, ZERO_EX, 100, ZERO_EX, 100);
-      beacon = await Beacon.deploy(owner);
-      referral = await Referral.deploy(owner, 90, 10);
-      oracle = await ETHUSDMockOracle.deploy(owner);
-      processor = await PurchaseProcessor.deploy(owner, owner.address);
+    beforeAll(async() => {
+      shared = await deployStandards(owner);
+    });
+
+    beforeEach(async() => {
+      rare = await deployRarePack(owner, shared);
       sale = await S1Sale.deploy(owner);
-      raffle = await Raffle.deploy(owner);
-      rare = await RarePack.deploy(
-        owner,
-        raffle.address,
-        beacon.address,
-        ZERO_EX,
-        referral.address,
-        rarePackSKU,
-        cc.address,
-        processor.address,
-      );
-      await processor.setOracle(oracle.address);
-      await processor.setSellerApproval(rare.address, [rarePackSKU], true);
-      await processor.setSignerLimit(owner.address, 1000000000000000);
     });
 
     async function purchasePacks(products: string[], quantities: number[], prices: number[]) {
@@ -272,16 +182,16 @@ describe('Sale', () => {
           vendor: products[i],
         };
       });
-      const ethRequired = await oracle.convert(1, 0, totalCost);
+      const ethRequired = await shared.oracle.convert(1, 0, totalCost);
       await sale.purchaseFor(owner.address, payments, other.address, { value: ethRequired });
     }
 
     it('should purchase one item', async () => {
-      await purchasePacks([rare.address], [1], [249]);
+      await purchasePacks([rare.address], [1], [GU_S1_RARE_PACK_PRICE]);
     });
 
     it('should purchase two items', async () => {
-      await purchasePacks([rare.address, rare.address], [1, 1], [249, 249]);
+      await purchasePacks([rare.address, rare.address], [1, 1], [GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_PRICE]);
     });
   });
 });

@@ -1,12 +1,10 @@
+import { Blockchain, expectRevert, Ganache, generatedWallets } from '@imtbl/test-utils';
+import { ethers, Wallet } from 'ethers';
 import 'jest';
+import { Cards } from '../../src/contracts';
 
 jest.setTimeout(30000);
 
-import { Ganache, Blockchain,expectRevert, generatedWallets } from '@imtbl/test-utils';
-import { Cards } from '../../src/contracts';
-import { Wallet, ethers } from 'ethers';
-
-import { Address } from '@imtbl/common-types';
 
 ethers.errors.setLogLevel('error');
 const provider = new Ganache(Ganache.DefaultOptions);
@@ -41,7 +39,7 @@ describe('Core', () => {
     let cards: Cards;
 
     let caller: Wallet;
-    let callerName: Address;
+    let callerName: string;
     let callerLow: number;
     let callerHigh: number;
 
@@ -99,7 +97,7 @@ describe('Core', () => {
     let cards: Cards;
 
     let caller: Wallet;
-    let callerFactory: Address;
+    let callerFactory: string;
     let callerSeason: number;
 
     beforeEach(async () => {
@@ -155,7 +153,7 @@ describe('Core', () => {
     let cards: Cards;
 
     let caller: Wallet;
-    let callerFactory: Address;
+    let callerFactory: string;
     let callerMythic: number;
 
     beforeEach(async () => {
@@ -278,7 +276,7 @@ describe('Core', () => {
     let mythicThreshold;
 
     let caller: Wallet;
-    let callerTo: Address;
+    let callerTo: string;
     let callerProto: number;
     let callerQuality: number;
 

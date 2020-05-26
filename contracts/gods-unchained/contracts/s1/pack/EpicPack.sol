@@ -6,20 +6,25 @@ import "./Pack.sol";
 contract EpicPack is Pack {
 
     constructor(
+        S1Cap _cap,
+        uint256 _maxMint,
         IRaffle _raffle,
         Beacon _beacon,
         ICards _cards,
         IReferral _referral,
         bytes32 _sku,
+        uint256 _price,
         CreditCardEscrow _escrow,
         PurchaseProcessor _pay
     ) public Pack(
+        _cap,
+        _maxMint,
         _raffle,
         _beacon,
         _cards,
         _referral,
         _sku,
-        649,
+        _price,
         _escrow,
         _pay
     ) {}

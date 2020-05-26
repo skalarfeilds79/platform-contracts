@@ -2,7 +2,7 @@ import 'jest';
 
 import { Cards } from '../../src/contracts';
 
-jest.setTimeout(30000);
+jest.setTimeout(60000);
 
 import { ethers } from 'ethers';
 import { Ganache, generatedWallets } from '@imtbl/test-utils';

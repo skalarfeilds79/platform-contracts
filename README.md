@@ -24,11 +24,8 @@
 
 |                            Package                             |                                                                Version                                                                |                           Description                           |
 | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| [`@imtbl/addresses`](/packages/addresses)                                     | [![npm](https://img.shields.io/npm/v/@imtbl/addresses.svg)](https://www.npmjs.com/package/@imtbl/addresses)                                                 | Public addresses of deloyed contracts       |
-| [`@imtbl/artifacts`](/packages/artifacts)                                   | [![npm](https://img.shields.io/npm/v/@imtbl/artifacts.svg)](https://www.npmjs.com/package/@imtbl/artifacts)                                               | ABIs of all the main contracts needed for development                    |
 | [`@imtbl/tests-utils`](/packages/test-utils)                 | [![npm](https://img.shields.io/npm/v/@imtbl/test-utils.svg)](https://www.npmjs.com/package/@imtbl/test-utils)                 | Developer utilities                                             |
 | [`@imtbl/utils`](/packages/utils)                 | [![npm](https://img.shields.io/npm/v/@imtbl/utils.svg)](https://www.npmjs.com/package/@imtbl/test-utils)                 | Utilities while developing with our contracts                                             |
-| [`@imtbl/types`](/packages/types)                         | [![npm](https://img.shields.io/npm/v/@imtbl/types.svg)](https://www.npmjs.com/package/@imtbl/types)                         | Shared type declarations                                        |
 
 ### Private
 
@@ -81,23 +78,6 @@ We get it, you're just here to find the contract addresses. Luckily for you, the
 
 While we've done our best to simplify the repo setup as much as possible, there's some steps we require.
 
-##### Step 0:
-
-Ensure you're using Node `v11.15.0`. Unfortunately a few low-level libraries such as scrypt and node-gyp fail to compile on Node 12.
-For this reason we recommend using v11.15.0 to ensure everything can install correctly.
-
-```
-curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.32.1/install.sh | bash
-nvm install v11.15.0
-nvm use v11.15.0
-```
-
-If you use ZSH:
-```
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
-```
-
 ##### Step 1:
 
 Install required global dependencies
@@ -129,7 +109,7 @@ Compile all packages. This will compile all the contracts and generate all the r
 Tests will run to ensure everything works as expected.
 
 ```
-yarn setup && yarn yarn test
+yarn setup && yarn test
 ```
 
 ### Creating Test Cards

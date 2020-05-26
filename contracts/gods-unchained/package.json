@@ -9,12 +9,12 @@
     "dist"
   ],
   "scripts": {
-    "clean": "rm -rf build; rm -rf dist; rm -rf src/contracts; rm -rf ../artifacts/src",
+    "clean": "rm -rf build; rm -rf dist; rm -rf src/contracts;",
     "lint:sol": "yarn solhint \"contracts/**/*.sol\" --config solhint.json",
     "lint:ts": "tslint -t verbose '__tests__/**/*.ts'",
     "lint": "yarn lint:ts && yarn lint:sol",
     "generate-typings": "npx @imtbl/isaac build -o src/contracts",
-    "build": "yarn lint:sol && yarn truffle compile && yarn generate-typings && yarn tsc",
+    "build": "yarn lint:sol && yarn truffle compile && npx truffle-json-compress --keep bytecode && yarn generate-typings && yarn tsc",
     "deploy": "yarn ts-node deployment/deploy.ts",
     "test:deployment": "yarn build && yarn reset-test-evm && yarn jest __tests__/deployment --runInBand",
     "test": "yarn build && yarn jest __tests__/contracts",
@@ -27,10 +27,8 @@
   "dependencies": {
     "@0x/contracts-exchange-libs": "^3.0.8",
     "@0x/order-utils": "^8.4.0",
-    "@imtbl/common-types": "^2.0.0-alpha.7",
     "@imtbl/deployment-utils": "^2.0.4",
     "@imtbl/platform": "^2.0.13",
-    "@imtbl/types": "1.0.10",
     "@imtbl/utils": "^1.1.7",
     "@openzeppelin/contracts": "^2.3.0",
     "ethers": "^4.0.42",
@@ -38,7 +36,6 @@
     "save": "^2.4.0"
   },
   "devDependencies": {
-    "@imtbl/addresses": "^2.0.0-alpha.5",
     "@imtbl/isaac": "^0.0.15",
     "@imtbl/test-utils": "^1.0.14",
     "@types/jest": "^24.0.21",
@@ -60,7 +57,8 @@
     "tslint": "^5.20.1",
     "tslint-config-airbnb": "^5.11.2",
     "tslint-no-focused-test": "^0.5.0",
-    "typescript": "^3.7.5"
+    "typescript": "^3.7.5",
+    "weak-napi": "^2.0.1"
   },
   "gitHead": "0600df9b370d3d700e9da510a2fe20aadba92928"
 }

@@ -1,14 +1,11 @@
-import { Address } from '@imtbl/common-types';
-import { GenericAsset } from './../../src/contracts';
+
+import { Blockchain, expectRevert, Ganache, generatedWallets } from '@imtbl/test-utils';
+import { ethers, Wallet } from 'ethers';
 import 'jest';
+import { GenericAsset } from './../../src/contracts';
 
 jest.setTimeout(30000);
-
-import { Ganache, Blockchain,expectRevert, generatedWallets } from '@imtbl/test-utils';
-import { Wallet, ethers } from 'ethers';
-
 ethers.errors.setLogLevel('error');
-
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
 
@@ -29,7 +26,7 @@ describe('Generic Asset', () => {
   describe('#setMinterStatus', () => {
     let genericAsset: GenericAsset;
     let callerWallet: Wallet;
-    let callerMinter: Address;
+    let callerMinter: string;
     let callerStatus: boolean;
 
     beforeEach(async () => {

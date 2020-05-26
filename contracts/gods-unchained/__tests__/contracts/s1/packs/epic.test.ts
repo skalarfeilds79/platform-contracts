@@ -1,29 +1,16 @@
-import 'jest';
-
-import { Ganache, Blockchain, generatedWallets } from '@imtbl/test-utils';
-import {
-  Referral,
-  EpicPack,
-  Cards,
-  Raffle
-} from '../../../../src/contracts';
-import { Wallet, ethers } from 'ethers';
-import { keccak256 } from 'ethers/utils';
-import { PurchaseProcessor, CreditCardEscrow, Escrow, Beacon } from '@imtbl/platform/src/contracts';
-import { getSignedPayment, Currency, Order } from '@imtbl/platform';
-
-import {
-  ETHUSDMockOracle,
-  getETHPayment,
-} from '@imtbl/platform';
+import { Currency, getETHPayment, getSignedPayment, Order } from '@imtbl/platform';
+import { Blockchain, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { parseLogs } from '@imtbl/utils';
+import { ethers } from 'ethers';
+import 'jest';
+import { GU_S1_EPIC_PACK_PRICE, GU_S1_EPIC_PACK_SKU } from '../../../../deployment/constants';
+import { EpicPack } from '../../../../src/contracts';
+import { deployEpicPack, deployStandards, StandardContracts } from '../utils';
+
 
 jest.setTimeout(600000);
-
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
-
-const ZERO_EX = '0x0000000000000000000000000000000000000000';
 
 ethers.errors.setLogLevel('error');
 
@@ -42,100 +29,45 @@ describe('EpicPack', () => {
 
   describe('deployment', () => {
 
-    let beacon: Beacon;
-    let referral: Referral;
-    let processor: PurchaseProcessor;
-
-    let raffle: Raffle;
-
-    let escrow: Escrow;
-    let cc: CreditCardEscrow;
-    const sku = keccak256('0x00');
+    let shared: StandardContracts;
 
     beforeAll(async() => {
-      escrow = await Escrow.deploy(owner);
-      cc = await CreditCardEscrow.deploy(
-        owner,
-        escrow.address,
-        ZERO_EX,
-        100,
-        ZERO_EX,
-        100
-      );
-      beacon = await Beacon.deploy(owner);
-      referral = await Referral.deploy(owner, 90, 10);
-      processor = await PurchaseProcessor.deploy(owner, owner.address);
-      raffle = await Raffle.deploy(owner);
+      shared = await deployStandards(owner);
     });
 
     it('should deploy epic pack', async () => {
-      await EpicPack.deploy(
-        owner,
-        raffle.address,
-        beacon.address, ZERO_EX, referral.address, sku,
-        cc.address, processor.address
-      );
+      await deployEpicPack(owner, shared);
     });
 
   });
 
   describe('purchase USD', () => {
 
-    let beacon: Beacon;
-    let referral: Referral;
-    let processor: PurchaseProcessor;
-    let raffle: Raffle;
-    let oracle: ETHUSDMockOracle;
-
-    let escrow: Escrow;
-    let cc: CreditCardEscrow;
-    const epicPackSKU = keccak256('0x00');
-    let cards: Cards;
-
+    let shared: StandardContracts;
     let epic: EpicPack;
-    const cost = 649;
+
+    beforeAll(async() => {
+      shared = await deployStandards(owner);
+    });
 
     beforeEach(async() => {
-      escrow = await Escrow.deploy(owner);
-      cc = await CreditCardEscrow.deploy(
-        owner,
-        escrow.address,
-        owner.address,
-        100,
-        owner.address,
-        100
-      );
-      beacon = await Beacon.deploy(owner);
-      referral = await Referral.deploy(owner, 90, 10);
-      oracle = await ETHUSDMockOracle.deploy(owner);
-      processor = await PurchaseProcessor.deploy(owner, owner.address);
-      cards = await Cards.deploy(owner, 1250, 'Cards', 'CARD');
-      raffle = await Raffle.deploy(owner);
-      epic = await EpicPack.deploy(
-        owner,
-        raffle.address,
-        beacon.address, cards.address, referral.address, epicPackSKU,
-        cc.address, processor.address
-      );
-      await processor.setOracle(oracle.address);
-      await processor.setSellerApproval(epic.address, [epicPackSKU], true);
-      await processor.setSignerLimit(owner.address, 1000000000000000);
+      epic = await deployEpicPack(owner, shared);
     });
 
     async function purchasePacks(quantity: number) {
       const order: Order = {
-        quantity, sku: epicPackSKU,
+        quantity, sku: GU_S1_EPIC_PACK_SKU,
         assetRecipient: owner.address,
         changeRecipient: owner.address,
         alreadyPaid: 0,
-        totalPrice: cost * quantity,
+        totalPrice: GU_S1_EPIC_PACK_PRICE * quantity,
         currency: Currency.USDCents
       };
-      const params = { escrowFor: 0, nonce: 0, value: cost * quantity };
+      const params = { escrowFor: 0, nonce: 0, value: GU_S1_EPIC_PACK_PRICE * quantity };
       const payment = await getSignedPayment(
-         owner, processor.address, epic.address, order, params
+         owner, shared.processor.address, epic.address, order, params
       );
-      const tx = await epic.purchase(quantity, payment, ZERO_EX);
+      const tx = await epic.purchase(quantity, payment, ethers.constants.AddressZero);
       const receipt = await tx.wait();
       const parsed = parseLogs(receipt.logs, EpicPack.ABI);
       expect(parsed.length).toBe(1);
@@ -154,61 +86,31 @@ describe('EpicPack', () => {
 
   describe('purchase ETH', () => {
 
-    let beacon: Beacon;
-    let referral: Referral;
-    let oracle: ETHUSDMockOracle;
-    let processor: PurchaseProcessor;
-    let raffle: Raffle;
-
-    let escrow: Escrow;
-    let cc: CreditCardEscrow;
-    const epicPackSKU = keccak256('0x00');
-    let cards: Cards;
-
+    let shared: StandardContracts;
     let epic: EpicPack;
-    const cost = 649;
+
+    beforeAll(async() => {
+      shared = await deployStandards(owner);
+    });
 
     beforeEach(async() => {
-      escrow = await Escrow.deploy(owner);
-      cc = await CreditCardEscrow.deploy(
-        owner,
-        escrow.address,
-        owner.address,
-        100,
-        owner.address,
-        100
-      );
-      beacon = await Beacon.deploy(owner);
-      referral = await Referral.deploy(owner, 90, 10);
-      oracle = await ETHUSDMockOracle.deploy(owner);
-      processor = await PurchaseProcessor.deploy(owner, owner.address);
-      cards = await Cards.deploy(owner, 1250, 'Cards', 'CARD');
-      raffle = await Raffle.deploy(owner);
-      epic = await EpicPack.deploy(
-        owner,
-        raffle.address,
-        beacon.address, cards.address, referral.address, epicPackSKU,
-        cc.address, processor.address
-      );
-      await processor.setOracle(oracle.address);
-      await processor.setSellerApproval(epic.address, [epicPackSKU], true);
-      await processor.setSignerLimit(owner.address, 1000000000000000);
-    });
+      epic = await deployEpicPack(owner, shared);
+    })
 
     async function purchasePacks(quantity: number) {
       const order = {
         quantity,
-        sku: epicPackSKU,
+        sku: GU_S1_EPIC_PACK_SKU,
         assetRecipient: owner.address,
         changeRecipient: owner.address,
-        totalPrice: cost * quantity,
+        totalPrice: GU_S1_EPIC_PACK_PRICE * quantity,
         alreadyPaid: 0,
         currency: Currency.USDCents
       };
-      const params = { escrowFor: 0, nonce: 0, value: cost * quantity };
+      const params = { escrowFor: 0, nonce: 0, value: GU_S1_EPIC_PACK_PRICE * quantity };
       const payment = getETHPayment();
-      const ethRequired = await oracle.convert(1, 0, cost * quantity);
-      const tx = await epic.purchase(quantity, payment, ZERO_EX, { value: ethRequired });
+      const ethRequired = await shared.oracle.convert(1, 0, GU_S1_EPIC_PACK_PRICE * quantity);
+      const tx = await epic.purchase(quantity, payment, ethers.constants.AddressZero, { value: ethRequired });
       const receipt = await tx.wait();
       const parsed = parseLogs(receipt.logs, EpicPack.ABI);
       expect(parsed.length).toBe(1);

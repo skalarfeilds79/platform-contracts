@@ -29,9 +29,8 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
       - name: Docker build
         run: scripts/build-tools.sh docker-build
-      # No tests to run currently
-      # - name: Docker test
-      #   run: scripts/build-tools.sh docker-run test
+      - name: Docker test
+        run: scripts/integration-test.sh
       - name: Docker push
         if: ${{ github.ref == 'refs/heads/cicd' }}
         run: scripts/build-tools.sh docker-push

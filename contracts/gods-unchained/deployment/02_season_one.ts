@@ -166,6 +166,7 @@ export class SeasonOneStage implements DeploymentStage {
     await this.setChestForPack('Rare', rarePack, rareChest);
     await this.setChestForPack('Legendary', legendaryPack, legendaryChest);
 
+    await this.setApprovedCapUpdaters(s1Cap, [rarePack, shinyPack, legendaryPack, epicPack, rareChest, legendaryChest])
     await this.setApprovedRaffleMinters(raffle, packAddresses);
     await this.setApprovedProcessorSellers(processor, [
       { address: epicPack, sku: GU_S1_EPIC_PACK_SKU },
@@ -363,7 +364,7 @@ export class SeasonOneStage implements DeploymentStage {
 
   async setApprovedRaffleMinters(raffle: string, minters: string[]) {
     console.log('** Adding approved raffle minters ** ');
-    const contract = await Raffle.at(this.wallet, raffle);
+    const contract = Raffle.at(this.wallet, raffle);
     await asyncForEach(minters, async (minter) => {
       const isApproved = await contract.isApprovedMinter(minter);
       if (!isApproved) {
@@ -371,6 +372,12 @@ export class SeasonOneStage implements DeploymentStage {
         await contract.setMinterApproval(minter, true);
       }
     });
+  }
+
+  async setApprovedCapUpdaters(cap: string, updaters: string[]) {
+    console.log('** Adding approved raffle minters ** ');
+    const contract = S1Cap.at(this.wallet, cap);
+    await contract.setCanUpdate(updaters, true);
   }
 
   async setChestForPack(name: string, pack: string, chest: string) {

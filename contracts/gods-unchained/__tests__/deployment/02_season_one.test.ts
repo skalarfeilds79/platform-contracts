@@ -16,7 +16,7 @@ const blockchain = new Blockchain();
 
 const wallet: Wallet = new ethers.Wallet(config.PRIVATE_KEY, provider);
 
-describe('02_season_one', async () => {
+describe('02_season_one', () => {
 
   const godUnchainedAddressBook = getGodsUnchainedAddresses(
     config.DEPLOYMENT_NETWORK_ID,

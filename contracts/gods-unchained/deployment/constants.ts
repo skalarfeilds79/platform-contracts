@@ -1,6 +1,12 @@
 import { keccak256 } from 'ethers/utils';
 import { ethers } from 'ethers';
 
+export const GU_S1_LOW_PROTO = 800;
+export const GU_S1_HIGH_PROTO = 999;
+
+export const GU_S1_REFERRER_SHARE = 10;
+export const GU_S1_REFERRED_VAULT_SHARE = 90;
+
 export const GU_S1_CAP = 4 * 1000000 * 100; // $4m USD
 
 export const GU_S1_MAX_MINT = 50;

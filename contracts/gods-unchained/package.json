@@ -36,7 +36,7 @@
     "save": "^2.4.0"
   },
   "devDependencies": {
-    "@imtbl/isaac": "^0.0.15",
+    "@imtbl/isaac": "^0.0.16",
     "@imtbl/test-utils": "^1.0.17",
     "@types/jest": "^24.0.21",
     "@types/node": "^12.12.3",

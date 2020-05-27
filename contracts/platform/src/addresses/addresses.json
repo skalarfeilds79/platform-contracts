@@ -8,6 +8,15 @@
         "IM_Escrow_CreditCard": "0x0B1ba0af832d7C05fD64161E0Db78E85978E8082"
       },
       "dependencies": {}
+    },
+    "staging": {
+      "addresses": {
+        "IM_Beacon": "0x6C725C43901a447B100857Aba09929Bd26CF7112",
+        "IM_Processor": "0x9320c3989a1cfBFE06BcF43C1d1Fb846E4519eA7",
+        "IM_Escrow": "0x581E019d461211a6f5077216408F7EA313Aa67A8",
+        "IM_Escrow_CreditCard": "0xa68f4e1087118398C0a800FF45c60828beaF267A"
+      },
+      "dependencies": {}
     }
   }
 }

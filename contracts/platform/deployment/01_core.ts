@@ -64,25 +64,19 @@ export class CoreStage implements DeploymentStage {
 
   async deployBeacon(): Promise<string> {
     console.log('** Deploying Beacon **');
-    const beacon = await Beacon.awaitDeployment(this.wallet, {
-      nonce: await this.wallet.getTransactionCount(),
-    });
+    const beacon = await Beacon.awaitDeployment(this.wallet);
     return beacon.address;
   }
 
   async deployProcessor(): Promise<string> {
     console.log('** Deploying PurchaseProcessor **');
-    const processor = await PurchaseProcessor.awaitDeployment(this.wallet, this.wallet.address, {
-      nonce: await this.wallet.getTransactionCount(),
-    });
+    const processor = await PurchaseProcessor.awaitDeployment(this.wallet, this.wallet.address);
     return processor.address;
   }
 
   async deployEscrow(): Promise<string> {
     console.log('** Deploying Escrow **');
-    const escrow = await Escrow.awaitDeployment(this.wallet, {
-      nonce: await this.wallet.getTransactionCount(),
-    });
+    const escrow = await Escrow.awaitDeployment(this.wallet);
     return escrow.address;
   }
 
@@ -100,8 +94,7 @@ export class CoreStage implements DeploymentStage {
       destroyer,
       destructionDelay,
       custodian,
-      custodianDelay,
-      { nonce: await this.wallet.getTransactionCount() },
+      custodianDelay
     );
     return cc.address;
   }

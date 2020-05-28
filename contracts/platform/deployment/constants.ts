@@ -1,0 +1,2 @@
+
+export const PLATFORM_ESCROW_CAPACITY = 250;

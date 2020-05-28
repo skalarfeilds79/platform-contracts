@@ -2,6 +2,7 @@ import { Blockchain, expectRevert, Ganache, generatedWallets } from '@imtbl/test
 import { ethers } from 'ethers';
 import 'jest';
 import { Escrow, MaliciousBatchPack, TestBatchPack, TestBatchToken, TestERC20Token, TestERC721Token } from '../../src/contracts';
+import { PLATFORM_ESCROW_CAPACITY } from '../../deployment/constants';
 
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
@@ -28,7 +29,7 @@ describe('BatchERC271Escrow', () => {
 
   describe('#constructor', () => {
     it('should be able to deploy the escrow contract', async () => {
-      const escrow = await Escrow.deploy(user);
+      const escrow = await Escrow.deploy(user, PLATFORM_ESCROW_CAPACITY);
     });
   });
 
@@ -38,7 +39,7 @@ describe('BatchERC271Escrow', () => {
     let erc20: TestERC20Token;
 
     beforeEach(async () => {
-      escrow = await Escrow.deploy(user);
+      escrow = await Escrow.deploy(user, PLATFORM_ESCROW_CAPACITY);
       erc721 = await TestERC721Token.deploy(user);
       erc20 = await TestERC20Token.deploy(user);
     });
@@ -210,7 +211,7 @@ describe('BatchERC271Escrow', () => {
     let erc721: TestERC721Token;
 
     beforeEach(async () => {
-      escrow = await Escrow.deploy(user);
+      escrow = await Escrow.deploy(user, PLATFORM_ESCROW_CAPACITY);
       erc721 = await TestERC721Token.deploy(user);
     });
 
@@ -260,7 +261,7 @@ describe('BatchERC271Escrow', () => {
     let batch: TestBatchToken;
 
     beforeEach(async () => {
-      escrow = await Escrow.deploy(user);
+      escrow = await Escrow.deploy(user, PLATFORM_ESCROW_CAPACITY);
       batch = await TestBatchToken.deploy(user, 1250);
       await escrow.setBatchTransferEnabled(batch.address, true);
     });
@@ -285,7 +286,6 @@ describe('BatchERC271Escrow', () => {
       await checkBalance(batch, escrow.address, size);
       const tx = await escrow.release(0, user.address);
       const receipt = await tx.wait();
-      console.log(receipt.gasUsed.toNumber());
       await checkBalance(batch, user.address, size);
       await checkBalance(batch, escrow.address, 0);
     });
@@ -298,7 +298,7 @@ describe('BatchERC271Escrow', () => {
     let pack: TestBatchPack;
 
     beforeEach(async () => {
-      escrow = await Escrow.deploy(user);
+      escrow = await Escrow.deploy(user, PLATFORM_ESCROW_CAPACITY);
       erc721 = await TestERC721Token.deploy(user);
       malicious = await MaliciousBatchPack.deploy(user, escrow.address, erc721.address);
       pack = await TestBatchPack.deploy(user, escrow.address, erc721.address);

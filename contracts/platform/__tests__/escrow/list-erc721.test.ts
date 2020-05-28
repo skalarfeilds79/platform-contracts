@@ -2,6 +2,7 @@ import { Blockchain, expectRevert, Ganache, generatedWallets } from '@imtbl/test
 import { ethers } from 'ethers';
 import 'jest';
 import { Escrow, MaliciousListPack, TestERC721Token, TestListPack } from '../../src/contracts';
+import { PLATFORM_ESCROW_CAPACITY } from '../../deployment/constants';
 
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
@@ -27,7 +28,7 @@ describe('ListERC271Escrow', () => {
 
   describe('#constructor', () => {
     it('should be able to deploy the escrow contract', async () => {
-      const escrow = await Escrow.deploy(user);
+      const escrow = await Escrow.deploy(user, PLATFORM_ESCROW_CAPACITY);
     });
   });
 
@@ -36,7 +37,7 @@ describe('ListERC271Escrow', () => {
     let erc721: TestERC721Token;
 
     beforeEach(async () => {
-      escrow = await Escrow.deploy(user);
+      escrow = await Escrow.deploy(user, PLATFORM_ESCROW_CAPACITY);
       erc721 = await TestERC721Token.deploy(user);
     });
 
@@ -158,7 +159,7 @@ describe('ListERC271Escrow', () => {
     let erc721: TestERC721Token;
 
     beforeEach(async () => {
-      escrow = await Escrow.deploy(user);
+      escrow = await Escrow.deploy(user, PLATFORM_ESCROW_CAPACITY);
       erc721 = await TestERC721Token.deploy(user);
     });
 
@@ -208,7 +209,7 @@ describe('ListERC271Escrow', () => {
     let pack: TestListPack;
 
     beforeEach(async () => {
-      escrow = await Escrow.deploy(user);
+      escrow = await Escrow.deploy(user, PLATFORM_ESCROW_CAPACITY);
       erc721 = await TestERC721Token.deploy(user);
       malicious = await MaliciousListPack.deploy(user, escrow.address, erc721.address);
       pack = await TestListPack.deploy(user, escrow.address, erc721.address);

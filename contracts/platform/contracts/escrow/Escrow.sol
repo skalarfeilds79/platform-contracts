@@ -39,6 +39,56 @@ contract Escrow is Ownable {
     mapping(address => bool) public listTransferEnabled;
     // All Escrow vaults stored in this contract
     Vault[] public vaults;
+    // Approved escrowers
+    mapping(address => bool) public escrowers;
+    // The max number of NFTs which can be held in a vault
+    uint256 public nftCapacity;
+    // Prohibited callback functions
+    mapping(bytes4 => bool) public prohibited;
+
+    constructor(uint256 _nftCapacity) public {
+        nftCapacity = _nftCapacity;
+        // ERC20
+        // _prohibit("approve(address,uint256)");
+        // _prohibit("transfer(address,uint256)");
+        // _prohibit("transferFrom(address,address,uint256)");
+        // // ERC721
+        // _prohibit("transferFrom(address,address,uint256)");
+        // _prohibit("safeTransferFrom(address,address,uint256,bytes)");
+        // _prohibit("safeTransferFrom(address,address,uint256)");
+        // _prohibit("approve(address,uint256)");
+        // _prohibit("setApprovalForAll(address,bool)");
+        // // ERC721 List Extension
+        // _prohibit("safeTransferAllFrom(address,addres,uint256[])");
+        // _prohibit("transferAllFrom(address,address,uint256[])");
+        // // ERC721 Batch Extension
+        // _prohibit("safeTransferBatch(address,address,uint256,uint256)");
+        // _prohibit("transferBatch(address,address,uint256,uint256)");
+        // // Other extensions
+        // _prohibit("burn(uint256)");
+    }
+
+    function _prohibit(string memory _sig) internal {
+        prohibited[bytes4(keccak256(abi.encode(_sig)))] = true;
+    }
+
+    /**
+     * @dev Prohibit a function being called in a callback
+     *
+     * @param _sig the signature to prohibit
+     */
+    function prohibit(string calldata _sig) external onlyOwner {
+        _prohibit(_sig);
+    }
+
+    /**
+     * @dev Set the NFT capacity of each escrow vault
+     *
+     * @param _capacity the new NFT capacity
+     */
+    function setNFTCapacity(uint256 _capacity) public onlyOwner {
+        nftCapacity = _capacity;
+    }
 
     /**
      * @dev Create an escrow account where assets will be pushed into escrow by another contract
@@ -68,6 +118,7 @@ contract Escrow is Ownable {
             "IM:Escrow: must have an admin"
         );
 
+        escrowMutexLocked = true;
         uint256 preBalance = 0;
 
         if (_vault.balance > 0) {
@@ -89,6 +140,11 @@ contract Escrow is Ownable {
             );
 
             require(
+                _vault.tokenIDs.length <= nftCapacity,
+                "IM:Escrow: exceeds NFT capacity"
+            );
+
+            require(
                 _vault.lowTokenID == 0 && _vault.highTokenID == 0,
                 "IMEscrow: must not supply list and range"
             );
@@ -98,6 +154,11 @@ contract Escrow is Ownable {
                 !_areAnyInBatchEscrowed(_vault),
                 "IM:Escrow: batch must not be already escrowed"
             );
+
+            require(
+                _vault.highTokenID.sub(_vault.lowTokenID) <= nftCapacity,
+                "IM:Escrow: exceeds NFT capacity"
+            );
         } else {
             require(
                 false,
@@ -105,7 +166,14 @@ contract Escrow is Ownable {
             );
         }
 
-        escrowMutexLocked = true;
+        bytes4 selector = (bytes4(_callbackData[0]) | bytes4(_callbackData[1]) >> 8 |
+            bytes4(_callbackData[2]) >> 16 | bytes4(_callbackData[3]) >> 24);
+
+        require(
+            !prohibited[selector],
+            "IM:Escrow: cannot be a prohibited selector"
+        );
+
         // solium-disable-next-line security/no-low-level-calls
         (bool success, ) = _callbackTo.call(_callbackData);
         require(success, "IM:Escrow: callback must be successful");
@@ -165,7 +233,10 @@ contract Escrow is Ownable {
                 "IM:Escrow: must not supply balance and range"
             );
 
-            IERC20(_vault.asset).transferFrom(_from, address(this), _vault.balance);
+            require(
+                IERC20(_vault.asset).transferFrom(_from, address(this), _vault.balance),
+                "IM:Escrow: transfer must succeed"
+            );
         } else if (_vault.tokenIDs.length > 0) {
             require(
                 _vault.lowTokenID == 0 && _vault.highTokenID == 0,
@@ -198,11 +269,6 @@ contract Escrow is Ownable {
             "IM:Escrow: must be the admin"
         );
 
-        require(
-            !releaseMutexLocked,
-            "IM:Escrow: release mutex must be unlocked"
-        );
-
         delete vaults[_id];
         emit Destroyed(_id);
     }
@@ -231,7 +297,10 @@ contract Escrow is Ownable {
         delete vaults[_id];
 
         if (vault.balance > 0) {
-            IERC20(vault.asset).transfer(_to, vault.balance);
+            require(
+                IERC20(vault.asset).transfer(_to, vault.balance),
+                "IMEscrow: must transfer successfully"
+            );
         } else if (vault.tokenIDs.length > 0) {
             _transferList(vault, address(this), _to);
         } else {
@@ -259,10 +328,6 @@ contract Escrow is Ownable {
      */
     function setListTransferEnabled(address _asset, bool _enabled) external onlyOwner {
         listTransferEnabled[_asset] = _enabled;
-    }
-
-    function _checkVault(Vault memory _vault) internal {
-        
     }
 
     function _escrow(Vault memory _vault) internal returns (uint256) {

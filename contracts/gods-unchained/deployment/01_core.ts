@@ -73,8 +73,18 @@ export class CoreStage implements DeploymentStage {
           {
             name: 'Core',
             low: 501,
+            high: 799,
+          },
+          {
+            name: 'S1',
+            low: 800,
             high: 999,
           },
+          {
+            name: 'Core',
+            low: 1000,
+            high: 1299
+          }
         ],
         [],
       )
@@ -124,7 +134,7 @@ export class CoreStage implements DeploymentStage {
         },
         {
           minter: fusing,
-          season: 4,
+          season: 6,
         },
         {
           minter: promoFactory,
@@ -133,12 +143,12 @@ export class CoreStage implements DeploymentStage {
       ];
 
       await asyncForEach(factories, async (factory) => {
-        const isApproved = cardWrapper.instance.factoryApproved(
+        const isApproved = await cardWrapper.instance.factoryApproved(
           factory.minter,
           factory.season,
         );
         if (!isApproved) {
-          cardWrapper.addFactories([factory]);
+          await cardWrapper.addFactories([factory]);
         }
       });
     } catch {
@@ -151,7 +161,7 @@ export class CoreStage implements DeploymentStage {
 
     try {
       await asyncForEach(seasons, async (season) => {
-        const isTradeable = cardWrapper.instance.seasonTradable(season);
+        const isTradeable = await cardWrapper.instance.seasonTradable(season);
         if (!isTradeable) {
           await cardWrapper.unlockTrading([season]);
         }

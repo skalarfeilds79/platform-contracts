@@ -161,7 +161,7 @@ export class SeasonOneStage implements DeploymentStage {
     onDeployment('GU_S1_Legendary_Chest', legendaryChest, false);
 
     const packAddresses = [rarePack, shinyPack, legendaryPack, epicPack];
-    await this.setupCardsContract(cards, 'Season One', 1000, 1500, packAddresses);
+    await this.setupCardsContract(cards, packAddresses);
 
     await this.setChestForPack('Rare', rarePack, rareChest);
     await this.setChestForPack('Legendary', legendaryPack, legendaryChest);
@@ -352,7 +352,7 @@ export class SeasonOneStage implements DeploymentStage {
 
   async setApprovedProcessorSellers(processor: string, items: { address: string; sku: string }[]) {
     console.log('** Adding approved processor sellers ** ');
-    const contract = await PurchaseProcessor.at(this.wallet, processor);
+    const contract = PurchaseProcessor.at(this.wallet, processor);
     await asyncForEach(items, async (item) => {
       const isApproved = await contract.sellerApproved(item.sku, item.address);
       if (!isApproved) {
@@ -392,9 +392,6 @@ export class SeasonOneStage implements DeploymentStage {
 
   async setupCardsContract(
     cards: string,
-    name: string,
-    low: number,
-    high: number,
     approvedMinters: string[],
   ) {
     console.log('** Adding a new GU Season and adding approved minters **');
@@ -402,16 +399,11 @@ export class SeasonOneStage implements DeploymentStage {
     console.log(contract.address);
     const season = (await contract.seasons(3)).low;
 
-    try {
-      const exists = await contract.seasons(4);
-    } catch (e) {
-      await contract.startSeason(name, low, high);
-    }
-
     await asyncForEach(approvedMinters, async (minterAddress) => {
-      if ((await contract.factoryApproved(minterAddress, 4)) !== true) {
+      if ((await contract.factoryApproved(minterAddress, 5)) !== true) {
         console.log(`** Adding ${minterAddress} as an approved address **`);
-        await contract.addFactory(minterAddress, 4);
+        await contract.addFactory(minterAddress, 5);
+        console.log(`Added`);
       }
     });
   }

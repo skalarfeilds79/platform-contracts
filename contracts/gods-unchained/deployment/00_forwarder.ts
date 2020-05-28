@@ -38,9 +38,9 @@ export class ForwarderStage implements DeploymentStage {
       console.log('*** Non-critical: Failed to deploy forwarder ***');
     }
 
-    await onDeployment('ZERO_EX_EXCHANGE', exchange, true);
-    await onDeployment('ZERO_EX_ERC20_PROXY', erc20Proxy, true);
-    await onDeployment('ZERO_EX_ERC721_PROXY', erc721Proxy, true);
-    await onDeployment('WETH', weth, true);
+    onDeployment('ZERO_EX_EXCHANGE', exchange, true);
+    onDeployment('ZERO_EX_ERC20_PROXY', erc20Proxy, true);
+    onDeployment('ZERO_EX_ERC721_PROXY', erc721Proxy, true);
+    onDeployment('WETH', weth, true);
   }
 }

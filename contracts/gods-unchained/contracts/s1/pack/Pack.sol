@@ -97,6 +97,14 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         chest = _chest;
     }
 
+    /** @dev Set the maximum number of packs which can be minted in one call
+     *
+     * @param _max the maximum number of packs which can be minted in one call
+     */
+    function setMaxMint(uint _max) external onlyOwner {
+        maxMint = _max;
+    }
+
     /** @dev Create cards from a commitment
      *
      * @param _commitmentID the ID of the commitment

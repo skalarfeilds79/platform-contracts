@@ -60,7 +60,6 @@ export class SeasonOneStage implements DeploymentStage {
     onDeployment: (name: string, address: string, dependency: boolean) => void,
     transferOwnership: (address: string) => void,
   ) {
-    
 
     const raffle = (await findInstance('GU_S1_Raffle')) || (await this.deployRaffle());
     onDeployment('GU_S1_Raffle', raffle, false);
@@ -83,6 +82,7 @@ export class SeasonOneStage implements DeploymentStage {
     
     const beacon = platform.beaconAddress; // await findInstance('IM_Beacon');
     const cards = await findInstance('GU_Cards');
+    console.log('GU CARDS', cards);
     const escrow = platform.creditCardAddress; // await findInstance('IM_Escrow_CreditCard');
     const processor = platform.processorAddress; // await findInstance('IM_Processor');
 
@@ -400,18 +400,18 @@ export class SeasonOneStage implements DeploymentStage {
     console.log('** Adding a new GU Season and adding approved minters **');
     const contract = Cards.at(this.wallet, cards);
     console.log(contract.address);
-    const season = await (await contract.functions.seasons(3)).low;
+    const season = (await contract.seasons(3)).low;
 
     try {
-      const exists = await contract.functions.seasons(4);
+      const exists = await contract.seasons(4);
     } catch (e) {
-      await contract.functions.startSeason(name, low, high);
+      await contract.startSeason(name, low, high);
     }
 
     await asyncForEach(approvedMinters, async (minterAddress) => {
-      if ((await contract.functions.factoryApproved(minterAddress, 4)) !== true) {
+      if ((await contract.factoryApproved(minterAddress, 4)) !== true) {
         console.log(`** Adding ${minterAddress} as an approved address **`);
-        await contract.functions.addFactory(minterAddress, 4);
+        await contract.addFactory(minterAddress, 4);
       }
     });
   }

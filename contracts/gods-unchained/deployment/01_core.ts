@@ -19,27 +19,26 @@ export class CoreStage implements DeploymentStage {
     onDeployment: (name: string, address: string, dependency: boolean) => void,
     transferOwnership: (address: string) => void,
   ) {
-    await this.wallet.getTransactionCount();
 
     const cardWrapper = new CardsWrapper(this.wallet);
 
     const cards = (await findInstance('GU_Cards')) || (await this.deployCards(cardWrapper));
-    await onDeployment('GU_Cards', cards, false);
+    onDeployment('GU_Cards', cards, false);
 
-    cardWrapper.instance = await Cards.at(this.wallet, cards);
+    cardWrapper.instance = Cards.at(this.wallet, cards);
 
     const openMinter =
       (await findInstance('GU_OpenMinter')) || (await this.deployOpenMinter(cardWrapper, cards));
-    await onDeployment('GU_OpenMinter', openMinter, false);
+    onDeployment('GU_OpenMinter', openMinter, false);
 
     const fusing =
       (await findInstance('GU_Fusing')) || (await this.deployFusing(cardWrapper, cards));
-    await onDeployment('GU_Fusing', fusing, false);
+    onDeployment('GU_Fusing', fusing, false);
 
     const promoFactory =
       (await findInstance('GU_PromoFactory')) ||
       (await this.deployPromoFactory(cardWrapper, cards, 400, 999));
-    await onDeployment('GU_PromoFactory', promoFactory, false);
+    onDeployment('GU_PromoFactory', promoFactory, false);
 
     await this.authoriseFactories(cardWrapper, openMinter, fusing, promoFactory);
     await this.unlockTradingFor(cardWrapper, [1, 4]);
@@ -134,7 +133,7 @@ export class CoreStage implements DeploymentStage {
       ];
 
       await asyncForEach(factories, async (factory) => {
-        const isApproved = cardWrapper.instance.functions.factoryApproved(
+        const isApproved = cardWrapper.instance.factoryApproved(
           factory.minter,
           factory.season,
         );
@@ -152,7 +151,7 @@ export class CoreStage implements DeploymentStage {
 
     try {
       await asyncForEach(seasons, async (season) => {
-        const isTradeable = cardWrapper.instance.functions.seasonTradable(season);
+        const isTradeable = cardWrapper.instance.seasonTradable(season);
         if (!isTradeable) {
           await cardWrapper.unlockTrading([season]);
         }
@@ -166,8 +165,8 @@ export class CoreStage implements DeploymentStage {
     console.log('Adding Fusing Minter..');
 
     try {
-      const fusingContract = await Fusing.at(this.wallet, fusing);
-      await fusingContract.functions.addMinter(minter);
+      const fusingContract = Fusing.at(this.wallet, fusing);
+      await fusingContract.addMinter(minter);
     } catch {
       console.log('!!! Failed to add Fusing Minter');
     }

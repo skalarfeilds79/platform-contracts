@@ -78,6 +78,8 @@ contract S1Vendor is IVendor, Pausable, Ownable {
         address payable _referrer
     ) public payable returns (PurchaseProcessor.Receipt memory) {
 
+        require(!paused(), "S1Vendor: cannot sell while paused");
+
         uint256 totalPrice = _quantity.mul(price);
 
         uint256 toReferrer = 0;

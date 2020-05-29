@@ -48,18 +48,12 @@ export class CardsWrapper {
     seasons: Season[] = [],
     factories: Factory[] = [],
   ): Promise<Cards> {
-    const unsignedTx = Cards.getDeployTransaction(
+    this.instance = await Cards.awaitDeployment(
       this.wallet,
       batchSize,
       'Cards',
       'CARD',
     );
-
-    unsignedTx.nonce = await this.wallet.getTransactionCount();
-
-    const signedTx = await this.wallet.sendTransaction(unsignedTx);
-    const receipt = await signedTx.wait();
-    this.instance = Cards.at(this.wallet, receipt.contractAddress);
 
     await this.addSeasons(seasons);
     await this.addFactories(factories);
@@ -116,19 +110,11 @@ export class CardsWrapper {
   }
 
   async deployOpenMinter(cards: string): Promise<OpenMinter> {
-    const unsignedTx = await OpenMinter.getDeployTransaction(this.wallet, cards);
-    unsignedTx.nonce = await this.wallet.getTransactionCount();
-    const signedTx = await this.wallet.sendTransaction(unsignedTx);
-    const receipt = await signedTx.wait();
-    return OpenMinter.at(this.wallet, receipt.contractAddress);
+    return OpenMinter.awaitDeployment(this.wallet, cards);
   }
 
   async deployFusing(cards: string): Promise<Fusing> {
-    const unsignedTx = Fusing.getDeployTransaction(this.wallet, cards);
-    unsignedTx.nonce = await this.wallet.getTransactionCount();
-    const signedTx = await this.wallet.sendTransaction(unsignedTx);
-    const receipt = await signedTx.wait();
-    return Fusing.at(this.wallet, receipt.contractAddress);
+    return Fusing.awaitDeployment(this.wallet, cards);
   }
 
 
@@ -137,11 +123,7 @@ export class CardsWrapper {
     minProto: number,
     maxProto: number,
   ): Promise<PromoFactory> {
-    const unsignedTx = PromoFactory.getDeployTransaction(this.wallet, cards);
-    unsignedTx.nonce = await this.wallet.getTransactionCount();
-    const signedTx = await this.wallet.sendTransaction(unsignedTx);
-    const receipt = await signedTx.wait();
-    return PromoFactory.at(this.wallet, receipt.contractAddress);
+    return PromoFactory.awaitDeployment(this.wallet, cards);
   }
 
   async unlockTrading(seasons: number[]): Promise<boolean> {

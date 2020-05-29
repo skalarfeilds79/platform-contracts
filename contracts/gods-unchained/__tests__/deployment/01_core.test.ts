@@ -8,7 +8,7 @@ const config = require('dotenv').config({ path: '../../.env' }).parsed;
 const provider = new ethers.providers.JsonRpcProvider(config.RPC_ENDPOINT);
 const wallet: Wallet = new ethers.Wallet(config.PRIVATE_KEY, provider);
 
-describe('01_core', async () => {
+describe('01_core', () => {
 
   const addressBook = getGodsUnchainedAddresses(
     config.DEPLOYMENT_NETWORK_ID,

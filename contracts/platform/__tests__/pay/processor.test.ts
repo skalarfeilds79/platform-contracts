@@ -44,6 +44,14 @@ describe('PurchaseProcessor', () => {
 
     it('should be able to set signer limit as owner', async () => {
       await setSignerLimit(userWallet, userWallet.address, 100);
+
+      let signers = await processor.getCurrentSigners();
+      expect(signers.length).toBe(1);
+
+      await setSignerLimit(userWallet, userWallet.address, 0);
+
+      signers = await processor.getCurrentSigners();
+      expect(signers.length).toBe(0);
     });
   });
 

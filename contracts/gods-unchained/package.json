@@ -1,6 +1,6 @@
 {
   "name": "@imtbl/gods-unchained",
-  "version": "2.0.15",
+  "version": "2.0.18",
   "description": "Solidity smart contracts for Gods Unchained.",
   "main": "dist/src/index.js",
   "typings": "dist/src/index.d.ts",
@@ -25,8 +25,9 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@imtbl/deployment-utils": "^2.0.5",
-    "@imtbl/platform": "^2.0.14",
+    "@0x/order-utils": "^8.4.0",
+    "@imtbl/deployment-utils": "^2.0.6",
+    "@imtbl/platform": "^2.0.17",
     "@imtbl/utils": "^1.1.8",
     "@openzeppelin/contracts": "^2.3.0",
     "ethers": "^4.0.42",
@@ -34,7 +35,7 @@
     "save": "^2.4.0"
   },
   "devDependencies": {
-    "@imtbl/isaac": "^0.0.15",
+    "@imtbl/isaac": "^0.0.16",
     "@imtbl/test-utils": "^1.0.17",
     "@types/jest": "^24.0.21",
     "@types/node": "^12.12.3",

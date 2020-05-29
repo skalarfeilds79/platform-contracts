@@ -25,8 +25,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@0x/contracts-exchange-libs": "^3.0.8",
-    "@0x/order-utils": "^8.4.0",
     "@imtbl/deployment-utils": "^2.0.5",
     "@imtbl/platform": "^2.0.14",
     "@imtbl/utils": "^1.1.8",

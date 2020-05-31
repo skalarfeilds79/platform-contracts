@@ -158,7 +158,6 @@ contract Pack is IPack, S1Vendor, RarityProvider {
 
         escrow.callbackEscrow(
             vault,
-            address(this),
             data,
             _commitment.paymentID,
             _commitment.escrowFor
@@ -212,7 +211,6 @@ contract Pack is IPack, S1Vendor, RarityProvider {
 
         escrow.callbackEscrow(
             vault,
-            address(this),
             data,
             _commitment.paymentID,
             _commitment.escrowFor
@@ -222,7 +220,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
     function ticketsEscrowHook(uint256 _commitmentID) external {
 
         require(
-            msg.sender == escrow,
+            msg.sender == address(escrow),
             "S1Pack: must be credit card escrow"
         );
 
@@ -234,7 +232,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
     function cardsEscrowHook(uint256 _commitmentID) external {
 
         require(
-            msg.sender == escrow,
+            msg.sender == address(escrow),
             "S1Pack: must be credit card escrow"
         );
 

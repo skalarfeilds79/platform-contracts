@@ -6,7 +6,7 @@ import { PLATFORM_ESCROW_CAPACITY } from '../../deployment/constants';
 
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
-jest.setTimeout(10000);
+jest.setTimeout(20000);
 ethers.errors.setLogLevel('error');
 
 describe('ERC20Escrow', () => {
@@ -189,6 +189,6 @@ describe('ERC20Escrow', () => {
     it('should not be able to create a push escrow vault in the callback', async () => {
       await expectRevert(malicious.maliciousPush(5));
     });
-    
+
   });
 });

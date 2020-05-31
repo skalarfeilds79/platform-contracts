@@ -95,7 +95,7 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
 
             bytes memory data = abi.encodeWithSignature("mintTokens()");
 
-            escrow.callbackEscrow(vault, address(this), data, receipt.id, _payment.escrowFor);
+            escrow.callbackEscrow(vault, data, receipt.id, _payment.escrowFor);
         }
 
         return receipt;
@@ -104,8 +104,8 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
     function mintTokens() public {
 
         require(
-            msg.sender == escrow,
-            "S1Chest: minter must be core escrow contract"
+            msg.sender == address(escrow),
+            "S1Chest: minter must be credit card escrow"
         );
 
         Purchase memory temp = tempPurchase;

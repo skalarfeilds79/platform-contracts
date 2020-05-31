@@ -7,7 +7,7 @@ import { PLATFORM_ESCROW_CAPACITY } from '../../deployment/constants';
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
 ethers.errors.setLogLevel('error');
-jest.setTimeout(10000);
+jest.setTimeout(20000);
 
 describe('ListERC271Escrow', () => {
   const [user, other] = generatedWallets(provider);

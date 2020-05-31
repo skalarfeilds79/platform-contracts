@@ -41,7 +41,7 @@ contract TestCreditCardPack {
 
         bytes memory data = abi.encodeWithSignature("erc20Hook(uint256)", id);
 
-        escrow.callbackEscrow(vault, data, id, duration);
+        escrow.escrow(vault, data, id, duration);
     }
 
     function purchaseERC721(address user, uint256 count, uint64 duration) public {
@@ -66,7 +66,7 @@ contract TestCreditCardPack {
 
         bytes memory data = abi.encodeWithSignature("erc721Hook(uint256)", id);
 
-        escrow.callbackEscrow(vault, data, id, duration);
+        escrow.escrow(vault, data, id, duration);
     }
 
     function erc721Hook(uint256 purchaseID) public {

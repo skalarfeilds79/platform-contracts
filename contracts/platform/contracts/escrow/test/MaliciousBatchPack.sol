@@ -27,7 +27,7 @@ contract MaliciousBatchPack {
         purchaseID = purchases.push(Purchase({
             count: count
         })) - 1;
-        escrow.callbackEscrow(vault);
+        escrow.escrow(vault);
         pushing = true;
     }
 
@@ -37,7 +37,7 @@ contract MaliciousBatchPack {
             uint256 count = purchases[purchaseID].count;
             delete purchases[purchaseID];
             Escrow.Vault memory vault = _createVault(count);
-            escrow.callbackEscrow(vault);
+            escrow.escrow(vault);
             asset.mint(address(escrow), count);
             pushing = false;
         }

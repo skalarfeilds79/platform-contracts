@@ -67,7 +67,7 @@ contract Escrow is Ownable {
      *
      * @param _vault the details of the new escrow vault
      */
-    function callbackEscrow(Vault memory _vault) public returns (uint256) {
+    function escrow(Vault memory _vault) public returns (uint256) {
 
         require(
             !escrowMutexLocked,
@@ -157,71 +157,6 @@ contract Escrow is Ownable {
 
         return _escrow(_vault);
     }
-
-    /**
-     * @dev Create a new escrow vault
-     *
-     * @param _vault the escrow vault to be created
-     * @param _from the address from which to pull the tokens
-     */
-    function escrow(Vault memory _vault, address _from) public returns (uint256) {
-
-        require(
-            !escrowMutexLocked,
-            "IM:Escrow: mutex must be unlocked"
-        );
-
-        require(
-            _vault.asset != address(0),
-            "IM:Escrow: must be a non-null asset"
-        );
-
-
-        require(
-            _from != address(this),
-            "IM:Escrow: cannot transfer from this contract"
-        );
-
-
-        require(
-            _vault.admin != address(0),
-            "IM:Escrow: must have an admin"
-        );
-
-        if (_vault.balance > 0) {
-            require(
-                _vault.tokenIDs.length == 0,
-                "IM:Escrow: must not supply balance and list"
-            );
-
-            require(
-                _vault.lowTokenID == 0 && _vault.highTokenID == 0,
-                "IM:Escrow: must not supply balance and range"
-            );
-
-            require(
-                IERC20(_vault.asset).transferFrom(_from, address(this), _vault.balance),
-                "IM:Escrow: transfer must succeed"
-            );
-        } else if (_vault.tokenIDs.length > 0) {
-            require(
-                _vault.lowTokenID == 0 && _vault.highTokenID == 0,
-                "IM:Escrow: must not supply list and range"
-            );
-
-            _transferList(_vault, _from, address(this));
-        } else if (_vault.highTokenID.sub(_vault.lowTokenID) > 0) {
-            _transferBatch(_vault, _from, address(this));
-        } else {
-            require(
-                false,
-                "IM:Escrow: invalid vault type"
-            );
-        }
-
-        return _escrow(_vault);
-    }
-
 
     /**
      * @dev Destroy the assets in an escrow account

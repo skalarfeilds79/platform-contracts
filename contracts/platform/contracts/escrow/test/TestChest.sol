@@ -28,7 +28,7 @@ contract TestChest {
             highTokenID: 0,
             tokenIDs: new uint256[](0)
         });
-        escrow.callbackEscrow(vault);
+        escrow.escrow(vault);
     }
 
     function onEscrowCallback() external returns (bytes4) {

@@ -19,7 +19,7 @@ contract MaliciousChest {
 
         Escrow.Vault memory vault = _createVault(_count);
 
-        escrow.callbackEscrow(vault);
+        escrow.escrow(vault);
     }
 
     bool first = false;
@@ -29,19 +29,19 @@ contract MaliciousChest {
         require(msg.sender == address(escrow), "must be the escrow contract");
         if (first) {
             Escrow.Vault memory vault = _createVault(count);
-            escrow.callbackEscrow(vault);
+            escrow.escrow(vault);
             asset.mint(address(escrow), count);
             first = true;
         }
         return bytes4(keccak256("Immutable Escrow Callback"));
     }
 
-    function _createVault(uint256 count) internal view returns (Escrow.Vault memory) {
+    function _createVault(uint256 _count) internal view returns (Escrow.Vault memory) {
         return Escrow.Vault({
             player: msg.sender,
             admin: msg.sender,
             asset: address(asset),
-            balance: count,
+            balance: _count,
             lowTokenID: 0,
             highTokenID: 0,
             tokenIDs: new uint256[](0)

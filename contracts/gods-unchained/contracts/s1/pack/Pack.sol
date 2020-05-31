@@ -156,7 +156,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
 
         bytes memory data = abi.encodeWithSignature("cardsEscrowHook(uint256)", _commitmentID);
 
-        escrow.callbackEscrow(
+        escrow.escrow(
             vault,
             data,
             _commitment.paymentID,
@@ -209,7 +209,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
 
         bytes memory data = abi.encodeWithSignature("ticketsEscrowHook(uint256)", _commitmentID);
 
-        escrow.callbackEscrow(
+        escrow.escrow(
             vault,
             data,
             _commitment.paymentID,

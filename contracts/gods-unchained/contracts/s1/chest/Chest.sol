@@ -95,7 +95,7 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
 
             bytes memory data = abi.encodeWithSignature("mintTokens()");
 
-            escrow.callbackEscrow(vault, data, receipt.id, _payment.escrowFor);
+            escrow.escrow(vault, data, receipt.id, _payment.escrowFor);
         }
 
         return receipt;

@@ -363,7 +363,7 @@ contract CreditCardEscrow is Ownable, IEscrowCallbackReceiver {
      * @param _paymentID The ID of the payment
      * @param _duration the duration of the escrow
      */
-    function callbackEscrow(
+    function escrow(
         Escrow.Vault memory _vault,
         bytes memory _callbackData,
         uint256 _paymentID,
@@ -387,7 +387,7 @@ contract CreditCardEscrow is Ownable, IEscrowCallbackReceiver {
 
         // escrow the assets with this contract as the releaser
         // trusted contract, no re-entrancy risk
-        uint escrowID = escrowProtocol.callbackEscrow(_vault);
+        uint escrowID = escrowProtocol.escrow(_vault);
 
         _lock(escrowID, _paymentID, _duration, _vault.player);
 

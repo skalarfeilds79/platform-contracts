@@ -28,7 +28,7 @@ contract MaliciousListPack {
         purchaseID = purchases.push(Purchase({
             count: count
         })) - 1;
-        escrow.callbackEscrow(vault);
+        escrow.escrow(vault);
         pushing = true;
     }
 
@@ -37,7 +37,7 @@ contract MaliciousListPack {
         purchaseID = purchases.push(Purchase({
             count: count
         })) - 1;
-        escrow.callbackEscrow(vault);
+        escrow.escrow(vault);
         pulling = true;
     }
 
@@ -47,7 +47,7 @@ contract MaliciousListPack {
             uint256 count = purchases[purchaseID].count;
             delete purchases[purchaseID];
             Escrow.Vault memory vault = _createVault(count);
-            escrow.callbackEscrow(vault);
+            escrow.escrow(vault);
             asset.mint(address(escrow), count);
             pushing = false;
         } else if (pulling) {
@@ -56,7 +56,7 @@ contract MaliciousListPack {
             Escrow.Vault memory vault = _createVault(count);
             asset.mint(address(this), count);
             asset.setApprovalForAll(address(escrow), true);
-            escrow.escrow(vault, address(this));
+            escrow.escrow(vault);
             pulling = false;
         }
         return bytes4(keccak256("Immutable Escrow Callback"));

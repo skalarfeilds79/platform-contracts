@@ -40,7 +40,7 @@ contract TestBatchPack {
         purchaseID = purchases.push(Purchase({
             count: count
         })) - 1;
-        escrow.callbackEscrow(vault);
+        escrow.escrow(vault);
     }
 
     function onEscrowCallback() external returns (bytes4) {

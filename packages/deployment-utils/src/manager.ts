@@ -114,7 +114,9 @@ export class Manager {
   }
 
   async configureIfDevelopment() {
-    await this.book.validate(this._wallet.provider);
+    console.log('clearing book');
+    await this.book.clear();
+    // await this.book.validate(this._wallet.provider);
   }
 
   async clearAddresses(env: string, reason: string) {

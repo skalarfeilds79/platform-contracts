@@ -1,12 +1,42 @@
-import { Currency, ETHUSDMockOracle, getETHPayment, getPlatformAddresses, getSignedPayment, Payment } from '@imtbl/platform';
+import 'jest';
+
+import {
+  Currency,
+  ETHUSDMockOracle,
+  getETHPayment,
+  getPlatformAddresses,
+  getSignedPayment,
+  Payment,
+} from '@imtbl/platform';
+
 import { Blockchain } from '@imtbl/test-utils';
 import { asyncForEach, parseLogs } from '@imtbl/utils';
 import { ethers, Wallet } from 'ethers';
 import { ContractReceipt } from 'ethers/contract';
-import 'jest';
-import { GU_S1_EPIC_PACK_SKU, GU_S1_LEGENDARY_PACK_SKU, GU_S1_RARE_PACK_SKU, GU_S1_SHINY_PACK_SKU } from '../../deployment/constants';
+
+import {
+  GU_S1_EPIC_PACK_SKU,
+  GU_S1_LEGENDARY_PACK_SKU,
+  GU_S1_RARE_PACK_SKU,
+  GU_S1_SHINY_PACK_SKU,
+} from '../../deployment/constants';
+
 import { getGodsUnchainedAddresses } from '../../src/addresses/index';
-import { Beacon, Cards, EpicPack, Escrow, LegendaryPack, PurchaseProcessor, Raffle, RarePack, Referral, S1Cap, S1Sale, ShinyPack } from '../../src/contracts';
+
+import {
+  Beacon,
+  Cards,
+  EpicPack,
+  Escrow,
+  LegendaryPack,
+  PurchaseProcessor,
+  Raffle,
+  RarePack,
+  Referral,
+  S1Cap,
+  S1Sale,
+  ShinyPack,
+} from '../../src/contracts';
 
 ethers.errors.setLogLevel('error');
 
@@ -16,13 +46,14 @@ const blockchain = new Blockchain();
 
 const wallet: Wallet = new ethers.Wallet(config.PRIVATE_KEY, provider);
 
+
 describe('02_season_one', () => {
 
   const godUnchainedAddressBook = getGodsUnchainedAddresses(
     config.DEPLOYMENT_NETWORK_ID,
     config.DEPLOYMENT_ENVIRONMENT,
   );
-  
+
   const platformAddressBook = getPlatformAddresses(
     config.DEPLOYMENT_NETWORK_ID,
     config.DEPLOYMENT_ENVIRONMENT,
@@ -57,7 +88,6 @@ describe('02_season_one', () => {
   const defaultQuantity = 1;
 
   beforeAll(async () => {
-
     beacon = Beacon.at(wallet, platformAddressBook.beaconAddress);
     processor = PurchaseProcessor.at(wallet, platformAddressBook.processorAddress);
     escrow = Escrow.at(wallet, platformAddressBook.escrowAddress);

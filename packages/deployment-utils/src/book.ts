@@ -110,13 +110,9 @@ export class AddressBook {
         return env.dependencies[name];
     }
 
-    public async clear(env?: string) {
+    public async clear() {
         let book = await this.load();
-        if (env) {
-            book.environments[env] = null;
-        } else {
-            book = null;
-        }
+        book.environments[this.env] = null;
         this.save(book);
     }
 

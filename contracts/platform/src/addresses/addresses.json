@@ -3,9 +3,9 @@
     "development": {
       "addresses": {
         "IM_Beacon": "0x1dC4c1cEFEF38a777b15aA20260a54E584b16C48",
-        "IM_Processor": "0xAA86dDA78E9434acA114b6676Fc742A18d15a1CC",
-        "IM_Escrow": "0x4D3d5c850Dd5bD9D6F4AdDA3DD039a3C8054CA29",
-        "IM_Escrow_CreditCard": "0xA31E64EA55B9B6Bbb9d6A676738e9A5b23149f84"
+        "IM_Processor": "0x1D7022f5B17d2F8B695918FB48fa1089C9f85401",
+        "IM_Escrow": "0x871DD7C2B4b25E1Aa18728e9D5f2Af4C4e431f5c",
+        "IM_Escrow_CreditCard": "0x0B1ba0af832d7C05fD64161E0Db78E85978E8082"
       },
       "dependencies": {}
     },

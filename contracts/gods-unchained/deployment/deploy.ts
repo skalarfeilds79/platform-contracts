@@ -2,7 +2,6 @@ import { SeasonOneStage } from './02_season_one';
 import { DeploymentParams, AddressBook, DeploymentStage, Manager, DeploymentEnvironment } from '@imtbl/deployment-utils';
 
 import { CoreStage } from './01_core';
-import { ForwarderStage } from './00_forwarder';
 
 const config = require('dotenv').config({ path: '../../.env' }).parsed;
 
@@ -26,9 +25,9 @@ async function start() {
     args.seasonone = true;
   }
 
-  if (args.forwarder) {
-    stages.push(new ForwarderStage(params));
-  }
+  // if (args.forwarder) {
+  //   stages.push(new ForwarderStage(params));
+  // }
 
   if (args.core) {
     stages.push(

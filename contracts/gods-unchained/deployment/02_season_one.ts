@@ -60,7 +60,6 @@ export class SeasonOneStage implements DeploymentStage {
     onDeployment: (name: string, address: string, dependency: boolean) => void,
     transferOwnership: (address: string) => void,
   ) {
-    
 
     const raffle = (await findInstance('GU_S1_Raffle')) || (await this.deployRaffle());
     onDeployment('GU_S1_Raffle', raffle, false);
@@ -83,6 +82,7 @@ export class SeasonOneStage implements DeploymentStage {
     
     const beacon = platform.beaconAddress; // await findInstance('IM_Beacon');
     const cards = await findInstance('GU_Cards');
+    console.log('GU CARDS', cards);
     const escrow = platform.creditCardAddress; // await findInstance('IM_Escrow_CreditCard');
     const processor = platform.processorAddress; // await findInstance('IM_Processor');
 
@@ -161,7 +161,7 @@ export class SeasonOneStage implements DeploymentStage {
     onDeployment('GU_S1_Legendary_Chest', legendaryChest, false);
 
     const packAddresses = [rarePack, shinyPack, legendaryPack, epicPack];
-    await this.setupCardsContract(cards, 'Season One', 1000, 1500, packAddresses);
+    await this.setupCardsContract(cards, packAddresses);
 
     await this.setChestForPack('Rare', rarePack, rareChest);
     await this.setChestForPack('Legendary', legendaryPack, legendaryChest);
@@ -352,7 +352,7 @@ export class SeasonOneStage implements DeploymentStage {
 
   async setApprovedProcessorSellers(processor: string, items: { address: string; sku: string }[]) {
     console.log('** Adding approved processor sellers ** ');
-    const contract = await PurchaseProcessor.at(this.wallet, processor);
+    const contract = PurchaseProcessor.at(this.wallet, processor);
     await asyncForEach(items, async (item) => {
       const isApproved = await contract.sellerApproved(item.sku, item.address);
       if (!isApproved) {
@@ -392,26 +392,18 @@ export class SeasonOneStage implements DeploymentStage {
 
   async setupCardsContract(
     cards: string,
-    name: string,
-    low: number,
-    high: number,
     approvedMinters: string[],
   ) {
     console.log('** Adding a new GU Season and adding approved minters **');
     const contract = Cards.at(this.wallet, cards);
     console.log(contract.address);
-    const season = await (await contract.functions.seasons(3)).low;
-
-    try {
-      const exists = await contract.functions.seasons(4);
-    } catch (e) {
-      await contract.functions.startSeason(name, low, high);
-    }
+    const season = (await contract.seasons(3)).low;
 
     await asyncForEach(approvedMinters, async (minterAddress) => {
-      if ((await contract.functions.factoryApproved(minterAddress, 4)) !== true) {
+      if ((await contract.factoryApproved(minterAddress, 5)) !== true) {
         console.log(`** Adding ${minterAddress} as an approved address **`);
-        await contract.functions.addFactory(minterAddress, 4);
+        await contract.addFactory(minterAddress, 5);
+        console.log(`Added`);
       }
     });
   }

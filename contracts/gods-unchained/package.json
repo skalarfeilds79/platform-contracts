@@ -1,6 +1,6 @@
 {
   "name": "@imtbl/gods-unchained",
-  "version": "2.0.16",
+  "version": "2.0.23",
   "description": "Solidity smart contracts for Gods Unchained.",
   "main": "dist/src/index.js",
   "typings": "dist/src/index.d.ts",
@@ -25,10 +25,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@0x/contracts-exchange-libs": "^3.0.8",
-    "@0x/order-utils": "^8.4.0",
-    "@imtbl/deployment-utils": "^2.0.5",
-    "@imtbl/platform": "^2.0.15",
+    "@imtbl/deployment-utils": "^2.0.8",
+    "@imtbl/platform": "^2.0.20",
     "@imtbl/utils": "^1.1.8",
     "@openzeppelin/contracts": "^2.3.0",
     "ethers": "^4.0.42",
@@ -49,7 +47,6 @@
     "replace-in-file": "^4.2.0",
     "solhint": "^2.3.0",
     "truffle": "^5.0.42",
-    "truffle-flattener": "^1.4.2",
     "truffle-plugin-verify": "^0.3.5",
     "ts-generator": "^0.0.8",
     "ts-jest": "^24.1.0",
@@ -57,8 +54,7 @@
     "tslint": "^5.20.1",
     "tslint-config-airbnb": "^5.11.2",
     "tslint-no-focused-test": "^0.5.0",
-    "typescript": "^3.7.5",
-    "weak-napi": "^2.0.1"
+    "typescript": "^3.7.5"
   },
   "gitHead": "0600df9b370d3d700e9da510a2fe20aadba92928"
 }

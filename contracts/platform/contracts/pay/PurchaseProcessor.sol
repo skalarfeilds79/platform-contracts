@@ -7,6 +7,7 @@ import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 
 import "../oracle/IOracle.sol";
+import "../lib/AddressArrayUtils.sol";
 
 contract PurchaseProcessor is Ownable {
 
@@ -76,6 +77,9 @@ contract PurchaseProcessor is Ownable {
     // Track the daily limit of each signing address
     mapping(address => Limit) public signerLimits;
 
+    // Track all the signers
+    address[] public signers;
+
     // The number of payments this contract has processed
     uint256 public count;
 
@@ -110,6 +114,13 @@ contract PurchaseProcessor is Ownable {
         onlyOwner
     {
         signerLimits[signer].total = usdCentsLimit;
+
+        if (usdCentsLimit > 0 && AddressArrayUtils.contains(signers, signer) == false) {
+            signers = AddressArrayUtils.append(signers, signer);
+        } else if (usdCentsLimit == 0 && AddressArrayUtils.contains(signers, signer) == true) {
+            signers = AddressArrayUtils.remove(signers, signer);
+        }
+
         emit SignerLimitChanged(signer, usdCentsLimit);
     }
 
@@ -126,6 +137,14 @@ contract PurchaseProcessor is Ownable {
             sellerApproved[sku][seller] = approved;
             emit SellerApprovalChanged(sku, seller, approved);
         }
+    }
+
+    function getCurrentSigners()
+        public
+        view
+        returns (address[] memory)
+    {
+        return signers;
     }
 
     /** @dev Process an order
@@ -217,6 +236,7 @@ contract PurchaseProcessor is Ownable {
             limit.periodEnd = block.timestamp + 1 days;
             limit.used = 0;
         }
+
         uint nextUsed = limit.used.add(amount);
 
         require (

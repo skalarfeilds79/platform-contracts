@@ -9,32 +9,32 @@ contract TestChest {
 
     Escrow escrow;
     TestERC20Token asset;
+    uint count;
 
     constructor(Escrow _escrow, TestERC20Token _asset) public {
         escrow = _escrow;
         asset = _asset;
     }
 
-    function purchase(uint256 count) external {
+    function purchase(uint256 _count) external {
 
+        count = _count;
         Escrow.Vault memory vault = Escrow.Vault({
             player: msg.sender,
             admin: msg.sender,
             asset: address(asset),
-            balance: count,
+            balance: _count,
             lowTokenID: 0,
             highTokenID: 0,
             tokenIDs: new uint256[](0)
         });
-
-        bytes memory data = abi.encodeWithSignature("escrowHook(uint256)", count);
-
-        escrow.callbackEscrow(vault, data);
+        escrow.callbackEscrow(vault);
     }
 
-    function escrowHook(uint256 count) external {
+    function onEscrowCallback() external returns (bytes4) {
         require(msg.sender == address(escrow), "must be the escrow contract");
         asset.mint(address(escrow), count);
+        return bytes4(keccak256("Immutable Escrow Callback"));
     }
 
 }

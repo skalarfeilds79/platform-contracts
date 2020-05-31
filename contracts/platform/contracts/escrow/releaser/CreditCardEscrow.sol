@@ -4,10 +4,11 @@ pragma experimental ABIEncoderV2;
 // solium-disable security/no-block-members
 
 import "../Escrow.sol";
+import "../IEscrowCallbackReceiver.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 
-contract CreditCardEscrow is Ownable {
+contract CreditCardEscrow is Ownable, IEscrowCallbackReceiver {
 
     using SafeMath for uint256;
 
@@ -384,22 +385,22 @@ contract CreditCardEscrow is Ownable {
             data: _callbackData
         });
 
-        bytes memory data = abi.encodeWithSignature("callbackHandler()");
-
         // escrow the assets with this contract as the releaser
         // trusted contract, no re-entrancy risk
-        uint escrowID = escrowProtocol.callbackEscrow(_vault, data);
+        uint escrowID = escrowProtocol.callbackEscrow(_vault);
 
         _lock(escrowID, _paymentID, _duration, _vault.player);
 
         return escrowID;
     }
 
-    function callbackHandler() external {
-        require(msg.sender == address(escrowProtocol), "CreditCardEscrow: must be escrow");
-        require(callback.to != address(0), "CreditCardEscrow: must have callback address set");
+    function onEscrowCallback() external returns (bytes4) {
+        require(msg.sender == address(escrowProtocol), "IM:CreditCardEscrow: must be escrow");
+        require(callback.to != address(0), "IM:CreditCardEscrow: must have callback address set");
         // solium-disable-next-line security/no-low-level-calls
-        callback.to.call(callback.data);
+        (bool success, ) = callback.to.call(callback.data);
+        require(success, "IM:CreditCardEscrow: callback must be successful");
+        return bytes4(keccak256("Immutable Escrow Callback"));
     }
 
     function getProtocol() external view returns (address) {

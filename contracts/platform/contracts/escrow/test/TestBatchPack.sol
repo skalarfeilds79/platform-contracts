@@ -14,6 +14,7 @@ contract TestBatchPack {
     Purchase[] public purchases;
     Escrow escrow;
     TestERC721Token asset;
+    uint purchaseID;
 
     constructor(Escrow _escrow, TestERC721Token _asset) public {
         escrow = _escrow;
@@ -36,20 +37,18 @@ contract TestBatchPack {
             tokenIDs: new uint256[](0)
         });
 
-        uint256 id = purchases.push(Purchase({
+        purchaseID = purchases.push(Purchase({
             count: count
         })) - 1;
-
-        bytes memory data = abi.encodeWithSignature("escrowHook(uint256)", id);
-
-        escrow.callbackEscrow(vault, data);
+        escrow.callbackEscrow(vault);
     }
 
-    function escrowHook(uint256 purchaseID) external {
+    function onEscrowCallback() external returns (bytes4) {
         require(msg.sender == address(escrow), "must be the escrow contract");
         uint256 count = purchases[purchaseID].count;
         delete purchases[purchaseID];
         asset.mint(address(escrow), count);
+        return bytes4(keccak256("Immutable Escrow Callback"));
     }
 
 }

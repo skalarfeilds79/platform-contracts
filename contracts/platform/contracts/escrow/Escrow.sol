@@ -8,6 +8,7 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
 
 import "../token/IBatchTransfer.sol";
 import "../token/IListTransfer.sol";
+import "./IEscrowCallbackReceiver.sol";
 
 contract Escrow is Ownable {
 
@@ -30,6 +31,7 @@ contract Escrow is Ownable {
 
     using SafeMath for uint256;
 
+    bytes4 internal magic = bytes4(keccak256("Immutable Escrow Callback"));
     // Mutex on escrow vault creation
     bool public escrowMutexLocked;
     // Mutex on asset release
@@ -64,12 +66,8 @@ contract Escrow is Ownable {
      * @dev Create an escrow account where assets will be pushed into escrow by another contract
      *
      * @param _vault the details of the new escrow vault
-     * @param _callbackData the data to pass to the callback transaction
      */
-    function callbackEscrow(
-        Vault memory _vault,
-        bytes memory _callbackData
-    ) public returns (uint256) {
+    function callbackEscrow(Vault memory _vault) public returns (uint256) {
 
         require(
             !escrowMutexLocked,
@@ -135,8 +133,8 @@ contract Escrow is Ownable {
         }
 
         // solium-disable-next-line security/no-low-level-calls
-        (bool success, ) = msg.sender.call(_callbackData);
-        require(success, "IM:Escrow: callback must be successful");
+        bytes4 result = IEscrowCallbackReceiver(msg.sender).onEscrowCallback();
+        require(result == magic, "IM:Escrow: callback result must match");
         escrowMutexLocked = false;
 
         if (_vault.balance > 0) {

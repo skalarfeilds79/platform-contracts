@@ -28,10 +28,7 @@ contract MaliciousCCP {
             highTokenID: 0,
             tokenIDs: new uint256[](0)
         });
-
-        bytes memory data = abi.encodeWithSignature("erc20FakeHook()");
-
-        escrow.callbackEscrow(vault, data);
+        escrow.callbackEscrow(vault);
     }
 
     function stealERC721(address user, uint256 low, uint256 high) external {
@@ -45,16 +42,11 @@ contract MaliciousCCP {
             highTokenID: high,
             tokenIDs: new uint256[](0)
         });
-
-        bytes memory data = abi.encodeWithSignature("erc721FakeHook()");
-
-        escrow.callbackEscrow(vault, data);
+        escrow.callbackEscrow(vault);
     }
 
-    function erc721FakeHook() external {
-    }
-
-    function erc20FakeHook() external {
+    function onEscrowCallback() external returns (bytes4) {
+        return bytes4(keccak256("Immutable Escrow Callback"));
     }
 
 }

@@ -220,29 +220,27 @@ contract Pack is IPack, S1Vendor, RarityProvider {
     }
 
     function ticketsEscrowHook(uint256 _commitmentID) external {
-        address protocol = address(escrow.getProtocol());
 
         require(
-            msg.sender == protocol,
-            "S1Pack: must be core escrow"
+            msg.sender == escrow,
+            "S1Pack: must be credit card escrow"
         );
 
         Commitment memory commitment = commitments[_commitmentID];
 
-        _createTickets(_commitmentID, commitment, protocol);
+        _createTickets(_commitmentID, commitment, escrow.getProtocol());
     }
 
     function cardsEscrowHook(uint256 _commitmentID) external {
-        address protocol = address(escrow.getProtocol());
 
         require(
-            msg.sender == protocol,
-            "S1Pack: must be core escrow"
+            msg.sender == escrow,
+            "S1Pack: must be credit card escrow"
         );
 
         Commitment memory commitment = commitments[_commitmentID];
 
-        _createCards(_commitmentID, commitment, protocol);
+        _createCards(_commitmentID, commitment, escrow.getProtocol());
     }
 
     /** @dev Purchase packs for a user

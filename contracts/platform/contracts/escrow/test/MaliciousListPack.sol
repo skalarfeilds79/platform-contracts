@@ -30,7 +30,7 @@ contract MaliciousListPack {
 
         bytes memory data = abi.encodeWithSignature("pushAttackHook(uint256)", id);
 
-        escrow.callbackEscrow(vault, address(this), data);
+        escrow.callbackEscrow(vault, data);
     }
 
     function maliciousPull(uint256 count) external {
@@ -43,7 +43,7 @@ contract MaliciousListPack {
 
         bytes memory data = abi.encodeWithSignature("pullAttackHook(uint256)", id);
 
-        escrow.callbackEscrow(vault, address(this), data);
+        escrow.callbackEscrow(vault, data);
     }
 
     function pushAttackHook(uint256 purchaseID) external {
@@ -52,7 +52,7 @@ contract MaliciousListPack {
         delete purchases[purchaseID];
         Escrow.Vault memory vault = _createVault(count);
         bytes memory data = abi.encodeWithSignature("emptyHook()");
-        escrow.callbackEscrow(vault, address(this), data);
+        escrow.callbackEscrow(vault, data);
         asset.mint(address(escrow), count);
     }
 

@@ -189,9 +189,6 @@ describe('ERC20Escrow', () => {
     it('should not be able to create a push escrow vault in the callback', async () => {
       await expectRevert(malicious.maliciousPush(5));
     });
-
-    it('should not be able to create a pull escrow vault in the callback', async () => {
-      await expectRevert(malicious.maliciousPull(5));
-    });
+    
   });
 });

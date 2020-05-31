@@ -30,20 +30,7 @@ contract MaliciousBatchPack {
 
         bytes memory data = abi.encodeWithSignature("pushAttackHook(uint256)", id);
 
-        escrow.callbackEscrow(vault, address(this), data);
-    }
-
-    function maliciousPull(uint256 count) external {
-
-        Escrow.Vault memory vault = _createVault(count);
-
-        uint256 id = purchases.push(Purchase({
-            count: count
-        })) - 1;
-
-        bytes memory data = abi.encodeWithSignature("pullAttackHook(uint256)", id);
-
-        escrow.callbackEscrow(vault, address(this), data);
+        escrow.callbackEscrow(vault, data);
     }
 
     function pushAttackHook(uint256 purchaseID) external {
@@ -54,25 +41,13 @@ contract MaliciousBatchPack {
 
         bytes memory data = abi.encodeWithSignature("emptyHook()");
 
-        escrow.callbackEscrow(vault, address(this), data);
+        escrow.callbackEscrow(vault, data);
 
         asset.mint(address(escrow), count);
     }
 
     function emptyHook() external view {
         require(msg.sender == address(escrow), "must be the escrow contract");
-    }
-
-    function pullAttackHook(uint256 purchaseID) external {
-        require(msg.sender == address(escrow), "must be the escrow contract");
-
-        uint256 count = purchases[purchaseID].count;
-        delete purchases[purchaseID];
-        Escrow.Vault memory vault = _createVault(count);
-
-        asset.mint(address(this), count);
-        asset.setApprovalForAll(address(escrow), true);
-        escrow.escrow(vault, address(this));
     }
 
     function _createVault(uint256 count) internal view returns (Escrow.Vault memory) {

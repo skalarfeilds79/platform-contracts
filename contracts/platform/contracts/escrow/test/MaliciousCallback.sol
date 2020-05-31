@@ -21,21 +21,21 @@ contract MaliciousCallback {
         erc20.mint(address(escrow), 100);
         Escrow.Vault memory vault = _standardVault();
         bytes memory data = abi.encodeWithSignature("transfer(address,uint256)", address(this), 100);
-        escrow.callbackEscrow(vault, address(erc20), data);
+        escrow.callbackEscrow(vault, data);
     }
 
     function erc20TransferFrom() public {
         erc20.mint(address(escrow), 100);
         Escrow.Vault memory vault = _standardVault();
         bytes memory data = abi.encodeWithSignature("transferFrom(address,address,uint256)", address(escrow), address(this), 100);
-        escrow.callbackEscrow(vault, address(erc20), data);
+        escrow.callbackEscrow(vault, data);
     }
 
     function erc20Approve() public {
         erc20.mint(address(escrow), 100);
         Escrow.Vault memory vault = _standardVault();
         bytes memory data = abi.encodeWithSignature("approve(address,uint256)", address(this), 100);
-        escrow.callbackEscrow(vault, address(erc20), data);
+        escrow.callbackEscrow(vault, data);
         erc20.transferFrom(address(escrow), address(erc20), 100);
     }
 
@@ -46,7 +46,7 @@ contract MaliciousCallback {
             "transferFrom(address,address,uint256)",
             address(escrow), address(this), 0
         );
-        escrow.callbackEscrow(vault, address(erc721), data);
+        escrow.callbackEscrow(vault, data);
     }
 
     function erc721SafeTransferFrom1() public {
@@ -56,7 +56,7 @@ contract MaliciousCallback {
             "safeTransferFrom(address,address,uint256,bytes)",
             address(escrow), address(this), 0
         );
-        escrow.callbackEscrow(vault, address(erc721), data);
+        escrow.callbackEscrow(vault, data);
     }
 
     function erc721SafeTransferFrom2() public {
@@ -66,7 +66,7 @@ contract MaliciousCallback {
             "safeTransferFrom(address,address,uint256)",
             address(escrow), address(this), 0
         );
-        escrow.callbackEscrow(vault, address(erc721), data);
+        escrow.callbackEscrow(vault, data);
     }
 
     function erc721SetApprovalForAll() public {
@@ -76,7 +76,7 @@ contract MaliciousCallback {
             "setApprovalForAll(address,bool)",
             address(this), true
         );
-        escrow.callbackEscrow(vault, address(erc721), data);
+        escrow.callbackEscrow(vault, data);
         erc721.transferFrom(address(escrow), address(this), 0);
     }
 
@@ -87,7 +87,7 @@ contract MaliciousCallback {
             "approve(address,bool)",
             address(this), true
         );
-        escrow.callbackEscrow(vault, address(erc721), data);
+        escrow.callbackEscrow(vault, data);
         erc721.transferFrom(address(escrow), address(this), 0);
     }
 

@@ -48,37 +48,6 @@ contract Escrow is Ownable {
 
     constructor(uint256 _nftCapacity) public {
         nftCapacity = _nftCapacity;
-        // ERC20
-        // _prohibit("approve(address,uint256)");
-        // _prohibit("transfer(address,uint256)");
-        // _prohibit("transferFrom(address,address,uint256)");
-        // // ERC721
-        // _prohibit("transferFrom(address,address,uint256)");
-        // _prohibit("safeTransferFrom(address,address,uint256,bytes)");
-        // _prohibit("safeTransferFrom(address,address,uint256)");
-        // _prohibit("approve(address,uint256)");
-        // _prohibit("setApprovalForAll(address,bool)");
-        // // ERC721 List Extension
-        // _prohibit("safeTransferAllFrom(address,addres,uint256[])");
-        // _prohibit("transferAllFrom(address,address,uint256[])");
-        // // ERC721 Batch Extension
-        // _prohibit("safeTransferBatch(address,address,uint256,uint256)");
-        // _prohibit("transferBatch(address,address,uint256,uint256)");
-        // // Other extensions
-        // _prohibit("burn(uint256)");
-    }
-
-    function _prohibit(string memory _sig) internal {
-        prohibited[bytes4(keccak256(abi.encode(_sig)))] = true;
-    }
-
-    /**
-     * @dev Prohibit a function being called in a callback
-     *
-     * @param _sig the signature to prohibit
-     */
-    function prohibit(string calldata _sig) external onlyOwner {
-        _prohibit(_sig);
     }
 
     /**
@@ -94,12 +63,10 @@ contract Escrow is Ownable {
      * @dev Create an escrow account where assets will be pushed into escrow by another contract
      *
      * @param _vault the details of the new escrow vault
-     * @param _callbackTo the address to use for the callback transaction
      * @param _callbackData the data to pass to the callback transaction
      */
     function callbackEscrow(
         Vault memory _vault,
-        address _callbackTo,
         bytes memory _callbackData
     ) public returns (uint256) {
 
@@ -166,16 +133,8 @@ contract Escrow is Ownable {
             );
         }
 
-        bytes4 selector = (bytes4(_callbackData[0]) | bytes4(_callbackData[1]) >> 8 |
-            bytes4(_callbackData[2]) >> 16 | bytes4(_callbackData[3]) >> 24);
-
-        require(
-            !prohibited[selector],
-            "IM:Escrow: cannot be a prohibited selector"
-        );
-
         // solium-disable-next-line security/no-low-level-calls
-        (bool success, ) = _callbackTo.call(_callbackData);
+        (bool success, ) = msg.sender.call(_callbackData);
         require(success, "IM:Escrow: callback must be successful");
         escrowMutexLocked = false;
 
@@ -207,6 +166,7 @@ contract Escrow is Ownable {
      * @param _from the address from which to pull the tokens
      */
     function escrow(Vault memory _vault, address _from) public returns (uint256) {
+
         require(
             !escrowMutexLocked,
             "IM:Escrow: mutex must be unlocked"
@@ -216,6 +176,13 @@ contract Escrow is Ownable {
             _vault.asset != address(0),
             "IM:Escrow: must be a non-null asset"
         );
+
+
+        require(
+            _from != address(this),
+            "IM:Escrow: cannot transfer from this contract"
+        );
+
 
         require(
             _vault.admin != address(0),
@@ -255,6 +222,7 @@ contract Escrow is Ownable {
 
         return _escrow(_vault);
     }
+
 
     /**
      * @dev Destroy the assets in an escrow account

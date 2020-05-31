@@ -54,6 +54,12 @@ contract CreditCardEscrow is Ownable {
         address releaseTo;
     }
 
+    struct Callback {
+        address to;
+        bytes data;
+    }
+
+    Callback internal callback;
     // Escrow protocol contract
     Escrow public escrowProtocol;
     // Mapping from escrow IDs to details
@@ -352,14 +358,12 @@ contract CreditCardEscrow is Ownable {
      * @dev Escrow some amount of ERC20 tokens
      *
      * @param _vault the details of the escrow vault
-     * @param _callbackTo the address to use for the callback transaction
      * @param _callbackData the data to pass to the callback transaction
      * @param _paymentID The ID of the payment
      * @param _duration the duration of the escrow
      */
     function callbackEscrow(
         Escrow.Vault memory _vault,
-        address _callbackTo,
         bytes memory _callbackData,
         uint256 _paymentID,
         uint256 _duration
@@ -375,17 +379,31 @@ contract CreditCardEscrow is Ownable {
             "IM:CreditCardEscrow: admin must be this contract"
         );
 
+        callback = Callback({
+            to: msg.sender,
+            data: _callbackData
+        });
+
+        bytes memory data = abi.encodeWithSignature("callbackHandler()");
+
         // escrow the assets with this contract as the releaser
         // trusted contract, no re-entrancy risk
-        uint escrowID = escrowProtocol.callbackEscrow(_vault, _callbackTo, _callbackData);
+        uint escrowID = escrowProtocol.callbackEscrow(_vault, data);
 
         _lock(escrowID, _paymentID, _duration, _vault.player);
 
         return escrowID;
     }
 
-    function getProtocol() public view returns (Escrow) {
-        return escrowProtocol;
+    function callbackHandler() external {
+        require(msg.sender == address(escrowProtocol), "CreditCardEscrow: must be escrow");
+        require(callback.to != address(0), "CreditCardEscrow: must have callback address set");
+        // solium-disable-next-line security/no-low-level-calls
+        callback.to.call(callback.data);
+    }
+
+    function getProtocol() external view returns (address) {
+        return address(escrowProtocol);
     }
 
     function _lock(

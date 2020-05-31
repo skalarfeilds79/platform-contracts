@@ -30,7 +30,7 @@ contract TestListPack {
 
         bytes memory data = abi.encodeWithSignature("escrowHook(uint256)", id);
 
-        escrow.callbackEscrow(vault, address(this), data);
+        escrow.callbackEscrow(vault, data);
     }
 
     function escrowHook(uint256 purchaseID) external {

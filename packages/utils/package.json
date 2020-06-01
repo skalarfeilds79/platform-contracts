@@ -7,6 +7,7 @@
   "scripts": {
     "clean": "rm -rf dist",
     "build": "tsc",
+    "watch": "tsc --watch --preserveWatchOutput",
     "lint": "tslint --project . -t verbose 'src/**/*.{tsx,ts}'",
     "prepublish": "yarn clean && yarn build",
     "quick-fix": "npm version patch && npm publish"

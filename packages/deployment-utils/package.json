@@ -20,6 +20,7 @@
     "lint": "tslint --project . -t verbose 'src/**/*.{tsx,ts}'",
     "clean": "rm -rf dist",
     "build": "yarn tsc",
+    "watch": "tsc --watch --preserveWatchOutput",
     "generate-outputs": "bash scripts/generate-outputs.sh"
   },
   "devDependencies": {

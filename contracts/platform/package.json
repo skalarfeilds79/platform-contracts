@@ -15,6 +15,7 @@
     "lint": "yarn lint:ts && yarn lint:sol",
     "generate-typings": "npx @imtbl/isaac build -o src/contracts",
     "build": "yarn lint:sol && yarn truffle compile && npx truffle-json-compress --keep bytecode && yarn generate-typings && yarn tsc",
+    "watch": "tsc --watch --preserveWatchOutput",
     "deploy": "yarn ts-node deployment/deploy.ts",
     "test": "yarn build && yarn jest __tests__/",
     "test:watch": "yarn jest __tests__/ --watch",

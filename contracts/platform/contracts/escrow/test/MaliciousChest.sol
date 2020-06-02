@@ -15,58 +15,33 @@ contract MaliciousChest {
         asset = _asset;
     }
 
-    function maliciousPush(uint256 count) external {
+    function maliciousPush(uint256 _count) external {
 
-        Escrow.Vault memory vault = _createVault(count);
+        Escrow.Vault memory vault = _createVault(_count);
 
-        bytes memory data = abi.encodeWithSignature("pushAttackHook(uint256)", count);
-
-        escrow.callbackEscrow(vault, address(this), data);
+        escrow.escrow(vault);
     }
 
-    function maliciousPull(uint256 count) external {
+    bool first = false;
+    uint count;
 
-        Escrow.Vault memory vault = _createVault(count);
-
-        bytes memory data = abi.encodeWithSignature("pullAttackHook(uint256)", count);
-
-        escrow.callbackEscrow(vault, address(this), data);
-    }
-
-    function pushAttackHook(uint256 count) external {
+    function onEscrowCallback() external returns (bytes4) {
         require(msg.sender == address(escrow), "must be the escrow contract");
-
-        Escrow.Vault memory vault = _createVault(count);
-
-        bytes memory data = abi.encodeWithSignature("emptyHook()");
-
-        escrow.callbackEscrow(vault, address(this), data);
-
-        asset.mint(address(escrow), count);
-
+        if (first) {
+            Escrow.Vault memory vault = _createVault(count);
+            escrow.escrow(vault);
+            asset.mint(address(escrow), count);
+            first = true;
+        }
+        return bytes4(keccak256("Immutable Escrow Callback"));
     }
 
-    function emptyHook() external view {
-        require(msg.sender == address(escrow), "must be the escrow contract");
-    }
-
-    function pullAttackHook(uint256 count) external {
-        require(msg.sender == address(escrow), "must be the escrow contract");
-
-        Escrow.Vault memory vault = _createVault(count);
-
-        asset.mint(address(this), count);
-        asset.approve(address(escrow), 2**256-1);
-
-        escrow.escrow(vault, address(this));
-    }
-
-    function _createVault(uint256 count) internal view returns (Escrow.Vault memory) {
+    function _createVault(uint256 _count) internal view returns (Escrow.Vault memory) {
         return Escrow.Vault({
             player: msg.sender,
             admin: msg.sender,
             asset: address(asset),
-            balance: count,
+            balance: _count,
             lowTokenID: 0,
             highTokenID: 0,
             tokenIDs: new uint256[](0)

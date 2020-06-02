@@ -36,7 +36,6 @@ contract Beacon {
 
     function _commit(uint256 _offset) internal returns (uint256) {
         uint256 commitBlock = block.number.add(_offset);
-        require(commitBlock >= block.number, "IM:Beacon: must not overflow");
         if (!commitRequested[commitBlock]) {
             commitRequested[commitBlock] = true;
             emit Commit(commitBlock);
@@ -87,7 +86,6 @@ contract Beacon {
         require(block.number > currentBlock.add(256), "IM:Beacon: blockhash period must have expired");
         require(blockHashes[currentBlock] == bytes32(0), "IM:Beacon: randomness must not have been set");
         uint256 finalBlock = block.number.add(_offset);
-        require(finalBlock >= block.number, "IM:Beacon: must not overflow");
 
         forwards[_commitBlock] = finalBlock;
         // actually commit to this new block

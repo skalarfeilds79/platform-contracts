@@ -5,6 +5,7 @@ import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
+
 import "../token/IBatchTransfer.sol";
 import "../token/IListTransfer.sol";
 
@@ -262,7 +263,7 @@ contract Escrow is Ownable {
     }
 
     function _checkVault(Vault memory _vault) internal {
-        
+
     }
 
     function _escrow(Vault memory _vault) internal returns (uint256) {

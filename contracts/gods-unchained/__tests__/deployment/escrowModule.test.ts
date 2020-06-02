@@ -13,7 +13,7 @@ const blockchain = new Blockchain();
 jest.setTimeout(60000);
 const config = require('dotenv').config({ path: '../../.env' }).parsed;
 
-describe('EscrowModule', async () => {
+describe('EscrowModule', () => {
   const [ownerWallet, userWallet, treasuryWallet] = generatedWallets(provider);
 
   const guAddressBook = getGodsUnchainedAddresses(

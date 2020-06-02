@@ -102,7 +102,8 @@ describe('02_season_one', () => {
 
     const cc = CreditCardEscrow.at(wallet, platformAddressBook.creditCardAddress);
 
-    await cc.setDestructionDelay(100);
+    // shouldn't change anything, but tests deployment
+    await cc.setDestructionDelay(await cc.destructionDelay());
 
     oracle = ETHUSDMockOracle.at(wallet, platformAddressBook.ethUSDMockOracleAddress);
 

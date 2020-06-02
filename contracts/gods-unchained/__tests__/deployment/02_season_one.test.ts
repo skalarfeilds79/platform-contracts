@@ -7,6 +7,7 @@ import {
   getPlatformAddresses,
   getSignedPayment,
   Payment,
+  CreditCardEscrow,
 } from '@imtbl/platform';
 
 import { Blockchain } from '@imtbl/test-utils';
@@ -98,6 +99,10 @@ describe('02_season_one', () => {
     epicPack = EpicPack.at(wallet, godUnchainedAddressBook.seasonOne.epicPackAddress);
     rarePack = RarePack.at(wallet, godUnchainedAddressBook.seasonOne.rarePackAddress);
     shinyPack = ShinyPack.at(wallet, godUnchainedAddressBook.seasonOne.shinyPackAddress);
+
+    const cc = CreditCardEscrow.at(wallet, platformAddressBook.creditCardAddress);
+
+    await cc.setDestructionDelay(100);
 
     oracle = ETHUSDMockOracle.at(wallet, platformAddressBook.ethUSDMockOracleAddress);
 

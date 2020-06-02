@@ -2,10 +2,11 @@
   "environments": {
     "development": {
       "addresses": {
-        "IM_Beacon": "0x04B5dAdd2c0D6a261bfafBc964E0cAc48585dEF3",
-        "IM_Processor": "0x8726C7414ac023D23348326B47AF3205185Fd035",
-        "IM_Escrow": "0x4112f5fc3f737e813ca8cC1A48D1da3dc8719435",
-        "IM_Escrow_CreditCard": "0x7Bf7bb74C43dc141293aFf12A2D7DE350E9b09E0"
+        "IM_Oracle_ETHUSDMock": "0x609aCc8b356894a937fC58F3411F9528de96EcB1",
+        "IM_Beacon": "0xCA9717a4A6e8009B3518648C9f3E7676255471A1",
+        "IM_Processor": "0x4586649629F699f9A4B61D0e962DC3c9025Fe488",
+        "IM_Escrow": "0x5D3AD3561A1235273cbCb4E82fCe63A0073d19be",
+        "IM_Escrow_CreditCard": "0xB48E1B16829C7f5Bd62B76cb878A6Bb1c4625D7A"
       },
       "dependencies": {}
     },

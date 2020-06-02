@@ -47,9 +47,9 @@ const blockchain = new Blockchain();
 
 const wallet: Wallet = new ethers.Wallet(config.PRIVATE_KEY, provider);
 
+jest.setTimeout(60000);
 
 describe('02_season_one', () => {
-
   const godUnchainedAddressBook = getGodsUnchainedAddresses(
     config.DEPLOYMENT_NETWORK_ID,
     config.DEPLOYMENT_ENVIRONMENT,
@@ -193,19 +193,21 @@ describe('02_season_one', () => {
 
       await asyncForEach(escrowLogs, async (log) => {
         if (log.address === epicPack.address) {
-          const receipt = await (await epicPack.mint(log.values.commitmentID)).wait();
+          const receipt = await (await epicPack.mint(log.values.commitmentID.toNumber())).wait();
           receipts.push(receipt);
         }
         if (log.address === legendaryPack.address) {
-          const receipt = await (await legendaryPack.mint(log.values.commitmentID)).wait();
+          const receipt = await (
+            await legendaryPack.mint(log.values.commitmentID.toNumber())
+          ).wait();
           receipts.push(receipt);
         }
         if (log.address === rarePack.address) {
-          const receipt = await (await rarePack.mint(log.values.commitmentID)).wait();
+          const receipt = await (await rarePack.mint(log.values.commitmentID.toNumber())).wait();
           receipts.push(receipt);
         }
         if (log.address === shinyPack.address) {
-          const receipt = await (await shinyPack.mint(log.values.commitmentID)).wait();
+          const receipt = await (await shinyPack.mint(log.values.commitmentID.toNumber())).wait();
           receipts.push(receipt);
         }
       });

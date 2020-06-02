@@ -1,17 +1,26 @@
 import { Wallet, ethers } from 'ethers';
 import { DeploymentEnvironment, DeploymentStage, DeploymentParams } from '@imtbl/deployment-utils';
-import { Escrow, CreditCardEscrow, Beacon, PurchaseProcessor } from '../src/contracts';
+import {
+  Escrow,
+  CreditCardEscrow,
+  Beacon,
+  PurchaseProcessor,
+  ETHUSDMockOracle,
+  MakerOracle,
+} from '../src/contracts';
 
 export const IM_PROCESSOR_LIMIT = 100000000;
 
 export class CoreStage implements DeploymentStage {
-  
   private wallet: Wallet;
   private networkId: number;
   private env: DeploymentEnvironment;
 
   constructor(params: DeploymentParams) {
-    this.wallet = new ethers.Wallet(params.private_key, new ethers.providers.JsonRpcProvider(params.rpc_url));
+    this.wallet = new ethers.Wallet(
+      params.private_key,
+      new ethers.providers.JsonRpcProvider(params.rpc_url),
+    );
     this.networkId = params.network_id;
     this.env = params.environment;
   }
@@ -24,6 +33,21 @@ export class CoreStage implements DeploymentStage {
     await this.wallet.getTransactionCount();
 
     const firstSigner = await findInstance('IM_PROCESSOR_FIRST_SIGNER');
+    const revenueWallet = await findInstance('PROCESSOR_REVENUE_WALLET');
+
+    const medianizer = await findInstance('MEDIANIZER_ADDRESS');
+    const ethUSDMock = await findInstance('IM_Oracle_ETHUSDMock');
+    const makerOracle = await findInstance('IM_Oracle_ETHUSDMaker');
+
+    let oracle = ethUSDMock;
+
+    if (medianizer.length > 0 && (makerOracle.length == 0 || !makerOracle)) {
+      oracle = await this.deployOracle(medianizer);
+      onDeployment('IM_Oracle_ETHUSDMaker', oracle, false);
+    } else if (ethUSDMock.length == 0 || !ethUSDMock) {
+      oracle = await this.deployMockOracle();
+      onDeployment('IM_Oracle_ETHUSDMock', oracle, false);
+    }
 
     if (firstSigner.length == 0 || !firstSigner) {
       throw '*** Must set IM_PROCESSOR_FIRST_SIGNER in order to deploy ***';
@@ -42,7 +66,8 @@ export class CoreStage implements DeploymentStage {
     console.log('beacon', beacon);
     onDeployment('IM_Beacon', beacon, false);
 
-    const processor = (await findInstance('IM_Processor')) || (await this.deployProcessor());
+    const processor =
+      (await findInstance('IM_Processor')) || (await this.deployProcessor(revenueWallet));
     onDeployment('IM_Processor', processor, false);
 
     const escrow = (await findInstance('IM_Escrow')) || (await this.deployEscrow());
@@ -60,6 +85,7 @@ export class CoreStage implements DeploymentStage {
     onDeployment('IM_Escrow_CreditCard', creditCardEscrow, false);
 
     await this.setPaymentProcessorSigner(processor, firstSigner);
+    await this.setPaymentProcessorOracle(processor, oracle);
   }
 
   async deployBeacon(): Promise<string> {
@@ -68,9 +94,9 @@ export class CoreStage implements DeploymentStage {
     return beacon.address;
   }
 
-  async deployProcessor(): Promise<string> {
+  async deployProcessor(revenueWallet: string): Promise<string> {
     console.log('** Deploying PurchaseProcessor **');
-    const processor = await PurchaseProcessor.awaitDeployment(this.wallet, this.wallet.address);
+    const processor = await PurchaseProcessor.awaitDeployment(this.wallet, revenueWallet);
     return processor.address;
   }
 
@@ -94,9 +120,21 @@ export class CoreStage implements DeploymentStage {
       destroyer,
       destructionDelay,
       custodian,
-      custodianDelay
+      custodianDelay,
     );
     return cc.address;
+  }
+
+  async deployMockOracle() {
+    console.log('** Deploying Mock Oracle **');
+    const mockOracle = await ETHUSDMockOracle.awaitDeployment(this.wallet);
+    return mockOracle.address;
+  }
+
+  async deployOracle(medianizer: string) {
+    console.log('** Deploying Maker Oracle **');
+    const mockOracle = await MakerOracle.awaitDeployment(this.wallet, medianizer);
+    return mockOracle.address;
   }
 
   async setPaymentProcessorSigner(processor: string, signer: string) {
@@ -105,6 +143,13 @@ export class CoreStage implements DeploymentStage {
     if ((await contract.signerLimits(signer)).total.toNumber() === 0) {
       console.log(`${signer} | $${IM_PROCESSOR_LIMIT / 100} LIMIT`);
       await contract.setSignerLimit(signer, IM_PROCESSOR_LIMIT);
+    }
+  }
+
+  async setPaymentProcessorOracle(processor: string, oracle: string) {
+    const contract = PurchaseProcessor.at(this.wallet, processor);
+    if ((await contract.priceOracle()) === ethers.constants.AddressZero) {
+      await contract.setOracle(oracle);
     }
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@imtbl/platform",
-  "version": "2.0.20",
+  "version": "2.0.21",
   "description": "Solidity contracts for the Immutable platform.",
   "main": "dist/src/index.js",
   "typings": "dist/src/index.d.ts",
@@ -23,7 +23,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@imtbl/deployment-utils": "^2.0.8",
+    "@imtbl/deployment-utils": "^2.0.9",
     "@imtbl/utils": "^1.1.8",
     "@openzeppelin/contracts": "^2.3.0",
     "ethers": "^4.0.42",

@@ -201,7 +201,6 @@ describe('Vendor', () => {
       await pay.setSignerLimit(user.address, 100000);
       await setOracle();
       const price = await oracle.convert(0, 1, 1);
-      console.log(price.toString());
       const order = getSimpleOrder(1);
       const payment = await getSignedPayment(user, pay.address, vendor.address, order, {
         nonce: 0,

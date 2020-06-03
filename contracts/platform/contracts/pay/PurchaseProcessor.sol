@@ -225,24 +225,6 @@ contract PurchaseProcessor is Ownable {
         return receipt;
     }
 
-    function _validateOrderPaymentMatch(
-        Order memory order,
-        PaymentParams memory payment
-    )
-        internal
-        pure
-    {
-        require(
-            payment.value == order.totalPrice.sub(order.alreadyPaid),
-            "IM:PurchaseProcessor: receipt value must match"
-        );
-
-        require(
-            order.currency == Currency.USDCents,
-            "IM:PurchaseProcessor: receipt currency must match"
-        );
-    }
-
     function _updateSignerLimit(address signer, uint256 amount) internal {
         Limit storage limit = signerLimits[signer];
         require(
@@ -264,6 +246,8 @@ contract PurchaseProcessor is Ownable {
 
         limit.used = nextUsed;
     }
+
+    uint256 constant HALF_CURVE_ORDER = uint256(0x7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46681b20a0);
 
     function _getSigner(
         Order memory order,
@@ -290,6 +274,9 @@ contract PurchaseProcessor is Ownable {
             abi.encodePacked("\x19Ethereum Signed Message:\n32", sigHash)
         );
 
+        require(uint256(payment.s) <= HALF_CURVE_ORDER, "IM:PurchaseProcessor: no malleable signatures");
+        require(payment.v == 27 || payment.v == 28, "IM:PurchaseProcessor: invalid 'v' value");
+
         return ecrecover(recoveryHash, payment.v, payment.r, payment.s);
     }
 
@@ -314,7 +301,10 @@ contract PurchaseProcessor is Ownable {
 
         receiptNonces[signer][_payment.nonce] = true;
 
-        _validateOrderPaymentMatch(_order, _payment);
+        require(
+            _payment.value == _order.totalPrice.sub(_order.alreadyPaid),
+            "IM:PurchaseProcessor: receipt value must match"
+        );
 
         return _order.totalPrice;
     }

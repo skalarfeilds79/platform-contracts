@@ -14,6 +14,9 @@ contract MaliciousListPack {
     Purchase[] public purchases;
     Escrow escrow;
     TestERC721Token asset;
+    uint256 purchaseID;
+    bool pushing;
+    bool pulling;
 
     constructor(Escrow _escrow, TestERC721Token _asset) public {
         escrow = _escrow;
@@ -21,55 +24,42 @@ contract MaliciousListPack {
     }
 
     function maliciousPush(uint256 count) external {
-
         Escrow.Vault memory vault = _createVault(count);
-
-        uint256 id = purchases.push(Purchase({
+        purchaseID = purchases.push(Purchase({
             count: count
         })) - 1;
-
-        bytes memory data = abi.encodeWithSignature("pushAttackHook(uint256)", id);
-
-        escrow.callbackEscrow(vault, address(this), data);
+        escrow.escrow(vault);
+        pushing = true;
     }
 
     function maliciousPull(uint256 count) external {
-
         Escrow.Vault memory vault = _createVault(count);
-
-        uint256 id = purchases.push(Purchase({
+        purchaseID = purchases.push(Purchase({
             count: count
         })) - 1;
-
-        bytes memory data = abi.encodeWithSignature("pullAttackHook(uint256)", id);
-
-        escrow.callbackEscrow(vault, address(this), data);
+        escrow.escrow(vault);
+        pulling = true;
     }
 
-    function pushAttackHook(uint256 purchaseID) external {
+    function onEscrowCallback() external returns (bytes4) {
         require(msg.sender == address(escrow), "must be the escrow contract");
-        uint256 count = purchases[purchaseID].count;
-        delete purchases[purchaseID];
-        Escrow.Vault memory vault = _createVault(count);
-        bytes memory data = abi.encodeWithSignature("emptyHook()");
-        escrow.callbackEscrow(vault, address(this), data);
-        asset.mint(address(escrow), count);
-    }
-
-    function emptyHook() external view {
-        require(msg.sender == address(escrow), "must be the escrow contract");
-    }
-
-    function pullAttackHook(uint256 purchaseID) external {
-        require(msg.sender == address(escrow), "must be the escrow contract");
-
-        uint256 count = purchases[purchaseID].count;
-        delete purchases[purchaseID];
-        Escrow.Vault memory vault = _createVault(count);
-
-        asset.mint(address(this), count);
-        asset.setApprovalForAll(address(escrow), true);
-        escrow.escrow(vault, address(this));
+        if (pushing) {
+            uint256 count = purchases[purchaseID].count;
+            delete purchases[purchaseID];
+            Escrow.Vault memory vault = _createVault(count);
+            escrow.escrow(vault);
+            asset.mint(address(escrow), count);
+            pushing = false;
+        } else if (pulling) {
+            uint256 count = purchases[purchaseID].count;
+            delete purchases[purchaseID];
+            Escrow.Vault memory vault = _createVault(count);
+            asset.mint(address(this), count);
+            asset.setApprovalForAll(address(escrow), true);
+            escrow.escrow(vault);
+            pulling = false;
+        }
+        return bytes4(keccak256("Immutable Escrow Callback"));
     }
 
     function _createVault(uint256 count) internal view returns (Escrow.Vault memory) {

@@ -261,7 +261,7 @@ contract Cards is Ownable, MultiTransfer, BatchToken, ImmutableToken, Inscribabl
     /**
      * @dev Unlock trading for an entire season of cards.
      * Can only be called by owner().
-     * 
+     *
      * @param _season The season to enable trading for.
      */
     function unlockTrading(

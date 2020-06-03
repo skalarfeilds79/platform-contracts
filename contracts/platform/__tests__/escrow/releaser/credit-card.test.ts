@@ -2,6 +2,7 @@ import { Blockchain, expectRevert, Ganache, generatedWallets } from '@imtbl/test
 import { ethers } from 'ethers';
 import 'jest';
 import { CreditCardEscrow, Escrow, TestCreditCardPack, TestERC20Token, TestERC721Token } from '../../../src/contracts';
+import { PLATFORM_ESCROW_CAPACITY } from '../../../deployment/constants';
 
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
@@ -27,7 +28,7 @@ describe('CreditCardEscrow', () => {
 
   describe('#constructor', () => {
     it('should be able to deploy the escrow contract', async () => {
-      const protocol = await Escrow.deploy(user);
+      const protocol = await Escrow.deploy(user, PLATFORM_ESCROW_CAPACITY);
       const destroyer = user.address;
       const destructionDelay = 100;
       const custodian = user.address;
@@ -53,7 +54,7 @@ describe('CreditCardEscrow', () => {
     beforeEach(async () => {
       erc20 = await TestERC20Token.deploy(user);
       erc721 = await TestERC721Token.deploy(user);
-      escrow = await Escrow.deploy(user);
+      escrow = await Escrow.deploy(user, PLATFORM_ESCROW_CAPACITY);
       cc = await CreditCardEscrow.deploy(user, escrow.address, ethers.constants.AddressZero, 100, ethers.constants.AddressZero, 100);
       pack = await TestCreditCardPack.deploy(user, cc.address, erc20.address, erc721.address);
     });
@@ -77,7 +78,7 @@ describe('CreditCardEscrow', () => {
     beforeEach(async () => {
       erc20 = await TestERC20Token.deploy(user);
       erc721 = await TestERC721Token.deploy(user);
-      escrow = await Escrow.deploy(user);
+      escrow = await Escrow.deploy(user, PLATFORM_ESCROW_CAPACITY);
       cc = await CreditCardEscrow.deploy(user, escrow.address, ethers.constants.AddressZero, 100, ethers.constants.AddressZero, 100);
       pack = await TestCreditCardPack.deploy(user, cc.address, erc20.address, erc721.address);
     });
@@ -125,7 +126,7 @@ describe('CreditCardEscrow', () => {
     beforeEach(async () => {
       erc20 = await TestERC20Token.deploy(user);
       erc721 = await TestERC721Token.deploy(user);
-      escrow = await Escrow.deploy(user);
+      escrow = await Escrow.deploy(user, PLATFORM_ESCROW_CAPACITY);
       cc = await CreditCardEscrow.deploy(
         user,
         escrow.address,
@@ -202,7 +203,7 @@ describe('CreditCardEscrow', () => {
     beforeEach(async () => {
       erc20 = await TestERC20Token.deploy(user);
       erc721 = await TestERC721Token.deploy(user);
-      escrow = await Escrow.deploy(user);
+      escrow = await Escrow.deploy(user, PLATFORM_ESCROW_CAPACITY);
       cc = await CreditCardEscrow.deploy(
         user,
         escrow.address,
@@ -260,7 +261,7 @@ describe('CreditCardEscrow', () => {
     beforeEach(async () => {
       erc20 = await TestERC20Token.deploy(user);
       erc721 = await TestERC721Token.deploy(user);
-      escrow = await Escrow.deploy(user);
+      escrow = await Escrow.deploy(user, PLATFORM_ESCROW_CAPACITY);
       cc = await CreditCardEscrow.deploy(
         user,
         escrow.address,
@@ -312,7 +313,7 @@ describe('CreditCardEscrow', () => {
     beforeEach(async () => {
       erc20 = await TestERC20Token.deploy(user);
       erc721 = await TestERC721Token.deploy(user);
-      escrow = await Escrow.deploy(user);
+      escrow = await Escrow.deploy(user, PLATFORM_ESCROW_CAPACITY);
       cc = await CreditCardEscrow.deploy(
         user,
         escrow.address,

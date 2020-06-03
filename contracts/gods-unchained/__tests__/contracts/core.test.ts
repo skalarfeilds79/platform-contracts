@@ -4,8 +4,6 @@ import 'jest';
 import { Cards } from '../../src/contracts';
 
 jest.setTimeout(30000);
-
-
 ethers.errors.setLogLevel('error');
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);

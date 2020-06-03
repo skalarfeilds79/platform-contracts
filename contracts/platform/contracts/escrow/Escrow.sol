@@ -8,6 +8,7 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
 
 import "../token/IBatchTransfer.sol";
 import "../token/IListTransfer.sol";
+import "./IEscrowCallbackReceiver.sol";
 
 contract Escrow is Ownable {
 
@@ -30,6 +31,7 @@ contract Escrow is Ownable {
 
     using SafeMath for uint256;
 
+    bytes4 internal magic = bytes4(keccak256("Immutable Escrow Callback"));
     // Mutex on escrow vault creation
     bool public escrowMutexLocked;
     // Mutex on asset release
@@ -40,19 +42,32 @@ contract Escrow is Ownable {
     mapping(address => bool) public listTransferEnabled;
     // All Escrow vaults stored in this contract
     Vault[] public vaults;
+    // Approved escrowers
+    mapping(address => bool) public escrowers;
+    // The max number of NFTs which can be held in a vault
+    uint256 public nftCapacity;
+    // Prohibited callback functions
+    mapping(bytes4 => bool) public prohibited;
+
+    constructor(uint256 _nftCapacity) public {
+        nftCapacity = _nftCapacity;
+    }
+
+    /**
+     * @dev Set the NFT capacity of each escrow vault
+     *
+     * @param _capacity the new NFT capacity
+     */
+    function setNFTCapacity(uint256 _capacity) public onlyOwner {
+        nftCapacity = _capacity;
+    }
 
     /**
      * @dev Create an escrow account where assets will be pushed into escrow by another contract
      *
      * @param _vault the details of the new escrow vault
-     * @param _callbackTo the address to use for the callback transaction
-     * @param _callbackData the data to pass to the callback transaction
      */
-    function callbackEscrow(
-        Vault memory _vault,
-        address _callbackTo,
-        bytes memory _callbackData
-    ) public returns (uint256) {
+    function escrow(Vault memory _vault) public returns (uint256) {
 
         require(
             !escrowMutexLocked,
@@ -69,6 +84,7 @@ contract Escrow is Ownable {
             "IM:Escrow: must have an admin"
         );
 
+        escrowMutexLocked = true;
         uint256 preBalance = 0;
 
         if (_vault.balance > 0) {
@@ -90,6 +106,11 @@ contract Escrow is Ownable {
             );
 
             require(
+                _vault.tokenIDs.length <= nftCapacity,
+                "IM:Escrow: exceeds NFT capacity"
+            );
+
+            require(
                 _vault.lowTokenID == 0 && _vault.highTokenID == 0,
                 "IMEscrow: must not supply list and range"
             );
@@ -99,6 +120,11 @@ contract Escrow is Ownable {
                 !_areAnyInBatchEscrowed(_vault),
                 "IM:Escrow: batch must not be already escrowed"
             );
+
+            require(
+                _vault.highTokenID.sub(_vault.lowTokenID) <= nftCapacity,
+                "IM:Escrow: exceeds NFT capacity"
+            );
         } else {
             require(
                 false,
@@ -106,10 +132,9 @@ contract Escrow is Ownable {
             );
         }
 
-        escrowMutexLocked = true;
         // solium-disable-next-line security/no-low-level-calls
-        (bool success, ) = _callbackTo.call(_callbackData);
-        require(success, "IM:Escrow: callback must be successful");
+        bytes4 result = IEscrowCallbackReceiver(msg.sender).onEscrowCallback();
+        require(result == magic, "IM:Escrow: callback result must match");
         escrowMutexLocked = false;
 
         if (_vault.balance > 0) {
@@ -134,59 +159,6 @@ contract Escrow is Ownable {
     }
 
     /**
-     * @dev Create a new escrow vault
-     *
-     * @param _vault the escrow vault to be created
-     * @param _from the address from which to pull the tokens
-     */
-    function escrow(Vault memory _vault, address _from) public returns (uint256) {
-        require(
-            !escrowMutexLocked,
-            "IM:Escrow: mutex must be unlocked"
-        );
-
-        require(
-            _vault.asset != address(0),
-            "IM:Escrow: must be a non-null asset"
-        );
-
-        require(
-            _vault.admin != address(0),
-            "IM:Escrow: must have an admin"
-        );
-
-        if (_vault.balance > 0) {
-            require(
-                _vault.tokenIDs.length == 0,
-                "IM:Escrow: must not supply balance and list"
-            );
-
-            require(
-                _vault.lowTokenID == 0 && _vault.highTokenID == 0,
-                "IM:Escrow: must not supply balance and range"
-            );
-
-            IERC20(_vault.asset).transferFrom(_from, address(this), _vault.balance);
-        } else if (_vault.tokenIDs.length > 0) {
-            require(
-                _vault.lowTokenID == 0 && _vault.highTokenID == 0,
-                "IM:Escrow: must not supply list and range"
-            );
-
-            _transferList(_vault, _from, address(this));
-        } else if (_vault.highTokenID.sub(_vault.lowTokenID) > 0) {
-            _transferBatch(_vault, _from, address(this));
-        } else {
-            require(
-                false,
-                "IM:Escrow: invalid vault type"
-            );
-        }
-
-        return _escrow(_vault);
-    }
-
-    /**
      * @dev Destroy the assets in an escrow account
      *
      * @param _id the id of the escrow vault
@@ -197,11 +169,6 @@ contract Escrow is Ownable {
         require(
             vault.admin == msg.sender,
             "IM:Escrow: must be the admin"
-        );
-
-        require(
-            !releaseMutexLocked,
-            "IM:Escrow: release mutex must be unlocked"
         );
 
         delete vaults[_id];
@@ -232,7 +199,10 @@ contract Escrow is Ownable {
         delete vaults[_id];
 
         if (vault.balance > 0) {
-            IERC20(vault.asset).transfer(_to, vault.balance);
+            require(
+                IERC20(vault.asset).transfer(_to, vault.balance),
+                "IMEscrow: must transfer successfully"
+            );
         } else if (vault.tokenIDs.length > 0) {
             _transferList(vault, address(this), _to);
         } else {
@@ -260,10 +230,6 @@ contract Escrow is Ownable {
      */
     function setListTransferEnabled(address _asset, bool _enabled) external onlyOwner {
         listTransferEnabled[_asset] = _enabled;
-    }
-
-    function _checkVault(Vault memory _vault) internal {
-
     }
 
     function _escrow(Vault memory _vault) internal returns (uint256) {

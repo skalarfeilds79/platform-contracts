@@ -1,15 +1,11 @@
+import { Ganache, generatedWallets } from '@imtbl/test-utils';
+import { parseLogs } from '@imtbl/utils';
+import { ethers } from 'ethers';
 import 'jest';
-
 import { Cards } from '../../src/contracts';
 
 jest.setTimeout(60000);
-
-import { ethers } from 'ethers';
-import { Ganache, generatedWallets } from '@imtbl/test-utils';
-import { parseLogs } from '@imtbl/utils';
-
 ethers.errors.setLogLevel('error');
-
 const provider = new Ganache(Ganache.DefaultOptions);
 
 describe('ERC721', () => {

@@ -1,21 +1,35 @@
 {
   "environments": {
+    "production": {
+      "addresses": {
+        "LegacyCards": "0x6EbeAf8e8E946F0716E6533A6f2cefc83f60e8Ab",
+        "GU_Cards": "0x0e3a2a1f2146d86a604adc220b4967a898d7fe07",
+        "Forwarder": "0xb04239b53806ab31141e6cd47c63fb3480cac908",
+        "Fusing": "0x7c633611d9199Faff68bCE5c5Ad97d3514319B77",
+        "S3PromoFactory": "0x28A54b2b798Bb8b8751D1Cd423A435472a009272",
+        "S5PromoFactory": "0x8eB207F54846614Aebe3335DF2BD351823a04316",
+        "Forge": "0x604b7a4a8ad3c4bc876c660a74b1a6e147b156c0",
+        "BLACKLIST_Fusing": "0x833EA312aC6Ef27d2ca40BF247B0c5edbe991314",
+        "EtherbotsMigration": "0xa777967d22043BE43f8fAd3552AD486f3765FD29",
+        "ChimeraMigration": "0xc0f1eE9884Be19c4bB2e31F505f7a18FdB9c8025"
+      }
+    },
     "development": {
       "addresses": {
-        "GU_Cards": "0xD8Ca39d276c05a370174CE872b7278FcF734afaC",
-        "GU_OpenMinter": "0xe704967449b57b2382B7FA482718748c13C63190",
-        "GU_Fusing": "0xA4b3e1659c473623287b2cc13b194705cd792525",
-        "GU_PromoFactory": "0x2C530e4Ecc573F11bd72CF5Fdf580d134d25f15F",
-        "GU_S1_Raffle": "0x33DeF1aA867Be09809F3a01CE41d5eC1888846c9",
-        "GU_S1_Sale": "0x10A736A7b223f1FE1050264249d1aBb975741E75",
-        "GU_S1_Referral": "0xb125995F5a4766C451cD8C34C4F5CAC89b724571",
-        "GU_S1_Cap": "0xc7124963Ab16C33E5bF421D4c0090116622B3074",
-        "GU_S1_Epic_Pack": "0xC6B0D3C45A6b5092808196cB00dF5C357d55E1d5",
-        "GU_S1_Rare_Pack": "0x7209185959D7227FB77274e1e88151D7C4c368D3",
-        "GU_S1_Shiny_Pack": "0x3f16cA81691dAB9184cb4606C361D73c4FD2510a",
-        "GU_S1_Legendary_Pack": "0x99356167eDba8FBdC36959E3F5D0C43d1BA9c6DB",
-        "GU_S1_Rare_Chest": "0x45B3A72221E571017C0f0ec42189E11d149D0ACE",
-        "GU_S1_Legendary_Chest": "0xdD66C23e07b4D6925b6089b5Fe6fc9E62941aFE8"
+        "GU_Cards": "0xcdB594a32B1CC3479d8746279712c39D18a07FC0",
+        "GU_OpenMinter": "0xF22469F31527adc53284441bae1665A7b9214DBA",
+        "GU_Fusing": "0x10aDd991dE718a69DeC2117cB6aA28098836511B",
+        "GU_PromoFactory": "0x8d61158a366019aC78Db4149D75FfF9DdA51160D",
+        "GU_S1_Raffle": "0x32EeCaF51DFEA9618e9Bc94e9fBFDdB1bBdcbA15",
+        "GU_S1_Sale": "0x7e3f4E1deB8D3A05d9d2DA87d9521268D0Ec3239",
+        "GU_S1_Referral": "0x04B5dAdd2c0D6a261bfafBc964E0cAc48585dEF3",
+        "GU_S1_Cap": "0x8726C7414ac023D23348326B47AF3205185Fd035",
+        "GU_S1_Epic_Pack": "0x4112f5fc3f737e813ca8cC1A48D1da3dc8719435",
+        "GU_S1_Rare_Pack": "0x7Bf7bb74C43dc141293aFf12A2D7DE350E9b09E0",
+        "GU_S1_Shiny_Pack": "0x6346e3A22D2EF8feE3B3c2171367490e52d81C52",
+        "GU_S1_Legendary_Pack": "0xAA86dDA78E9434acA114b6676Fc742A18d15a1CC",
+        "GU_S1_Rare_Chest": "0x4D3d5c850Dd5bD9D6F4AdDA3DD039a3C8054CA29",
+        "GU_S1_Legendary_Chest": "0xA31E64EA55B9B6Bbb9d6A676738e9A5b23149f84"
       },
       "dependencies": {}
     },

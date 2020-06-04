@@ -119,6 +119,58 @@ describe('Sale', () => {
     });
   });
 
+  describe('should do the whole purchase lifecycle', () => {
+
+    let shared: StandardContracts;
+    let rare: RarePack;
+    let sale: S1Sale;
+
+    beforeAll(async() => {
+      shared = await deployStandards(owner);
+    });
+
+    beforeEach(async() => {
+      rare = await deployRarePack(owner, shared);
+      sale = await S1Sale.deploy(owner);
+    });
+
+    async function purchasePacks(user: string, escrowFor: number, products: string[], quantities: number[], prices: number[]) {
+      const payments = await Promise.all(
+        quantities.map(async (quantity, i) => {
+          const cost = prices[i];
+          const order: Order = {
+            quantity,
+            sku: GU_S1_RARE_PACK_SKU,
+            assetRecipient: user,
+            changeRecipient: sale.address,
+            totalPrice: cost * quantity,
+            currency: Currency.USDCents,
+            alreadyPaid: 0
+          };
+          const params = { escrowFor: escrowFor, nonce: i, value: cost * quantity };
+          return {
+            quantity,
+            payment: await getSignedPayment(owner, shared.processor.address, rare.address, order, params),
+            vendor: products[i],
+          };
+        }),
+      );
+      await sale.purchaseFor(user, payments, other.address);
+    }
+
+    it('should do the whole lifecycle on one pack', async () => {
+      await purchasePacks(ethers.constants.AddressZero, 100, [rare.address], [1], [GU_S1_RARE_PACK_PRICE]);
+      await rare.mint(0);
+      await blockchain.increaseTimeAsync(101);
+      await shared.cc.requestRelease(0, owner.address);
+      await blockchain.increaseTimeAsync(101);
+      await shared.cards.unlockTrading(1);
+      await shared.cc.release(0);
+      expect(await shared.cards.ownerOf(0)).toBe(owner.address);
+    });
+
+  });
+
   describe('purchaseFor with ETH', () => {
     
     let shared: StandardContracts;

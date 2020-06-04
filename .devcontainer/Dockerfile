@@ -4,4 +4,4 @@ RUN npm install -g lerna
 RUN npm install -g typescript@2.6.2
 
 WORKDIR /app
-CMD [ "scripts/docker-entrypoint.sh" ]
+CMD [ "scripts/entrypoint.sh" ]

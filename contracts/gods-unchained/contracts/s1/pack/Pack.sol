@@ -138,7 +138,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         (uint start, uint end) = _getBoundaries(_commitment.packsMinted, _commitment.packQuantity);
         uint low = cards.nextBatch();
         uint len = end.sub(start);
-        uint high = low.add(len);
+        uint high = low.add(len.mul(5));
 
         Escrow.Vault memory vault = Escrow.Vault({
             player: _commitment.recipient,

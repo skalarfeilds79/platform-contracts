@@ -42,7 +42,7 @@ export interface StandardContracts {
 export async function deployStandards(owner: Wallet): Promise<StandardContracts>  {
     const cap = await S1Cap.deploy(owner, GU_S1_CAP);
     const escrow = await Escrow.deploy(owner, 250);
-    const cc = await CreditCardEscrow.deploy(owner, escrow.address, ethers.constants.AddressZero, 100, ethers.constants.AddressZero, 100);
+    const cc = await CreditCardEscrow.deploy(owner, escrow.address, owner.address, 100, owner.address, 100);
     const beacon = await Beacon.deploy(owner);
     const referral = await Referral.deploy(owner, 90, 10);
     const processor = await PurchaseProcessor.deploy(owner, owner.address);

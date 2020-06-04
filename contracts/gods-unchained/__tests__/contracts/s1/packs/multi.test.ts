@@ -2,15 +2,15 @@ import { Currency, getETHPayment, getSignedPayment, Order } from '@imtbl/platfor
 import { Blockchain, expectRevert, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
 import 'jest';
-import { GU_S1_EPIC_PACK_PRICE, GU_S1_EPIC_PACK_SKU } from '../../../../deployment/constants';
+import { GU_S1_EPIC_PACK_PRICE, GU_S1_EPIC_PACK_SKU } from '../../../../src/constants';
 import { EpicPack } from '../../../../src/contracts';
 import { deployEpicPack, deployStandards, StandardContracts } from '../utils';
 
 jest.setTimeout(600000);
+ethers.errors.setLogLevel('error');
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
 const MAX_MINT = 5;
-ethers.errors.setLogLevel('error');
 
 describe('Multi-Mint Pack', () => {
 

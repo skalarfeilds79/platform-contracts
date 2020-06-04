@@ -2,19 +2,14 @@ import { Currency, getSignedPayment } from '@imtbl/platform';
 import { Blockchain, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
 import 'jest';
-import { GU_S1_RAFFLE_TOKEN_NAME, GU_S1_RAFFLE_TOKEN_SYMBOL, GU_S1_RARE_CHEST_PRICE, GU_S1_RARE_CHEST_SKU, GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_SKU } from '../../../deployment/constants';
+import { GU_S1_RAFFLE_TOKEN_NAME, GU_S1_RAFFLE_TOKEN_SYMBOL, GU_S1_RARE_CHEST_PRICE, GU_S1_RARE_CHEST_SKU, GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_SKU } from '../../../src/constants';
 import { Chest, Raffle, RarePack } from '../../../src/contracts';
 import { deployRareChest, deployRarePack, deployStandards, StandardContracts } from './utils';
 
-
-
 jest.setTimeout(600000);
-
 ethers.errors.setLogLevel('error');
-
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
-const MAX_MINT = 5;
 
 describe('Raffle', () => {
   const [owner] = generatedWallets(provider);

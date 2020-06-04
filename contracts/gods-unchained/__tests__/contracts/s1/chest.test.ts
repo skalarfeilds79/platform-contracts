@@ -2,17 +2,17 @@ import { Currency, getETHPayment, getSignedPayment, PurchaseProcessor } from '@i
 import { Blockchain, expectRevert, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
 import 'jest';
-import { GU_S1_RARE_CHEST_PRICE, GU_S1_RARE_CHEST_SKU } from '../../../deployment/constants';
+import { GU_S1_RARE_CHEST_PRICE, GU_S1_RARE_CHEST_SKU } from '../../../src/constants';
 import { Chest, RarePack } from '../../../src';
 import { deployRareChest, deployRarePack, deployStandards, StandardContracts } from './utils';
 
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
-
 ethers.errors.setLogLevel('error');
 jest.setTimeout(60000);
 
 describe('Chest', () => {
+
   const [owner, other] = generatedWallets(provider);
 
   beforeEach(async () => {

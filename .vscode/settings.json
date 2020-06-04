@@ -1,7 +1,0 @@
-{
-  "solidity.packageDefaultDependenciesContractsDirectory": "",
-  "solidity.packageDefaultDependenciesDirectory": [
-      "contracts/gods-unchained/node_modules",
-      "contracts/immutable-wallet/node_modules",
-  ]
-}

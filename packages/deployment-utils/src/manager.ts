@@ -63,19 +63,15 @@ export class Manager {
           async (name) => {
             return this.getAddress(name);
           },
-          async (name, address, dependency) => {
-            if (dependency) {
-              await this.book.setDependency(name, address);
-            } else {
-              await this.book.set(name, address);
-            }
+          async (name, address) => {
+            await this.book.set(name, address);
           },
           async (address) => {
             const contract = new ethers.Contract(address, ownershipABI, this._wallet);
             try {
               console.log(`*** Transferring ownership of ${address} `);
               const currentOwner = await contract.functions.owner();
-              const intendedOwner = await this.book.getDependency('INTENDED_OWNER');
+              const intendedOwner = await this.book.get('INTENDED_OWNER');
               if (intendedOwner.length > 0 && currentOwner != intendedOwner) {
                 await contract.functions.transferOwnership(intendedOwner);
               }
@@ -100,10 +96,6 @@ export class Manager {
       throw Error('.env variable DEPLOYMENT_NETWORK_ID is missing');
     }
 
-    if (!params.environment) {
-      throw Error('.env variable DEPLOYMENT_CONSTANT is missing');
-    }
-
     if (!params.private_key) {
       throw Error('Please make sure the private key exists');
     }
@@ -126,9 +118,7 @@ export class Manager {
 
   async getAddress(name: string): Promise<string> {
     try {
-      const address =
-        (await this.book.getDependency(name)) ||
-        (await this.book.get(name))
+      const address = await this.book.get(name);
       return address || '';
     } catch {
       return '';

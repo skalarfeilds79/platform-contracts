@@ -2,7 +2,7 @@ import { Currency, getETHPayment, getSignedPayment, Order } from '@imtbl/platfor
 import { Blockchain, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
 import 'jest';
-import { GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_SKU } from '../../../deployment/constants';
+import { GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_SKU } from '../../../src/constants';
 import { RarePack, S1Sale } from '../../../src/contracts';
 import { deployRarePack, deployStandards, StandardContracts } from './utils';
 
@@ -86,14 +86,14 @@ describe('Sale', () => {
       sale = await S1Sale.deploy(owner);
     });
 
-    async function purchasePacks(products: string[], quantities: number[], prices: number[]) {
+    async function purchasePacks(address: string, products: string[], quantities: number[], prices: number[]) {
       const payments = await Promise.all(
         quantities.map(async (quantity, i) => {
           const cost = prices[i];
           const order: Order = {
             quantity,
             sku: GU_S1_RARE_PACK_SKU,
-            assetRecipient: owner.address,
+            assetRecipient: address,
             changeRecipient: sale.address,
             totalPrice: cost * quantity,
             currency: Currency.USDCents,
@@ -107,15 +107,19 @@ describe('Sale', () => {
           };
         }),
       );
-      await sale.purchaseFor(owner.address, payments, other.address);
+      await sale.purchaseFor(address, payments, other.address);
     }
 
     it('should purchase one item', async () => {
-      await purchasePacks([rare.address], [1], [GU_S1_RARE_PACK_PRICE]);
+      await purchasePacks(owner.address, [rare.address], [1], [GU_S1_RARE_PACK_PRICE]);
     });
 
     it('should purchase two items', async () => {
-      await purchasePacks([rare.address, rare.address], [1, 1], [GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_PRICE]);
+      await purchasePacks(owner.address, [rare.address, rare.address], [1, 1], [GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_PRICE]);
+    });
+
+    it('should purchase two items', async () => {
+      await purchasePacks(ethers.constants.AddressZero, [rare.address, rare.address], [1, 1], [GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_PRICE]);
     });
   });
 

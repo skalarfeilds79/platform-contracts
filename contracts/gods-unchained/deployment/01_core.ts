@@ -4,6 +4,7 @@ import { Cards, Fusing } from '../src/contracts';
 import { CardsWrapper } from './../src/wrappers/cardsWrapper';
 import { DeploymentStage, DeploymentParams } from '@imtbl/deployment-utils';
 import { asyncForEach } from '@imtbl/utils';
+import { GU_FUSING_MINTER } from '../src';
 
 export class CoreStage implements DeploymentStage {
   private wallet: Wallet;
@@ -42,7 +43,7 @@ export class CoreStage implements DeploymentStage {
 
     await this.authoriseFactories(cardWrapper, openMinter, fusing, promoFactory);
     await this.unlockTradingFor(cardWrapper, [1, 4]);
-    await this.addFusingMinter(fusing, await findInstance('GU_FUSING_MINTER'));
+    await this.addFusingMinter(fusing, GU_FUSING_MINTER[this.networkId]);
 
     // TODO: Implement this
     // transferOwnership([cards, openMinter, fusing, promoFactory]);
@@ -126,59 +127,45 @@ export class CoreStage implements DeploymentStage {
   ) {
     console.log('** Authorising Factories **');
 
-    try {
-      const factories = [
-        {
-          minter: openMinter,
-          season: 1,
-        },
-        {
-          minter: fusing,
-          season: 6,
-        },
-        {
-          minter: promoFactory,
-          season: 4,
-        },
-      ];
+    const factories = [
+      {
+        minter: openMinter,
+        season: 1,
+      },
+      {
+        minter: fusing,
+        season: 6,
+      },
+      {
+        minter: promoFactory,
+        season: 4,
+      },
+    ];
 
-      await asyncForEach(factories, async (factory) => {
-        const isApproved = await cardWrapper.instance.factoryApproved(
-          factory.minter,
-          factory.season,
-        );
-        if (!isApproved) {
-          await cardWrapper.addFactories([factory]);
-        }
-      });
-    } catch {
-      console.log('!!! Failed to authorise factories !!!');
-    }
+    await asyncForEach(factories, async (factory) => {
+      const isApproved = await cardWrapper.instance.factoryApproved(
+        factory.minter,
+        factory.season,
+      );
+      if (!isApproved) {
+        await cardWrapper.addFactories([factory]);
+      }
+    });
   }
 
   async unlockTradingFor(cardWrapper: CardsWrapper, seasons: number[]) {
     console.log('Unlocking Trading...');
-
-    try {
-      await asyncForEach(seasons, async (season) => {
-        const isTradeable = await cardWrapper.instance.seasonTradable(season);
-        if (!isTradeable) {
-          await cardWrapper.unlockTrading([season]);
-        }
-      });
-    } catch {
-      console.log('!!! Failed to unlock trading !!!');
-    }
+    await asyncForEach(seasons, async (season) => {
+      const isTradeable = await cardWrapper.instance.seasonTradable(season);
+      if (!isTradeable) {
+        await cardWrapper.unlockTrading([season]);
+      }
+    });
   }
 
   async addFusingMinter(fusing: string, minter: string) {
     console.log('Adding Fusing Minter..');
-
-    try {
-      const fusingContract = Fusing.at(this.wallet, fusing);
-      await fusingContract.addMinter(minter);
-    } catch {
-      console.log('!!! Failed to add Fusing Minter');
-    }
+    const fusingContract = Fusing.at(this.wallet, fusing);
+    await fusingContract.addMinter(minter);
   }
 }

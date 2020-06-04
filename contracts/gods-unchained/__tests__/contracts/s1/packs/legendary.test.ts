@@ -3,7 +3,7 @@ import { Blockchain, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { parseLogs } from '@imtbl/utils';
 import { ethers } from 'ethers';
 import 'jest';
-import { GU_S1_LEGENDARY_CHEST_PRICE, GU_S1_LEGENDARY_CHEST_SKU, GU_S1_LEGENDARY_PACK_PRICE, GU_S1_LEGENDARY_PACK_SKU } from '../../../../deployment/constants';
+import { GU_S1_LEGENDARY_CHEST_PRICE, GU_S1_LEGENDARY_CHEST_SKU, GU_S1_LEGENDARY_PACK_PRICE, GU_S1_LEGENDARY_PACK_SKU } from '../../../../src/constants';
 import { Cards, Chest, LegendaryPack } from '../../../../src/contracts';
 import { deployLegendaryChest, deployLegendaryPack, deployStandards, StandardContracts } from '../utils';
 import { epics, legendaries, rares } from './protos';

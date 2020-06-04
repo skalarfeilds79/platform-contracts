@@ -18,7 +18,7 @@
     "watch": "tsc --watch --preserveWatchOutput",
     "deploy": "yarn ts-node deployment/deploy.ts",
     "test:deployment": "yarn reset-test-evm && yarn jest __tests__/deployment --runInBand",
-    "test": "yarn build && yarn jest __tests__/contracts",
+    "test": "yarn build && yarn jest __tests__/contracts/s1/sale.test.ts",
     "test:watch": "yarn jest __tests__/contracts --watch",
     "reset-test-evm": "node scripts/reset-test-evm.js",
     "prepare": "yarn build"

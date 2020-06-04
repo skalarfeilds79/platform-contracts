@@ -111,10 +111,6 @@ contract Pack is IPack, S1Vendor, RarityProvider {
      */
     function mint(uint256 _commitmentID) external {
         Commitment memory commitment = commitments[_commitmentID];
-        require(
-            commitment.recipient != address(0),
-            "S1Pack: must be a valid commitment"
-        );
 
         require(
             _canMint(commitment),

@@ -4,7 +4,6 @@ import 'jest';
 import { Referral } from '../../../src/contracts';
 
 ethers.errors.setLogLevel('error');
-
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
 

@@ -8,7 +8,7 @@ import {
   ETHUSDMockOracle,
   MakerOracle,
 } from '../src/contracts';
-import { PLATFORM_ESCROW_CAPACITY } from './constants';
+import { IM_ESCROW_CAPACITY } from '../src/constants';
 
 export const IM_PROCESSOR_LIMIT = 100000000;
 
@@ -103,7 +103,7 @@ export class CoreStage implements DeploymentStage {
 
   async deployEscrow(): Promise<string> {
     console.log('** Deploying Escrow **');
-    const escrow = await Escrow.awaitDeployment(this.wallet, PLATFORM_ESCROW_CAPACITY);
+    const escrow = await Escrow.awaitDeployment(this.wallet, IM_ESCROW_CAPACITY);
     return escrow.address;
   }
 

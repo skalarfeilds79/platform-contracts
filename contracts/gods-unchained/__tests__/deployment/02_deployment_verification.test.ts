@@ -1,53 +1,19 @@
-import 'jest';
-
+import { CreditCardEscrow, ETHUSDMockOracle, addresses as platformAddresses } from '@imtbl/platform';
 import { ethers, Wallet } from 'ethers';
-import { Blockchain } from '@imtbl/test-utils';
-import { getGodsUnchainedAddresses } from '../../src/addresses/index';
-import {
-  GU_S1_RARE_PACK_PRICE,
-  GU_S1_SHINY_PACK_PRICE,
-  GU_S1_LEGENDARY_PACK_PRICE,
-  GU_S1_EPIC_PACK_PRICE,
-} from '../../deployment/constants';
-
-import {
-  GU_S1_RARE_PACK_SKU,
-  GU_S1_SHINY_PACK_SKU,
-  GU_S1_LEGENDARY_PACK_SKU,
-  GU_S1_EPIC_PACK_SKU,
-  GU_S1_CAP,
-} from '../../deployment/constants';
-
-import {
-  Currency,
-  ETHUSDMockOracle,
-  getETHPayment,
-  getPlatformAddresses,
-  getSignedPayment,
-  Payment,
-  CreditCardEscrow,
-} from '@imtbl/platform';
-
-import {
-  Beacon,
-  Cards,
-  EpicPack,
-  Escrow,
-  LegendaryPack,
-  PurchaseProcessor,
-  Raffle,
-  RarePack,
-  Referral,
-  S1Cap,
-  S1Sale,
-  ShinyPack,
+import 'jest';
+import { addresses } from '../../src/addresses';
+import { 
+  GU_S1_CAP, GU_S1_EPIC_PACK_PRICE, GU_S1_EPIC_PACK_SKU, GU_S1_LEGENDARY_PACK_PRICE,
+  GU_S1_LEGENDARY_PACK_SKU, GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_SKU,
+  GU_S1_SHINY_PACK_PRICE, GU_S1_SHINY_PACK_SKU } from '../../src/constants';
+import { 
+  Beacon, Cards, EpicPack, Escrow, LegendaryPack, PurchaseProcessor,
+  Raffle, RarePack, Referral, S1Cap, S1Sale, ShinyPack
 } from '../../src/contracts';
 
 ethers.errors.setLogLevel('error');
-
 const config = require('dotenv').config({ path: '../../.env' }).parsed;
 const provider = new ethers.providers.JsonRpcProvider(config.RPC_ENDPOINT);
-const blockchain = new Blockchain();
 
 const wallet: Wallet = new ethers.Wallet(config.PRIVATE_KEY, provider);
 

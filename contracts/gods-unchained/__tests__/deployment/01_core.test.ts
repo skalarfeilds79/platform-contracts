@@ -1,6 +1,6 @@
 import { ethers, Wallet } from 'ethers';
 import 'jest';
-import { getGodsUnchainedAddresses } from '../../src/addresses';
+import { addresses } from '../../src/addresses';
 import { Cards, Fusing, OpenMinter } from '../../src/contracts';
 
 ethers.errors.setLogLevel('error');
@@ -9,11 +9,6 @@ const provider = new ethers.providers.JsonRpcProvider(config.RPC_ENDPOINT);
 const wallet: Wallet = new ethers.Wallet(config.PRIVATE_KEY, provider);
 
 describe('01_core', () => {
-
-  const addressBook = getGodsUnchainedAddresses(
-    config.DEPLOYMENT_NETWORK_ID,
-    config.DEPLOYMENT_ENVIRONMENT,
-  );
 
   let cards: Cards;
   let openMinter: OpenMinter;

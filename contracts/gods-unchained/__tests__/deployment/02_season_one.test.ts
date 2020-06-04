@@ -4,7 +4,7 @@ import {
   Currency,
   ETHUSDMockOracle,
   getETHPayment,
-  getPlatformAddresses,
+  addresses as platform,
   getSignedPayment,
   Payment,
   CreditCardEscrow,
@@ -20,9 +20,9 @@ import {
   GU_S1_LEGENDARY_PACK_SKU,
   GU_S1_RARE_PACK_SKU,
   GU_S1_SHINY_PACK_SKU,
-} from '../../deployment/constants';
+} from '../../src/constants';
 
-import { getGodsUnchainedAddresses } from '../../src/addresses/index';
+import { addresses as gu } from '../../src/addresses';
 
 import {
   Beacon,
@@ -50,15 +50,8 @@ const wallet: Wallet = new ethers.Wallet(config.PRIVATE_KEY, provider);
 jest.setTimeout(60000);
 
 describe('02_season_one', () => {
-  const godUnchainedAddressBook = getGodsUnchainedAddresses(
-    config.DEPLOYMENT_NETWORK_ID,
-    config.DEPLOYMENT_ENVIRONMENT,
-  );
 
-  const platformAddressBook = getPlatformAddresses(
-    config.DEPLOYMENT_NETWORK_ID,
-    config.DEPLOYMENT_ENVIRONMENT,
-  );
+  const networkID = config.DEPLOYMENT_NETWORK_ID;
 
   let nonce: number = 0;
 
@@ -89,10 +82,10 @@ describe('02_season_one', () => {
   const defaultQuantity = 1;
 
   beforeAll(async () => {
-    beacon = Beacon.at(wallet, platformAddressBook.beaconAddress);
-    processor = PurchaseProcessor.at(wallet, platformAddressBook.processorAddress);
-    escrow = Escrow.at(wallet, platformAddressBook.escrowAddress);
-    cards = Cards.at(wallet, godUnchainedAddressBook.cardsAddress);
+    beacon = Beacon.at(wallet, platform[networkID].beacon);
+    processor = PurchaseProcessor.at(wallet, platform[networkID].processor);
+    escrow = Escrow.at(wallet, platform[networkID].escrow);
+    cards = Cards.at(wallet, gu[networkID].cards);
     s1Raffle = Raffle.at(wallet, godUnchainedAddressBook.seasonOne.raffleAddress);
     s1Sale = S1Sale.at(wallet, godUnchainedAddressBook.seasonOne.saleAddress);
     s1Referral = Referral.at(wallet, godUnchainedAddressBook.seasonOne.referralAddress);

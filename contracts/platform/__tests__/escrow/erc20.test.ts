@@ -2,7 +2,7 @@ import { Blockchain, expectRevert, Ganache, generatedWallets } from '@imtbl/test
 import { ethers } from 'ethers';
 import 'jest';
 import { Escrow, MaliciousChest, TestChest, TestERC20Token, TestDirectEscrow } from '../../src/contracts';
-import { PLATFORM_ESCROW_CAPACITY } from '../../deployment/constants';
+import { IM_ESCROW_CAPACITY } from '../../src/constants';
 
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
@@ -28,7 +28,7 @@ describe('ERC20Escrow', () => {
 
   describe('#constructor', () => {
     it('should be able to deploy the escrow contract', async () => {
-      const escrow = await Escrow.deploy(user, PLATFORM_ESCROW_CAPACITY);
+      const escrow = await Escrow.deploy(user, IM_ESCROW_CAPACITY);
     });
   });
 
@@ -38,7 +38,7 @@ describe('ERC20Escrow', () => {
     let direct: TestDirectEscrow;
 
     beforeEach(async () => {
-      escrow = await Escrow.deploy(user, PLATFORM_ESCROW_CAPACITY);
+      escrow = await Escrow.deploy(user, IM_ESCROW_CAPACITY);
       erc20 = await TestERC20Token.deploy(user);
       direct = await TestDirectEscrow.deploy(user, escrow.address, erc20.address, ethers.constants.AddressZero);
     });
@@ -101,7 +101,7 @@ describe('ERC20Escrow', () => {
     let direct: TestDirectEscrow;
 
     beforeEach(async () => {
-      escrow = await Escrow.deploy(user, PLATFORM_ESCROW_CAPACITY);
+      escrow = await Escrow.deploy(user, IM_ESCROW_CAPACITY);
       erc20 = await TestERC20Token.deploy(user);
       direct = await TestDirectEscrow.deploy(user, escrow.address, erc20.address, ethers.constants.AddressZero);
     });
@@ -172,7 +172,7 @@ describe('ERC20Escrow', () => {
     let chest: TestChest;
 
     beforeEach(async () => {
-      escrow = await Escrow.deploy(user, PLATFORM_ESCROW_CAPACITY);
+      escrow = await Escrow.deploy(user, IM_ESCROW_CAPACITY);
       erc20 = await TestERC20Token.deploy(user);
       malicious = await MaliciousChest.deploy(user, escrow.address, erc20.address);
       chest = await TestChest.deploy(user, escrow.address, erc20.address);

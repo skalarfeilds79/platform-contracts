@@ -3,12 +3,9 @@ import { ethers } from 'ethers';
 import 'jest';
 import { S1Cap } from '../../../src/contracts';
 
-
 jest.setTimeout(600000);
-
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
-
 ethers.errors.setLogLevel('error');
 
 describe('Cap', () => {

@@ -26,7 +26,7 @@ import {
   GU_S1_LEGENDARY_CHEST_TOKEN_NAME,
   GU_S1_RAFFLE_TOKEN_NAME,
   GU_S1_RAFFLE_TOKEN_SYMBOL,
-} from './constants';
+} from '../src/constants';
 
 import {
   Raffle,
@@ -47,12 +47,10 @@ export class SeasonOneStage implements DeploymentStage {
   
   private wallet: Wallet;
   private networkId: number;
-  private env: DeploymentEnvironment;
 
   constructor(params: DeploymentParams) {
     this.wallet = new ethers.Wallet(params.private_key, new ethers.providers.JsonRpcProvider(params.rpc_url));
     this.networkId = params.network_id;
-    this.env = params.environment;
   }
 
   async deploy(
@@ -75,9 +73,9 @@ export class SeasonOneStage implements DeploymentStage {
 
     const platform = getPlatformAddresses(this.networkId, this.env);
 
-    const processorAddress = platform.processorAddress; // await findInstance('IM_Processor');
+    const processorAddress = platform.processorAddress;
     if (!processorAddress || processorAddress.length === 0) {
-      throw '*** IM_Processor not deployed! Run `yarn deploy --core` inside contracts/platform';
+      throw '*** IM_Processor not deployed! Run `yarn deploy --all` inside contracts/platform';
     }
     
     const beacon = platform.beaconAddress; // await findInstance('IM_Beacon');

@@ -9,6 +9,9 @@ const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
 
 describe('Core', () => {
+
+  provider.listAccounts();
+
   const [ownerWallet, managerWallet, userWallet] = generatedWallets(provider);
   const BATCH_SIZE = 101;
 

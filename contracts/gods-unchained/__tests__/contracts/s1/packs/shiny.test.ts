@@ -3,15 +3,15 @@ import { Blockchain, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { parseLogs } from '@imtbl/utils';
 import { ethers } from 'ethers';
 import 'jest';
-import { GU_S1_SHINY_PACK_PRICE, GU_S1_SHINY_PACK_SKU } from '../../../../deployment/constants';
+import { GU_S1_SHINY_PACK_PRICE, GU_S1_SHINY_PACK_SKU } from '../../../../src/constants';
 import { Cards, ShinyPack } from '../../../../src/contracts';
 import { deployShinyPack, deployStandards, StandardContracts } from '../utils';
 import { epics, legendaries, rares } from './protos';
 
 jest.setTimeout(600000);
+ethers.errors.setLogLevel('error');
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
-ethers.errors.setLogLevel('error');
 
 describe('Shiny Pack', () => {
 

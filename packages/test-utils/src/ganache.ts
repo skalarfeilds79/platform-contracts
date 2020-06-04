@@ -15,9 +15,5 @@ export class Ganache extends ethers.providers.Web3Provider {
         super(gp as any);
     }
 
-    public stop() {
-        const gp = ganache.provider();
-        gp.close(() => {});
-    }
 }
 

@@ -14,4 +14,6 @@ yarn deploy:all
 
 if [[ "${WATCH:-}" == "true" ]]; then
   yarn watch
+else
+  yarn start
 fi

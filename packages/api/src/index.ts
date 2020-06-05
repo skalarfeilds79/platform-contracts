@@ -26,7 +26,7 @@ app.get('/addresses/gods-unchained', (request, response) => {
   response.json(godsUnchainedData);
 });
 
-app.get('/healthcheck', (request, response) => {
+app.get('/heartbeat', (request, response) => {
   response.send("ok");
 });
 

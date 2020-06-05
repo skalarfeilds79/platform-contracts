@@ -166,13 +166,15 @@ export class SeasonOneStage implements DeploymentStage {
     await this.setChestForPack('Rare', rarePack, rareChest);
     await this.setChestForPack('Legendary', legendaryPack, legendaryChest);
 
-    await this.setApprovedCapUpdaters(s1Cap, [rarePack, shinyPack, legendaryPack, epicPack, rareChest, legendaryChest])
+    await this.setApprovedCapUpdaters(s1Cap, [rarePack, shinyPack, legendaryPack, epicPack, rareChest, legendaryChest]);
     await this.setApprovedRaffleMinters(raffle, packAddresses);
     await this.setApprovedProcessorSellers(processor, [
       { address: epicPack, sku: GU_S1_EPIC_PACK_SKU },
       { address: rarePack, sku: GU_S1_RARE_PACK_SKU },
       { address: shinyPack, sku: GU_S1_SHINY_PACK_SKU },
       { address: legendaryPack, sku: GU_S1_LEGENDARY_PACK_SKU },
+      { address: rareChest, sku: GU_S1_RARE_CHEST_SKU },
+      { address: legendaryChest, sku: GU_S1_LEGENDARY_CHEST_SKU }
     ]);
   }
 

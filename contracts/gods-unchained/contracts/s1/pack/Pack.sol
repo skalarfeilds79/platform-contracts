@@ -111,10 +111,6 @@ contract Pack is IPack, S1Vendor, RarityProvider {
      */
     function mint(uint256 _commitmentID) external {
         Commitment memory commitment = commitments[_commitmentID];
-        require(
-            commitment.recipient != address(0),
-            "S1Pack: must be a valid commitment"
-        );
 
         require(
             _canMint(commitment),
@@ -142,7 +138,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         (uint start, uint end) = _getBoundaries(_commitment.packsMinted, _commitment.packQuantity);
         uint low = cards.nextBatch();
         uint len = end.sub(start);
-        uint high = low.add(len);
+        uint high = low.add(len.mul(5));
 
         Escrow.Vault memory vault = Escrow.Vault({
             player: _commitment.recipient,

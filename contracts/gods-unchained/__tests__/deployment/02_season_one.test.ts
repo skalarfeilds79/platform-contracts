@@ -102,6 +102,7 @@ describe('02_season_one', () => {
 
     const cc = CreditCardEscrow.at(wallet, platformAddressBook.creditCardAddress);
 
+    console.log(cc.address);
     // shouldn't change anything, but tests deployment
     await cc.setDestructionDelay(await cc.destructionDelay());
 

@@ -49,12 +49,7 @@ async function start() {
 
   const newManager = new Manager(stages, book, params);
 
-  try {
-    await newManager.deploy();
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
+  await newManager.deploy();
 }
 
 start();

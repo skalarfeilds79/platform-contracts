@@ -26,5 +26,9 @@ app.get('/addresses/gods-unchained', (request, response) => {
   response.json(godsUnchainedData);
 });
 
+app.get('/healthcheck', (request, response) => {
+  response.send("ok");
+});
+
 console.log(`Server listening on port ${port}`)
 app.listen(port);

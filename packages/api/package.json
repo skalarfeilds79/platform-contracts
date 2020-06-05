@@ -18,7 +18,8 @@
   },
   "devDependencies": {
     "@types/node": "^12.12.3",
-    "tsc-watch": "^4.2.3"
+    "tsc-watch": "^4.2.3",
+    "typescript": "^3.7.5"
   },
   "gitHead": "0600df9b370d3d700e9da510a2fe20aadba92928"
 }

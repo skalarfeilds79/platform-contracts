@@ -1,6 +1,8 @@
 
 import n1 = require('./1.json');
+import n3 = require('./3.json');
 
-export const addresses = {
-    1: n1,
+const addresses = {
+    Mainnet: n1,
+    Ropsten: n3
 };

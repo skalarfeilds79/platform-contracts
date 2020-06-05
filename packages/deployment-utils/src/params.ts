@@ -5,9 +5,16 @@ export enum DeploymentNetwork {
     TestRPC = 50,
 }
 
+export enum DeploymentEnvironment {
+    Production,
+    Staging,
+    Development
+}
+
 export interface DeploymentParams {
     private_key: string;
     rpc_url: string;
     network_id: DeploymentNetwork;
+    environment: DeploymentEnvironment;
     network_key: string;
 }

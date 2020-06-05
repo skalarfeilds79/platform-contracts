@@ -2,7 +2,7 @@ import { Blockchain, expectRevert, Ganache, generatedWallets } from '@imtbl/test
 import { ethers } from 'ethers';
 import 'jest';
 import { CreditCardEscrow, Escrow, MaliciousCCP, TestCreditCardPack, TestERC20Token, TestERC721Token } from '../../../src/contracts';
-import { IM_ESCROW_CAPACITY } from '../../../src/constants';
+import { constants } from '../../../src/constants';
 
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
@@ -41,7 +41,7 @@ describe('CreditCardEscrow', () => {
     beforeEach(async () => {
       erc20 = await TestERC20Token.deploy(user);
       erc721 = await TestERC721Token.deploy(user);
-      escrow = await Escrow.deploy(user, IM_ESCROW_CAPACITY);
+      escrow = await Escrow.deploy(user, constants.Development.IM_ESCROW_CAPACITY);
       cc = await CreditCardEscrow.deploy(
         user,
         escrow.address,

@@ -1,5 +1,5 @@
 import { Wallet, ethers } from 'ethers';
-import { DeploymentEnvironment, DeploymentStage, DeploymentParams } from '@imtbl/deployment-utils';
+import { DeploymentStage, DeploymentParams } from '@imtbl/deployment-utils';
 import {
   Escrow,
   CreditCardEscrow,
@@ -8,14 +8,13 @@ import {
   ETHUSDMockOracle,
   MakerOracle,
 } from '../src/contracts';
-import { IM_ESCROW_CAPACITY } from '../src/constants';
+import { constants } from '../src/constants';
 
 export const IM_PROCESSOR_LIMIT = 100000000;
 
 export class CoreStage implements DeploymentStage {
   private wallet: Wallet;
   private networkId: number;
-  private env: DeploymentEnvironment;
 
   constructor(params: DeploymentParams) {
     this.wallet = new ethers.Wallet(
@@ -23,13 +22,12 @@ export class CoreStage implements DeploymentStage {
       new ethers.providers.JsonRpcProvider(params.rpc_url),
     );
     this.networkId = params.network_id;
-    this.env = params.environment;
   }
 
   async deploy(
     findInstance: (name: string) => Promise<string>,
     onDeployment: (name: string, address: string, dependency: boolean) => void,
-    transferOwnership: (address: string) => void,
+    transferOwnership: (address: string, intended: string) => void,
   ) {
     await this.wallet.getTransactionCount();
 

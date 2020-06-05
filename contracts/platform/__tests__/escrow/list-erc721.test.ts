@@ -2,7 +2,7 @@ import { Blockchain, expectRevert, Ganache, generatedWallets } from '@imtbl/test
 import { ethers } from 'ethers';
 import 'jest';
 import { Escrow, MaliciousListPack, TestERC721Token, TestListPack, TestDirectEscrow } from '../../src/contracts';
-import { IM_ESCROW_CAPACITY } from '../../src/constants';
+import { constants } from '../../src/constants';
 
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
@@ -28,7 +28,7 @@ describe('ListERC271Escrow', () => {
 
   describe('#constructor', () => {
     it('should be able to deploy the escrow contract', async () => {
-      const escrow = await Escrow.deploy(user, IM_ESCROW_CAPACITY);
+      const escrow = await Escrow.deploy(user, constants.Development.IM_ESCROW_CAPACITY);
     });
   });
 
@@ -38,7 +38,7 @@ describe('ListERC271Escrow', () => {
     let direct: TestDirectEscrow;
 
     beforeEach(async () => {
-      escrow = await Escrow.deploy(user, IM_ESCROW_CAPACITY);
+      escrow = await Escrow.deploy(user, constants.Development.IM_ESCROW_CAPACITY);
       erc721 = await TestERC721Token.deploy(user);
       direct = await TestDirectEscrow.deploy(user, escrow.address, ethers.constants.AddressZero, erc721.address);
     });
@@ -155,7 +155,7 @@ describe('ListERC271Escrow', () => {
     let direct: TestDirectEscrow;
 
     beforeEach(async () => {
-      escrow = await Escrow.deploy(user, IM_ESCROW_CAPACITY);
+      escrow = await Escrow.deploy(user, constants.Development.IM_ESCROW_CAPACITY);
       erc721 = await TestERC721Token.deploy(user);
       direct = await TestDirectEscrow.deploy(user, escrow.address, ethers.constants.AddressZero, erc721.address);
     });
@@ -208,7 +208,7 @@ describe('ListERC271Escrow', () => {
     let pack: TestListPack;
 
     beforeEach(async () => {
-      escrow = await Escrow.deploy(user, IM_ESCROW_CAPACITY);
+      escrow = await Escrow.deploy(user, constants.Development.IM_ESCROW_CAPACITY);
       erc721 = await TestERC721Token.deploy(user);
       malicious = await MaliciousListPack.deploy(user, escrow.address, erc721.address);
       pack = await TestListPack.deploy(user, escrow.address, erc721.address);

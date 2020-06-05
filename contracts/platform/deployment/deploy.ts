@@ -6,9 +6,8 @@ const config = require('dotenv').config({ path: '../../.env' }).parsed;
 
 export const params: DeploymentParams = {
   private_key: process.env.PRIVATE_KEY,
-  environment: process.env.DEPLOYMENT_ENVIRONMENT as DeploymentEnvironment,
   network_id: parseInt(process.env.DEPLOYMENT_NETWORK_ID),
-  network_key: `${process.env.DEPLOYMENT_ENVIRONMENT}`,
+  environment: process.env.DEPLOYMENT_ENVIRONMENT,
   rpc_url: process.env.RPC_ENDPOINT
 };
 
@@ -28,8 +27,7 @@ async function start() {
   }
 
   const book = new AddressBook(
-    './src/addresses/addresses.json', 
-    config.DEPLOYMENT_ENVIRONMENT, 
+    './src/addresses', 
     config.DEPLOYMENT_NETWORK_ID
   );
 

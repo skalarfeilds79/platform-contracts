@@ -18,7 +18,7 @@ export class CoreStage implements DeploymentStage {
   async deploy(
     findInstance: (name: string) => Promise<string>,
     onDeployment: (name: string, address: string, dependency: boolean) => void,
-    transferOwnership: (address: string) => void,
+    transferOwnership: (address: string, intended: string) => void,
   ) {
 
     const cardWrapper = new CardsWrapper(this.wallet);

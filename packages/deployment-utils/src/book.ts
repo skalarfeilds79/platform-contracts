@@ -89,9 +89,12 @@ export class AddressBook {
             return `import n${network} = require('./${network}.json'); `;
         });
         const declarations = networks.map((network: string) => {
-            return `${network}: n${network}`;
+            return `${DeploymentNetwork[network]}: n${network}`;
         });
+
+        // create a typescript file which will be the index for this address book
         const template = `
+
             ${imports.join('\n')}
 
             export const addresses = {

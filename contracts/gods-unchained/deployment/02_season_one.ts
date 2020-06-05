@@ -41,7 +41,7 @@ import {
   Chest,
   S1Cap
 } from '../src/contracts';
-import { getPlatformAddresses } from '@imtbl/platform';
+import { addresses } from '@imtbl/platform';
 
 export class SeasonOneStage implements DeploymentStage {
   
@@ -56,7 +56,7 @@ export class SeasonOneStage implements DeploymentStage {
   async deploy(
     findInstance: (name: string) => Promise<string>,
     onDeployment: (name: string, address: string, dependency: boolean) => void,
-    transferOwnership: (address: string) => void,
+    transferOwnership: (address: string, intended: string) => void,
   ) {
 
     const raffle = (await findInstance('GU_S1_Raffle')) || (await this.deployRaffle());

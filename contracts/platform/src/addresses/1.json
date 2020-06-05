@@ -1,4 +1,6 @@
 
 {
-  "GU_CARDS": "0x000"
+  "INTENDED_OWNER": "",
+  "IM_ESCROW_CUSTODIAN": "",
+  "IM_ESCROW_DESTROYER": ""
 }

@@ -102,4 +102,11 @@ describe('02_deployment_verification', () => {
     expect(signers.length).toBe(1);
     expect(signers[0]).toBe(INTENDED_SIGNER);
   });
+
+  it('should have the correct seasons', async () => {
+    for (let i = 0; i < 6; i++) {
+      let s = await cards.seasons(0);
+      console.log(s);
+    }
+  });
 });

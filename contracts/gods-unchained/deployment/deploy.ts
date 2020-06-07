@@ -42,8 +42,7 @@ async function start() {
   }
 
   const book = new AddressBook(
-    './src/addresses', 
-    config.DEPLOYMENT_ENVIRONMENT,
+    './src/addresses',
     config.DEPLOYMENT_NETWORK_ID
   );
 

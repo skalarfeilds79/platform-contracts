@@ -28,7 +28,7 @@ describe('ERC20Escrow', () => {
 
   describe('#constructor', () => {
     it('should be able to deploy the escrow contract', async () => {
-      const escrow = await Escrow.deploy(user, constants.Development.IM_ESCROW_CAPACITY);
+      const escrow = await Escrow.deploy(user, constants.Development.Escrow.Capacity);
     });
   });
 
@@ -38,7 +38,7 @@ describe('ERC20Escrow', () => {
     let direct: TestDirectEscrow;
 
     beforeEach(async () => {
-      escrow = await Escrow.deploy(user, constants.Development.IM_ESCROW_CAPACITY);
+      escrow = await Escrow.deploy(user, constants.Development.Escrow.Capacity);
       erc20 = await TestERC20Token.deploy(user);
       direct = await TestDirectEscrow.deploy(user, escrow.address, erc20.address, ethers.constants.AddressZero);
     });
@@ -101,7 +101,7 @@ describe('ERC20Escrow', () => {
     let direct: TestDirectEscrow;
 
     beforeEach(async () => {
-      escrow = await Escrow.deploy(user, constants.Development.IM_ESCROW_CAPACITY);
+      escrow = await Escrow.deploy(user, constants.Development.Escrow.Capacity);
       erc20 = await TestERC20Token.deploy(user);
       direct = await TestDirectEscrow.deploy(user, escrow.address, erc20.address, ethers.constants.AddressZero);
     });
@@ -172,7 +172,7 @@ describe('ERC20Escrow', () => {
     let chest: TestChest;
 
     beforeEach(async () => {
-      escrow = await Escrow.deploy(user, constants.Development.IM_ESCROW_CAPACITY);
+      escrow = await Escrow.deploy(user, constants.Development.Escrow.Capacity);
       erc20 = await TestERC20Token.deploy(user);
       malicious = await MaliciousChest.deploy(user, escrow.address, erc20.address);
       chest = await TestChest.deploy(user, escrow.address, erc20.address);

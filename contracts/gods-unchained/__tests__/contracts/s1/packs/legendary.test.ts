@@ -3,7 +3,7 @@ import { Blockchain, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { parseLogs } from '@imtbl/utils';
 import { ethers } from 'ethers';
 import 'jest';
-import { GU_S1_LEGENDARY_CHEST_PRICE, GU_S1_LEGENDARY_CHEST_SKU, GU_S1_LEGENDARY_PACK_PRICE, GU_S1_LEGENDARY_PACK_SKU } from '../../../../src/constants';
+import { constants } from '../../../../src/constants';
 import { Cards, Chest, LegendaryPack } from '../../../../src/contracts';
 import { deployLegendaryChest, deployLegendaryPack, deployStandards, StandardContracts } from '../utils';
 import { epics, legendaries, rares } from './protos';
@@ -56,14 +56,14 @@ describe('Legendary Pack', () => {
     async function purchasePacks(quantity: number) {
       const order = {
         quantity,
-        sku: GU_S1_LEGENDARY_PACK_SKU,
+        sku: constants.Development.S1.Pack.Legendary.SKU,
         assetRecipient: owner.address,
         changeRecipient: owner.address,
-        totalPrice: GU_S1_LEGENDARY_PACK_PRICE * quantity,
+        totalPrice: constants.Development.S1.Pack.Legendary.Price * quantity,
         currency: Currency.USDCents,
         alreadyPaid: 0
       };
-      const params = { escrowFor: 0, nonce: 0, value: GU_S1_LEGENDARY_PACK_PRICE * quantity };
+      const params = { escrowFor: 0, nonce: 0, value: constants.Development.S1.Pack.Legendary.Price * quantity };
       const payment = await getSignedPayment(
          owner, shared.processor.address, legendary.address, order, params
        );
@@ -100,14 +100,14 @@ describe('Legendary Pack', () => {
     async function purchase(quantity: number, escrowFor: number) {
       const order = {
         quantity,
-        sku: GU_S1_LEGENDARY_PACK_SKU,
+        sku: constants.Development.S1.Pack.Legendary.SKU,
         assetRecipient: owner.address,
         changeRecipient: owner.address,
-        totalPrice: GU_S1_LEGENDARY_PACK_PRICE * quantity,
+        totalPrice: constants.Development.S1.Pack.Legendary.Price * quantity,
         currency: Currency.USDCents,
         alreadyPaid: 0
       };
-      const params = { escrowFor, nonce: 0, value: GU_S1_LEGENDARY_PACK_PRICE * quantity };
+      const params = { escrowFor, nonce: 0, value: constants.Development.S1.Pack.Legendary.Price * quantity };
       const payment = await getSignedPayment(
         owner, shared.processor.address, legendary.address, order, params
       );
@@ -173,10 +173,10 @@ describe('Legendary Pack', () => {
     async function purchaseAndOpenChests(quantity: number) {
       const balance = await chest.balanceOf(owner.address);
       expect(balance.toNumber()).toBe(0);
-      const value = GU_S1_LEGENDARY_CHEST_PRICE * quantity;
+      const value = constants.Development.S1.Chest.Legendary.Price * quantity;
       const order = {
         quantity,
-        sku: GU_S1_LEGENDARY_CHEST_SKU,
+        sku: constants.Development.S1.Chest.Legendary.SKU,
         assetRecipient: owner.address,
         changeRecipient: owner.address,
         currency: Currency.USDCents,

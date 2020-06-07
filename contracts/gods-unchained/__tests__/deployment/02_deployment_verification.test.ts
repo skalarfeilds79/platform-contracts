@@ -1,15 +1,13 @@
-import { CreditCardEscrow, ETHUSDMockOracle, addresses as platformAddresses } from '@imtbl/platform';
+import { CreditCardEscrow, ETHUSDMockOracle, addresses as platform } from '@imtbl/platform';
 import { ethers, Wallet } from 'ethers';
 import 'jest';
-import { addresses } from '../../src/addresses';
-import { 
-  GU_S1_CAP, GU_S1_EPIC_PACK_PRICE, GU_S1_EPIC_PACK_SKU, GU_S1_LEGENDARY_PACK_PRICE,
-  GU_S1_LEGENDARY_PACK_SKU, GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_SKU,
-  GU_S1_SHINY_PACK_PRICE, GU_S1_SHINY_PACK_SKU } from '../../src/constants';
+import { addresses as gu } from '../../src/addresses';
+import { constants } from '../../src/constants';
 import { 
   Beacon, Cards, EpicPack, Escrow, LegendaryPack, PurchaseProcessor,
   Raffle, RarePack, Referral, S1Cap, S1Sale, ShinyPack
 } from '../../src/contracts';
+import { DeploymentEnvironment } from '@imtbl/deployment-utils';
 
 ethers.errors.setLogLevel('error');
 const config = require('dotenv').config({ path: '../../.env' }).parsed;
@@ -22,15 +20,8 @@ const INTENDED_SIGNER = wallet.address;
 
 describe('02_deployment_verification', () => {
 
-  const godUnchainedAddressBook = getGodsUnchainedAddresses(
-    config.DEPLOYMENT_NETWORK_ID,
-    config.DEPLOYMENT_ENVIRONMENT,
-  );
-
-  const platformAddressBook = getPlatformAddresses(
-    config.DEPLOYMENT_NETWORK_ID,
-    config.DEPLOYMENT_ENVIRONMENT,
-  );
+  const networkID = parseInt(config.DEPLOYMENT_NETWORK_ID);
+  const deploymentConstants = constants[config.DEPLOYMENT_ENVIRONMENT as DeploymentEnvironment];
 
   let beacon: Beacon;
   let processor: PurchaseProcessor;
@@ -48,23 +39,20 @@ describe('02_deployment_verification', () => {
   let oracle: ETHUSDMockOracle;
 
   beforeAll(async () => {
-    beacon = Beacon.at(wallet, platformAddressBook.beaconAddress);
-    processor = PurchaseProcessor.at(wallet, platformAddressBook.processorAddress);
-    escrow = Escrow.at(wallet, platformAddressBook.escrowAddress);
-    cards = Cards.at(wallet, godUnchainedAddressBook.cardsAddress);
-    s1Raffle = Raffle.at(wallet, godUnchainedAddressBook.seasonOne.raffleAddress);
-    s1Sale = S1Sale.at(wallet, godUnchainedAddressBook.seasonOne.saleAddress);
-    s1Cap = S1Cap.at(wallet, godUnchainedAddressBook.seasonOne.capAddress);
-    s1Referral = Referral.at(wallet, godUnchainedAddressBook.seasonOne.referralAddress);
-    epicPack = EpicPack.at(wallet, godUnchainedAddressBook.seasonOne.epicPackAddress);
-    rarePack = RarePack.at(wallet, godUnchainedAddressBook.seasonOne.rarePackAddress);
-    shinyPack = ShinyPack.at(wallet, godUnchainedAddressBook.seasonOne.shinyPackAddress);
-    oracle = ETHUSDMockOracle.at(wallet, platformAddressBook.ethUSDMockOracleAddress);
-    creditCard = CreditCardEscrow.at(wallet, platformAddressBook.creditCardAddress);
-    legendaryPack = LegendaryPack.at(
-      wallet,
-      godUnchainedAddressBook.seasonOne.legendaryPackAddress,
-    );
+    beacon = Beacon.at(wallet, platform[networkID].Randomness.Beacon);
+    processor = PurchaseProcessor.at(wallet, platform[networkID].Pay.Processor);
+    escrow = Escrow.at(wallet, platform[networkID].Escrow.Protocol);
+    oracle = ETHUSDMockOracle.at(wallet, platform[networkID].Pay.Oracle);
+    creditCard = CreditCardEscrow.at(wallet, platform[networkID].Escrow.CreditCard);
+    cards = Cards.at(wallet, gu[networkID].Cards);
+    s1Raffle = Raffle.at(wallet, gu[networkID].S1.Raffle!);
+    s1Sale = S1Sale.at(wallet, gu[networkID].S1.Sale!);
+    s1Cap = S1Cap.at(wallet, gu[networkID].S1.Cap!);
+    s1Referral = Referral.at(wallet, gu[networkID].S1.Referral);
+    epicPack = EpicPack.at(wallet, gu[networkID].S1.EpicPack);
+    rarePack = RarePack.at(wallet, gu[networkID].S1.RarePack);
+    shinyPack = ShinyPack.at(wallet, gu[networkID].S1.ShinyPack);
+    legendaryPack = LegendaryPack.at(wallet, gu[networkID].S1.LegendaryPack);
   });
 
   it('should have the correct owner set', async () => {
@@ -80,21 +68,21 @@ describe('02_deployment_verification', () => {
   });
 
   it('should have the correct SKUs set', async () => {
-    expect(await rarePack.sku()).toBe(GU_S1_RARE_PACK_SKU);
-    expect(await shinyPack.sku()).toBe(GU_S1_SHINY_PACK_SKU);
-    expect(await legendaryPack.sku()).toBe(GU_S1_LEGENDARY_PACK_SKU);
-    expect(await epicPack.sku()).toBe(GU_S1_EPIC_PACK_SKU);
+    expect(await rarePack.sku()).toBe(deploymentConstants.S1.Pack.Rare.SKU);
+    expect(await shinyPack.sku()).toBe(deploymentConstants.S1.Pack.Shiny.SKU);
+    expect(await legendaryPack.sku()).toBe(deploymentConstants.S1.Pack.Legendary.SKU);
+    expect(await epicPack.sku()).toBe(deploymentConstants.S1.Pack.Epic.SKU);
   });
 
   it('should have the correct prices set', async () => {
-    expect((await rarePack.price()).toNumber()).toBe(GU_S1_RARE_PACK_PRICE);
-    expect((await shinyPack.price()).toNumber()).toBe(GU_S1_SHINY_PACK_PRICE);
-    expect((await legendaryPack.price()).toNumber()).toBe(GU_S1_LEGENDARY_PACK_PRICE);
-    expect((await epicPack.price()).toNumber()).toBe(GU_S1_EPIC_PACK_PRICE);
+    expect((await rarePack.price()).toNumber()).toBe(deploymentConstants.S1.Pack.Rare.Price);
+    expect((await shinyPack.price()).toNumber()).toBe(deploymentConstants.S1.Pack.Shiny.SKU);
+    expect((await legendaryPack.price()).toNumber()).toBe(constants.Development.S1.Pack.Legendary.Price);
+    expect((await epicPack.price()).toNumber()).toBe(deploymentConstants.S1.Pack.Epic.Price);
   });
 
   it('should have the correct caps set', async () => {
-    expect((await s1Cap.cap()).toNumber()).toBe(GU_S1_CAP);
+    expect((await s1Cap.cap()).toNumber()).toBe(deploymentConstants.S1.Cap);
   });
 
   it('should have one intended signer to begin with', async () => {
@@ -105,8 +93,7 @@ describe('02_deployment_verification', () => {
 
   it('should have the correct seasons', async () => {
     for (let i = 0; i < 6; i++) {
-      let s = await cards.seasons(0);
-      console.log(s);
+      await cards.seasons(i);
     }
   });
 });

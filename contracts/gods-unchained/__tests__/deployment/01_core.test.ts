@@ -10,23 +10,19 @@ const wallet: Wallet = new ethers.Wallet(config.PRIVATE_KEY, provider);
 
 describe('01_core', () => {
 
+  const networkID = parseInt(config.DEPLOYMENT_NETWORK_ID);
+
   let cards: Cards;
   let openMinter: OpenMinter;
   let fusing: Fusing;
 
   beforeAll(async () => {
-    cards = Cards.at(wallet, addressBook.cardsAddress);
-    openMinter = OpenMinter.at(wallet, addressBook.openMinterAddress);
-    fusing = Fusing.at(wallet, addressBook.fusingAddress);
+    cards = Cards.at(wallet, addresses[networkID].Cards);
+    fusing = Fusing.at(wallet, addresses[networkID].Flux.Fusing);
   });
 
   it('should have deployed cards', async () => {
     const code = await provider.getCode(cards.address);
-    expect(code.length).toBeGreaterThan(3);
-  });
-
-  it('should have deployed open minter', async () => {
-    const code = await provider.getCode(openMinter.address);
     expect(code.length).toBeGreaterThan(3);
   });
 

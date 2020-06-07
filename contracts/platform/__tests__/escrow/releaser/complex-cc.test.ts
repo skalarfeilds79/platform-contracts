@@ -41,7 +41,7 @@ describe('CreditCardEscrow', () => {
     beforeEach(async () => {
       erc20 = await TestERC20Token.deploy(user);
       erc721 = await TestERC721Token.deploy(user);
-      escrow = await Escrow.deploy(user, constants.Development.IM_ESCROW_CAPACITY);
+      escrow = await Escrow.deploy(user, constants.Development.Escrow.Capacity);
       cc = await CreditCardEscrow.deploy(
         user,
         escrow.address,

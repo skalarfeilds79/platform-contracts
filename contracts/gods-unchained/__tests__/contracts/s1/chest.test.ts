@@ -2,7 +2,7 @@ import { Currency, getETHPayment, getSignedPayment, PurchaseProcessor } from '@i
 import { Blockchain, expectRevert, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
 import 'jest';
-import { GU_S1_RARE_CHEST_PRICE, GU_S1_RARE_CHEST_SKU } from '../../../src/constants';
+import { constants } from '../../../src/constants';
 import { Chest, RarePack } from '../../../src';
 import { deployRareChest, deployRarePack, deployStandards, StandardContracts } from './utils';
 
@@ -42,7 +42,7 @@ describe('Chest', () => {
     async function purchaseChests(quantity: number) {
       let balance = await chest.balanceOf(owner.address);
       expect(balance.toNumber()).toBe(0);
-      const ethRequired = await shared.oracle.convert(1, 0, GU_S1_RARE_CHEST_PRICE * quantity);
+      const ethRequired = await shared.oracle.convert(1, 0, constants.Development.S1.Chest.Rare.Price * quantity);
       await chest.purchase(quantity, getETHPayment(), ethers.constants.AddressZero, { value: ethRequired});
       balance = await chest.balanceOf(owner.address);
       expect(balance.toNumber()).toBe(quantity);
@@ -74,10 +74,10 @@ describe('Chest', () => {
     });
 
     async function purchaseChests(quantity: number, escrowFor: number) {
-      const value = GU_S1_RARE_CHEST_PRICE * quantity;
+      const value = constants.Development.S1.Chest.Rare.Price * quantity;
       const order = {
         quantity,
-        sku: GU_S1_RARE_CHEST_SKU,
+        sku: constants.Development.S1.Chest.Rare.SKU,
         assetRecipient: owner.address,
         changeRecipient: chest.address,
         currency: Currency.USDCents,
@@ -153,14 +153,14 @@ describe('Chest', () => {
     });
 
     it('should be able to open 1 chest', async () => {
-      const ethRequired = await shared.oracle.convert(1, 0, GU_S1_RARE_CHEST_PRICE);
+      const ethRequired = await shared.oracle.convert(1, 0, constants.Development.S1.Chest.Rare.Price);
       const payment = getETHPayment();
       await chest.purchase(1, payment, ethers.constants.AddressZero, { value: ethRequired });
       await openChests(1);
     });
 
     it('should be able to open 5 chests', async () => {
-      const ethRequired = await shared.oracle.convert(1, 0, GU_S1_RARE_CHEST_PRICE * 5);
+      const ethRequired = await shared.oracle.convert(1, 0, constants.Development.S1.Chest.Rare.Price * 5);
       const payment = getETHPayment();
       await chest.purchase(5, payment, ethers.constants.AddressZero, { value: ethRequired });
       await openChests(5);

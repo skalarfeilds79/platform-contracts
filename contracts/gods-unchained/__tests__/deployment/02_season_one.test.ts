@@ -6,8 +6,7 @@ import {
   getETHPayment,
   addresses as platform,
   getSignedPayment,
-  Payment,
-  CreditCardEscrow,
+  Payment
 } from '@imtbl/platform';
 
 import { Blockchain } from '@imtbl/test-utils';
@@ -15,39 +14,23 @@ import { asyncForEach, parseLogs } from '@imtbl/utils';
 import { ethers, Wallet } from 'ethers';
 import { ContractReceipt } from 'ethers/contract';
 
-import {
-  GU_S1_EPIC_PACK_SKU,
-  GU_S1_LEGENDARY_PACK_SKU,
-  GU_S1_RARE_PACK_SKU,
-  GU_S1_SHINY_PACK_SKU,
-} from '../../src/constants';
+import { constants } from '../../src/constants';
 
 import { addresses as gu } from '../../src/addresses';
 
 import {
-  Beacon,
-  Cards,
-  EpicPack,
-  Escrow,
-  LegendaryPack,
-  PurchaseProcessor,
-  Raffle,
-  RarePack,
-  Referral,
-  S1Cap,
-  S1Sale,
-  ShinyPack,
+  Beacon, Cards, EpicPack, Escrow, LegendaryPack,
+  PurchaseProcessor, Raffle, RarePack, Referral, S1Cap, S1Sale, ShinyPack,
 } from '../../src/contracts';
 
 ethers.errors.setLogLevel('error');
-
 const config = require('dotenv').config({ path: '../../.env' }).parsed;
 const provider = new ethers.providers.JsonRpcProvider(config.RPC_ENDPOINT);
 const blockchain = new Blockchain();
-
 const wallet: Wallet = new ethers.Wallet(config.PRIVATE_KEY, provider);
-
 jest.setTimeout(60000);
+
+const deploymentConstants = constants[config.DEPLOYMENT_ENVIRONMENT];
 
 describe('02_season_one', () => {
 
@@ -82,28 +65,22 @@ describe('02_season_one', () => {
   const defaultQuantity = 1;
 
   beforeAll(async () => {
-    beacon = Beacon.at(wallet, platform[networkID].beacon);
-    processor = PurchaseProcessor.at(wallet, platform[networkID].processor);
-    escrow = Escrow.at(wallet, platform[networkID].escrow);
-    cards = Cards.at(wallet, gu[networkID].cards);
-    s1Raffle = Raffle.at(wallet, godUnchainedAddressBook.seasonOne.raffleAddress);
-    s1Sale = S1Sale.at(wallet, godUnchainedAddressBook.seasonOne.saleAddress);
-    s1Referral = Referral.at(wallet, godUnchainedAddressBook.seasonOne.referralAddress);
-    epicPack = EpicPack.at(wallet, godUnchainedAddressBook.seasonOne.epicPackAddress);
-    rarePack = RarePack.at(wallet, godUnchainedAddressBook.seasonOne.rarePackAddress);
-    shinyPack = ShinyPack.at(wallet, godUnchainedAddressBook.seasonOne.shinyPackAddress);
+    beacon = Beacon.at(wallet, platform[networkID].Randomness.Beacon);
+    processor = PurchaseProcessor.at(wallet, platform[networkID].Pay.Processor);
+    escrow = Escrow.at(wallet, platform[networkID].Escrow.Protocol);
+    cards = Cards.at(wallet, gu[networkID].Cards);
+    s1Raffle = Raffle.at(wallet, gu[networkID].S1.Raffle);
+    s1Sale = S1Sale.at(wallet, gu[networkID].S1.Sale);
+    s1Referral = Referral.at(wallet, gu[networkID].S1.Referral);
+    epicPack = EpicPack.at(wallet, gu[networkID].S1.EpicPack);
+    rarePack = RarePack.at(wallet, gu[networkID].S1.RarePack);
+    shinyPack = ShinyPack.at(wallet, gu[networkID].S1.ShinyPack);
 
-    const cc = CreditCardEscrow.at(wallet, platformAddressBook.creditCardAddress);
-
-    console.log(cc.address);
-    // shouldn't change anything, but tests deployment
-    await cc.setDestructionDelay(await cc.destructionDelay());
-
-    oracle = ETHUSDMockOracle.at(wallet, platformAddressBook.ethUSDMockOracleAddress);
+    oracle = ETHUSDMockOracle.at(wallet, platform[networkID].Pay.Oracle);
 
     legendaryPack = LegendaryPack.at(
       wallet,
-      godUnchainedAddressBook.seasonOne.legendaryPackAddress,
+      gu[networkID].S1.LegendaryPack
     );
 
     epicCost = (await epicPack.price()).toNumber();
@@ -117,28 +94,28 @@ describe('02_season_one', () => {
       epicPayment = await returnPaymentObject(
         defaultQuantity,
         epicPack.address,
-        GU_S1_EPIC_PACK_SKU,
+        deploymentConstants.S1.Pack.Epic.SKU,
         epicCost,
       );
 
       rarePayment = await returnPaymentObject(
         defaultQuantity,
         rarePack.address,
-        GU_S1_RARE_PACK_SKU,
+        deploymentConstants.S1.Pack.Rare.SKU,
         rareCost,
       );
 
       legendaryPayment = await returnPaymentObject(
         defaultQuantity,
         legendaryPack.address,
-        GU_S1_LEGENDARY_PACK_SKU,
+        deploymentConstants.S1.Pack.Legendary.SKU,
         legendaryCost,
       );
 
       shinyPayment = await returnPaymentObject(
         defaultQuantity,
         shinyPack.address,
-        GU_S1_SHINY_PACK_SKU,
+        deploymentConstants.S1.Pack.Shiny.SKU,
         shinyCost,
       );
     });

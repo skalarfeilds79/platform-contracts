@@ -3,7 +3,7 @@ import { Blockchain, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { parseLogs } from '@imtbl/utils';
 import { ethers } from 'ethers';
 import 'jest';
-import { GU_S1_SHINY_PACK_PRICE, GU_S1_SHINY_PACK_SKU } from '../../../../src/constants';
+import { constants } from '../../../../src/constants';
 import { Cards, ShinyPack } from '../../../../src/contracts';
 import { deployShinyPack, deployStandards, StandardContracts } from '../utils';
 import { epics, legendaries, rares } from './protos';
@@ -55,14 +55,14 @@ describe('Shiny Pack', () => {
 
     async function purchasePacks(quantity: number) {
       const order = {
-        quantity, sku: GU_S1_SHINY_PACK_SKU,
+        quantity, sku: constants.Development.S1.Pack.Shiny.SKU,
         assetRecipient: owner.address,
         changeRecipient: owner.address,
-        totalPrice: GU_S1_SHINY_PACK_PRICE * quantity,
+        totalPrice: constants.Development.S1.Pack.Shiny.Price * quantity,
         alreadyPaid: 0,
         currency: Currency.USDCents
       };
-      const params = { escrowFor: 0, nonce: 0, value: GU_S1_SHINY_PACK_PRICE * quantity };
+      const params = { escrowFor: 0, nonce: 0, value: constants.Development.S1.Pack.Shiny.Price * quantity };
       const payment = await getSignedPayment(
          owner, shared.processor.address, shiny.address, order, params
        );
@@ -99,14 +99,14 @@ describe('Shiny Pack', () => {
     async function purchase(quantity: number, escrowFor: number) {
       const order = {
         quantity,
-        sku: GU_S1_SHINY_PACK_SKU,
+        sku: constants.Development.S1.Pack.Shiny.SKU,
         assetRecipient: owner.address,
         changeRecipient: owner.address,
-        totalPrice: GU_S1_SHINY_PACK_PRICE * quantity,
+        totalPrice: constants.Development.S1.Pack.Shiny.Price * quantity,
         alreadyPaid: 0,
         currency: Currency.USDCents
       };
-      const params = { escrowFor, nonce: 0, value: GU_S1_SHINY_PACK_PRICE * quantity };
+      const params = { escrowFor, nonce: 0, value: constants.Development.S1.Pack.Shiny.Price * quantity };
       const payment = await getSignedPayment(
         owner,
         shared.processor.address,

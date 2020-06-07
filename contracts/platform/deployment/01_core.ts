@@ -8,13 +8,15 @@ import {
   ETHUSDMockOracle,
   MakerOracle,
 } from '../src/contracts';
-import { constants } from '../src/constants';
+import { constants, PlatformEnvironmentConstants } from '../src/constants';
+import { addresses } from '../src/addresses';
 
 export const IM_PROCESSOR_LIMIT = 100000000;
 
 export class CoreStage implements DeploymentStage {
   private wallet: Wallet;
   private networkId: number;
+  private params: PlatformEnvironmentConstants
 
   constructor(params: DeploymentParams) {
     this.wallet = new ethers.Wallet(
@@ -22,6 +24,7 @@ export class CoreStage implements DeploymentStage {
       new ethers.providers.JsonRpcProvider(params.rpc_url),
     );
     this.networkId = params.network_id;
+    this.params = params[this.networkId];
   }
 
   async deploy(
@@ -31,7 +34,9 @@ export class CoreStage implements DeploymentStage {
   ) {
     await this.wallet.getTransactionCount();
 
-    const firstSigner = await findInstance('IM_PROCESSOR_FIRST_SIGNER');
+    const book = addresses[this.networkId];
+
+    const firstSigner = book.Pay.Signer;
     const revenueWallet = await findInstance('PROCESSOR_REVENUE_WALLET');
 
     const medianizer = await findInstance('MEDIANIZER_ADDRESS');
@@ -52,17 +57,13 @@ export class CoreStage implements DeploymentStage {
       throw '*** Must set IM_PROCESSOR_FIRST_SIGNER in order to deploy ***';
     }
 
-    const ESCROW_DESTROYER = await findInstance('IM_ESCROW_DESTROYER');
-    const DESTRUCTION_DELAY = parseInt(await findInstance('IM_ESCROW_DESTRUCTION_DELAY'));
-    const ESCROW_CUSTODIAN = await findInstance('IM_ESCROW_CUSTODIAN');
     const ESCROW_RELEASE_DELAY = parseInt(await findInstance('IM_ESCROW_RELEASE_DELAY'));
 
-    if (ESCROW_DESTROYER.length === 0 || ESCROW_CUSTODIAN.length === 0) {
+    if (book.Escrow.Destroyer.length === 0 || book.Escrow.Custodian.length === 0) {
       throw '*** Must have IM_ESCROW dependency values set ***';
     }
 
     const beacon = (await findInstance('IM_Beacon')) || (await this.deployBeacon());
-    console.log('beacon', beacon);
     onDeployment('IM_Beacon', beacon, false);
 
     const processor =
@@ -76,10 +77,10 @@ export class CoreStage implements DeploymentStage {
       (await findInstance('IM_Escrow_CreditCard')) ||
       (await this.deployCreditCardEscrow(
         escrow,
-        ESCROW_DESTROYER,
-        DESTRUCTION_DELAY,
-        ESCROW_CUSTODIAN,
-        ESCROW_RELEASE_DELAY,
+        book.Escrow.Destroyer,
+        this.params.Escrow.DestructionDelay,
+        book.Escrow.Custodian,
+        this.params.Escrow.ReleaseDelay,
       ));
     onDeployment('IM_Escrow_CreditCard', creditCardEscrow, false);
 
@@ -101,7 +102,7 @@ export class CoreStage implements DeploymentStage {
 
   async deployEscrow(): Promise<string> {
     console.log('** Deploying Escrow **');
-    const escrow = await Escrow.awaitDeployment(this.wallet, IM_ESCROW_CAPACITY);
+    const escrow = await Escrow.awaitDeployment(this.wallet, this.params.Escrow.Capacity);
     return escrow.address;
   }
 

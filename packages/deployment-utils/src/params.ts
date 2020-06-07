@@ -6,9 +6,9 @@ export enum DeploymentNetwork {
 }
 
 export enum DeploymentEnvironment {
-    Production,
-    Staging,
-    Development
+    Production = 'production',
+    Staging = 'staging',
+    Development = 'development'
 }
 
 export interface DeploymentParams {
@@ -16,5 +16,4 @@ export interface DeploymentParams {
     rpc_url: string;
     network_id: DeploymentNetwork;
     environment: DeploymentEnvironment;
-    network_key: string;
 }

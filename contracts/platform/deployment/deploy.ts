@@ -7,7 +7,7 @@ const config = require('dotenv').config({ path: '../../.env' }).parsed;
 export const params: DeploymentParams = {
   private_key: process.env.PRIVATE_KEY,
   network_id: parseInt(process.env.DEPLOYMENT_NETWORK_ID),
-  environment: process.env.DEPLOYMENT_ENVIRONMENT,
+  environment: process.env.DEPLOYMENT_ENVIRONMENT as DeploymentEnvironment,
   rpc_url: process.env.RPC_ENDPOINT
 };
 

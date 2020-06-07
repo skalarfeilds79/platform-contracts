@@ -2,7 +2,7 @@ import { Currency, getETHPayment, getSignedPayment, Order, CreditCardEscrow } fr
 import { Blockchain, Ganache, generatedWallets, expectRevert } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
 import 'jest';
-import { GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_SKU } from '../../../src/constants';
+import { constants } from '../../../src/constants';
 import { RarePack, S1Sale } from '../../../src/contracts';
 import { deployRarePack, deployStandards, StandardContracts } from './utils';
 
@@ -44,7 +44,7 @@ describe('Sale', () => {
           const cost = prices[i];
           const order: Order = {
             quantity,
-            sku: GU_S1_RARE_PACK_SKU,
+            sku: constants.Development.S1.Pack.Rare.SKU,
             assetRecipient: owner.address,
             changeRecipient: sale.address,
             totalPrice: cost * quantity,
@@ -63,11 +63,11 @@ describe('Sale', () => {
     }
 
     it('should purchase one item', async () => {
-      await purchasePacks([rare.address], [1], [GU_S1_RARE_PACK_PRICE]);
+      await purchasePacks([rare.address], [1], [constants.Development.S1.Pack.Rare.Price]);
     });
 
     it('should purchase two items', async () => {
-      await purchasePacks([rare.address, rare.address], [1, 1], [GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_PRICE]);
+      await purchasePacks([rare.address, rare.address], [1, 1], [constants.Development.S1.Pack.Rare.Price, constants.Development.S1.Pack.Rare.Price]);
     });
   });
 
@@ -92,7 +92,7 @@ describe('Sale', () => {
           const cost = prices[i];
           const order: Order = {
             quantity,
-            sku: GU_S1_RARE_PACK_SKU,
+            sku: constants.Development.S1.Pack.Rare.SKU,
             assetRecipient: address,
             changeRecipient: sale.address,
             totalPrice: cost * quantity,
@@ -111,15 +111,15 @@ describe('Sale', () => {
     }
 
     it('should purchase one item', async () => {
-      await purchasePacks(owner.address, [rare.address], [1], [GU_S1_RARE_PACK_PRICE]);
+      await purchasePacks(owner.address, [rare.address], [1], [constants.Development.S1.Pack.Rare.Price]);
     });
 
     it('should purchase two items', async () => {
-      await purchasePacks(owner.address, [rare.address, rare.address], [1, 1], [GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_PRICE]);
+      await purchasePacks(owner.address, [rare.address, rare.address], [1, 1], [constants.Development.S1.Pack.Rare.Price, constants.Development.S1.Pack.Rare.Price]);
     });
 
     it('should purchase two items', async () => {
-      await purchasePacks(ethers.constants.AddressZero, [rare.address, rare.address], [1, 1], [GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_PRICE]);
+      await purchasePacks(ethers.constants.AddressZero, [rare.address, rare.address], [1, 1], [constants.Development.S1.Pack.Rare.Price, constants.Development.S1.Pack.Rare.Price]);
     });
   });
 
@@ -144,7 +144,7 @@ describe('Sale', () => {
           const cost = prices[i];
           const order: Order = {
             quantity,
-            sku: GU_S1_RARE_PACK_SKU,
+            sku: constants.Development.S1.Pack.Rare.SKU,
             assetRecipient: user,
             changeRecipient: sale.address,
             totalPrice: cost * quantity,
@@ -181,7 +181,7 @@ describe('Sale', () => {
       const maxMint = (await rare.maxMint()).toNumber();
       const qty = 2 * maxMint;
       const user = ethers.constants.AddressZero;
-      await purchasePacks(user, 100, [rare.address], [qty], [GU_S1_RARE_PACK_PRICE]);
+      await purchasePacks(user, 100, [rare.address], [qty], [constants.Development.S1.Pack.Rare.Price]);
 
       const mintsRequired = qty / maxMint;
       for (let i = 0; i < mintsRequired; i++) {
@@ -260,11 +260,11 @@ describe('Sale', () => {
     }
 
     it('should purchase one item', async () => {
-      await purchasePacks([rare.address], [1], [GU_S1_RARE_PACK_PRICE]);
+      await purchasePacks([rare.address], [1], [constants.Development.S1.Pack.Rare.Price]);
     });
 
     it('should purchase two items', async () => {
-      await purchasePacks([rare.address, rare.address], [1, 1], [GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_PRICE]);
+      await purchasePacks([rare.address, rare.address], [1, 1], [constants.Development.S1.Pack.Rare.Price, constants.Development.S1.Pack.Rare.Price]);
     });
   });
 
@@ -298,11 +298,11 @@ describe('Sale', () => {
     }
 
     it('should purchase one item', async () => {
-      await purchasePacks([rare.address], [1], [GU_S1_RARE_PACK_PRICE]);
+      await purchasePacks([rare.address], [1], [constants.Development.S1.Pack.Rare.Price]);
     });
 
     it('should purchase two items', async () => {
-      await purchasePacks([rare.address, rare.address], [1, 1], [GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_PRICE]);
+      await purchasePacks([rare.address, rare.address], [1, 1], [constants.Development.S1.Pack.Rare.Price, constants.Development.S1.Pack.Rare.Price]);
     });
   });
 });

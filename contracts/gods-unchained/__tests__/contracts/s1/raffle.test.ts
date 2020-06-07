@@ -2,7 +2,7 @@ import { Currency, getSignedPayment } from '@imtbl/platform';
 import { Blockchain, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
 import 'jest';
-import { GU_S1_RAFFLE_TOKEN_NAME, GU_S1_RAFFLE_TOKEN_SYMBOL, GU_S1_RARE_CHEST_PRICE, GU_S1_RARE_CHEST_SKU, GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_SKU } from '../../../src/constants';
+import { constants } from '../../../src/constants';
 import { Chest, Raffle, RarePack } from '../../../src/contracts';
 import { deployRareChest, deployRarePack, deployStandards, StandardContracts } from './utils';
 
@@ -25,7 +25,7 @@ describe('Raffle', () => {
 
   describe('deployment', () => {
     beforeEach(async () => {
-      await Raffle.deploy(owner, GU_S1_RAFFLE_TOKEN_NAME, GU_S1_RAFFLE_TOKEN_SYMBOL);
+      await Raffle.deploy(owner, constants.Development.S1.Raffle.TokenName, constants.Development.S1.Raffle.TokenSymbol);
     });
 
     it('should deploy raffle contract', async () => {});
@@ -47,14 +47,14 @@ describe('Raffle', () => {
     async function purchasePacks(quantity: number) {
       const order = {
         quantity,
-        sku: GU_S1_RARE_PACK_SKU,
+        sku: constants.Development.S1.Pack.Rare.SKU,
         assetRecipient: owner.address,
         changeRecipient: owner.address,
-        totalPrice: GU_S1_RARE_PACK_PRICE * quantity,
+        totalPrice: constants.Development.S1.Pack.Rare.Price * quantity,
         alreadyPaid: 0,
         currency: Currency.USDCents,
       };
-      const params = { escrowFor: 0, nonce: 0, value: GU_S1_RARE_PACK_PRICE * quantity };
+      const params = { escrowFor: 0, nonce: 0, value: constants.Development.S1.Pack.Rare.Price * quantity };
       const payment = await getSignedPayment(owner, shared.processor.address, rare.address, order, params);
       await rare.purchase(quantity, payment, ethers.constants.AddressZero);
     }
@@ -93,14 +93,14 @@ describe('Raffle', () => {
     async function purchase(quantity: number, escrowFor: number) {
       const order = {
         quantity,
-        sku: GU_S1_RARE_PACK_SKU,
+        sku: constants.Development.S1.Pack.Rare.SKU,
         assetRecipient: owner.address,
         changeRecipient: owner.address,
-        totalPrice: GU_S1_RARE_PACK_PRICE * quantity,
+        totalPrice: constants.Development.S1.Pack.Rare.Price * quantity,
         currency: Currency.USDCents,
         alreadyPaid: 0
       };
-      const params = { escrowFor, nonce: 0, value: GU_S1_RARE_PACK_PRICE * quantity };
+      const params = { escrowFor, nonce: 0, value: constants.Development.S1.Pack.Rare.Price * quantity };
       const payment = await getSignedPayment(owner, shared.processor.address, rare.address, order, params);
       await rare.purchase(quantity, payment, ethers.constants.AddressZero);
     }
@@ -172,10 +172,10 @@ describe('Raffle', () => {
       }
       const balance = await chest.balanceOf(owner.address);
       expect(balance.toNumber()).toBe(0);
-      const value = GU_S1_RARE_CHEST_PRICE * quantity;
+      const value = constants.Development.S1.Chest.Rare.Price * quantity;
       const order = {
         quantity,
-        sku: GU_S1_RARE_CHEST_SKU,
+        sku: constants.Development.S1.Chest.Rare.SKU,
         assetRecipient: owner.address,
         changeRecipient: owner.address,
         currency: Currency.USDCents,

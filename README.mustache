@@ -51,17 +51,6 @@ We get it, you're just here to find the contract addresses. Luckily for you, the
 | `Forwarder` | [{{Forwarder}}](https://etherscan.io/address/{{Forwarder}}) |
 {{/1-production.addresses}}
 
-### Dependencies  (Main Net)
-
-| Contract Name | Address |
-| ------------- | ------- |
-{{#1-production.dependencies}}
-| `Wrapped Ether` | [{{WETH}}](https://etherscan.io/address/{{WETH}}) |
-| `0x Exchange` | [{{ZERO_EX_EXCHANGE}}](https://etherscan.io/address/{{ZERO_EX_EXCHANGE}}) |
-| `0x ERC20 Proxy` | [{{ZERO_EX_ERC20_PROXY}}](https://etherscan.io/address/{{ZERO_EX_ERC20_PROXY}}) |
-| `0x ERC721 Proxy` | [{{ZERO_EX_ERC721_PROXY}}](https://etherscan.io/address/{{ZERO_EX_ERC721_PROXY}}) |
-{{/1-production.dependencies}}
-
 ### Contracts (Ropsten)
 
 | Contract Name | Address |
@@ -73,38 +62,9 @@ We get it, you're just here to find the contract addresses. Luckily for you, the
 | `Fusing` | [{{Fusing}}](https://ropsten.etherscan.io/address/{{Fusing}}) |
 {{/3-staging.addresses}}
 
-### Dependencies (Ropsten)
-
-| Contract Name | Address |
-| ------------- | ------- |
-{{#3-staging.dependencies}}
-| `Wrapped Ether` | [{{WETH}}](https://ropsten.etherscan.io/address/{{WETH}}) |
-| `0x Exchange` | [{{ZERO_EX_EXCHANGE}}](https://ropsten.etherscan.io/address/{{ZERO_EX_EXCHANGE}}) |
-| `0x ERC20 Proxy`| [{{ZERO_EX_ERC20_PROXY}}](https://ropsten.etherscan.io/address/{{ZERO_EX_ERC20_PROXY}}) |
-| `0x ERC721 Proxy` | [{{ZERO_EX_ERC721_PROXY}}](https://ropsten.etherscan.io/address/{{ZERO_EX_ERC721_PROXY}}) |
-{{/3-staging.dependencies}}
-
-
 ### Repo Guide
 
 While we've done our best to simplify the repo setup as much as possible, there's some steps we require.
-
-##### Step 0:
-
-Ensure you're using Node `v11.15.0`. Unfortunately a few low-level libraries such as scrypt and node-gyp fail to compile on Node 12.
-For this reason we recommend using v11.15.0 to ensure everything can install correctly.
-
-```
-curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.32.1/install.sh | bash
-nvm install v11.15.0
-nvm use v11.15.0
-```
-
-If you use ZSH:
-```
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
-```
 
 ##### Step 1:
 

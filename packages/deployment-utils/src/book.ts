@@ -72,37 +72,6 @@ export class AddressBook {
 
     private async save(book: any) {
         await fs.outputFile(this.bookPath(), JSON.stringify(book, null, 2));
-        await this.createIndexFile();
-    }
-
-    private async createIndexFile() {
-        // find all networks present in this book
-        const files = await fs.readDir(this.bookPath());
-        const jsons = files.filter((name: string) => name.includes('.json'));
-        if (!jsons || jsons.length == 0) {
-            return;
-        }
-        const networks = jsons.map((name: string) => name.slice(0, name.indexOf('.')));
-
-        // convert those networks into importable form
-        const imports = networks.map((network: string) => {
-            return `import n${network} = require('./${network}.json'); `;
-        });
-        const declarations = networks.map((network: string) => {
-            return `${DeploymentNetwork[network]}: n${network}`;
-        });
-
-        // create a typescript file which will be the index for this address book
-        const template = `
-
-            ${imports.join('\n')}
-
-            export const addresses = {
-                ${declarations.join(',\n')}
-            };
-        `
-        const location = path.join(this.root, `index.ts`);
-        await fs.outputFile(location, template);
     }
 
 }

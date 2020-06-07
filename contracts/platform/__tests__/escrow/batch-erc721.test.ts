@@ -29,7 +29,7 @@ describe('BatchERC271Escrow', () => {
 
   describe('#constructor', () => {
     it('should be able to deploy the escrow contract', async () => {
-      const escrow = await Escrow.deploy(user, constants.Development.IM_ESCROW_CAPACITY);
+      const escrow = await Escrow.deploy(user, constants.Development.Escrow.Capacity);
     });
   });
 
@@ -40,7 +40,7 @@ describe('BatchERC271Escrow', () => {
     let direct: TestDirectEscrow;
 
     beforeEach(async () => {
-      escrow = await Escrow.deploy(user, constants.Development.IM_ESCROW_CAPACITY);
+      escrow = await Escrow.deploy(user, constants.Development.Escrow.Capacity);
       erc721 = await TestERC721Token.deploy(user);
       erc20 = await TestERC20Token.deploy(user);
       direct = await TestDirectEscrow.deploy(user, escrow.address, erc20.address, erc721.address);
@@ -210,7 +210,7 @@ describe('BatchERC271Escrow', () => {
     let direct: TestDirectEscrow;
 
     beforeEach(async () => {
-      escrow = await Escrow.deploy(user, constants.Development.IM_ESCROW_CAPACITY);
+      escrow = await Escrow.deploy(user, constants.Development.Escrow.Capacity);
       erc721 = await TestERC721Token.deploy(user);
       direct = await TestDirectEscrow.deploy(user, escrow.address, ethers.constants.AddressZero, erc721.address);
     });
@@ -264,7 +264,7 @@ describe('BatchERC271Escrow', () => {
     let pack: TestBatchPack;
 
     beforeEach(async () => {
-      escrow = await Escrow.deploy(user, constants.Development.IM_ESCROW_CAPACITY);
+      escrow = await Escrow.deploy(user, constants.Development.Escrow.Capacity);
       erc721 = await TestERC721Token.deploy(user);
       malicious = await MaliciousBatchPack.deploy(user, escrow.address, erc721.address);
       pack = await TestBatchPack.deploy(user, escrow.address, erc721.address);

@@ -5,7 +5,7 @@
   "typings": "dist/index.d.ts",
   "license": "MIT",
   "scripts": {
-    "start": "node -r dotenv/config dist/index.js dotenv_config_path=../../.env",
+    "start": "node -r dotenv/config index.js dotenv_config_path=../../.env",
     "clean": "rm -rf dist",
     "build": "tsc",
     "watch": "tsc-watch --preserveWatchOutput --onSuccess \"node -r dotenv/config --inspect=127.0.0.1:${NODE_INSPECT_PORT} dist/index.js dotenv_config_path=../../.env\"",
@@ -14,12 +14,12 @@
     "quick-fix": "npm version patch && npm publish"
   },
   "dependencies": {
+    "dotenv": "8.2.0",
     "express": "^4.17.1"
   },
   "devDependencies": {
     "@types/node": "^12.12.3",
     "@types/express": "^4.17.6",
-    "dotenv": "8.2.0",
     "tsc-watch": "^4.2.3",
     "typescript": "^3.7.5"
   },

@@ -3,10 +3,10 @@ name: Build
 on:
   push:
     branches:
-      - cicd
+      - develop
   pull_request:
     branches:
-      - cicd
+      - develop
 
 jobs:
   build:
@@ -32,10 +32,10 @@ jobs:
       - name: Docker test
         run: scripts/integration-test.sh
       - name: Docker push
-        if: ${{ github.ref == 'refs/heads/cicd' }}
+        if: ${{ github.ref == 'refs/heads/develop' }}
         run: scripts/build-tools.sh docker-push
       - name: Update Dependent Projects
-        if: ${{ github.ref == 'refs/heads/cicd' }}
+        if: ${{ github.ref == 'refs/heads/develop' }}
         run: scripts/build-tools.sh update-dependent-projects ${{ github.repository }} ${{ secrets.PAT }} ${{ github.sha }}
       - name: Logout of Amazon ECR
         if: always()

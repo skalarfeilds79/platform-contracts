@@ -5,10 +5,10 @@ pragma experimental ABIEncoderV2;
 
 import "../Escrow.sol";
 import "../IEscrowCallbackReceiver.sol";
-import "@openzeppelin/contracts/ownership/Ownable.sol";
+import "../../admin/Pausable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 
-contract CreditCardEscrow is Ownable, IEscrowCallbackReceiver {
+contract CreditCardEscrow is Pausable, IEscrowCallbackReceiver {
 
     using SafeMath for uint256;
 
@@ -368,7 +368,7 @@ contract CreditCardEscrow is Ownable, IEscrowCallbackReceiver {
         bytes memory _callbackData,
         uint256 _paymentID,
         uint256 _duration
-    ) public returns (uint) {
+    ) public whenUnpaused returns (uint) {
 
         require(
             _duration > 0,

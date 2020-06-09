@@ -358,7 +358,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
             recipient: _recipient,
             escrowFor: 0,
             paymentID: 0,
-            ticketQuantity: paused() ? 0 : _quantity.mul(6)
+            ticketQuantity: paused ? 0 : _quantity.mul(6)
         });
 
         commitments[commitmentID] = commitment;

@@ -5,7 +5,7 @@
   "typings": "dist/index.d.ts",
   "license": "MIT",
   "scripts": {
-    "start": "node -r dotenv/config index.js dotenv_config_path=../../.env",
+    "start": "node -r dotenv/config dist/index.js dotenv_config_path=../../.env",
     "clean": "rm -rf dist",
     "build": "tsc",
     "watch": "tsc-watch --preserveWatchOutput --onSuccess \"node -r dotenv/config --inspect=127.0.0.1:${NODE_INSPECT_PORT} dist/index.js dotenv_config_path=../../.env\"",

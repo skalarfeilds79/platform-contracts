@@ -19,6 +19,7 @@
         "deploy:all": "yarn deploy:platform && lerna bootstrap && yarn deploy:gods-unchained",
         "setup": "lerna bootstrap && yarn build",
         "start": "yarn --cwd packages/api start",
+        "start-watch": "yarn --cwd packages/api start-watch",
         "watch": "lerna run watch --parallel",
         "build:all": "yarn build",
         "build": "lerna run build --parallel",

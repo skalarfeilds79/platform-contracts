@@ -1,11 +1,12 @@
 pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
+import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@imtbl/platform/contracts/pay/PurchaseProcessor.sol";
 import "./IS1Vendor.sol";
 
-contract S1Sale {
+contract S1Sale is Ownable {
 
     using SafeMath for uint256;
 
@@ -13,6 +14,16 @@ contract S1Sale {
         uint256 quantity;
         IS1Vendor vendor;
         PurchaseProcessor.PaymentParams payment;
+    }
+
+    // Whether this contract can be used as a vendor
+    mapping(address => bool) public isVendorApproved;
+
+    function setVendorApproval(bool _approved, address[] calldata _vendors) external onlyOwner {
+        require(_vendors.length > 0, "S1Sale: must provide some vendors");
+        for (uint i = 0; i < _vendors.length; i++) {
+            isVendorApproved[_vendors[i]] = _approved;
+        }
     }
 
     /** @dev Purchase assets from a number of products
@@ -40,6 +51,7 @@ contract S1Sale {
     ) public payable  {
         for (uint i = 0; i < _requests.length; i++) {
             ProductPurchaseRequest memory p = _requests[i];
+            require(isVendorApproved[address(p.vendor)], "S1Sale: unapproved vendor");
             p.vendor.purchaseFor.value(address(this).balance)(
                 _recipient,
                 p.quantity,

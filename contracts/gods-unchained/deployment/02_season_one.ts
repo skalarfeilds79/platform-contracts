@@ -176,6 +176,12 @@ export class SeasonOneStage implements DeploymentStage {
       { address: rareChest, sku: GU_S1_RARE_CHEST_SKU },
       { address: legendaryChest, sku: GU_S1_LEGENDARY_CHEST_SKU }
     ]);
+
+    const sale = S1Sale.at(this.wallet, s1sale);
+    await sale.setVendorApproval(true, [
+      rarePack, epicPack, legendaryPack, shinyPack,
+      rareChest, legendaryChest
+    ]);
   }
 
   async deployRaffle(): Promise<string> {

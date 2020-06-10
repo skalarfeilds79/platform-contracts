@@ -25,8 +25,7 @@ contract RarityProvider {
         Common,
         Rare,
         Epic,
-        Legendary,
-        Mythic
+        Legendary
     }
 
     struct Components {

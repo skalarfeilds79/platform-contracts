@@ -47,7 +47,17 @@ export default {
   INTENDED_OWNER: {
     1: '0xed824e513aff2545af0b6bb11ec2c503560e7672',
     3: '',
-    50: '',
+    50: '0x5409ED021D9299bf6814279A6A1411A7e866A631',
+  },
+  IM_PAUSER: {
+    1: '0xed824e513aff2545af0b6bb11ec2c503560e7672',
+    3: '',
+    50: '0x5409ED021D9299bf6814279A6A1411A7e866A631',
+  },
+  IM_FREEZER: {
+    1: '0xed824e513aff2545af0b6bb11ec2c503560e7672',
+    3: '',
+    50: '0x5409ED021D9299bf6814279A6A1411A7e866A631',
   },
   IM_ESCROW_DESTROYER: {
     1: '',

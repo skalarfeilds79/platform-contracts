@@ -6,11 +6,12 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 
 import "../admin/Pausable.sol";
+import "../admin/Freezable.sol";
 import "../token/IBatchTransfer.sol";
 import "../token/IListTransfer.sol";
 import "./IEscrowCallbackReceiver.sol";
 
-contract Escrow is Pausable {
+contract Escrow is Pausable, Freezable {
 
     struct Vault {
         address player;
@@ -67,7 +68,7 @@ contract Escrow is Pausable {
      *
      * @param _vault the details of the new escrow vault
      */
-    function escrow(Vault memory _vault) public whenUnpaused returns (uint256) {
+    function escrow(Vault memory _vault) public whenUnpaused whenUnfrozen returns (uint256) {
 
         require(
             !escrowMutexLocked,
@@ -163,7 +164,7 @@ contract Escrow is Pausable {
      *
      * @param _id the id of the escrow vault
      */
-    function destroy(uint256 _id) external {
+    function destroy(uint256 _id) external whenUnfrozen {
         Vault memory vault = vaults[_id];
 
         require(
@@ -181,7 +182,7 @@ contract Escrow is Pausable {
      * @param _id the id of the escrow vault
      * @param _to the address to which assets should be released
      */
-    function release(uint256 _id, address _to) external {
+    function release(uint256 _id, address _to) external whenUnfrozen {
         Vault memory vault = vaults[_id];
 
         require(

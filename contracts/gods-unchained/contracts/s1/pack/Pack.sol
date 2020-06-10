@@ -2,6 +2,7 @@ pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
 import "@imtbl/platform/contracts/randomness/Beacon.sol";
+import "@imtbl/platform/contracts/admin/Freezable.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "./RarityProvider.sol";
 import "./IPack.sol";
@@ -9,7 +10,7 @@ import "../../ICards.sol";
 import "../raffle/IRaffle.sol";
 import "../S1Vendor.sol";
 
-contract Pack is IPack, S1Vendor, RarityProvider {
+contract Pack is IPack, S1Vendor, RarityProvider, Freezable {
 
     // Emitted when the cards from a commitment are actually minted
     event PackCardsMinted(
@@ -109,7 +110,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
      *
      * @param _commitmentID the ID of the commitment
      */
-    function mint(uint256 _commitmentID) external {
+    function mint(uint256 _commitmentID) external whenUnfrozen {
         Commitment memory commitment = commitments[_commitmentID];
 
         require(
@@ -342,7 +343,7 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         }
     }
 
-    function openChests(address _recipient, uint256 _quantity) external {
+    function openChests(address _recipient, uint256 _quantity) external whenUnfrozen {
         require(
             msg.sender == chest,
             "S1Pack: must be the chest contract"

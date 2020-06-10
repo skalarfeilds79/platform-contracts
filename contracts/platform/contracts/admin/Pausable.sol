@@ -5,8 +5,18 @@ import "@openzeppelin/contracts/ownership/Ownable.sol";
 contract Pausable is Ownable {
 
     bool public paused;
+    address public pauser;
 
-    function setPaused(bool _paused) external onlyOwner {
+    constructor() public {
+        pauser = msg.sender;
+    }
+
+    function setPauser(address _pauser) external onlyOwner {
+        pauser = _pauser;
+    }
+
+    function setPaused(bool _paused) external {
+        require(msg.sender == pauser, "Pausable: must be pauser");
         paused = _paused;
     }
 

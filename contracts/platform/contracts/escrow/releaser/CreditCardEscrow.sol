@@ -6,9 +6,10 @@ pragma experimental ABIEncoderV2;
 import "../Escrow.sol";
 import "../IEscrowCallbackReceiver.sol";
 import "../../admin/Pausable.sol";
+import "../../admin/Freezable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 
-contract CreditCardEscrow is Pausable, IEscrowCallbackReceiver {
+contract CreditCardEscrow is Pausable, Freezable, IEscrowCallbackReceiver {
 
     using SafeMath for uint256;
 
@@ -155,7 +156,7 @@ contract CreditCardEscrow is Pausable, IEscrowCallbackReceiver {
      *
      * @param _id The ID of the escrow account to be released
      */
-    function release(uint _id) external {
+    function release(uint _id) external whenUnfrozen {
 
         Lock memory lock = locks[_id];
         // do first to avoid any re-entrancy risk
@@ -246,7 +247,7 @@ contract CreditCardEscrow is Pausable, IEscrowCallbackReceiver {
      *
      * @param _id The ID of the escrow account to be unmarked
      */
-    function cancelRelease(uint _id) external onlyCustodian {
+    function cancelRelease(uint _id) external onlyCustodian whenUnfrozen {
 
         Lock storage lock = locks[_id];
 
@@ -368,7 +369,7 @@ contract CreditCardEscrow is Pausable, IEscrowCallbackReceiver {
         bytes memory _callbackData,
         uint256 _paymentID,
         uint256 _duration
-    ) public whenUnpaused returns (uint) {
+    ) public whenUnpaused whenUnfrozen returns (uint) {
 
         require(
             _duration > 0,

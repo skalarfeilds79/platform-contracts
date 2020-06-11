@@ -187,6 +187,12 @@ export class SeasonOneStage implements DeploymentStage {
     await setFreezer(
       this.wallet, freezer, rarePack, epicPack, legendaryPack, shinyPack
     );
+
+    const sale = S1Sale.at(this.wallet, s1sale);
+    await sale.setVendorApproval(true, [
+      rarePack, epicPack, legendaryPack, shinyPack,
+      rareChest, legendaryChest
+    ]);
   }
 
   async deployRaffle(): Promise<string> {

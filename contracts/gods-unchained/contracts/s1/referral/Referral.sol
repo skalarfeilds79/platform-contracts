@@ -54,16 +54,11 @@ contract Referral {
     }
 
     function _moreThanHalfUpDiv(uint256 a, uint256 b) internal pure returns (uint256) {
-        return (a % b > _halfDenom(b)) ? a.div(b).add(1) : a.div(b);
+        return (a % b > 50) ? a.div(b).add(1) : a.div(b);
     }
 
     function _halfUpDiv(uint256 a, uint256 b) internal pure returns (uint256) {
-        return (a % b >= _halfDenom(b)) ? a.div(b).add(1) : a.div(b);
-    }
-
-    function _halfDenom(uint256 b) internal pure returns (uint256) {
-        require(b > 0, "div by 0");
-        return (b % 2 == 0) ? b.div(2) : (b.div(2)).add(1);
+        return (a % b >= 50) ? a.div(b).add(1) : a.div(b);
     }
 
 }

@@ -7,7 +7,6 @@ import { GU_S1_EPIC_PACK_PRICE, GU_S1_EPIC_PACK_SKU } from '../../../../deployme
 import { EpicPack } from '../../../../src/contracts';
 import { deployEpicPack, deployStandards, StandardContracts } from '../utils';
 
-
 jest.setTimeout(600000);
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);

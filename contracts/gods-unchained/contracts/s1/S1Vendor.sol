@@ -113,7 +113,8 @@ contract S1Vendor is IVendor, Pausable {
         if (address(this).balance > 0) {
             // send remaining funds to original contract/user
             // solium-disable-next-line
-            msg.sender.call.value(address(this).balance)("");
+            (bool success, ) = msg.sender.call.value(address(this).balance)("");
+            require(success, "S1Vendor: change provision must succeed");
         }
 
         return receipt;

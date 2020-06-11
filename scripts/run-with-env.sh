@@ -8,4 +8,4 @@ if [ ! -f .env ]; then
   env > .env
 fi
 
-${@:2}
+${@:1}

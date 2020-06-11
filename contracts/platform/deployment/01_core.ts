@@ -1,5 +1,11 @@
 import { Wallet, ethers } from 'ethers';
-import { setPauser, setFreezer, DeploymentEnvironment, DeploymentStage, DeploymentParams } from '@imtbl/deployment-utils';
+import {
+  setPauser,
+  setFreezer,
+  DeploymentEnvironment,
+  DeploymentStage,
+  DeploymentParams,
+} from '@imtbl/deployment-utils';
 import {
   Escrow,
   CreditCardEscrow,
@@ -31,6 +37,8 @@ export class CoreStage implements DeploymentStage {
     onDeployment: (name: string, address: string, dependency: boolean) => void,
     transferOwnership: (address: string) => void,
   ) {
+    // EXPERIMENT: Test to see if grabbing getTransactionCount will fix nonce issue
+    await this.wallet.getTransactionCount();
 
     const firstSigner = await findInstance('IM_PROCESSOR_FIRST_SIGNER');
     const revenueWallet = await findInstance('PROCESSOR_REVENUE_WALLET');
@@ -91,14 +99,10 @@ export class CoreStage implements DeploymentStage {
     console.log(this.wallet.address);
 
     const pauser = await findInstance('IM_PAUSER');
-    await setPauser(
-      this.wallet, pauser, processor, escrow, creditCardEscrow
-    );
-    
+    await setPauser(this.wallet, pauser, processor, escrow, creditCardEscrow);
+
     const freezer = await findInstance('IM_FREEZER');
-    await setFreezer(
-      this.wallet, freezer, escrow, creditCardEscrow
-    );
+    await setFreezer(this.wallet, freezer, escrow, creditCardEscrow);
   }
 
   async deployBeacon(): Promise<string> {

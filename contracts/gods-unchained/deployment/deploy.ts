@@ -42,7 +42,7 @@ async function start() {
   }
 
   const book = new AddressBook(
-    './src/addresses/addresses.json', 
+    './src/addresses/addresses.json',
     config.DEPLOYMENT_ENVIRONMENT,
     config.DEPLOYMENT_NETWORK_ID
   );
@@ -52,4 +52,8 @@ async function start() {
   await newManager.deploy();
 }
 
-start();
+start()
+  .catch((e: Error) => {
+    console.error(e);
+    process.exit(1);
+  });

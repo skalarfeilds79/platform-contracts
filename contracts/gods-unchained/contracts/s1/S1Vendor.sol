@@ -6,11 +6,10 @@ import "./S1Cap.sol";
 import "@imtbl/platform/contracts/escrow/releaser/CreditCardEscrow.sol";
 import "@imtbl/platform/contracts/pay/PurchaseProcessor.sol";
 import "@imtbl/platform/contracts/pay/vendor/IVendor.sol";
+import "@imtbl/platform/contracts/admin/Pausable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
-import "@openzeppelin/contracts/ownership/Ownable.sol";
-import "@openzeppelin/contracts/lifecycle/Pausable.sol";
 
-contract S1Vendor is IVendor, Pausable, Ownable {
+contract S1Vendor is IVendor, Pausable {
 
     using SafeMath for uint256;
 
@@ -60,7 +59,7 @@ contract S1Vendor is IVendor, Pausable, Ownable {
         uint256 _quantity,
         PurchaseProcessor.PaymentParams memory _payment,
         address payable _referrer
-    ) public payable returns (PurchaseProcessor.Receipt memory) {
+    ) public whenUnpaused payable returns (PurchaseProcessor.Receipt memory) {
         return purchaseFor(msg.sender, _quantity, _payment, _referrer);
     }
 
@@ -76,9 +75,7 @@ contract S1Vendor is IVendor, Pausable, Ownable {
         uint256 _quantity,
         PurchaseProcessor.PaymentParams memory _payment,
         address payable _referrer
-    ) public payable returns (PurchaseProcessor.Receipt memory) {
-
-        require(!paused(), "S1Vendor: cannot sell while paused");
+    ) public whenUnpaused payable returns (PurchaseProcessor.Receipt memory) {
 
         uint256 totalPrice = _quantity.mul(price);
 

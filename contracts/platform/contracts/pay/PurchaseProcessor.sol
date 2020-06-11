@@ -2,14 +2,12 @@ pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
 // solium-disable security/no-block-members
-
-import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
-
+import "../admin/Pausable.sol";
 import "../oracle/IOracle.sol";
 import "../lib/AddressArrayUtils.sol";
 
-contract PurchaseProcessor is Ownable {
+contract PurchaseProcessor is Pausable {
 
     enum Currency {
         ETH,
@@ -97,12 +95,7 @@ contract PurchaseProcessor is Ownable {
         wallet = _wallet;
     }
 
-    function setOracle(
-        address oracleAddress
-    )
-        external
-        onlyOwner
-    {
+    function setOracle(address oracleAddress) external onlyOwner {
         priceOracle = oracleAddress;
     }
 
@@ -157,6 +150,7 @@ contract PurchaseProcessor is Ownable {
         PaymentParams memory payment
     )
         public
+        whenUnpaused
         payable returns (Receipt memory)
     {
 

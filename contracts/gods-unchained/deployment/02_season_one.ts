@@ -1,6 +1,6 @@
 import { Wallet, ethers } from 'ethers';
 
-import { DeploymentStage, DeploymentEnvironment, DeploymentParams } from '@imtbl/deployment-utils';
+import { setPauser, setFreezer, DeploymentStage, DeploymentEnvironment, DeploymentParams } from '@imtbl/deployment-utils';
 import { asyncForEach } from '@imtbl/utils';
 
 import {
@@ -176,6 +176,17 @@ export class SeasonOneStage implements DeploymentStage {
       { address: rareChest, sku: GU_S1_RARE_CHEST_SKU },
       { address: legendaryChest, sku: GU_S1_LEGENDARY_CHEST_SKU }
     ]);
+
+    const pauser = await findInstance('IM_PAUSER');
+    await setPauser(
+      this.wallet, pauser, rarePack, epicPack, legendaryPack, shinyPack,
+      rareChest, legendaryChest
+    );
+    
+    const freezer = await findInstance('IM_FREEZER');
+    await setFreezer(
+      this.wallet, freezer, rarePack, epicPack, legendaryPack, shinyPack
+    );
   }
 
   async deployRaffle(): Promise<string> {
@@ -409,5 +420,6 @@ export class SeasonOneStage implements DeploymentStage {
       }
     });
   }
+
 }
 

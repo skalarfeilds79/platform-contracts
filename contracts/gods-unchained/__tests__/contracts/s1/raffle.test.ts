@@ -173,7 +173,7 @@ describe('Raffle', () => {
 
     async function purchaseAndOpenChests(quantity: number, pause = false) {
       if (pause) {
-        await rare.pause();
+        await rare.setPaused(true);
       }
       const balance = await chest.balanceOf(owner.address);
       expect(balance.toNumber()).toBe(0);

@@ -1,5 +1,5 @@
 import { Wallet, ethers } from 'ethers';
-import { DeploymentEnvironment, DeploymentStage, DeploymentParams } from '@imtbl/deployment-utils';
+import { setPauser, setFreezer, DeploymentEnvironment, DeploymentStage, DeploymentParams } from '@imtbl/deployment-utils';
 import {
   Escrow,
   CreditCardEscrow,
@@ -31,7 +31,6 @@ export class CoreStage implements DeploymentStage {
     onDeployment: (name: string, address: string, dependency: boolean) => void,
     transferOwnership: (address: string) => void,
   ) {
-    await this.wallet.getTransactionCount();
 
     const firstSigner = await findInstance('IM_PROCESSOR_FIRST_SIGNER');
     const revenueWallet = await findInstance('PROCESSOR_REVENUE_WALLET');
@@ -87,6 +86,19 @@ export class CoreStage implements DeploymentStage {
 
     await this.setPaymentProcessorSigner(processor, firstSigner);
     await this.setPaymentProcessorOracle(processor, oracle);
+
+    console.log('*** Updating pausers and freezers ***');
+    console.log(this.wallet.address);
+
+    const pauser = await findInstance('IM_PAUSER');
+    await setPauser(
+      this.wallet, pauser, processor, escrow, creditCardEscrow
+    );
+    
+    const freezer = await findInstance('IM_FREEZER');
+    await setFreezer(
+      this.wallet, freezer, escrow, creditCardEscrow
+    );
   }
 
   async deployBeacon(): Promise<string> {

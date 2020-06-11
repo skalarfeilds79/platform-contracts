@@ -36,6 +36,7 @@ describe('Sale', () => {
     beforeEach(async() => {
       rare = await deployRarePack(owner, shared);
       sale = await S1Sale.deploy(owner);
+      await sale.setVendorApproval(true, [rare.address]);
     });
 
     async function purchasePacks(products: string[], quantities: number[], prices: number[]) {
@@ -84,6 +85,7 @@ describe('Sale', () => {
     beforeEach(async() => {
       rare = await deployRarePack(owner, shared);
       sale = await S1Sale.deploy(owner);
+      await sale.setVendorApproval(true, [rare.address]);
     });
 
     async function purchasePacks(products: string[], quantities: number[], prices: number[]) {
@@ -132,6 +134,7 @@ describe('Sale', () => {
     beforeEach(async() => {
       rare = await deployRarePack(owner, shared);
       sale = await S1Sale.deploy(owner);
+      await sale.setVendorApproval(true, [rare.address]);
     });
 
     async function purchasePacks(user: string, escrowFor: number, products: string[], quantities: number[], prices: number[]) {
@@ -239,6 +242,7 @@ describe('Sale', () => {
     beforeEach(async() => {
       rare = await deployRarePack(owner, shared);
       sale = await S1Sale.deploy(owner);
+      await sale.setVendorApproval(true, [rare.address]);
     });
 
     async function purchasePacks(products: string[], quantities: number[], prices: number[]) {
@@ -277,6 +281,7 @@ describe('Sale', () => {
     beforeEach(async() => {
       rare = await deployRarePack(owner, shared);
       sale = await S1Sale.deploy(owner);
+      await sale.setVendorApproval(true, [rare.address]);
     });
 
     async function purchasePacks(products: string[], quantities: number[], prices: number[]) {

@@ -30,6 +30,7 @@ jobs:
       - name: Docker build
         run: scripts/build-tools.sh docker-build
       - name: Docker test
+        if: ${{ github.event_name == 'pull_request' }}
         run: scripts/integration-test.sh
       - name: Docker push
         if: ${{ github.ref == 'refs/heads/develop' }}

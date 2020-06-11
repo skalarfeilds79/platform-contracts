@@ -3,7 +3,7 @@ import { DeploymentParams, AddressBook, DeploymentStage, Manager, DeploymentEnvi
 import { CoreStage } from './01_core';
 
 const config = require('dotenv').config({ path: '../../.env' }).parsed;
-
+console.log(config);
 export const params: DeploymentParams = {
   private_key: process.env.PRIVATE_KEY,
   environment: process.env.DEPLOYMENT_ENVIRONMENT as DeploymentEnvironment,

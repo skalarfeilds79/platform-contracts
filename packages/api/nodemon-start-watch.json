@@ -1,0 +1,5 @@
+{
+  "ext": "js",
+  "ignore": [".git", "*.test.js"],
+  "exec": "node -r dotenv/config --inspect=127.0.0.1:${NODE_INSPECT_PORT} dist/index.js dotenv_config_path=../../.env"
+}

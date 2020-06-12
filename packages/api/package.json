@@ -6,10 +6,10 @@
   "license": "MIT",
   "scripts": {
     "start": "node -r dotenv/config dist/index.js dotenv_config_path=../../.env",
-    "start-watch": "nodemon -r dotenv/config --inspect=127.0.0.1:${NODE_INSPECT_PORT} dist/index.js dotenv_config_path=../../.env",
+    "start-watch": "nodemon --config nodemon-start-watch.json",
     "clean": "rm -rf dist",
     "build": "tsc",
-    "watch": "tsc-watch --preserveWatchOutput --onSuccess \"node -r dotenv/config --inspect=127.0.0.1:${NODE_INSPECT_PORT} dist/index.js dotenv_config_path=../../.env\"",
+    "watch": "nodemon",
     "lint": "tslint --project . -t verbose 'src/**/*.{tsx,ts}'",
     "prepublish": "yarn clean && yarn build",
     "quick-fix": "npm version patch && npm publish"
@@ -22,7 +22,7 @@
     "@types/node": "^12.12.3",
     "@types/express": "^4.17.6",
     "nodemon": "2.0.4",
-    "tsc-watch": "^4.2.3",
+    "ts-node": "^8.10.2",
     "typescript": "^3.7.5"
   },
   "gitHead": "0600df9b370d3d700e9da510a2fe20aadba92928"

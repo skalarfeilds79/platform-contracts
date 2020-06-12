@@ -8,7 +8,6 @@ import { Cards, Chest, RarePack } from '../../../../src/contracts';
 import { deployRareChest, deployRarePack, deployStandards, StandardContracts } from '../utils';
 import { epics, legendaries, rares } from './protos';
 
-
 jest.setTimeout(600000);
 
 const provider = new Ganache(Ganache.DefaultOptions);

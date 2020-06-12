@@ -85,18 +85,22 @@ contract PurchaseProcessor is Pausable {
     address public priceOracle;
 
     // Wallet to recieve funds
-    address payable public wallet;
+    address payable public vault;
 
     // Mutex for sending funds
     bool internal mutexLocked;
 
     // Address to send funds
-    constructor(address payable _wallet) public {
-        wallet = _wallet;
+    constructor(address payable _vault) public {
+        vault = _vault;
     }
 
     function setOracle(address oracleAddress) external onlyOwner {
         priceOracle = oracleAddress;
+    }
+
+    function setVault(address payable _vault) external onlyOwner {
+        vault = _vault;
     }
 
     function setSignerLimit(
@@ -332,7 +336,7 @@ contract PurchaseProcessor is Pausable {
 
         uint256 remaining = msg.value.sub(amount);
 
-        _sendETH(wallet, amount);
+        _sendETH(vault, amount);
         _sendETH(_order.changeRecipient, remaining);
 
         require(
@@ -405,7 +409,7 @@ contract PurchaseProcessor is Pausable {
 
         uint256 remaining = msg.value.sub(outstanding);
 
-        _sendETH(wallet, outstanding);
+        _sendETH(vault, outstanding);
         _sendETH(_order.changeRecipient, remaining);
 
         require(

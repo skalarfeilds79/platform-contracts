@@ -1,5 +1,6 @@
 {
   "ext": "ts",
-  "ignore": [".git", "*.test.ts"],
+  "ignoreRoot": [".git"],
+  "ignore": ["*.test.ts"],
   "exec": "node -r dotenv/config -r ts-node/register --inspect=127.0.0.1:${NODE_INSPECT_PORT} src/index.ts dotenv_config_path=../../.env"
 }

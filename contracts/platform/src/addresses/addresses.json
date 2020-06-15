@@ -12,10 +12,11 @@
     },
     "staging": {
       "addresses": {
-        "IM_Beacon": "0x6C725C43901a447B100857Aba09929Bd26CF7112",
-        "IM_Processor": "0x9320c3989a1cfBFE06BcF43C1d1Fb846E4519eA7",
-        "IM_Escrow": "0x581E019d461211a6f5077216408F7EA313Aa67A8",
-        "IM_Escrow_CreditCard": "0xa68f4e1087118398C0a800FF45c60828beaF267A"
+        "IM_Oracle_ETHUSDMock": "0xbE29533025AD63a29e5A6eb9B8865b4aae131d1e",
+        "IM_Beacon": "0xC203aB7fd8a13F9a62D46953c23135928d1d3AC1",
+        "IM_Processor": "0x9586aB0a3B7916D924caB38BCeCcE55B3fE41212",
+        "IM_Escrow": "0xd8123B31727F104e17796431092e4391196718a1",
+        "IM_Escrow_CreditCard": "0xD953dEf1CCdd5DD72D930AA2A01132F9C2c76b00"
       },
       "dependencies": {}
     }

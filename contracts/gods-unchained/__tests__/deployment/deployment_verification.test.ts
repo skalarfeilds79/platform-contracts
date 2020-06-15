@@ -44,11 +44,10 @@ import {
 } from '../../src/contracts';
 
 ethers.errors.setLogLevel('error');
+jest.setTimeout(60000);
 
 const config = require('dotenv').config({ path: '../../.env' }).parsed;
 const provider = new ethers.providers.JsonRpcProvider(config.RPC_ENDPOINT);
-const blockchain = new Blockchain();
-
 const wallet: Wallet = new ethers.Wallet(config.PRIVATE_KEY, provider);
 
 const INTENDED_OWNER = wallet.address;
@@ -140,7 +139,6 @@ describe('02_deployment_verification', () => {
   it('should have the correct seasons', async () => {
     for (let i = 0; i < 6; i++) {
       let s = await cards.seasons(i);
-      console.log(s);
     }
   });
 });

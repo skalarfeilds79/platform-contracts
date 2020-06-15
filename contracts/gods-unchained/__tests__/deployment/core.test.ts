@@ -4,6 +4,8 @@ import { getGodsUnchainedAddresses } from '../../src/addresses';
 import { Cards, Fusing, OpenMinter } from '../../src/contracts';
 
 ethers.errors.setLogLevel('error');
+jest.setTimeout(60000);
+
 const config = require('dotenv').config({ path: '../../.env' }).parsed;
 const provider = new ethers.providers.JsonRpcProvider(config.RPC_ENDPOINT);
 const wallet: Wallet = new ethers.Wallet(config.PRIVATE_KEY, provider);

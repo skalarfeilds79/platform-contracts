@@ -99,9 +99,11 @@ export class CoreStage implements DeploymentStage {
     console.log(this.wallet.address);
 
     const pauser = await findInstance('IM_PAUSER');
+    console.log('pauser', pauser);
     await setPauser(this.wallet, pauser, processor, escrow, creditCardEscrow);
 
     const freezer = await findInstance('IM_FREEZER');
+    console.log('freezer', freezer);
     await setFreezer(this.wallet, freezer, escrow, creditCardEscrow);
   }
 

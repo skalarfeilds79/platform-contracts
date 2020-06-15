@@ -40,14 +40,12 @@ import {
 } from '../../src/contracts';
 
 ethers.errors.setLogLevel('error');
+jest.setTimeout(60000);
 
 const config = require('dotenv').config({ path: '../../.env' }).parsed;
 const provider = new ethers.providers.JsonRpcProvider(config.RPC_ENDPOINT);
-const blockchain = new Blockchain();
-
+const blockchain = new Blockchain(provider);
 const wallet: Wallet = new ethers.Wallet(config.PRIVATE_KEY, provider);
-
-jest.setTimeout(60000);
 
 describe('02_season_one', () => {
   const godUnchainedAddressBook = getGodsUnchainedAddresses(
@@ -99,12 +97,6 @@ describe('02_season_one', () => {
     epicPack = EpicPack.at(wallet, godUnchainedAddressBook.seasonOne.epicPackAddress);
     rarePack = RarePack.at(wallet, godUnchainedAddressBook.seasonOne.rarePackAddress);
     shinyPack = ShinyPack.at(wallet, godUnchainedAddressBook.seasonOne.shinyPackAddress);
-
-    const cc = CreditCardEscrow.at(wallet, platformAddressBook.creditCardAddress);
-
-    console.log(cc.address);
-    // shouldn't change anything, but tests deployment
-    await cc.setDestructionDelay(await cc.destructionDelay());
 
     oracle = ETHUSDMockOracle.at(wallet, platformAddressBook.ethUSDMockOracleAddress);
 
@@ -160,22 +152,39 @@ describe('02_season_one', () => {
     });
 
     it('should be able to call the purchase function on the epic pack contract', async () => {
-      await epicPack.purchase(defaultQuantity, epicPayment, ethers.constants.AddressZero);
+      let overrides = {
+        gasLimit: 5000000
+      };
+      await epicPack.purchase(defaultQuantity, epicPayment, ethers.constants.AddressZero, overrides);
     });
 
     it('should be able to call the purchase function on the rare pack contract', async () => {
-      await rarePack.purchase(defaultQuantity, rarePayment, ethers.constants.AddressZero);
+      let overrides = {
+        gasLimit: 5000000
+      };
+      await rarePack.purchase(defaultQuantity, rarePayment, ethers.constants.AddressZero, overrides);
     });
 
     it('should be able to call the purchase function on the legendary pack contract', async () => {
-      await legendaryPack.purchase(defaultQuantity, legendaryPayment, ethers.constants.AddressZero);
+      let overrides = {
+        gasLimit: 5000000
+      };
+      await legendaryPack.purchase(defaultQuantity, legendaryPayment, ethers.constants.AddressZero, overrides);
     });
 
     it('should be able to call the purchase function on the shiny pack contract', async () => {
-      await shinyPack.purchase(defaultQuantity, shinyPayment, ethers.constants.AddressZero);
+      let overrides = {
+        gasLimit: 5000000
+      };
+      await shinyPack.purchase(defaultQuantity, shinyPayment, ethers.constants.AddressZero, overrides);
     });
 
     it('should be able to call the purchase function on S1 sale for all products', async () => {
+
+      let overrides = {
+        gasLimit: 5000000
+      };
+
       const limit = await processor.signerLimits(wallet.address);
       const tx = await s1Sale.purchaseFor(
         wallet.address,
@@ -186,6 +195,7 @@ describe('02_season_one', () => {
           { quantity: defaultQuantity, payment: shinyPayment, vendor: shinyPack.address },
         ],
         ethers.constants.AddressZero,
+        overrides
       );
       const receipt = await tx.wait();
       const escrowLogs = parseLogs(receipt.logs, EpicPack.ABI);
@@ -243,25 +253,25 @@ describe('02_season_one', () => {
       await s1Sale.purchase(
         [{ quantity: defaultQuantity, vendor: epicPack.address, payment: getETHPayment() }],
         ethers.constants.AddressZero,
-        { value: epicEth },
+        { value: epicEth, gasLimit: 5000000 },
       );
 
       await s1Sale.purchase(
         [{ quantity: defaultQuantity, vendor: shinyPack.address, payment: getETHPayment() }],
         ethers.constants.AddressZero,
-        { value: shinyEth },
+        { value: shinyEth, gasLimit: 5000000 },
       );
 
       await s1Sale.purchase(
         [{ quantity: defaultQuantity, vendor: rarePack.address, payment: getETHPayment() }],
         ethers.constants.AddressZero,
-        { value: rareEth },
+        { value: rareEth, gasLimit: 5000000 },
       );
 
       await s1Sale.purchase(
         [{ quantity: defaultQuantity, vendor: legendaryPack.address, payment: getETHPayment() }],
         ethers.constants.AddressZero,
-        { value: legendaryEth },
+        { value: legendaryEth, gasLimit: 5000000 },
       );
     });
   });

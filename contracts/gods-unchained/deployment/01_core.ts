@@ -27,22 +27,22 @@ export class CoreStage implements DeploymentStage {
 
     cardWrapper.instance = Cards.at(this.wallet, cards);
 
-    // const openMinter =
-    //   (await findInstance('GU_OpenMinter')) || (await this.deployOpenMinter(cardWrapper, cards));
-    // onDeployment('GU_OpenMinter', openMinter, false);
+    const openMinter =
+      (await findInstance('GU_OpenMinter')) || (await this.deployOpenMinter(cardWrapper, cards));
+    onDeployment('GU_OpenMinter', openMinter, false);
 
-    // const fusing =
-    //   (await findInstance('GU_Fusing')) || (await this.deployFusing(cardWrapper, cards));
-    // onDeployment('GU_Fusing', fusing, false);
+    const fusing =
+      (await findInstance('GU_Fusing')) || (await this.deployFusing(cardWrapper, cards));
+    onDeployment('GU_Fusing', fusing, false);
 
-    // const promoFactory =
-    //   (await findInstance('GU_PromoFactory')) ||
-    //   (await this.deployPromoFactory(cardWrapper, cards, 400, 999));
-    // onDeployment('GU_PromoFactory', promoFactory, false);
+    const promoFactory =
+      (await findInstance('GU_PromoFactory')) ||
+      (await this.deployPromoFactory(cardWrapper, cards, 400, 999));
+    onDeployment('GU_PromoFactory', promoFactory, false);
 
-    // await this.authoriseFactories(cardWrapper, openMinter, fusing, promoFactory);
-    // await this.unlockTradingFor(cardWrapper, [1, 4]);
-    // await this.addFusingMinter(fusing, await findInstance('GU_FUSING_MINTER'));
+    await this.authoriseFactories(cardWrapper, openMinter, fusing, promoFactory);
+    await this.unlockTradingFor(cardWrapper, [1, 4]);
+    await this.addFusingMinter(fusing, await findInstance('GU_FUSING_MINTER'));
 
     // TODO: Implement this
     // transferOwnership([cards, openMinter, fusing, promoFactory]);

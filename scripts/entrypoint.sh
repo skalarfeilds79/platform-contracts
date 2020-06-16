@@ -8,9 +8,12 @@ if [ ! -f .env ]; then
   env > .env
 fi
 
-echo "Deploying contracts in 5 seconds..."
-sleep 5
-yarn deploy:all
+
+if [[ "${SKIP_DEPLOY:-}" != "true" ]]; then
+  echo "Deploying contracts in 5 seconds..."
+  sleep 5
+  yarn deploy:all
+fi
 
 if [[ "${WATCH:-}" == "true" ]]; then
   yarn watch

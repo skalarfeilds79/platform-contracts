@@ -1,6 +1,6 @@
 {
   "name": "@imtbl/contracts-api",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "license": "MIT",
@@ -19,8 +19,8 @@
     "express": "^4.17.1"
   },
   "devDependencies": {
-    "@types/node": "^12.12.3",
     "@types/express": "^4.17.6",
+    "@types/node": "^12.12.3",
     "nodemon": "2.0.4",
     "tsc-watch": "^4.2.3",
     "typescript": "^3.7.5"

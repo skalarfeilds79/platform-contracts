@@ -19,6 +19,16 @@
         "IM_Escrow_CreditCard": "0xD953dEf1CCdd5DD72D930AA2A01132F9C2c76b00"
       },
       "dependencies": {}
+    },
+    "production": {
+      "addresses": {
+        "IM_Oracle_ETHUSDMaker": "0x3ba5D6627f132807F77aB5A4Ec6041EB51350297",
+        "IM_Beacon": "0xa2705ECd6f57cCc1D2E43b5DbE5B9a88e91562d6",
+        "IM_Processor": "0x35546561D4f23A38d190589a3BA627668D572182",
+        "IM_Escrow": "0xCbB473D8F7988Db73E5F657E1b4425eE8121d6Ac",
+        "IM_Escrow_CreditCard": "0x1381e9cd47550d2F7657d9E85Bd6443E52C3fdFf"
+      },
+      "dependencies": {}
     }
   }
 }

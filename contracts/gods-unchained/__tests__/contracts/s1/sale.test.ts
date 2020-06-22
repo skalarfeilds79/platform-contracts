@@ -306,4 +306,44 @@ describe('Sale', () => {
       await purchasePacks([rare.address, rare.address], [1, 1], [GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_PRICE]);
     });
   });
+
+  describe('purchaseForAll with ETH', () => {
+    
+    let shared: StandardContracts;
+    let rare: RarePack;
+    let sale: S1Sale;
+
+    beforeAll(async() => {
+      shared = await deployStandards(owner);
+    });
+
+    beforeEach(async() => {
+      rare = await deployRarePack(owner, shared);
+      sale = await S1Sale.deploy(owner);
+      await sale.setVendorApproval(true, [rare.address]);
+    });
+
+    async function purchasePacks(products: string[], quantities: number[], prices: number[]) {
+      let totalCost = 0;
+      const payments = quantities.map((quantity, i) => {
+        totalCost += quantity * prices[i];
+        return {
+          quantity,
+          recipient: owner.address,
+          payment: getETHPayment(),
+          vendor: products[i],
+        };
+      });
+      const ethRequired = await shared.oracle.convert(1, 0, totalCost);
+      await sale.purchaseForAll(payments, other.address, { value: ethRequired });
+    }
+
+    it('should purchase one item', async () => {
+      await purchasePacks([rare.address], [1], [GU_S1_RARE_PACK_PRICE]);
+    });
+
+    it('should purchase two items', async () => {
+      await purchasePacks([rare.address, rare.address], [1, 1], [GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_PRICE]);
+    });
+  });
 });

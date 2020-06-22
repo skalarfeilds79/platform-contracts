@@ -16,6 +16,13 @@ contract S1Sale is Ownable {
         PurchaseProcessor.PaymentParams payment;
     }
 
+    struct UserProductPurchaseRequest {
+        address payable recipient;
+        uint256 quantity;
+        IS1Vendor vendor;
+        PurchaseProcessor.PaymentParams payment;
+    }
+
     // Whether this contract can be used as a vendor
     mapping(address => bool) public isVendorApproved;
 
@@ -58,6 +65,30 @@ contract S1Sale is Ownable {
                 p.payment,
                 _referrer
             );
+        }
+        if (address(this).balance > 0) {
+            // solium-disable-next-line
+            msg.sender.call.value(address(this).balance)("");
+        }
+    }
+
+    function purchaseForAll(
+        UserProductPurchaseRequest[] memory _requests,
+        address payable _referrer
+    ) public payable {
+        for (uint i = 0; i < _requests.length; i++) {
+            UserProductPurchaseRequest memory p = _requests[i];
+            require(isVendorApproved[address(p.vendor)], "S1Sale: unapproved vendor");
+            p.vendor.purchaseFor.value(address(this).balance)(
+                p.recipient,
+                p.quantity,
+                p.payment,
+                _referrer
+            );
+        }
+        if (address(this).balance > 0) {
+            // solium-disable-next-line
+            msg.sender.call.value(address(this).balance)("");
         }
     }
 

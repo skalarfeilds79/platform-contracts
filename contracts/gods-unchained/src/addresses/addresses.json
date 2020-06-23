@@ -12,9 +12,7 @@
         "GU_S1_Shiny_Pack": "0xc86bA6ddF02223859E87A334618E98046808Fe2A",
         "GU_S1_Legendary_Pack": "0xc54681aC4f5a233A1631297585FD51ACa663007b",
         "GU_S1_Rare_Chest": "0xb7d6BFbd7CfC59013e4Bda5dF20D0c822D79a69e",
-        "GU_S1_Legendary_Chest": "0x67fc20714d3D7Da49fe30c301714Ef13F742cD44",
-        "GU_Fusing": "0xB63Cb7243dcB6df575278472BE2B36f5AF01f4BE",
-        "GU_PromoFactory": "0xac0aD33770f540294afFa5ADaC88ACE91dDDDd4e"
+        "GU_S1_Legendary_Chest": "0x67fc20714d3D7Da49fe30c301714Ef13F742cD44"
       },
       "dependencies": {}
     },
@@ -42,7 +40,7 @@
         "GU_Cards": "0xa7A0FaA59B29f94cCba78979B2B6980Be3F98D7a",
         "GU_OpenMinter": "0x78409E79577fc351Ae4e7289a58f8976a22DacD5",
         "GU_Fusing": "0x7A38A6dCBA6E1d6e574658FD244eB06D2AE6E1c5",
-        "GU_PromoFactory": "0x8E1565c949D7e8a5faC79b6a7F7afE155E77ed49",
+        "GU_PromoFactory": "0x3b5900920099DF7536ed8B52DC1eD90F9B6312FD",
         "GU_S1_Raffle": "0x2808F374A1B8D3609F89c70bB20B4A5Ff37FDD69",
         "GU_S1_Sale": "0x8859eDD4adDf0CD286400d96Cb222442E1C28923",
         "GU_S1_Referral": "0xc9aa8D8E705BFBd6344cCaA300Bc955F238f47eA",

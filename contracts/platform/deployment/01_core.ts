@@ -43,7 +43,7 @@ export class CoreStage implements DeploymentStage {
     const firstSigner = await findInstance('IM_PROCESSOR_FIRST_SIGNER');
     const revenueWallet = await findInstance('PROCESSOR_REVENUE_WALLET');
 
-    const medianizer = await findInstance('MEDIANIZER_ADDRESS');
+    const medianizer = await findInstance('MEDIANIZER');
     const ethUSDMock = await findInstance('IM_Oracle_ETHUSDMock');
     const makerOracle = await findInstance('IM_Oracle_ETHUSDMaker');
 

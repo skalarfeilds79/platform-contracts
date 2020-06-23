@@ -2,7 +2,7 @@
 import { asyncForEach } from '@imtbl/utils';
 import { ethers, Wallet } from 'ethers';
 import { AddressBook } from './book';
-import { DeploymentParams } from './params';
+import { DeploymentParams, DeploymentEnvironment } from './params';
 import { DeploymentStage } from './stage';
 
 const ownershipABI = [
@@ -94,8 +94,11 @@ export class Manager {
   }
 
   async checkInputParameters(params: DeploymentParams) {
-    await this.configureIfDevelopment();
 
+    if (params.environment == DeploymentEnvironment.Development) {
+      await this.configureIfDevelopment();
+    }
+    
     if (!params.network_id) {
       throw Error('.env variable DEPLOYMENT_NETWORK_ID is missing');
     }

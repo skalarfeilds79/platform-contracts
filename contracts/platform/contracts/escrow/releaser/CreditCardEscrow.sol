@@ -296,11 +296,6 @@ contract CreditCardEscrow is Pausable, Freezable, IEscrowCallbackReceiver {
             "IM:CreditCardEscrow: escrow period must not have expired"
         );
 
-        require(
-            lock.owner == address(0),
-            "IM:CreditCardEscrow: must be zero address"
-        );
-
         uint256 destructionTimestamp = block.timestamp.add(destructionDelay);
         lock.destructionTimestamp = destructionTimestamp;
 

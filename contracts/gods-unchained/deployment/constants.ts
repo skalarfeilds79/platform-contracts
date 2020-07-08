@@ -16,13 +16,13 @@ export const GU_S1_EPIC_PACK_PRICE = 699;
 export const GU_S1_LEGENDARY_PACK_PRICE = 2499;
 export const GU_S1_SHINY_PACK_PRICE = 14999;
 
-export const GU_S1_RARE_CHEST_CAP = 8000;
-export const GU_S1_RARE_CHEST_PRICE = 1799;
+export const GU_S1_RARE_CHEST_CAP = 32500;
+export const GU_S1_RARE_CHEST_PRICE = 1499;
 export const GU_S1_RARE_CHEST_TOKEN_NAME = 'GU:S1: Rare Chest';
 export const GU_S1_RARE_CHEST_TOKEN_SYMBOL = 'GU:S1:RC';
 
 export const GU_S1_LEGENDARY_CHEST_CAP = 3250;
-export const GU_S1_LEGENDARY_CHEST_PRICE = 17999;
+export const GU_S1_LEGENDARY_CHEST_PRICE = 14999;
 export const GU_S1_LEGENDARY_CHEST_TOKEN_NAME = 'GU:S1: Legendary Chest';
 export const GU_S1_LEGENDARY_CHEST_TOKEN_SYMBOL = 'GU:S1:LC';
 

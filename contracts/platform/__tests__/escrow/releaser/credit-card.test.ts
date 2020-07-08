@@ -156,11 +156,6 @@ describe('CreditCardEscrow', () => {
       await expectRevert(cc.requestDestruction(0));
     });
 
-    it('should not be able to destroy a purchase with an actual owner', async () => {
-      await pack.purchaseERC20(owner.address, 1, 10);
-      await expectRevert(cc.requestDestruction(0));
-    });
-
     it('should not be able to destroy a purchase without a successful request', async () => {
       await pack.purchaseERC20(ethers.constants.AddressZero, 1, 10);
       await expectRevert(cc.destroy(0));

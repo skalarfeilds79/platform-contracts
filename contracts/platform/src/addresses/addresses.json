@@ -22,11 +22,11 @@
     },
     "production": {
       "addresses": {
-        "IM_Oracle_ETHUSDMaker": "0xd8123B31727F104e17796431092e4391196718a1",
-        "IM_Beacon": "0xD953dEf1CCdd5DD72D930AA2A01132F9C2c76b00",
-        "IM_Processor": "0x64a63890204d9E9391B0e87bDf6a8bfee6b46Aac",
-        "IM_Escrow": "0xBB4434Bf41Cd20CB5b5aC629839E65DC74A515f2",
-        "IM_Escrow_CreditCard": "0xa7A0FaA59B29f94cCba78979B2B6980Be3F98D7a"
+        "IM_Oracle_ETHUSDMock": "0x8E1565c949D7e8a5faC79b6a7F7afE155E77ed49",
+        "IM_Beacon": "0xe1d53150fc52349Db3665B881DCaeeb48fe337B7",
+        "IM_Processor": "0x8859eDD4adDf0CD286400d96Cb222442E1C28923",
+        "IM_Escrow": "0xd79Bd8d6E9Ef6FE3b710f1dD510dB7D4c226Ca61",
+        "IM_Escrow_CreditCard": "0xC9110910e1a45636fa414938A39c342F21fB9bf2"
       },
       "dependencies": {}
     }

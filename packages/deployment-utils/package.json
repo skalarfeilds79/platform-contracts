@@ -1,12 +1,12 @@
 {
   "name": "@imtbl/deployment-utils",
-  "version": "2.0.14",
+  "version": "2.0.15",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "private": false,
   "dependencies": {
-    "@imtbl/utils": "^1.1.10",
+    "@imtbl/utils": "^1.1.11",
     "ethers": "^4.0.42",
     "fs-extra": "^8.1.0"
   },

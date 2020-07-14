@@ -4,6 +4,7 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "license": "MIT",
+  "private": true,
   "scripts": {
     "start": "node -r dotenv/config dist/index.js dotenv_config_path=../../.env",
     "start-watch": "nodemon -r dotenv/config --inspect=127.0.0.1:${NODE_INSPECT_PORT} dist/index.js dotenv_config_path=../../.env",
@@ -25,5 +26,5 @@
     "tsc-watch": "^4.2.3",
     "typescript": "^3.7.5"
   },
-  "gitHead": "4b896754eb5e2dfde9a95c40c6f72ba651207391"
+  "gitHead": "d66905b6d99cce0a05b0c2e38a80e0932a9eb29f"
 }

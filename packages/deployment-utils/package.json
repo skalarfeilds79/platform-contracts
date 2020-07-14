@@ -1,6 +1,6 @@
 {
   "name": "@imtbl/deployment-utils",
-  "version": "2.0.13",
+  "version": "2.0.14",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -27,5 +27,5 @@
     "tslint-no-focused-test": "^0.5.0",
     "typescript": "^3.7.5"
   },
-  "gitHead": "4b896754eb5e2dfde9a95c40c6f72ba651207391"
+  "gitHead": "d66905b6d99cce0a05b0c2e38a80e0932a9eb29f"
 }

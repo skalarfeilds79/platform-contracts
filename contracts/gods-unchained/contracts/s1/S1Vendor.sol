@@ -49,6 +49,14 @@ contract S1Vendor is IVendor, Pausable {
         cap = _cap;
     }
 
+    /** @dev Set the price at which to sell this product
+     *
+     * @param _price the new price
+     */
+    function setPrice(uint256 _price) external onlyOwner {
+        price = _price;
+    }
+
     /** @dev Purchase assets
      *
      * @param _quantity the number of this product to purchase

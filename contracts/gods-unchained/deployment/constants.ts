@@ -11,6 +11,9 @@ export const GU_S1_CAP = 4 * 1000000 * 100; // $4m USD
 
 export const GU_S1_MAX_MINT = 50;
 
+export const INITIAL_DISCOUNT = 15;
+export const SUBSEQUENT_DISCOUNT = 7.5;
+
 export const GU_S1_RARE_PACK_PRICE = 249;
 export const GU_S1_EPIC_PACK_PRICE = 699;
 export const GU_S1_LEGENDARY_PACK_PRICE = 2499;

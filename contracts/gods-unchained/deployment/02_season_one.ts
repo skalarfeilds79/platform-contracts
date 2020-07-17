@@ -26,6 +26,7 @@ import {
   GU_S1_LEGENDARY_CHEST_TOKEN_NAME,
   GU_S1_RAFFLE_TOKEN_NAME,
   GU_S1_RAFFLE_TOKEN_SYMBOL,
+  INITIAL_DISCOUNT,
 } from './constants';
 
 import {
@@ -294,7 +295,7 @@ export class SeasonOneStage implements DeploymentStage {
       cards,
       referral,
       GU_S1_SHINY_PACK_SKU,
-      GU_S1_SHINY_PACK_PRICE,
+      GU_S1_SHINY_PACK_PRICE * (100 - INITIAL_DISCOUNT) / 100,
       escrow,
       processor
     );

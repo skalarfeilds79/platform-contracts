@@ -295,7 +295,7 @@ export class SeasonOneStage implements DeploymentStage {
       cards,
       referral,
       GU_S1_SHINY_PACK_SKU,
-      GU_S1_SHINY_PACK_PRICE * (100 - INITIAL_DISCOUNT) / 100,
+      GU_S1_SHINY_PACK_PRICE,
       escrow,
       processor
     );

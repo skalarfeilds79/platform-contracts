@@ -425,6 +425,11 @@ export class SeasonOneStage implements DeploymentStage {
         console.log(`Added`);
       }
     });
+
+    const isTradeable = await contract.seasonTradable(season);
+    if (!isTradeable) {
+      await contract.unlockTrading([5]);
+    }
   }
 
 }

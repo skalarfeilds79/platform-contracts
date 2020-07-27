@@ -41,7 +41,7 @@ export class CoreStage implements DeploymentStage {
     onDeployment('GU_PromoFactory', promoFactory, false);
 
     await this.authoriseFactories(cardWrapper, openMinter, fusing, promoFactory);
-    await this.unlockTradingFor(cardWrapper, [1, 2, 4]);
+    await this.unlockTradingFor(cardWrapper, [1, 4]);
     await this.addFusingMinter(fusing, await findInstance('GU_FUSING_MINTER'));
 
     // TODO: Implement this

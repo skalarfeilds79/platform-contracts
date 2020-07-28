@@ -27,19 +27,19 @@ describe('Rare Pack', () => {
     await blockchain.revertAsync();
   });
 
-  // describe('deployment', () => {
+  describe('deployment', () => {
 
-  //   let shared: StandardContracts;
+    let shared: StandardContracts;
 
-  //   beforeAll(async() => {
-  //     shared = await deployStandards(owner);
-  //   });
+    beforeAll(async() => {
+      shared = await deployStandards(owner);
+    });
 
-  //   it('should deploy rare pack', async () => {
-  //     await deployRarePack(owner, shared);
-  //   });
+    it('should deploy rare pack', async () => {
+      await deployRarePack(owner, shared);
+    });
 
-  // });
+  });
 
   // describe('purchase', () => {
 
@@ -155,56 +155,6 @@ describe('Rare Pack', () => {
     //   await purchase(6, 0);
     //   await mintTrackGas(0, '6 pack no escrow');
     // });
-
-    it('should create cards from 1 packs', async () => {
-      await purchase(1, 100);
-      await mintTrackGas(0, '1 pack escrow');
-    });
-
-    it('should create cards from 1 packs with no escrow', async () => {
-      await purchase(1, 0);
-      await mintTrackGas(0, '1 pack no escrow');
-    });
-
-    it('should create cards from 6 packs', async () => {
-      await purchase(6, 100);
-      await mintTrackGas(0, '6 pack escrow');
-    });
-
-    it('should create cards from 6 packs with no escrow', async () => {
-      await purchase(6, 0);
-      await mintTrackGas(0, '6 pack no escrow');
-    });
-
-    it('should create cards from 18 packs with no escrow', async () => {
-      await purchase(18, 0);
-      await mintTrackGas(0, '18 pack no escrow');
-    });
-
-    it('should create cards from 18 packs with escrow', async () => {
-      await purchase(18, 100);
-      await mintTrackGas(0, '18 pack escrow');
-    });
-
-    it('should create cards from 50 packs with escrow', async () => {
-      await purchase(50, 100);
-      await mintTrackGas(0, '50 pack escrow');
-    });
-
-    it('should create cards from 18 packs with no escrow', async () => {
-      await purchase(50, 0);
-      await mintTrackGas(0, '50 pack no escrow');
-    });
-
-    it('should create cards from 100 packs with escrow', async () => {
-      await purchase(100, 100);
-      await mintTrackGas(0, '100 pack escrow');
-    });
-
-    it('should create cards from 100 packs with no escrow', async () => {
-      await purchase(100, 0);
-      await mintTrackGas(0, '100 pack no escrow');
-    });
 
 
   });

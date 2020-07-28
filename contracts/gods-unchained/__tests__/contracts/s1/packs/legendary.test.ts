@@ -1,4 +1,4 @@
-import { Currency, getSignedPayment } from '@imtbl/platform';
+import { Currency, getSignedPayment, Beacon } from '@imtbl/platform';
 import { Blockchain, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { parseLogs } from '@imtbl/utils';
 import { ethers } from 'ethers';
@@ -116,17 +116,11 @@ describe('Legendary Pack', () => {
 
     async function mintTrackGas(id: number, description: string) {
       const commitment = await legendary.commitments(id);
-      const tx = await legendary.mint(id);
-      const receipt = await tx.wait();
-      // console.log(description, receipt.gasUsed.toNumber());
-      // we only care about events from the core contract
-      const logs = receipt.logs.filter(log => log.address === shared.cards.address);
-      const parsed = parseLogs(logs, Cards.ABI);
-      // the last event will be the minted event
-      const log = parsed[parsed.length - 1];
-      expect(log.name).toBe('CardsMinted');
-      const protos = log.values.protos;
-      const packs = commitment.packQuantity.toNumber();
+      const beacon = Beacon.at(owner, await legendary.beacon());
+      await beacon.randomnessOrCallback(commitment.commitBlock);
+      const prediction = await legendary.predictCards(id);
+      const protos = prediction.protos;
+      const packs = (await legendary.commitments(id)).quantity;
       expect(protos).toBeDefined();
       expect(protos.length).toBe(packs * 5);
       const rareOrBetter = protos.filter(p => {
@@ -190,7 +184,7 @@ describe('Legendary Pack', () => {
       await chest.purchase(quantity, payment, ethers.constants.AddressZero);
       await chest.open(quantity);
       const purchase = await legendary.commitments(0);
-      expect(purchase.packQuantity.toNumber()).toBe(quantity * 6);
+      expect(purchase.quantity).toBe(quantity * 6);
     }
 
     it('should create a valid purchase from an opened chest', async () => {
@@ -199,11 +193,6 @@ describe('Legendary Pack', () => {
 
     it('should create a valid purchase from 2 chests', async () => {
       await purchaseAndOpenChests(2);
-    });
-
-    it('should create cards from an opened chest', async () => {
-      await purchaseAndOpenChests(1);
-      await legendary.mint(0);
     });
 
   });

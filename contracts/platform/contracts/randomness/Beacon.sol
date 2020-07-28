@@ -58,15 +58,26 @@ contract Beacon {
     }
 
     /**
-     * @dev Get the randomness result for a particular block
+     * @dev Get the randomness result for a particular block, and callback if not present
      *
      * @param _commitBlock the block in question
      */
-    function randomness(uint256 _commitBlock) external returns (bytes32) {
+    function randomnessOrCallback(uint256 _commitBlock) external returns (bytes32) {
         uint256 currentBlock = getCurrentBlock(_commitBlock);
         if (blockHashes[currentBlock] == bytes32(0)) {
             _callback(currentBlock);
         }
+        return blockHashes[currentBlock];
+    }
+
+    /**
+     * @dev Get the randomness result for a particular block
+     *
+     * @param _commitBlock the block in question
+     */
+    function randomness(uint256 _commitBlock) external view returns (bytes32) {
+        uint256 currentBlock = getCurrentBlock(_commitBlock);
+        require(blockHashes[currentBlock] != bytes32(0), "IM:Beacon: must have already callback");
         return blockHashes[currentBlock];
     }
 

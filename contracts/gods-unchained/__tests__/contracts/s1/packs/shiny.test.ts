@@ -1,4 +1,4 @@
-import { Currency, getSignedPayment } from '@imtbl/platform';
+import { Currency, getSignedPayment, Beacon } from '@imtbl/platform';
 import { Blockchain, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { parseLogs } from '@imtbl/utils';
 import { ethers } from 'ethers';
@@ -119,25 +119,18 @@ describe('Shiny Pack', () => {
 
     async function mintTrackGas(id: number, description: string) {
       const commitment = await shiny.commitments(id);
-      const tx = await shiny.mint(id);
-      const receipt = await tx.wait();
-      // console.log(description, receipt.gasUsed.toNumber());
-      // we only care about events from the core contract
-      const logs = receipt.logs.filter(log => log.address === shared.cards.address);
-      const parsed = parseLogs(logs, Cards.ABI);
-      // the last event will be the minted event
-      const log = parsed[parsed.length - 1];
-      expect(log.name).toBe('CardsMinted');
-      const protos = log.values.protos;
-      const qualities = log.values.qualities;
-      const packs = commitment.packQuantity.toNumber();
+      const beacon = Beacon.at(owner, await shiny.beacon());
+      await beacon.randomnessOrCallback(commitment.commitBlock);
+      const prediction = await shiny.predictCards(id);
+      const protos = prediction.protos;
+      const packs = commitment.quantity;
       expect(protos).toBeDefined();
       expect(protos.length).toBe(packs * 5);
       const rareOrBetter = protos.filter(p => {
         return rares.includes(p) || epics.includes(p) || legendaries.includes(p);
       }).length;
       const shinyLegendaryCount = protos.filter((p, i) => {
-        return legendaries.includes(p) && qualities[i] <= 3;
+        return legendaries.includes(p) && prediction.qualities[i] <= 3;
       }).length;
       // must be at least one rare card in every pack
       expect(shinyLegendaryCount).toBeGreaterThanOrEqual(packs);

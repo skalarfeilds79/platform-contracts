@@ -134,14 +134,14 @@ describe('Rare Pack', () => {
       await mintTrackGas(0, '1 pack escrow');
     });
 
-    it('should create cards from 6 packs', async () => {
-      await purchase(6, 100);
-      await mintTrackGas(0, '6 pack escrow');
+    it('should create cards from 2 packs', async () => {
+      await purchase(2, 100);
+      await mintTrackGas(0, '2 pack escrow');
     });
 
     it('should create cards from 1 packs with no escrow', async () => {
-      await purchase(6, 0);
-      await mintTrackGas(0, '6 pack no escrow');
+      await purchase(1, 0);
+      await mintTrackGas(0, '1 pack no escrow');
     });
 
 

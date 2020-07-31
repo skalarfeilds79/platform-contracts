@@ -25,7 +25,7 @@ import {
   GU_S1_LEGENDARY_CHEST_TOKEN_SYMBOL,
   GU_S1_LEGENDARY_CHEST_TOKEN_NAME,
   GU_S1_RAFFLE_TOKEN_NAME,
-  GU_S1_RAFFLE_TOKEN_SYMBOL,
+  GU_S1_RAFFLE_TOKEN_SYMBOL
 } from './constants';
 
 import {
@@ -425,6 +425,11 @@ export class SeasonOneStage implements DeploymentStage {
         console.log(`Added`);
       }
     });
+
+    const isTradeable = await contract.seasonTradable(season);
+    if (!isTradeable) {
+      await contract.unlockTrading([5]);
+    }
   }
 
 }

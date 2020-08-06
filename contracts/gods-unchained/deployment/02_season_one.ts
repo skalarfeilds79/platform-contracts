@@ -1,6 +1,6 @@
 import { Wallet, ethers } from 'ethers';
 
-import { setPauser, setFreezer, DeploymentStage, DeploymentEnvironment, DeploymentParams } from '@imtbl/deployment-utils';
+import { setPauser, DeploymentStage, DeploymentEnvironment, DeploymentParams } from '@imtbl/deployment-utils';
 import { asyncForEach } from '@imtbl/utils';
 
 import {
@@ -181,11 +181,6 @@ export class SeasonOneStage implements DeploymentStage {
     await setPauser(
       this.wallet, pauser, rarePack, epicPack, legendaryPack, shinyPack,
       rareChest, legendaryChest
-    );
-    
-    const freezer = await findInstance('IM_FREEZER');
-    await setFreezer(
-      this.wallet, freezer, rarePack, epicPack, legendaryPack, shinyPack
     );
 
     const sale = S1Sale.at(this.wallet, s1sale);

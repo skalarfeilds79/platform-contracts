@@ -2,7 +2,6 @@ pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
 import "@imtbl/platform/contracts/randomness/Beacon.sol";
-import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "./RarityProvider.sol";
 import "./IPack.sol";
 import "../S1Vendor.sol";

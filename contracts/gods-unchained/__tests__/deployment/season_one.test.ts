@@ -179,59 +179,6 @@ describe('02_season_one', () => {
       await shinyPack.purchase(defaultQuantity, shinyPayment, ethers.constants.AddressZero, overrides);
     });
 
-    it('should be able to call the purchase function on S1 sale for all products', async () => {
-
-      let overrides = {
-        gasLimit: 5000000
-      };
-
-      const limit = await processor.signerLimits(wallet.address);
-      const tx = await s1Sale.purchaseFor(
-        wallet.address,
-        [
-          { quantity: defaultQuantity, payment: epicPayment, vendor: epicPack.address },
-          { quantity: defaultQuantity, payment: rarePayment, vendor: rarePack.address },
-          { quantity: defaultQuantity, payment: legendaryPayment, vendor: legendaryPack.address },
-          { quantity: defaultQuantity, payment: shinyPayment, vendor: shinyPack.address },
-        ],
-        ethers.constants.AddressZero,
-        overrides
-      );
-      const receipt = await tx.wait();
-      const escrowLogs = parseLogs(receipt.logs, EpicPack.ABI);
-
-      let receipts: ContractReceipt[];
-      receipts = [];
-
-      await asyncForEach(escrowLogs, async (log) => {
-        if (log.address === epicPack.address) {
-          const receipt = await (await epicPack.mint(log.values.commitmentID.toNumber())).wait();
-          receipts.push(receipt);
-        }
-        if (log.address === legendaryPack.address) {
-          const receipt = await (
-            await legendaryPack.mint(log.values.commitmentID.toNumber())
-          ).wait();
-          receipts.push(receipt);
-        }
-        if (log.address === rarePack.address) {
-          const receipt = await (await rarePack.mint(log.values.commitmentID.toNumber())).wait();
-          receipts.push(receipt);
-        }
-        if (log.address === shinyPack.address) {
-          const receipt = await (await shinyPack.mint(log.values.commitmentID.toNumber())).wait();
-          receipts.push(receipt);
-        }
-      });
-
-      receipts.forEach((receipt) => {
-        const rangeMintedLogs = parseLogs(receipt.logs, RarePack.ABI);
-        const escrowLogs = parseLogs(receipt.logs, Escrow.ABI);
-      });
-
-      const supply = await cards.totalSupply();
-      expect(supply.toNumber()).toBe(20);
-    });
   });
 
   describe('using ETH', () => {

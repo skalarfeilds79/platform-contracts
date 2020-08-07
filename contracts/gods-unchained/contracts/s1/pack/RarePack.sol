@@ -6,22 +6,16 @@ import "./Pack.sol";
 contract RarePack is Pack {
 
     constructor(
-        S1Cap _cap,
-        uint256 _maxMint,
-        IRaffle _raffle,
         Beacon _beacon,
-        ICards _cards,
+        S1Cap _cap,
         IReferral _referral,
         bytes32 _sku,
         uint256 _price,
         CreditCardEscrow _escrow,
         PurchaseProcessor _pay
     ) public Pack(
-        _cap,
-        _maxMint,
-        _raffle,
         _beacon,
-        _cards,
+        _cap,
         _referral,
         _sku,
         _price,

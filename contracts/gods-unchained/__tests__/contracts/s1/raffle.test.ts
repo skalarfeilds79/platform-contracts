@@ -67,15 +67,13 @@ describe('Raffle', () => {
     it('should purchase one pack with USD', async () => {
       await purchasePacks(1);
       const commitment = await rare.commitments(0);
-      const q = commitment.ticketQuantity.toNumber();
-      expect(q).toBe(1);
+      expect(commitment.quantity).toBe(1);
     });
 
     it('should purchase two packs with USD', async () => {
       await purchasePacks(2);
       const commitment = await rare.commitments(0);
-      const q = commitment.ticketQuantity.toNumber();
-      expect(q).toBe(2);
+      expect(commitment.quantity).toBe(2);
     });
 
   });
@@ -110,48 +108,20 @@ describe('Raffle', () => {
       await rare.purchase(quantity, payment, ethers.constants.AddressZero);
     }
 
-    async function mintTrackGas(id: number, description: string) {
-      await rare.mint(id);
-      // const tx = await rare.mint(id);
-      // const receipt = await tx.wait();
-      // console.log(description, receipt.gasUsed.toNumber());
-    }
-
     it('should create cards from 1 pack', async () => {
       await purchase(1, 100);
-      await rare.mint(0);
-      const escrowBalance = await raffle.balanceOf(shared.escrow.address);
-      expect(escrowBalance.toNumber()).toBeGreaterThan(0);
-      const userBalance = await raffle.balanceOf(owner.address);
-      expect(userBalance.toNumber()).toBe(0);
+      const id = (await rare.commitmentCount()).sub(1);
+      const c = await rare.commitments(id);
+      expect(c.grantsTickets).toBeTruthy();
     });
 
     it('should create cards from 2 packs', async () => {
       await purchase(2, 100);
-      await rare.mint(0);
-      const escrowBalance = await raffle.balanceOf(shared.escrow.address);
-      expect(escrowBalance.toNumber()).toBeGreaterThan(0);
-      const userBalance = await raffle.balanceOf(owner.address);
-      expect(userBalance.toNumber()).toBe(0);
+      const id = (await rare.commitmentCount()).sub(1);
+      const c = await rare.commitments(id);
+      expect(c.grantsTickets).toBeTruthy();
     });
 
-    it('should create cards from 1 packs with no escrow', async () => {
-      await purchase(1, 0);
-      await mintTrackGas(0, '1 pack no escrow');
-      const escrowBalance = await raffle.balanceOf(shared.escrow.address);
-      expect(escrowBalance.toNumber()).toBe(0);
-      const userBalance = await raffle.balanceOf(owner.address);
-      expect(userBalance.toNumber()).toBeGreaterThan(0);
-    });
-
-    it('should create cards from 2 packs with no escrow', async () => {
-      await purchase(2, 0);
-      await mintTrackGas(0, '2 packs no escrow');
-      const escrowBalance = await raffle.balanceOf(shared.escrow.address);
-      expect(escrowBalance.toNumber()).toBe(0);
-      const userBalance = await raffle.balanceOf(owner.address);
-      expect(userBalance.toNumber()).toBeGreaterThan(0);
-    });
   });
 
   describe('openChest', () => {
@@ -198,25 +168,21 @@ describe('Raffle', () => {
       await chest.purchase(quantity, payment, ethers.constants.AddressZero);
       await chest.open(quantity);
       const purchase = await rare.commitments(0);
-      expect(purchase.packQuantity.toNumber()).toBe(quantity * 6);
+      expect(purchase.quantity).toBe(quantity * 6);
     }
 
     it('should create raffle tickets when contract unpaused', async () => {
       await purchaseAndOpenChests(1, false);
-      await rare.mint(0);
-      const escrowBalance = await raffle.balanceOf(shared.escrow.address);
-      expect(escrowBalance.toNumber()).toBe(0);
-      const userBalance = await raffle.balanceOf(owner.address);
-      expect(userBalance.toNumber()).toBeGreaterThan(0);
+      const id = (await rare.commitmentCount()).sub(1);
+      const c = await rare.commitments(id);
+      expect(c.grantsTickets).toBeTruthy();
     });
 
     it('should not create raffle tickets when contract paused', async () => {
       await purchaseAndOpenChests(1, true);
-      await rare.mint(0);
-      const escrowBalance = await raffle.balanceOf(shared.escrow.address);
-      expect(escrowBalance.toNumber()).toBe(0);
-      const userBalance = await raffle.balanceOf(owner.address);
-      expect(userBalance.toNumber()).toBe(0);
+      const id = (await rare.commitmentCount()).sub(1);
+      const c = await rare.commitments(id);
+      expect(c.grantsTickets).toBeFalsy();
     });
   });
 });

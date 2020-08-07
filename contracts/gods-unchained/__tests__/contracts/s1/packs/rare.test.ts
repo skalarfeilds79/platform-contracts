@@ -1,4 +1,4 @@
-import { Currency, getSignedPayment } from '@imtbl/platform';
+import { Currency, getSignedPayment, Beacon } from '@imtbl/platform';
 import { Blockchain, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { parseLogs } from '@imtbl/utils';
 import { ethers } from 'ethers';
@@ -115,17 +115,11 @@ describe('Rare Pack', () => {
 
     async function mintTrackGas(id: number, description: string) {
       const commitment = await rare.commitments(id);
-      const tx = await rare.mint(id);
-      const receipt = await tx.wait();
-      // console.log(description, receipt.gasUsed.toNumber());
-      // we only care about events from the core contract
-      const logs = receipt.logs.filter(log => log.address === shared.cards.address);
-      const parsed = parseLogs(logs, Cards.ABI);
-      // the last event will be the minted event
-      const log = parsed[parsed.length - 1];
-      expect(log.name).toBe('CardsMinted');
-      const protos = log.values.protos;
-      const packs = commitment.packQuantity.toNumber();
+      const beacon = Beacon.at(owner, await rare.beacon());
+      await beacon.randomnessOrCallback(commitment.commitBlock);
+      const prediction = await rare.predictCards(id);
+      const protos = prediction.protos;
+      const packs = (await rare.commitments(id)).quantity;
       expect(protos).toBeDefined();
       expect(protos.length).toBe(packs * 5);
       const rareOrBetter = protos.filter(p => {
@@ -149,6 +143,7 @@ describe('Rare Pack', () => {
       await purchase(1, 0);
       await mintTrackGas(0, '1 pack no escrow');
     });
+
 
   });
 
@@ -191,7 +186,7 @@ describe('Rare Pack', () => {
       await chest.purchase(quantity, payment, ethers.constants.AddressZero);
       await chest.open(quantity);
       const purchase = await rare.commitments(0);
-      expect(purchase.packQuantity.toNumber()).toBe(quantity * 6);
+      expect(purchase.quantity).toBe(quantity * 6);
     }
 
     it('should create a valid purchase from an opened chest', async () => {
@@ -202,9 +197,5 @@ describe('Rare Pack', () => {
       await purchaseAndOpenChests(2);
     });
 
-    it('should create cards from an opened chest', async () => {
-      await purchaseAndOpenChests(1);
-      await rare.mint(0);
-    });
   });
 });

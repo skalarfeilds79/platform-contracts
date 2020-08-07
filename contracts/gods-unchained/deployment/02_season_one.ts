@@ -1,6 +1,6 @@
 import { Wallet, ethers } from 'ethers';
 
-import { setPauser, setFreezer, DeploymentStage, DeploymentEnvironment, DeploymentParams } from '@imtbl/deployment-utils';
+import { setPauser, DeploymentStage, DeploymentEnvironment, DeploymentParams } from '@imtbl/deployment-utils';
 import { asyncForEach } from '@imtbl/utils';
 
 import {
@@ -15,7 +15,6 @@ import {
   GU_S1_SHINY_PACK_SKU,
   GU_S1_LEGENDARY_PACK_SKU,
   GU_S1_CAP,
-  GU_S1_MAX_MINT,
   GU_S1_RARE_PACK_PRICE,
   GU_S1_SHINY_PACK_PRICE,
   GU_S1_LEGENDARY_PACK_PRICE,
@@ -182,11 +181,6 @@ export class SeasonOneStage implements DeploymentStage {
       this.wallet, pauser, rarePack, epicPack, legendaryPack, shinyPack,
       rareChest, legendaryChest
     );
-    
-    const freezer = await findInstance('IM_FREEZER');
-    await setFreezer(
-      this.wallet, freezer, rarePack, epicPack, legendaryPack, shinyPack
-    );
 
     const sale = S1Sale.at(this.wallet, s1sale);
     await sale.setVendorApproval(true, [
@@ -235,11 +229,8 @@ export class SeasonOneStage implements DeploymentStage {
     console.log('** Deploying EpicPack **');
     const epic = await EpicPack.awaitDeployment(
       this.wallet,
-      cap,
-      GU_S1_MAX_MINT,
-      raffle,
       beacon,
-      cards,
+      cap,
       referral,
       GU_S1_EPIC_PACK_SKU,
       GU_S1_EPIC_PACK_PRICE,
@@ -261,11 +252,8 @@ export class SeasonOneStage implements DeploymentStage {
     console.log('** Deploying RarePack **');
     const rare = await RarePack.awaitDeployment(
       this.wallet,
-      cap,
-      GU_S1_MAX_MINT,
-      raffle,
       beacon,
-      cards,
+      cap,
       referral,
       GU_S1_RARE_PACK_SKU,
       GU_S1_RARE_PACK_PRICE,
@@ -287,11 +275,8 @@ export class SeasonOneStage implements DeploymentStage {
     console.log('** Deploying ShinyPack **');
     const shiny = await ShinyPack.awaitDeployment(
       this.wallet,
-      cap,
-      GU_S1_MAX_MINT,
-      raffle,
       beacon,
-      cards,
+      cap,
       referral,
       GU_S1_SHINY_PACK_SKU,
       GU_S1_SHINY_PACK_PRICE,
@@ -313,11 +298,8 @@ export class SeasonOneStage implements DeploymentStage {
     console.log('** Deploying LegendaryPack **');
     const legendary = await LegendaryPack.awaitDeployment(
       this.wallet,
-      cap,
-      GU_S1_MAX_MINT,
-      raffle,
       beacon,
-      cards,
+      cap,
       referral,
       GU_S1_LEGENDARY_PACK_SKU,
       GU_S1_LEGENDARY_PACK_PRICE,

@@ -68,11 +68,8 @@ export async function deployStandards(owner: Wallet): Promise<StandardContracts>
 export async function deployEpicPack(owner: Wallet, params: StandardContracts) {
     const pack = await EpicPack.deploy(
         owner,
-        params.cap.address,
-        MAX_MINT,
-        params.raffle.address,
         params.beacon.address,
-        params.cards.address,
+        params.cap.address,
         params.referral.address,
         GU_S1_EPIC_PACK_SKU,
         GU_S1_EPIC_PACK_PRICE,
@@ -86,11 +83,8 @@ export async function deployEpicPack(owner: Wallet, params: StandardContracts) {
 export async function deployRarePack(owner: Wallet, params: StandardContracts) {
     const pack = await RarePack.deploy(
         owner,
-        params.cap.address,
-        MAX_MINT,
-        params.raffle.address,
         params.beacon.address,
-        params.cards.address,
+        params.cap.address,
         params.referral.address,
         GU_S1_RARE_PACK_SKU,
         GU_S1_RARE_PACK_PRICE,
@@ -104,11 +98,8 @@ export async function deployRarePack(owner: Wallet, params: StandardContracts) {
 export async function deployLegendaryPack(owner: Wallet, params: any) {
     const pack = await LegendaryPack.deploy(
         owner,
-        params.cap.address,
-        MAX_MINT,
-        params.raffle.address,
         params.beacon.address,
-        params.cards.address,
+        params.cap.address,
         params.referral.address,
         GU_S1_LEGENDARY_PACK_SKU,
         GU_S1_LEGENDARY_PACK_PRICE,
@@ -122,11 +113,8 @@ export async function deployLegendaryPack(owner: Wallet, params: any) {
 export async function deployShinyPack(owner: Wallet, params: StandardContracts) {
     const pack = await ShinyPack.deploy(
         owner,
-        params.cap.address,
-        MAX_MINT,
-        params.raffle.address,
         params.beacon.address,
-        params.cards.address,
+        params.cap.address,
         params.referral.address,
         GU_S1_SHINY_PACK_SKU,
         GU_S1_SHINY_PACK_PRICE,

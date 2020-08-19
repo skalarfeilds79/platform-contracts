@@ -36,7 +36,7 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
         PurchaseProcessor _pay
     ) public
         S1Vendor(_cap, _referral, _sku, _price, _escrow, _pay)
-        TradeToggleERC20(_name, _symbol, 0)
+        TradeToggleERC20(_name, _symbol, 18)
     {
         require(
             address(_pack) != address(0),
@@ -82,7 +82,7 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
                 player: _user,
                 admin: address(escrow),
                 asset: address(this),
-                balance: _quantity,
+                balance: _quantity.mul(10**18),
                 lowTokenID: 0,
                 highTokenID: 0,
                 tokenIDs: new uint256[](0)
@@ -123,7 +123,8 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
     }
 
     function _mintChests(address _to, uint256 _count, uint256 _paymentID) internal {
-        _mint(_to, _count);
+        uint256 toMint = _count.mul(10**18);
+        _mint(_to, toMint);
         emit PaymentERC20Minted(_paymentID, address(this), _count);
     }
 
@@ -132,7 +133,8 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
      * @param _count the number of chests to open
      */
     function open(uint _count) public {
-        _burn(msg.sender, _count);
+        uint256 toBurn = _count.mul(10**18);
+        _burn(msg.sender, toBurn);
         pack.openChests(msg.sender, _count);
     }
 

@@ -120,7 +120,7 @@ describe('Shiny Pack', () => {
     async function mintTrackGas(id: number, description: string) {
       const commitment = await shiny.commitments(id);
       const beacon = Beacon.at(owner, await shiny.beacon());
-      await beacon.randomnessOrCallback(commitment.commitBlock);
+      await beacon.callback(commitment.commitBlock);
       const prediction = await shiny.predictCards(id);
       const protos = prediction.protos;
       const packs = commitment.quantity;

@@ -58,11 +58,11 @@ contract Beacon {
     }
 
     /**
-     * @dev Get the randomness result for a particular block, and callback if not present
+     * @dev Callback on a block. Will succeed even if no callback is necessary Return randomness. 
      *
      * @param _commitBlock the block in question
      */
-    function randomnessOrCallback(uint256 _commitBlock) external returns (bytes32) {
+    function callback(uint256 _commitBlock) external returns (bytes32) {
         uint256 currentBlock = getCurrentBlock(_commitBlock);
         if (blockHashes[currentBlock] == bytes32(0)) {
             _callback(currentBlock);
@@ -70,7 +70,7 @@ contract Beacon {
         return blockHashes[currentBlock];
     }
 
-    /**
+    /**s
      * @dev Get the randomness result for a particular block
      *
      * @param _commitBlock the block in question

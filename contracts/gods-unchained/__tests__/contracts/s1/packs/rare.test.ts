@@ -116,7 +116,7 @@ describe('Rare Pack', () => {
     async function mintTrackGas(id: number, description: string) {
       const commitment = await rare.commitments(id);
       const beacon = Beacon.at(owner, await rare.beacon());
-      await beacon.randomnessOrCallback(commitment.commitBlock);
+      await beacon.callback(commitment.commitBlock);
       const prediction = await rare.predictCards(id);
       const protos = prediction.protos;
       const packs = (await rare.commitments(id)).quantity;

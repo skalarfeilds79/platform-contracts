@@ -39,20 +39,20 @@
     },
     "staging": {
       "addresses": {
-        "GU_Cards": "0x560Dc5d05861E07B7558B7DA5C2D2bB86169CC0c",
-        "GU_OpenMinter": "0x8cD89f8b3Ef02Cb7aF536B4bdB91E9099b763Bad",
-        "GU_Fusing": "0xebDD5404286bf2C89aa4EC6C92b1731ca1c3E616",
-        "GU_PromoFactory": "0xc6825Ea9B953A30CCc219A7b14A1e5A554C3D22A",
-        "GU_S1_Raffle": "0xe6f22D88dE183cb0f106c2A13dC805D527532217",
-        "GU_S1_Sale": "0x57a81afBEcB14775aED18fc39132Fc66574b56ec",
-        "GU_S1_Referral": "0xE7D9319955050790aAd3f9AFe1Ec16008aFf0505",
-        "GU_S1_Cap": "0x4dCcE7A281FC0Bb19d7492Fc50Ede455B83De31f",
-        "GU_S1_Epic_Pack": "0xf566B0999fF7111aFF53f28B63461Ee5621B1212",
-        "GU_S1_Rare_Pack": "0xAD4920cB9604cb991D7bf226FFcc90EeCd227E4B",
-        "GU_S1_Shiny_Pack": "0x870b271E469aDd2AD5F80cDF974C228B80BfA37e",
-        "GU_S1_Legendary_Pack": "0xf5a371F1b627Bfe1589C5A32dc0C4c47b5E10408",
-        "GU_S1_Rare_Chest": "0xC0b60e17D8FCd115a9F69e704a81bcE8eD8dE60B",
-        "GU_S1_Legendary_Chest": "0xcF30EAC8C24f6E766333ED7c951Bb4590A3CA8DF"
+        "GU_Cards": "0x904883E371d036e6ae397a23B1c6ef5107127f0e",
+        "GU_OpenMinter": "0xe69aae53aF98f80252F0f5fEd11f9bC5FD428F1d",
+        "GU_Fusing": "0x910eD7bcd92e64a88c66b8d3BBECFC54ADCF296a",
+        "GU_PromoFactory": "0xE7987Bc9cD19d76aa7a6aD688A8A6D07B41c905e",
+        "GU_S1_Raffle": "0xD5F8627f308c843232ef678357F4F4Dc118cF543",
+        "GU_S1_Sale": "0xbd8b1064Bd3dcd24f5D02778F756B20cc91B8B9C",
+        "GU_S1_Referral": "0xE22622307A7637E7E25Adda51B6fcd5B254C394e",
+        "GU_S1_Cap": "0x8Ef7Da6830860AcF3E5bf455aD769c9C41E1AF1D",
+        "GU_S1_Epic_Pack": "0x35E0e214a58a40A95191EA51b490E1ad4DBD9b48",
+        "GU_S1_Rare_Pack": "0x51a17520e29C436CBDCd5F081b57E6AEBa323169",
+        "GU_S1_Shiny_Pack": "0xaCbB75d30055665FeAC93451404d839aa3716a07",
+        "GU_S1_Legendary_Pack": "0x7f5e2e79909B1BECba95b8AeFD48d01277c3B9ca",
+        "GU_S1_Rare_Chest": "0xaF3F78673bE8A82112cA354191c703C81104450b",
+        "GU_S1_Legendary_Chest": "0x244cb16f66C2Ef258509507b1B41a0C9e9003d6A"
       },
       "dependencies": {}
     }

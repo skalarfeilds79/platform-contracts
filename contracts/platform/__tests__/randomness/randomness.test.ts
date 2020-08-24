@@ -84,7 +84,7 @@ describe('Beacon', () => {
       let receipt = await tx.wait();
       await blockchain.waitBlocksAsync(wait);
       const commitBlock = offset + receipt.blockNumber;
-      tx = await beacon.randomnessOrCallback(commitBlock);
+      tx = await beacon.callback(commitBlock);
       receipt = await tx.wait();
       const parsed = parseLogs(Beacon.ABI, receipt.logs);
       expect(parsed.length).toBe(1);
@@ -98,7 +98,7 @@ describe('Beacon', () => {
     });
 
     it('should not be able to callback without a commit', async () => {
-      await expectRevert(beacon.randomnessOrCallback(0));
+      await expectRevert(beacon.callback(0));
     });
 
     it('should not be able to callback on the same block', async () => {
@@ -175,7 +175,7 @@ describe('Beacon', () => {
       receipt = await tx.wait();
       const committed = await beacon.commitRequested(receipt.blockNumber);
       expect(committed).toBeTruthy();
-      await beacon.randomnessOrCallback(receipt.blockNumber);
+      await beacon.callback(receipt.blockNumber);
     });
   });
 
@@ -189,7 +189,7 @@ describe('Beacon', () => {
     });
 
     it('should not be able to get randomness without a commit', async () => {
-      await expectRevert(beacon.randomnessOrCallback(0));
+      await expectRevert(beacon.callback(0));
     });
 
     it('should be able to get randomness after recommit', async () => {
@@ -199,21 +199,21 @@ describe('Beacon', () => {
       tx = await beacon.recommit(receipt.blockNumber, 0);
       receipt = await tx.wait();
       await blockchain.waitBlocksAsync(1);
-      await beacon.randomnessOrCallback(receipt.blockNumber);
+      await beacon.callback(receipt.blockNumber);
     });
 
     it('should be able to get randomness after callback', async () => {
       const tx = await beacon.commit(0);
       const receipt = await tx.wait();
       await blockchain.waitBlocksAsync(1);
-      await beacon.randomnessOrCallback(receipt.blockNumber);
+      await beacon.callback(receipt.blockNumber);
     });
 
     it('should be able to get randomness without callback', async () => {
       const tx = await beacon.commit(0);
       const receipt = await tx.wait();
       await blockchain.waitBlocksAsync(1);
-      await beacon.randomnessOrCallback(receipt.blockNumber);
+      await beacon.callback(receipt.blockNumber);
     });
 
     it('should return the same randomness after a query', async () => {
@@ -228,7 +228,7 @@ describe('Beacon', () => {
       let receipt = await tx.wait();
       const original = receipt.blockNumber;
       await blockchain.waitBlocksAsync(256);
-      await expectRevert(beacon.randomnessOrCallback(original));
+      await expectRevert(beacon.callback(original));
       tx = await beacon.recommit(original, 0);
       receipt = await tx.wait();
       const recommitted = receipt.blockNumber;
@@ -244,7 +244,7 @@ describe('Beacon', () => {
       const original = receipt.blockNumber;
       await blockchain.waitBlocksAsync(256);
 
-      await expectRevert(beacon.randomnessOrCallback(original));
+      await expectRevert(beacon.callback(original));
       tx = await beacon.recommit(original, 0);
       receipt = await tx.wait();
       const firstRecommitBlock = receipt.blockNumber;
@@ -252,7 +252,7 @@ describe('Beacon', () => {
       expect(forward.toNumber()).toBe(firstRecommitBlock);
       await blockchain.waitBlocksAsync(256);
 
-      await expectRevert(beacon.randomnessOrCallback(original));
+      await expectRevert(beacon.callback(original));
       tx = await beacon.recommit(firstRecommitBlock, 0);
       receipt = await tx.wait();
       const secondRecommitBlock = receipt.blockNumber;
@@ -269,7 +269,7 @@ describe('Beacon', () => {
       const original = receipt.blockNumber;
       await blockchain.waitBlocksAsync(256);
 
-      await expectRevert(beacon.randomnessOrCallback(original));
+      await expectRevert(beacon.callback(original));
       tx = await beacon.recommit(original, 0);
       receipt = await tx.wait();
       const firstRecommitBlock = receipt.blockNumber;
@@ -277,7 +277,7 @@ describe('Beacon', () => {
       expect(forward.toNumber()).toBe(firstRecommitBlock);
       await blockchain.waitBlocksAsync(256);
 
-      await expectRevert(beacon.randomnessOrCallback(firstRecommitBlock));
+      await expectRevert(beacon.callback(firstRecommitBlock));
       tx = await beacon.recommit(firstRecommitBlock, 0);
       receipt = await tx.wait();
       const secondRecommitBlock = receipt.blockNumber;

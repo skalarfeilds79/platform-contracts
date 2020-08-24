@@ -18,18 +18,18 @@ contract Consumer {
 
     function sameBlockCallback() public {
         beacon.commit(0);
-        beacon.randomnessOrCallback(block.number);
+        beacon.callback(block.number);
     }
 
     function multiCallback(uint256 commitBlock, uint256 count) public {
         for (uint i = 0; i < count; i++) {
-            beacon.randomnessOrCallback(commitBlock);
+            beacon.callback(commitBlock);
         }
     }
 
     function requireSameRandomness(uint256 a, uint256 b) public {
-        bytes32 aRand = beacon.randomnessOrCallback(a);
-        bytes32 bRand = beacon.randomnessOrCallback(b);
+        bytes32 aRand = beacon.callback(a);
+        bytes32 bRand = beacon.callback(b);
         require(aRand == bRand, "must be the same randomness");
     }
 }

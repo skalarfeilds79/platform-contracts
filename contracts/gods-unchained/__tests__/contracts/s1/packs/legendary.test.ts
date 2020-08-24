@@ -117,7 +117,7 @@ describe('Legendary Pack', () => {
     async function mintTrackGas(id: number, description: string) {
       const commitment = await legendary.commitments(id);
       const beacon = Beacon.at(owner, await legendary.beacon());
-      await beacon.randomnessOrCallback(commitment.commitBlock);
+      await beacon.callback(commitment.commitBlock);
       const prediction = await legendary.predictCards(id);
       const protos = prediction.protos;
       const packs = (await legendary.commitments(id)).quantity;

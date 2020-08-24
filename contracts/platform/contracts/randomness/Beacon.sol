@@ -58,7 +58,7 @@ contract Beacon {
     }
 
     /**
-     * @dev Callback on a block. Will succeed even if no callback is necessary Return randomness. 
+     * @dev Callback on a block. Will succeed even if no callback is necessary. Returns the randomness.
      *
      * @param _commitBlock the block in question
      */

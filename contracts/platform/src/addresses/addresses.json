@@ -1,6 +1,11 @@
 {
   "environments": {
-    "development": null,
+    "development": {
+      "addresses": {
+        
+      },
+      "dependencies": {}
+    },
     "staging": {
       "addresses": {
         "IM_Oracle_ETHUSDMock": "0xf7f6408048Ec4f590ff670BA7D303A09672cEF66",

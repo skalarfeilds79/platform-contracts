@@ -13,10 +13,10 @@
     "staging": {
       "addresses": {
         "IM_Oracle_ETHUSDMock": "0xf7f6408048Ec4f590ff670BA7D303A09672cEF66",
-        "IM_Beacon": "0xA44Aa3b4872f945EC63dfB852684BAcb455Fc5f4",
-        "IM_Processor": "0x98c8DFa582872e9562b9AeD54461c955de5f6910",
-        "IM_Escrow": "0x8F062d41C34229c9ea3188d00cBAd197499ccBdC",
-        "IM_Escrow_CreditCard": "0xF7763daCB17e797125d41065a22F3AB82447A28e"
+        "IM_Beacon": "0xc18f9a643503121341cEde36F8296D5C46fcedFC",
+        "IM_Processor": "0x344Bd11Caa4155113a705BB4682601D3a64686bd",
+        "IM_Escrow": "0x1695fF41546F53E0B1Bd4566a87E97a735202a40",
+        "IM_Escrow_CreditCard": "0xf77070595509D8d3a5335Be0dAAe6579B178c7b6"
       },
       "dependencies": {}
     },

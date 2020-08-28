@@ -5,9 +5,11 @@ import 'jest';
 import { GU_S1_RARE_CHEST_PRICE, GU_S1_RARE_CHEST_SKU } from '../../../deployment/constants';
 import { Chest, RarePack } from '../../../src';
 import { deployRareChest, deployRarePack, deployStandards, StandardContracts } from './utils';
+import { BigNumber, BigNumberish } from 'ethers/utils';
 
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
+const multiplier = new BigNumber(10).pow(18);
 
 ethers.errors.setLogLevel('error');
 jest.setTimeout(60000);
@@ -41,11 +43,11 @@ describe('Chest', () => {
 
     async function purchaseChests(quantity: number) {
       let balance = await chest.balanceOf(owner.address);
-      expect(balance.toNumber()).toBe(0);
+      expect(balance.eq(0)).toBe(true);
       const ethRequired = await shared.oracle.convert(1, 0, GU_S1_RARE_CHEST_PRICE * quantity);
-      await chest.purchase(quantity, getETHPayment(), ethers.constants.AddressZero, { value: ethRequired});
+      await chest.purchase(quantity, getETHPayment(), ethers.constants.AddressZero, { value: ethRequired });
       balance = await chest.balanceOf(owner.address);
-      expect(balance.toNumber()).toBe(quantity);
+      expect(balance.eq(multiplier.mul(quantity))).toBe(true);
     }
 
     it('should purchase 1 chest using ETH', async() => {
@@ -93,19 +95,19 @@ describe('Chest', () => {
         params,
       );
       await chest.purchase(quantity, payment, ethers.constants.AddressZero);
-      let expectedUserBalance: number;
-      let expectedEscrowBalance: number;
+      let expectedUserBalance: BigNumberish;
+      let expectedEscrowBalance: BigNumberish;
       if (escrowFor > 0) {
         expectedUserBalance = 0;
-        expectedEscrowBalance = quantity;
+        expectedEscrowBalance = multiplier.mul(quantity);
       } else {
-        expectedUserBalance = quantity;
+        expectedUserBalance = multiplier.mul(quantity);
         expectedEscrowBalance = 0;
       }
       const escrowBalance = await chest.balanceOf(shared.escrow.address);
       const userBalance = await chest.balanceOf(owner.address);
-      expect(userBalance.toNumber()).toBe(expectedUserBalance);
-      expect(escrowBalance.toNumber()).toBe(expectedEscrowBalance);
+      expect(userBalance.eq(expectedUserBalance)).toBe(true);
+      expect(escrowBalance.eq(expectedEscrowBalance)).toBe(true);
     }
 
     it('should purchase 1 chest using USD with no escrow', async () => {
@@ -144,8 +146,8 @@ describe('Chest', () => {
       const preBalance = await chest.balanceOf(owner.address);
       await chest.open(quantity);
       const postBalance = await chest.balanceOf(owner.address);
-      const diff = preBalance.toNumber() - postBalance.toNumber();
-      expect(diff).toBe(quantity);
+      const diff = preBalance.sub(postBalance);
+      expect(diff.eq(multiplier.mul(quantity))).toBe(true);
     }
 
     it('should not be able to open chests with insufficient balance', async () => {

@@ -1,5 +1,15 @@
 {
   "environments": {
+    "staging": {
+      "addresses": {
+        "IM_Oracle_ETHUSDMock": "0xDa3Ca5fB18920E33CeBd4Bc811A70DA74E84E435",
+        "IM_Beacon": "0xa0ddE76121EcaD334c5931E31c4e368E80317D4e",
+        "IM_Processor": "0xf9D67798823720cF3ebb9FBf5Cb16fBdc594D693",
+        "IM_Escrow": "0x95C4920Aa0be40ec6eD084d331250329b109ECC0",
+        "IM_Escrow_CreditCard": "0xf20b445Ef0C8a0b6f41C9C99AD4B6C169bBC5e8c"
+      },
+      "dependencies": {}
+    },
     "development": {
       "addresses": {
         "IM_Oracle_ETHUSDMock": "0x1dC4c1cEFEF38a777b15aA20260a54E584b16C48",
@@ -10,23 +20,9 @@
       },
       "dependencies": {}
     },
-    "staging": {
-      "addresses": {
-        "IM_Oracle_ETHUSDMock": "0xf7f6408048Ec4f590ff670BA7D303A09672cEF66",
-        "IM_Beacon": "0xc18f9a643503121341cEde36F8296D5C46fcedFC",
-        "IM_Processor": "0x344Bd11Caa4155113a705BB4682601D3a64686bd",
-        "IM_Escrow": "0x1695fF41546F53E0B1Bd4566a87E97a735202a40",
-        "IM_Escrow_CreditCard": "0xf77070595509D8d3a5335Be0dAAe6579B178c7b6"
-      },
-      "dependencies": {}
-    },
     "production": {
       "addresses": {
-        "IM_Oracle_ETHUSDMaker": "0x4F47B7CE20c9AbF6F5816Cd3d77a3Ee936618c6E",
-        "IM_Beacon": "0xe1d53150fc52349Db3665B881DCaeeb48fe337B7",
-        "IM_Processor": "0x8859eDD4adDf0CD286400d96Cb222442E1C28923",
-        "IM_Escrow": "0xd79Bd8d6E9Ef6FE3b710f1dD510dB7D4c226Ca61",
-        "IM_Escrow_CreditCard": "0xC9110910e1a45636fa414938A39c342F21fB9bf2"
+
       },
       "dependencies": {}
     }

@@ -9,6 +9,18 @@
         "IM_Escrow_CreditCard": "0xf20b445Ef0C8a0b6f41C9C99AD4B6C169bBC5e8c"
       },
       "dependencies": {}
+    },
+    "development": {
+      "addresses": {
+
+      },
+      "dependencies": {}
+    },
+    "production": {
+      "addresses": {
+
+      },
+      "dependencies": {}
     }
   }
 }

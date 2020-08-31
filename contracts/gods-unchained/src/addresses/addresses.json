@@ -1,5 +1,17 @@
 {
   "environments": {
+    "development": {
+      "addresses": {
+
+      },
+      "dependencies": {}
+    },
+    "production": {
+      "addresses": {
+
+      },
+      "dependencies": {}
+    },
     "staging": {
       "addresses": {
         "GU_Cards": "0x1e8B04619e6440992562171Cc947B19246b40793",

@@ -3,83 +3,17 @@ import { getPlatformAddresses } from '@imtbl/platform';
 import { asyncForEach } from '@imtbl/utils';
 import { ethers, Wallet } from 'ethers';
 import {
-  Cards,
-  Chest, EpicPack,
-
-
-  LegendaryPack,
-  PurchaseProcessor, Raffle,
-
-
-
-  RarePack, Referral,
-
-
-
-
-
-
-
-  S1Cap, S1Sale,
-
-
-
-  ShinyPack
+  Cards, Chest, EpicPack, LegendaryPack,
+  PurchaseProcessor, Raffle, RarePack, Referral,
+  S1Cap, S1Sale, ShinyPack
 } from '../src/contracts';
 import {
-  GU_S1_CAP,
-
-
-
-  GU_S1_EPIC_PACK_PRICE, GU_S1_EPIC_PACK_SKU, GU_S1_LEGENDARY_CHEST_CAP,
-
-  GU_S1_LEGENDARY_CHEST_PRICE,
-
-  GU_S1_LEGENDARY_CHEST_SKU,
-
-
-
-
-
-
-
-
-
-
-
-
-  GU_S1_LEGENDARY_CHEST_TOKEN_NAME, GU_S1_LEGENDARY_CHEST_TOKEN_SYMBOL, GU_S1_LEGENDARY_PACK_PRICE, GU_S1_LEGENDARY_PACK_SKU,
-
-
-
-
-
-
-
-
-
-  GU_S1_RAFFLE_TOKEN_NAME,
-  GU_S1_RAFFLE_TOKEN_SYMBOL, GU_S1_RARE_CHEST_CAP,
-
-  GU_S1_RARE_CHEST_PRICE,
-
-  GU_S1_RARE_CHEST_SKU,
-
-
-
-
-
-
-
-
-
-
-
-  GU_S1_RARE_CHEST_TOKEN_NAME, GU_S1_RARE_CHEST_TOKEN_SYMBOL, GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_SKU,
-
-
-
-
+  GU_S1_CAP, GU_S1_EPIC_PACK_PRICE, GU_S1_EPIC_PACK_SKU, GU_S1_LEGENDARY_CHEST_CAP,
+  GU_S1_LEGENDARY_CHEST_PRICE, GU_S1_LEGENDARY_CHEST_SKU, GU_S1_LEGENDARY_CHEST_TOKEN_NAME,
+  GU_S1_LEGENDARY_CHEST_TOKEN_SYMBOL, GU_S1_LEGENDARY_PACK_PRICE, GU_S1_LEGENDARY_PACK_SKU,
+  GU_S1_RAFFLE_TOKEN_NAME, GU_S1_RAFFLE_TOKEN_SYMBOL, GU_S1_RARE_CHEST_CAP,
+  GU_S1_RARE_CHEST_PRICE, GU_S1_RARE_CHEST_SKU, GU_S1_RARE_CHEST_TOKEN_NAME,
+  GU_S1_RARE_CHEST_TOKEN_SYMBOL, GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_SKU,
   GU_S1_SHINY_PACK_PRICE, GU_S1_SHINY_PACK_SKU
 } from './constants';
 

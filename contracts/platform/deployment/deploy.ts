@@ -17,9 +17,9 @@ async function start() {
 
   let stages: DeploymentStage[] = [];
 
-  args.core = true;
-
-  console.log('wwwwwwwoooooooo');
+  if (args.all) {
+    args.core = true;
+  }
 
   if (args.core) {
     stages.push(

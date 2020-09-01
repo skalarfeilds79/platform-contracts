@@ -1,4 +1,5 @@
 import { AddressBook, DeploymentEnvironment, DeploymentParams, DeploymentStage, Manager } from '@imtbl/deployment-utils';
+import { CoreStage } from './01_core';
 import { SeasonOneStage } from './02_season_one';
 
 
@@ -28,11 +29,11 @@ async function start() {
   //   stages.push(new ForwarderStage(params));
   // }
 
-  // if (args.core) {
-  //   stages.push(
-  //     new CoreStage(params),
-  //   );
-  // }
+  if (args.core) {
+    stages.push(
+      new CoreStage(params),
+    );
+  }
 
   if (args.seasonone) {
     stages.push(

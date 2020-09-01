@@ -1,6 +1,6 @@
-import { DeploymentParams, AddressBook, DeploymentStage, Manager, DeploymentEnvironment } from '@imtbl/deployment-utils';
-
+import { AddressBook, DeploymentEnvironment, DeploymentParams, DeploymentStage, Manager } from '@imtbl/deployment-utils';
 import { CoreStage } from './01_core';
+
 
 const config = require('dotenv').config({ path: '../../.env' }).parsed;
 
@@ -17,9 +17,9 @@ async function start() {
 
   let stages: DeploymentStage[] = [];
 
-  if (args.all) {
-    args.core = true;
-  }
+  args.core = true;
+
+  console.log('wwwwwwwoooooooo');
 
   if (args.core) {
     stages.push(

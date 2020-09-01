@@ -1,46 +1,90 @@
-import { Wallet, ethers } from 'ethers';
-
-import { setPauser, DeploymentStage, DeploymentEnvironment, DeploymentParams } from '@imtbl/deployment-utils';
+import { DeploymentEnvironment, DeploymentParams, DeploymentStage, setPauser } from '@imtbl/deployment-utils';
+import { getPlatformAddresses } from '@imtbl/platform';
 import { asyncForEach } from '@imtbl/utils';
-
+import { ethers, Wallet } from 'ethers';
 import {
-  GU_S1_RARE_CHEST_CAP,
-  GU_S1_LEGENDARY_CHEST_CAP,
-  GU_S1_RARE_CHEST_PRICE,
-  GU_S1_LEGENDARY_CHEST_PRICE,
-  GU_S1_RARE_CHEST_SKU,
-  GU_S1_LEGENDARY_CHEST_SKU,
-  GU_S1_EPIC_PACK_SKU,
-  GU_S1_RARE_PACK_SKU,
-  GU_S1_SHINY_PACK_SKU,
-  GU_S1_LEGENDARY_PACK_SKU,
+  Cards,
+  Chest, EpicPack,
+
+
+  LegendaryPack,
+  PurchaseProcessor, Raffle,
+
+
+
+  RarePack, Referral,
+
+
+
+
+
+
+
+  S1Cap, S1Sale,
+
+
+
+  ShinyPack
+} from '../src/contracts';
+import {
   GU_S1_CAP,
-  GU_S1_RARE_PACK_PRICE,
-  GU_S1_SHINY_PACK_PRICE,
-  GU_S1_LEGENDARY_PACK_PRICE,
-  GU_S1_EPIC_PACK_PRICE,
-  GU_S1_RARE_CHEST_TOKEN_SYMBOL,
-  GU_S1_RARE_CHEST_TOKEN_NAME,
-  GU_S1_LEGENDARY_CHEST_TOKEN_SYMBOL,
-  GU_S1_LEGENDARY_CHEST_TOKEN_NAME,
+
+
+
+  GU_S1_EPIC_PACK_PRICE, GU_S1_EPIC_PACK_SKU, GU_S1_LEGENDARY_CHEST_CAP,
+
+  GU_S1_LEGENDARY_CHEST_PRICE,
+
+  GU_S1_LEGENDARY_CHEST_SKU,
+
+
+
+
+
+
+
+
+
+
+
+
+  GU_S1_LEGENDARY_CHEST_TOKEN_NAME, GU_S1_LEGENDARY_CHEST_TOKEN_SYMBOL, GU_S1_LEGENDARY_PACK_PRICE, GU_S1_LEGENDARY_PACK_SKU,
+
+
+
+
+
+
+
+
+
   GU_S1_RAFFLE_TOKEN_NAME,
-  GU_S1_RAFFLE_TOKEN_SYMBOL
+  GU_S1_RAFFLE_TOKEN_SYMBOL, GU_S1_RARE_CHEST_CAP,
+
+  GU_S1_RARE_CHEST_PRICE,
+
+  GU_S1_RARE_CHEST_SKU,
+
+
+
+
+
+
+
+
+
+
+
+  GU_S1_RARE_CHEST_TOKEN_NAME, GU_S1_RARE_CHEST_TOKEN_SYMBOL, GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_SKU,
+
+
+
+
+  GU_S1_SHINY_PACK_PRICE, GU_S1_SHINY_PACK_SKU
 } from './constants';
 
-import {
-  Raffle,
-  S1Sale,
-  Referral,
-  EpicPack,
-  RarePack,
-  ShinyPack,
-  LegendaryPack,
-  PurchaseProcessor,
-  Cards,
-  Chest,
-  S1Cap
-} from '../src/contracts';
-import { getPlatformAddresses } from '@imtbl/platform';
+
+
 
 export class SeasonOneStage implements DeploymentStage {
   
@@ -85,21 +129,21 @@ export class SeasonOneStage implements DeploymentStage {
     const escrow = platform.creditCardAddress; // await findInstance('IM_Escrow_CreditCard');
     const processor = platform.processorAddress; // await findInstance('IM_Processor');
 
-    if (GU_S1_EPIC_PACK_SKU.length === 0) {
-      throw '*** No Epic Pack SKU set! Cannot deploy EpicPack. ***';
-    }
-    const epicPack =
-      (await findInstance('GU_S1_Epic_Pack')) ||
-      (await this.deployEpicPack(
-        s1Cap,
-        raffle,
-        beacon,
-        cards,
-        referral,
-        escrow,
-        processor,
-      ));
-    onDeployment('GU_S1_Epic_Pack', epicPack, false);
+    // if (GU_S1_EPIC_PACK_SKU.length === 0) {
+    //   throw '*** No Epic Pack SKU set! Cannot deploy EpicPack. ***';
+    // }
+    // const epicPack =
+    //   (await findInstance('GU_S1_Epic_Pack')) ||
+    //   (await this.deployEpicPack(
+    //     s1Cap,
+    //     raffle,
+    //     beacon,
+    //     cards,
+    //     referral,
+    //     escrow,
+    //     processor,
+    //   ));
+    // onDeployment('GU_S1_Epic_Pack', epicPack, false);
 
     if (GU_S1_RARE_PACK_SKU.length === 0) {
       throw '*** No Rare Pack SKU set! Cannot deploy RarePack. ***';
@@ -117,76 +161,76 @@ export class SeasonOneStage implements DeploymentStage {
       ));
     onDeployment('GU_S1_Rare_Pack', rarePack, false);
 
-    if (GU_S1_SHINY_PACK_SKU.length === 0) {
-      throw '*** No Shiny Pack SKU set! Cannot deploy ShinyPack. ***';
-    }
-    const shinyPack =
-      (await findInstance('GU_S1_Shiny_Pack')) ||
-      (await this.deployShinyPack(
-        s1Cap,
-        raffle,
-        beacon,
-        cards,
-        referral,
-        escrow,
-        processor,
-      ));
-    onDeployment('GU_S1_Shiny_Pack', shinyPack, false);
+    // if (GU_S1_SHINY_PACK_SKU.length === 0) {
+    //   throw '*** No Shiny Pack SKU set! Cannot deploy ShinyPack. ***';
+    // }
+    // const shinyPack =
+    //   (await findInstance('GU_S1_Shiny_Pack')) ||
+    //   (await this.deployShinyPack(
+    //     s1Cap,
+    //     raffle,
+    //     beacon,
+    //     cards,
+    //     referral,
+    //     escrow,
+    //     processor,
+    //   ));
+    // onDeployment('GU_S1_Shiny_Pack', shinyPack, false);
 
-    if (GU_S1_LEGENDARY_PACK_SKU.length === 0) {
-      throw '*** No Shiny Pack SKU set! Cannot deploy ShinyPack. ***';
-    }
-    const legendaryPack =
-      (await findInstance('GU_S1_Legendary_Pack')) ||
-      (await this.deployLegendaryPack(
-        s1Cap,
-        raffle,
-        beacon,
-        cards,
-        referral,
-        escrow,
-        processor,
-      ));
-    onDeployment('GU_S1_Legendary_Pack', legendaryPack, false);
+    // if (GU_S1_LEGENDARY_PACK_SKU.length === 0) {
+    //   throw '*** No Shiny Pack SKU set! Cannot deploy ShinyPack. ***';
+    // }
+    // const legendaryPack =
+    //   (await findInstance('GU_S1_Legendary_Pack')) ||
+    //   (await this.deployLegendaryPack(
+    //     s1Cap,
+    //     raffle,
+    //     beacon,
+    //     cards,
+    //     referral,
+    //     escrow,
+    //     processor,
+    //   ));
+    // onDeployment('GU_S1_Legendary_Pack', legendaryPack, false);
 
     const rareChest =
       (await findInstance('GU_S1_Rare_Chest')) ||
       (await this.deployRareChest(rarePack, s1Cap, referral, escrow, processor));
     onDeployment('GU_S1_Rare_Chest', rareChest, false);
 
-    const legendaryChest =
-      (await findInstance('GU_S1_Legendary_Chest')) ||
-      (await this.deployLegendaryChest(legendaryPack, s1Cap, referral, escrow, processor));
-    onDeployment('GU_S1_Legendary_Chest', legendaryChest, false);
+    // const legendaryChest =
+    //   (await findInstance('GU_S1_Legendary_Chest')) ||
+    //   (await this.deployLegendaryChest(legendaryPack, s1Cap, referral, escrow, processor));
+    // onDeployment('GU_S1_Legendary_Chest', legendaryChest, false);
 
-    const packAddresses = [rarePack, shinyPack, legendaryPack, epicPack];
-    await this.setupCardsContract(cards, packAddresses);
+    const packAddresses = [rarePack, /*shinyPack, legendaryPack, epicPack*/];
+    // await this.setupCardsContract(cards, packAddresses);
 
     await this.setChestForPack('Rare', rarePack, rareChest);
-    await this.setChestForPack('Legendary', legendaryPack, legendaryChest);
+    // await this.setChestForPack('Legendary', legendaryPack, legendaryChest);
 
-    await this.setApprovedCapUpdaters(s1Cap, [rarePack, shinyPack, legendaryPack, epicPack, rareChest, legendaryChest]);
+    await this.setApprovedCapUpdaters(s1Cap, [rarePack, /*shinyPack, legendaryPack, epicPack, rareChest*/]);
     await this.setApprovedRaffleMinters(raffle, packAddresses);
     await this.setApprovedProcessorSellers(processor, [
-      { address: epicPack, sku: GU_S1_EPIC_PACK_SKU },
+      // { address: epicPack, sku: GU_S1_EPIC_PACK_SKU },
       { address: rarePack, sku: GU_S1_RARE_PACK_SKU },
-      { address: shinyPack, sku: GU_S1_SHINY_PACK_SKU },
-      { address: legendaryPack, sku: GU_S1_LEGENDARY_PACK_SKU },
+      // { address: shinyPack, sku: GU_S1_SHINY_PACK_SKU },
+      // { address: legendaryPack, sku: GU_S1_LEGENDARY_PACK_SKU },
       { address: rareChest, sku: GU_S1_RARE_CHEST_SKU },
-      { address: legendaryChest, sku: GU_S1_LEGENDARY_CHEST_SKU }
+      // { address: legendaryChest, sku: GU_S1_LEGENDARY_CHEST_SKU }
     ]);
 
     const pauser = await findInstance('IM_PAUSER');
     await setPauser(
-      this.wallet, pauser, rarePack, epicPack, legendaryPack, shinyPack,
-      rareChest, legendaryChest
+      this.wallet, pauser, rarePack, //epicPack, legendaryPack, shinyPack,
+      rareChest, // legendaryChest
     );
 
-    const sale = S1Sale.at(this.wallet, s1sale);
-    await sale.setVendorApproval(true, [
-      rarePack, epicPack, legendaryPack, shinyPack,
-      rareChest, legendaryChest
-    ]);
+    // const sale = S1Sale.at(this.wallet, s1sale);
+    // await sale.setVendorApproval(true, [
+    //   rarePack, // epicPack, legendaryPack, shinyPack,
+    //   rareChest, // legendaryChest
+    // ]);
   }
 
   async deployRaffle(): Promise<string> {

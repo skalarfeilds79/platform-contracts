@@ -1,18 +1,16 @@
-import { Wallet, ethers } from 'ethers';
 import {
-  setPauser,
-  setFreezer,
   DeploymentEnvironment,
-  DeploymentStage,
-  DeploymentParams,
+
+  DeploymentParams, DeploymentStage
 } from '@imtbl/deployment-utils';
+import { ethers, Wallet } from 'ethers';
 import {
-  Escrow,
-  CreditCardEscrow,
-  Beacon,
-  PurchaseProcessor,
+  Beacon, CreditCardEscrow, Escrow,
+
+
+
   ETHUSDMockOracle,
-  MakerOracle,
+  MakerOracle, PurchaseProcessor
 } from '../src/contracts';
 import { PLATFORM_ESCROW_CAPACITY } from './constants';
 
@@ -53,8 +51,8 @@ export class CoreStage implements DeploymentStage {
       oracle = await this.deployOracle(medianizer);
       onDeployment('IM_Oracle_ETHUSDMaker', oracle, false);
     } else if (ethUSDMock.length == 0 || !ethUSDMock) {
-      oracle = await this.deployMockOracle();
-      onDeployment('IM_Oracle_ETHUSDMock', oracle, false);
+      // oracle = await this.deployMockOracle();
+      // onDeployment('IM_Oracle_ETHUSDMock', oracle, false);
     }
 
     if (firstSigner.length == 0 || !firstSigner) {
@@ -70,41 +68,43 @@ export class CoreStage implements DeploymentStage {
       throw '*** Must have IM_ESCROW dependency values set ***';
     }
 
+    console.log('starting');
+
     const beacon = (await findInstance('IM_Beacon')) || (await this.deployBeacon());
     console.log('beacon', beacon);
     onDeployment('IM_Beacon', beacon, false);
 
-    const processor =
-      (await findInstance('IM_Processor')) || (await this.deployProcessor(revenueWallet));
-    onDeployment('IM_Processor', processor, false);
+    // const processor =
+    //   (await findInstance('IM_Processor')) || (await this.deployProcessor(revenueWallet));
+    // onDeployment('IM_Processor', processor, false);
 
-    const escrow = (await findInstance('IM_Escrow')) || (await this.deployEscrow());
-    onDeployment('IM_Escrow', escrow, false);
+    // const escrow = (await findInstance('IM_Escrow')) || (await this.deployEscrow());
+    // onDeployment('IM_Escrow', escrow, false);
 
-    const creditCardEscrow =
-      (await findInstance('IM_Escrow_CreditCard')) ||
-      (await this.deployCreditCardEscrow(
-        escrow,
-        ESCROW_DESTROYER,
-        DESTRUCTION_DELAY,
-        ESCROW_CUSTODIAN,
-        ESCROW_RELEASE_DELAY,
-      ));
-    onDeployment('IM_Escrow_CreditCard', creditCardEscrow, false);
+    // const creditCardEscrow =
+    //   (await findInstance('IM_Escrow_CreditCard')) ||
+    //   (await this.deployCreditCardEscrow(
+    //     escrow,
+    //     ESCROW_DESTROYER,
+    //     DESTRUCTION_DELAY,
+    //     ESCROW_CUSTODIAN,
+    //     ESCROW_RELEASE_DELAY,
+    //   ));
+    // onDeployment('IM_Escrow_CreditCard', creditCardEscrow, false);
 
-    await this.setPaymentProcessorSigner(processor, firstSigner);
-    await this.setPaymentProcessorOracle(processor, oracle);
+    // await this.setPaymentProcessorSigner(processor, firstSigner);
+    // await this.setPaymentProcessorOracle(processor, oracle);
 
-    console.log('*** Updating pausers and freezers ***');
-    console.log(this.wallet.address);
+    // console.log('*** Updating pausers and freezers ***');
+    // console.log(this.wallet.address);
 
-    const pauser = await findInstance('IM_PAUSER');
-    console.log('pauser', pauser);
-    await setPauser(this.wallet, pauser, processor, escrow, creditCardEscrow);
+    // const pauser = await findInstance('IM_PAUSER');
+    // console.log('pauser', pauser);
+    // await setPauser(this.wallet, pauser, processor, escrow, creditCardEscrow);
 
-    const freezer = await findInstance('IM_FREEZER');
-    console.log('freezer', freezer);
-    await setFreezer(this.wallet, freezer, escrow, creditCardEscrow);
+    // const freezer = await findInstance('IM_FREEZER');
+    // console.log('freezer', freezer);
+    // await setFreezer(this.wallet, freezer, escrow, creditCardEscrow);
   }
 
   async deployBeacon(): Promise<string> {

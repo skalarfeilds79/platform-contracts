@@ -1,9 +1,9 @@
-import { Wallet, ethers } from 'ethers';
-
+import { DeploymentParams, DeploymentStage } from '@imtbl/deployment-utils';
+import { asyncForEach } from '@imtbl/utils';
+import { ethers, Wallet } from 'ethers';
 import { Cards, Fusing } from '../src/contracts';
 import { CardsWrapper } from './../src/wrappers/cardsWrapper';
-import { DeploymentStage, DeploymentParams } from '@imtbl/deployment-utils';
-import { asyncForEach } from '@imtbl/utils';
+
 
 export class CoreStage implements DeploymentStage {
   private wallet: Wallet;

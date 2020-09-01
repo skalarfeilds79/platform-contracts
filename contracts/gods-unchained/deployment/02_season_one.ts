@@ -1,46 +1,24 @@
-import { Wallet, ethers } from 'ethers';
-
-import { setPauser, DeploymentStage, DeploymentEnvironment, DeploymentParams } from '@imtbl/deployment-utils';
+import { DeploymentEnvironment, DeploymentParams, DeploymentStage, setPauser } from '@imtbl/deployment-utils';
+import { getPlatformAddresses } from '@imtbl/platform';
 import { asyncForEach } from '@imtbl/utils';
-
+import { ethers, Wallet } from 'ethers';
 import {
-  GU_S1_RARE_CHEST_CAP,
-  GU_S1_LEGENDARY_CHEST_CAP,
-  GU_S1_RARE_CHEST_PRICE,
-  GU_S1_LEGENDARY_CHEST_PRICE,
-  GU_S1_RARE_CHEST_SKU,
-  GU_S1_LEGENDARY_CHEST_SKU,
-  GU_S1_EPIC_PACK_SKU,
-  GU_S1_RARE_PACK_SKU,
-  GU_S1_SHINY_PACK_SKU,
-  GU_S1_LEGENDARY_PACK_SKU,
-  GU_S1_CAP,
-  GU_S1_RARE_PACK_PRICE,
-  GU_S1_SHINY_PACK_PRICE,
-  GU_S1_LEGENDARY_PACK_PRICE,
-  GU_S1_EPIC_PACK_PRICE,
-  GU_S1_RARE_CHEST_TOKEN_SYMBOL,
-  GU_S1_RARE_CHEST_TOKEN_NAME,
-  GU_S1_LEGENDARY_CHEST_TOKEN_SYMBOL,
-  GU_S1_LEGENDARY_CHEST_TOKEN_NAME,
-  GU_S1_RAFFLE_TOKEN_NAME,
-  GU_S1_RAFFLE_TOKEN_SYMBOL
+  Cards, Chest, EpicPack, LegendaryPack,
+  PurchaseProcessor, Raffle, RarePack, Referral,
+  S1Cap, S1Sale, ShinyPack
+} from '../src/contracts';
+import {
+  GU_S1_CAP, GU_S1_EPIC_PACK_PRICE, GU_S1_EPIC_PACK_SKU, GU_S1_LEGENDARY_CHEST_CAP,
+  GU_S1_LEGENDARY_CHEST_PRICE, GU_S1_LEGENDARY_CHEST_SKU, GU_S1_LEGENDARY_CHEST_TOKEN_NAME,
+  GU_S1_LEGENDARY_CHEST_TOKEN_SYMBOL, GU_S1_LEGENDARY_PACK_PRICE, GU_S1_LEGENDARY_PACK_SKU,
+  GU_S1_RAFFLE_TOKEN_NAME, GU_S1_RAFFLE_TOKEN_SYMBOL, GU_S1_RARE_CHEST_CAP,
+  GU_S1_RARE_CHEST_PRICE, GU_S1_RARE_CHEST_SKU, GU_S1_RARE_CHEST_TOKEN_NAME,
+  GU_S1_RARE_CHEST_TOKEN_SYMBOL, GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_SKU,
+  GU_S1_SHINY_PACK_PRICE, GU_S1_SHINY_PACK_SKU
 } from './constants';
 
-import {
-  Raffle,
-  S1Sale,
-  Referral,
-  EpicPack,
-  RarePack,
-  ShinyPack,
-  LegendaryPack,
-  PurchaseProcessor,
-  Cards,
-  Chest,
-  S1Cap
-} from '../src/contracts';
-import { getPlatformAddresses } from '@imtbl/platform';
+
+
 
 export class SeasonOneStage implements DeploymentStage {
   
@@ -399,7 +377,7 @@ export class SeasonOneStage implements DeploymentStage {
     const contract = Cards.at(this.wallet, cards);
     console.log(contract.address);
     const season = (await contract.seasons(3)).low;
-
+    
     await asyncForEach(approvedMinters, async (minterAddress) => {
       if ((await contract.factoryApproved(minterAddress, 5)) !== true) {
         console.log(`** Adding ${minterAddress} as an approved address **`);

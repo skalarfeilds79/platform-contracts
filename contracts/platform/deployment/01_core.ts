@@ -1,19 +1,6 @@
-import { Wallet, ethers } from 'ethers';
-import {
-  setPauser,
-  setFreezer,
-  DeploymentEnvironment,
-  DeploymentStage,
-  DeploymentParams,
-} from '@imtbl/deployment-utils';
-import {
-  Escrow,
-  CreditCardEscrow,
-  Beacon,
-  PurchaseProcessor,
-  ETHUSDMockOracle,
-  MakerOracle,
-} from '../src/contracts';
+import { DeploymentEnvironment, DeploymentParams, DeploymentStage, setFreezer, setPauser } from '@imtbl/deployment-utils';
+import { ethers, Wallet } from 'ethers';
+import { Beacon, CreditCardEscrow, Escrow, ETHUSDMockOracle, MakerOracle, PurchaseProcessor } from '../src/contracts';
 import { PLATFORM_ESCROW_CAPACITY } from './constants';
 
 export const IM_PROCESSOR_LIMIT = 100000000;

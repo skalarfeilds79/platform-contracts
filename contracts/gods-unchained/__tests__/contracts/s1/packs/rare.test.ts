@@ -159,7 +159,7 @@ describe('Rare Pack', () => {
       const block = await provider.getBlock(blockNumber);
       const prediction = await rare.predictCards(id, block.hash, quantity);
       const protos = prediction.protos;
-      const packs = (await rare.commitments(id)).quantity;
+      const packs = quantity;
       expect(protos).toBeDefined();
       expect(protos.length).toBe(packs * 5);
       const rareOrBetter = protos.filter(p => {

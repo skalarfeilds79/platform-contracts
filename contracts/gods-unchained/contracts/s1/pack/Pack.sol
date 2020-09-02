@@ -14,8 +14,6 @@ contract Pack is IPack, S1Vendor, RarityProvider {
     // A commitment to generating a certain number of packs for a certain user
     // Prefer commitment to purchase (includes cards opened from chests)
     struct Commitment {
-        uint256 escrowFor;
-        uint256 paymentID;
         address recipient;
         uint64 commitBlock;
         uint16 quantity;
@@ -150,8 +148,6 @@ contract Pack is IPack, S1Vendor, RarityProvider {
             commitBlock: uint64(commitBlock),
             quantity: uint16(_quantity),
             recipient: _recipient,
-            escrowFor: _escrowFor,
-            paymentID: _paymentID,
             grantsTickets: _grantsTickets
         });
 

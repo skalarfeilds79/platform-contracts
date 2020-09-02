@@ -49,6 +49,37 @@ contract S1Vendor is IVendor, Pausable {
         cap = _cap;
     }
 
+    function getSplit(
+        address _user, uint256 _value, address _referrer
+    ) internal view returns (
+        uint256 toVendor, uint256 toReferrer
+    ) {
+        toVendor = _getVendorPercentage(_value, 90);
+        toReferrer = _getReferrerPercentage(_value, 10);
+        require(
+            toVendor.add(toReferrer) == _value,
+            "Referral: wrong sum value"
+        );
+
+        return (toVendor, toReferrer);
+    }
+
+    function _getVendorPercentage(uint _amount, uint8 _percentage) internal pure returns (uint) {
+        return _halfUpDiv(_amount.mul(_percentage), 100);
+    }
+
+    function _getReferrerPercentage(uint _amount, uint8 _percentage) internal pure returns (uint) {
+        return _moreThanHalfUpDiv(_amount.mul(_percentage), 100);
+    }
+
+    function _moreThanHalfUpDiv(uint256 a, uint256 b) internal pure returns (uint256) {
+        return (a % b > 50) ? a.div(b).add(1) : a.div(b);
+    }
+
+    function _halfUpDiv(uint256 a, uint256 b) internal pure returns (uint256) {
+        return (a % b >= 50) ? a.div(b).add(1) : a.div(b);
+    }
+
     /** @dev Set the price at which to sell this product
      *
      * @param _price the new price
@@ -90,7 +121,7 @@ contract S1Vendor is IVendor, Pausable {
         uint256 toReferrer = 0;
 
         if (_referrer != address(0)) {
-            (, toReferrer) = referral.getSplit(_recipient, totalPrice, _referrer);
+            (, toReferrer) = getSplit(_recipient, totalPrice, _referrer);
         }
 
         PurchaseProcessor.Order memory order = PurchaseProcessor.Order({
@@ -103,7 +134,7 @@ contract S1Vendor is IVendor, Pausable {
             changeRecipient: address(uint160(address(this)))
         });
 
-        cap.update(order.totalPrice - order.alreadyPaid);
+        // cap.update(order.totalPrice - order.alreadyPaid);
 
         PurchaseProcessor.Receipt memory receipt = pay.process.value(msg.value)(order, _payment);
 

@@ -2,7 +2,7 @@ import { Blockchain, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
 import { BigNumber } from 'ethers/utils';
 import 'jest';
-import { RarePack } from '../../../../src/contracts';
+import { RarePack, S1Sale } from '../../../../src/contracts';
 import { deployRarePack, deployStandards, StandardContracts } from '../utils';
 
 jest.setTimeout(600000);
@@ -28,6 +28,7 @@ describe('Rare Pack', () => {
 
     let shared: StandardContracts;
     let rare: RarePack;
+    let sale: S1Sale;
 
     beforeAll(async() => {
       shared = await deployStandards(owner);
@@ -35,6 +36,8 @@ describe('Rare Pack', () => {
 
     it('should deploy rare pack', async () => {
       rare = await deployRarePack(owner, shared);
+      sale = await S1Sale.deploy(owner);
+      await sale.setVendorApproval(true, [rare.address]);
       const payment = {
         currency: 0,
         escrowFor: 0,
@@ -44,11 +47,33 @@ describe('Rare Pack', () => {
         r: ethers.utils.keccak256('0x00'),
         s: ethers.utils.keccak256('0x00'),
       };
+      // initial tx to kick things off
       await rare.purchase(1, payment, ethers.constants.AddressZero, { value: new BigNumber("100000000000000000")});
 
-      const tx = await rare.purchase(1, payment, ethers.constants.AddressZero, { value: new BigNumber("100000000000000000")});
-      const receipt = await tx.wait();
-      console.log('gas used', receipt.gasUsed.toString());
+      const requests = [
+        {
+            quantity: 1,
+            vendor: rare.address,
+            payment: payment
+        }
+      ]
+
+      let tx = await sale.purchase(requests, ethers.constants.AddressZero, { value: new BigNumber("100000000000000000")});
+      let receipt = await tx.wait();
+      console.log('sale', receipt.gasUsed.toString());
+
+      tx = await sale.purchase(requests, "0x6b32a7add2673a3bc84bd7c5f3bccfb3e96fd611", { value: new BigNumber("100000000000000000")});
+      receipt = await tx.wait();
+      console.log('sale referral', receipt.gasUsed.toString());
+
+      tx = await rare.purchase(1, payment, ethers.constants.AddressZero, { value: new BigNumber("100000000000000000")});
+      receipt = await tx.wait();
+      console.log('no sale', receipt.gasUsed.toString());
+
+      tx = await rare.purchase(1, payment, "0x6b32a7add2673a3bc84bd7c5f3bccfb3e96fd611", { value: new BigNumber("100000000000000000")});
+      receipt = await tx.wait();
+      console.log('no sale referral', receipt.gasUsed.toString());
+
     });
 
   });

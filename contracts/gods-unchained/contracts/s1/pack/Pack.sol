@@ -14,16 +14,14 @@ contract Pack is IPack, S1Vendor, RarityProvider {
     // A commitment to generating a certain number of packs for a certain user
     // Prefer commitment to purchase (includes cards opened from chests)
     struct Commitment {
+        uint256 escrowFor;
+        uint256 paymentID;
         address recipient;
         uint64 commitBlock;
         uint16 quantity;
         bool grantsTickets;
     }
 
-    // All commitments recorded by this pack
-    mapping(uint256 => Commitment) public commitments;
-    // The randomness beacon used by this pack
-    Beacon public beacon;
     // The address of the chest linked to this pack
     address public chest;
     // The number of commitments
@@ -40,15 +38,9 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         returns (uint16);
 
     constructor(
-        Beacon _beacon,
-        S1Cap _cap,
-        IReferral _referral,
-        bytes32 _sku,
-        uint256 _price,
-        CreditCardEscrow _escrow,
-        PurchaseProcessor _pay
-    ) public S1Vendor(_cap, _referral, _sku, _price, _escrow, _pay) {
-        beacon = _beacon;
+        S1Cap _cap, bytes32 _sku, uint256 _price, PurchaseProcessor _pay
+    ) public S1Vendor(_cap, _sku, _price, _pay) {
+        
     }
 
     /** @dev Set the chest address for this contract
@@ -89,22 +81,22 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         if (_payment.currency == PurchaseProcessor.Currency.ETH) {
             _createCommitment(receipt.id, _recipient, _quantity, 0, true);
         } else {
-            _createCommitment(receipt.id, _recipient, _quantity, _payment.escrowFor, true);
+            _createCommitment(receipt.id, _recipient, _quantity, _payment.escrowFor, false);
         }
         return receipt;
     }
 
     function predictCards(
-        uint256 _commitmentID
+        uint256 _commitmentID,
+        uint256 _baseRandomness,
+        uint16 _quantity
     ) external view returns (
         uint16[] memory protos,
         uint8[] memory qualities
     ) {
-        Commitment memory commitment = commitments[_commitmentID];
-        require(commitment.quantity != 0, "must have packs");
-        bytes32 base = beacon.randomness(commitment.commitBlock);
-        uint256 randomness = uint256(keccak256(abi.encodePacked(base, address(this), _commitmentID)));
-        uint256 numCards = uint(commitment.quantity).mul(5);
+        require(_quantity != 0, "must have packs");
+        uint256 randomness = uint256(keccak256(abi.encodePacked(_baseRandomness, address(this), _commitmentID)));
+        uint256 numCards = uint(_quantity).mul(5);
         protos = new uint16[](numCards);
         qualities = new uint8[](numCards);
         for (uint i = 0; i < numCards; i++) {
@@ -113,14 +105,14 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         return (protos, qualities);
     }
 
-    function predictTickets(uint256 _commitmentID) external view returns (uint16[] memory tickets) {
-        Commitment memory commitment = commitments[_commitmentID];
-        require(commitment.quantity != 0, "must have packs");
-        require(commitment.grantsTickets, "must grant tickets");
-        bytes32 base = beacon.randomness(commitment.commitBlock);
-        uint256 randomness = uint256(keccak256(abi.encodePacked(base, address(this), _commitmentID)));
-        tickets = new uint16[](commitment.quantity);
-        for (uint i = 0; i < commitment.quantity; i++) {
+    function predictTickets(
+        uint256 _commitmentID,
+        uint256 _baseRandomness,
+        uint16 _quantity
+    ) external view returns (uint16[] memory tickets) {
+        uint256 randomness = uint256(keccak256(abi.encodePacked(_baseRandomness, address(this), _commitmentID)));
+        tickets = new uint16[](_quantity);
+        for (uint i = 0; i < _quantity; i++) {
             tickets[i] = _getTicketsInPack(i, randomness);
         }
         return tickets;
@@ -142,16 +134,18 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         bool _grantsTickets
     ) internal returns (uint256) {
         require(_quantity == uint16(_quantity), "must not overflow");
-        uint256 commitBlock = beacon.commit(0);
+        // uint256 commitBlock = beacon.commit(0);
         uint256 commitmentID = commitmentCount++;
         Commitment memory commitment = Commitment({
-            commitBlock: uint64(commitBlock),
+            escrowFor: _escrowFor,
+            paymentID: _paymentID,
+            commitBlock: uint64(block.number),
             quantity: uint16(_quantity),
             recipient: _recipient,
             grantsTickets: _grantsTickets
         });
 
-        commitments[commitmentID] = commitment;
+        // commitments[commitmentID] = commitment;
         emit CommitmentRecorded(commitmentID, commitment);
     }
 

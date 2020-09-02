@@ -1,33 +1,8 @@
-import 'jest';
-
+import { CreditCardEscrow, ETHUSDMockOracle, getPlatformAddresses } from '@imtbl/platform';
 import { ethers, Wallet } from 'ethers';
-import { Blockchain } from '@imtbl/test-utils';
+import 'jest';
+import { GU_S1_CAP, GU_S1_EPIC_PACK_PRICE, GU_S1_EPIC_PACK_SKU, GU_S1_LEGENDARY_PACK_PRICE, GU_S1_LEGENDARY_PACK_SKU, GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_SKU, GU_S1_SHINY_PACK_PRICE, GU_S1_SHINY_PACK_SKU } from '../../deployment/constants';
 import { getGodsUnchainedAddresses } from '../../src/addresses/index';
-import {
-  GU_S1_RARE_PACK_PRICE,
-  GU_S1_SHINY_PACK_PRICE,
-  GU_S1_LEGENDARY_PACK_PRICE,
-  GU_S1_EPIC_PACK_PRICE,
-} from '../../deployment/constants';
-
-import {
-  GU_S1_RARE_PACK_SKU,
-  GU_S1_SHINY_PACK_SKU,
-  GU_S1_LEGENDARY_PACK_SKU,
-  GU_S1_EPIC_PACK_SKU,
-  GU_S1_CAP,
-} from '../../deployment/constants';
-
-import {
-  Currency,
-  ETHUSDMockOracle,
-  getETHPayment,
-  getPlatformAddresses,
-  getSignedPayment,
-  Payment,
-  CreditCardEscrow,
-} from '@imtbl/platform';
-
 import {
   Beacon,
   Cards,
@@ -37,10 +12,9 @@ import {
   PurchaseProcessor,
   Raffle,
   RarePack,
-  Referral,
   S1Cap,
   S1Sale,
-  ShinyPack,
+  ShinyPack
 } from '../../src/contracts';
 
 ethers.errors.setLogLevel('error');
@@ -73,7 +47,6 @@ describe('02_deployment_verification', () => {
   let s1Raffle: Raffle;
   let s1Sale: S1Sale;
   let s1Cap: S1Cap;
-  let s1Referral: Referral;
   let epicPack: EpicPack;
   let rarePack: RarePack;
   let shinyPack: ShinyPack;
@@ -88,7 +61,6 @@ describe('02_deployment_verification', () => {
     s1Raffle = Raffle.at(wallet, godUnchainedAddressBook.seasonOne.raffleAddress);
     s1Sale = S1Sale.at(wallet, godUnchainedAddressBook.seasonOne.saleAddress);
     s1Cap = S1Cap.at(wallet, godUnchainedAddressBook.seasonOne.capAddress);
-    s1Referral = Referral.at(wallet, godUnchainedAddressBook.seasonOne.referralAddress);
     epicPack = EpicPack.at(wallet, godUnchainedAddressBook.seasonOne.epicPackAddress);
     rarePack = RarePack.at(wallet, godUnchainedAddressBook.seasonOne.rarePackAddress);
     shinyPack = ShinyPack.at(wallet, godUnchainedAddressBook.seasonOne.shinyPackAddress);

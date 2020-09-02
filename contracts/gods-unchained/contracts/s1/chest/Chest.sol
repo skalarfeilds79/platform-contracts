@@ -4,6 +4,7 @@ pragma experimental ABIEncoderV2;
 import "@openzeppelin/contracts/token/ERC20/ERC20Burnable.sol";
 import "@imtbl/platform/contracts/token/TradeToggleERC20.sol";
 import "@imtbl/platform/contracts/escrow/Escrow.sol";
+import "@imtbl/platform/contracts/escrow/releaser/CreditCardEscrow.sol";
 import "../S1Vendor.sol";
 import "../pack/IPack.sol";
 
@@ -22,26 +23,27 @@ contract Chest is S1Vendor, TradeToggleERC20, ERC20Burnable {
     IPack public pack;
     // Temporary variable to hold purchase details before the escrow callback
     Purchase internal tempPurchase;
+    CreditCardEscrow escrow;
 
     constructor(
         string memory _name,
         string memory _symbol,
         IPack _pack,
         uint256 _productCap,
+        CreditCardEscrow _escrow,
         S1Cap _cap,
-        IReferral _referral,
         bytes32 _sku,
         uint256 _price,
-        CreditCardEscrow _escrow,
         PurchaseProcessor _pay
     ) public
-        S1Vendor(_cap, _referral, _sku, _price, _escrow, _pay)
+        S1Vendor(_cap, _sku, _price, _pay)
         TradeToggleERC20(_name, _symbol, 18)
     {
         require(
             address(_pack) != address(0),
             "S1Chest: pack must be set on construction"
         );
+        escrow = _escrow;
         productCap = _productCap;
         pack = _pack;
     }

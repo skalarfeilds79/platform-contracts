@@ -1,29 +1,21 @@
-import 'jest';
-
 import {
   Currency,
   ETHUSDMockOracle,
   getETHPayment,
   getPlatformAddresses,
   getSignedPayment,
-  Payment,
-  CreditCardEscrow,
+  Payment
 } from '@imtbl/platform';
-
 import { Blockchain } from '@imtbl/test-utils';
-import { asyncForEach, parseLogs } from '@imtbl/utils';
 import { ethers, Wallet } from 'ethers';
-import { ContractReceipt } from 'ethers/contract';
-
+import 'jest';
 import {
   GU_S1_EPIC_PACK_SKU,
   GU_S1_LEGENDARY_PACK_SKU,
   GU_S1_RARE_PACK_SKU,
-  GU_S1_SHINY_PACK_SKU,
+  GU_S1_SHINY_PACK_SKU
 } from '../../deployment/constants';
-
 import { getGodsUnchainedAddresses } from '../../src/addresses/index';
-
 import {
   Beacon,
   Cards,
@@ -33,10 +25,9 @@ import {
   PurchaseProcessor,
   Raffle,
   RarePack,
-  Referral,
   S1Cap,
   S1Sale,
-  ShinyPack,
+  ShinyPack
 } from '../../src/contracts';
 
 ethers.errors.setLogLevel('error');
@@ -67,7 +58,6 @@ describe('02_season_one', () => {
   let s1Raffle: Raffle;
   let s1Sale: S1Sale;
   let cap: S1Cap;
-  let s1Referral: Referral;
   let epicPack: EpicPack;
   let rarePack: RarePack;
   let shinyPack: ShinyPack;
@@ -93,7 +83,6 @@ describe('02_season_one', () => {
     cards = Cards.at(wallet, godUnchainedAddressBook.cardsAddress);
     s1Raffle = Raffle.at(wallet, godUnchainedAddressBook.seasonOne.raffleAddress);
     s1Sale = S1Sale.at(wallet, godUnchainedAddressBook.seasonOne.saleAddress);
-    s1Referral = Referral.at(wallet, godUnchainedAddressBook.seasonOne.referralAddress);
     epicPack = EpicPack.at(wallet, godUnchainedAddressBook.seasonOne.epicPackAddress);
     rarePack = RarePack.at(wallet, godUnchainedAddressBook.seasonOne.rarePackAddress);
     shinyPack = ShinyPack.at(wallet, godUnchainedAddressBook.seasonOne.shinyPackAddress);

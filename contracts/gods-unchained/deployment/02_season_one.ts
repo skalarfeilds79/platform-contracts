@@ -1,4 +1,5 @@
-import { DeploymentEnvironment, DeploymentParams, DeploymentStage } from '@imtbl/deployment-utils';
+import { DeploymentEnvironment, DeploymentParams, DeploymentStage, setPauser } from '@imtbl/deployment-utils';
+import { getPlatformAddresses } from '@imtbl/platform';
 import { asyncForEach } from '@imtbl/utils';
 import { ethers, Wallet } from 'ethers';
 import {
@@ -15,9 +16,6 @@ import {
   GU_S1_RARE_CHEST_TOKEN_SYMBOL, GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_SKU,
   GU_S1_SHINY_PACK_PRICE, GU_S1_SHINY_PACK_SKU
 } from './constants';
-
-
-
 
 export class SeasonOneStage implements DeploymentStage {
   
@@ -37,132 +35,132 @@ export class SeasonOneStage implements DeploymentStage {
     transferOwnership: (address: string) => void,
   ) {
 
-    // const raffle = (await findInstance('GU_S1_Raffle')) || (await this.deployRaffle());
-    // onDeployment('GU_S1_Raffle', raffle, false);
+    const raffle = (await findInstance('GU_S1_Raffle')) || (await this.deployRaffle());
+    onDeployment('GU_S1_Raffle', raffle, false);
 
-    // const s1sale = (await findInstance('GU_S1_Sale')) || (await this.deploySale());
-    // onDeployment('GU_S1_Sale', s1sale, false);
+    const s1sale = (await findInstance('GU_S1_Sale')) || (await this.deploySale());
+    onDeployment('GU_S1_Sale', s1sale, false);
 
-    // const referral = (await findInstance('GU_S1_Referral')) || (await this.deployReferral());
-    // onDeployment('GU_S1_Referral', referral, false);
+    const referral = (await findInstance('GU_S1_Referral')) || (await this.deployReferral());
+    onDeployment('GU_S1_Referral', referral, false);
 
     const s1Cap = (await findInstance('GU_S1_Cap')) || (await this.deployCap());
     onDeployment('GU_S1_Cap', s1Cap, false);
 
-    // const platform = getPlatformAddresses(this.networkId, this.env);
+    const platform = getPlatformAddresses(this.networkId, this.env);
 
-    // const processorAddress = platform.processorAddress; // await findInstance('IM_Processor');
-    // if (!processorAddress || processorAddress.length === 0) {
-    //   throw '*** IM_Processor not deployed! Run `yarn deploy --core` inside contracts/platform';
-    // }
+    const processorAddress = platform.processorAddress; // await findInstance('IM_Processor');
+    if (!processorAddress || processorAddress.length === 0) {
+      throw '*** IM_Processor not deployed! Run `yarn deploy --core` inside contracts/platform';
+    }
     
-    // const beacon = platform.beaconAddress; // await findInstance('IM_Beacon');
-    // const cards = await findInstance('GU_Cards');
-    // console.log('GU CARDS', cards);
-    // const escrow = platform.creditCardAddress; // await findInstance('IM_Escrow_CreditCard');
-    // const processor = platform.processorAddress; // await findInstance('IM_Processor');
+    const beacon = platform.beaconAddress; // await findInstance('IM_Beacon');
+    const cards = await findInstance('GU_Cards');
+    console.log('GU CARDS', cards);
+    const escrow = platform.creditCardAddress; // await findInstance('IM_Escrow_CreditCard');
+    const processor = platform.processorAddress; // await findInstance('IM_Processor');
 
-    // if (GU_S1_EPIC_PACK_SKU.length === 0) {
-    //   throw '*** No Epic Pack SKU set! Cannot deploy EpicPack. ***';
-    // }
-    // const epicPack =
-    //   (await findInstance('GU_S1_Epic_Pack')) ||
-    //   (await this.deployEpicPack(
-    //     s1Cap,
-    //     raffle,
-    //     beacon,
-    //     cards,
-    //     referral,
-    //     escrow,
-    //     processor,
-    //   ));
-    // onDeployment('GU_S1_Epic_Pack', epicPack, false);
+    if (GU_S1_EPIC_PACK_SKU.length === 0) {
+      throw '*** No Epic Pack SKU set! Cannot deploy EpicPack. ***';
+    }
+    const epicPack =
+      (await findInstance('GU_S1_Epic_Pack')) ||
+      (await this.deployEpicPack(
+        s1Cap,
+        raffle,
+        beacon,
+        cards,
+        referral,
+        escrow,
+        processor,
+      ));
+    onDeployment('GU_S1_Epic_Pack', epicPack, false);
 
-    // if (GU_S1_RARE_PACK_SKU.length === 0) {
-    //   throw '*** No Rare Pack SKU set! Cannot deploy RarePack. ***';
-    // }
-    // const rarePack =
-    //   (await findInstance('GU_S1_Rare_Pack')) ||
-    //   (await this.deployRarePack(
-    //     s1Cap,
-    //     raffle,
-    //     beacon,
-    //     cards,
-    //     referral,
-    //     escrow,
-    //     processor,
-    //   ));
-    // onDeployment('GU_S1_Rare_Pack', rarePack, false);
+    if (GU_S1_RARE_PACK_SKU.length === 0) {
+      throw '*** No Rare Pack SKU set! Cannot deploy RarePack. ***';
+    }
+    const rarePack =
+      (await findInstance('GU_S1_Rare_Pack')) ||
+      (await this.deployRarePack(
+        s1Cap,
+        raffle,
+        beacon,
+        cards,
+        referral,
+        escrow,
+        processor,
+      ));
+    onDeployment('GU_S1_Rare_Pack', rarePack, false);
 
-    // if (GU_S1_SHINY_PACK_SKU.length === 0) {
-    //   throw '*** No Shiny Pack SKU set! Cannot deploy ShinyPack. ***';
-    // }
-    // const shinyPack =
-    //   (await findInstance('GU_S1_Shiny_Pack')) ||
-    //   (await this.deployShinyPack(
-    //     s1Cap,
-    //     raffle,
-    //     beacon,
-    //     cards,
-    //     referral,
-    //     escrow,
-    //     processor,
-    //   ));
-    // onDeployment('GU_S1_Shiny_Pack', shinyPack, false);
+    if (GU_S1_SHINY_PACK_SKU.length === 0) {
+      throw '*** No Shiny Pack SKU set! Cannot deploy ShinyPack. ***';
+    }
+    const shinyPack =
+      (await findInstance('GU_S1_Shiny_Pack')) ||
+      (await this.deployShinyPack(
+        s1Cap,
+        raffle,
+        beacon,
+        cards,
+        referral,
+        escrow,
+        processor,
+      ));
+    onDeployment('GU_S1_Shiny_Pack', shinyPack, false);
 
-    // if (GU_S1_LEGENDARY_PACK_SKU.length === 0) {
-    //   throw '*** No Shiny Pack SKU set! Cannot deploy ShinyPack. ***';
-    // }
-    // const legendaryPack =
-    //   (await findInstance('GU_S1_Legendary_Pack')) ||
-    //   (await this.deployLegendaryPack(
-    //     s1Cap,
-    //     raffle,
-    //     beacon,
-    //     cards,
-    //     referral,
-    //     escrow,
-    //     processor,
-    //   ));
-    // onDeployment('GU_S1_Legendary_Pack', legendaryPack, false);
+    if (GU_S1_LEGENDARY_PACK_SKU.length === 0) {
+      throw '*** No Shiny Pack SKU set! Cannot deploy ShinyPack. ***';
+    }
+    const legendaryPack =
+      (await findInstance('GU_S1_Legendary_Pack')) ||
+      (await this.deployLegendaryPack(
+        s1Cap,
+        raffle,
+        beacon,
+        cards,
+        referral,
+        escrow,
+        processor,
+      ));
+    onDeployment('GU_S1_Legendary_Pack', legendaryPack, false);
 
-    // const rareChest =
-    //   (await findInstance('GU_S1_Rare_Chest')) ||
-    //   (await this.deployRareChest(rarePack, s1Cap, referral, escrow, processor));
-    // onDeployment('GU_S1_Rare_Chest', rareChest, false);
+    const rareChest =
+      (await findInstance('GU_S1_Rare_Chest')) ||
+      (await this.deployRareChest(rarePack, s1Cap, referral, escrow, processor));
+    onDeployment('GU_S1_Rare_Chest', rareChest, false);
 
-    // const legendaryChest =
-    //   (await findInstance('GU_S1_Legendary_Chest')) ||
-    //   (await this.deployLegendaryChest(legendaryPack, s1Cap, referral, escrow, processor));
-    // onDeployment('GU_S1_Legendary_Chest', legendaryChest, false);
+    const legendaryChest =
+      (await findInstance('GU_S1_Legendary_Chest')) ||
+      (await this.deployLegendaryChest(legendaryPack, s1Cap, referral, escrow, processor));
+    onDeployment('GU_S1_Legendary_Chest', legendaryChest, false);
 
-    // const packAddresses = [rarePack, shinyPack, legendaryPack, epicPack];
-    // await this.setupCardsContract(cards, packAddresses);
+    const packAddresses = [rarePack, shinyPack, legendaryPack, epicPack];
+    await this.setupCardsContract(cards, packAddresses);
 
-    // await this.setChestForPack('Rare', rarePack, rareChest);
-    // await this.setChestForPack('Legendary', legendaryPack, legendaryChest);
+    await this.setChestForPack('Rare', rarePack, rareChest);
+    await this.setChestForPack('Legendary', legendaryPack, legendaryChest);
 
-    await this.setApprovedCapUpdaters(s1Cap, ["0x07D69C30664355BEDc89C9DE2fC3ACB6f43A675c", "0x95b9e009973428A22b160a011731a5Aea767275B"]);
-    // await this.setApprovedRaffleMinters(raffle, packAddresses);
-    // await this.setApprovedProcessorSellers(processor, [
-    //   { address: epicPack, sku: GU_S1_EPIC_PACK_SKU },
-    //   { address: rarePack, sku: GU_S1_RARE_PACK_SKU },
-    //   { address: shinyPack, sku: GU_S1_SHINY_PACK_SKU },
-    //   { address: legendaryPack, sku: GU_S1_LEGENDARY_PACK_SKU },
-    //   { address: rareChest, sku: GU_S1_RARE_CHEST_SKU },
-    //   { address: legendaryChest, sku: GU_S1_LEGENDARY_CHEST_SKU }
-    // ]);
+    await this.setApprovedCapUpdaters(s1Cap, [rarePack, epicPack, legendaryPack, shinyPack, rareChest, legendaryChest]);
+    await this.setApprovedRaffleMinters(raffle, packAddresses);
+    await this.setApprovedProcessorSellers(processor, [
+      { address: epicPack, sku: GU_S1_EPIC_PACK_SKU },
+      { address: rarePack, sku: GU_S1_RARE_PACK_SKU },
+      { address: shinyPack, sku: GU_S1_SHINY_PACK_SKU },
+      { address: legendaryPack, sku: GU_S1_LEGENDARY_PACK_SKU },
+      { address: rareChest, sku: GU_S1_RARE_CHEST_SKU },
+      { address: legendaryChest, sku: GU_S1_LEGENDARY_CHEST_SKU }
+    ]);
 
-    // const pauser = await findInstance('IM_PAUSER');
-    // await setPauser(
-    //   this.wallet, pauser, rarePack, epicPack, legendaryPack, shinyPack,
-    //   rareChest, legendaryChest
-    // );
+    const pauser = await findInstance('IM_PAUSER');
+    await setPauser(
+      this.wallet, pauser, rarePack, epicPack, legendaryPack, shinyPack,
+      rareChest, legendaryChest
+    );
 
-    // const sale = S1Sale.at(this.wallet, s1sale);
-    // await sale.setVendorApproval(true, [
-    //   "0x07D69C30664355BEDc89C9DE2fC3ACB6f43A675c", "0x95b9e009973428A22b160a011731a5Aea767275B"
-    // ]);
+    const sale = S1Sale.at(this.wallet, s1sale);
+    await sale.setVendorApproval(true, [
+      rarePack, epicPack, legendaryPack, shinyPack, rareChest, legendaryChest
+    ]);
   }
 
   async deployRaffle(): Promise<string> {
@@ -205,12 +203,9 @@ export class SeasonOneStage implements DeploymentStage {
     console.log('** Deploying EpicPack **');
     const epic = await EpicPack.awaitDeployment(
       this.wallet,
-      beacon,
       cap,
-      referral,
       GU_S1_EPIC_PACK_SKU,
       GU_S1_EPIC_PACK_PRICE,
-      escrow,
       processor
     );
     return epic.address;
@@ -228,12 +223,9 @@ export class SeasonOneStage implements DeploymentStage {
     console.log('** Deploying RarePack **');
     const rare = await RarePack.awaitDeployment(
       this.wallet,
-      beacon,
       cap,
-      referral,
       GU_S1_RARE_PACK_SKU,
       GU_S1_RARE_PACK_PRICE,
-      escrow,
       processor
     );
     return rare.address;
@@ -251,12 +243,9 @@ export class SeasonOneStage implements DeploymentStage {
     console.log('** Deploying ShinyPack **');
     const shiny = await ShinyPack.awaitDeployment(
       this.wallet,
-      beacon,
       cap,
-      referral,
       GU_S1_SHINY_PACK_SKU,
       GU_S1_SHINY_PACK_PRICE,
-      escrow,
       processor
     );
     return shiny.address;
@@ -274,12 +263,9 @@ export class SeasonOneStage implements DeploymentStage {
     console.log('** Deploying LegendaryPack **');
     const legendary = await LegendaryPack.awaitDeployment(
       this.wallet,
-      beacon,
       cap,
-      referral,
       GU_S1_LEGENDARY_PACK_SKU,
       GU_S1_LEGENDARY_PACK_PRICE,
-      escrow,
       processor
     );
     return legendary.address;
@@ -294,10 +280,9 @@ export class SeasonOneStage implements DeploymentStage {
       rarePack,
       GU_S1_RARE_CHEST_CAP,
       cap,
-      referral,
+      escrow,
       GU_S1_RARE_CHEST_SKU,
       GU_S1_RARE_CHEST_PRICE,
-      escrow,
       processor
     );
     return chest.address;
@@ -318,10 +303,9 @@ export class SeasonOneStage implements DeploymentStage {
       legendaryPack,
       GU_S1_LEGENDARY_CHEST_CAP,
       cap,
-      referral,
+      escrow,
       GU_S1_LEGENDARY_CHEST_SKU,
       GU_S1_LEGENDARY_CHEST_PRICE,
-      escrow,
       processor
     );
     return chest.address;

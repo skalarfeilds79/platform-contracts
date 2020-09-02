@@ -20,10 +20,10 @@ export class CoreStage implements DeploymentStage {
     transferOwnership: (address: string) => void,
   ) {
 
-    // const cardWrapper = new CardsWrapper(this.wallet);
+    const cardWrapper = new CardsWrapper(this.wallet);
 
-    // const cards = (await findInstance('GU_Cards')) || (await this.deployCards(cardWrapper));
-    // onDeployment('GU_Cards', cards, false);
+    const cards = (await findInstance('GU_Cards')) || (await this.deployCards(cardWrapper));
+    onDeployment('GU_Cards', cards, false);
 
     // cardWrapper.instance = Cards.at(this.wallet, cards);
 

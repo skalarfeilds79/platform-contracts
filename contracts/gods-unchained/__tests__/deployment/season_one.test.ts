@@ -23,7 +23,6 @@ import {
   PurchaseProcessor,
   Raffle,
   RarePack,
-  Referral,
   S1Cap,
   S1Sale,
   ShinyPack
@@ -62,7 +61,6 @@ describe('02_season_one', () => {
   let s1Raffle: Raffle;
   let s1Sale: S1Sale;
   let cap: S1Cap;
-  let s1Referral: Referral;
   let epicPack: EpicPack;
   let rarePack: RarePack;
   let shinyPack: ShinyPack;
@@ -88,7 +86,6 @@ describe('02_season_one', () => {
     cards = Cards.at(wallet, godUnchainedAddressBook.cardsAddress);
     s1Raffle = Raffle.at(wallet, godUnchainedAddressBook.seasonOne.raffleAddress);
     s1Sale = S1Sale.at(wallet, godUnchainedAddressBook.seasonOne.saleAddress);
-    s1Referral = Referral.at(wallet, godUnchainedAddressBook.seasonOne.referralAddress);
     epicPack = EpicPack.at(wallet, godUnchainedAddressBook.seasonOne.epicPackAddress);
     rarePack = RarePack.at(wallet, godUnchainedAddressBook.seasonOne.rarePackAddress);
     shinyPack = ShinyPack.at(wallet, godUnchainedAddressBook.seasonOne.shinyPackAddress);

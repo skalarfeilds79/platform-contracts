@@ -1,3 +1,4 @@
+
 import { CreditCardEscrow, getPlatformAddresses, ManualOracle } from '@imtbl/platform';
 import { ethers, Wallet } from 'ethers';
 import 'jest';
@@ -12,7 +13,6 @@ import {
   PurchaseProcessor,
   Raffle,
   RarePack,
-  Referral,
   S1Cap,
   S1Sale,
   ShinyPack
@@ -52,7 +52,6 @@ describe('02_deployment_verification', () => {
   let s1Raffle: Raffle;
   let s1Sale: S1Sale;
   let s1Cap: S1Cap;
-  let s1Referral: Referral;
   let epicPack: EpicPack;
   let rarePack: RarePack;
   let shinyPack: ShinyPack;
@@ -67,7 +66,6 @@ describe('02_deployment_verification', () => {
     s1Raffle = Raffle.at(wallet, godUnchainedAddressBook.seasonOne.raffleAddress);
     s1Sale = S1Sale.at(wallet, godUnchainedAddressBook.seasonOne.saleAddress);
     s1Cap = S1Cap.at(wallet, godUnchainedAddressBook.seasonOne.capAddress);
-    s1Referral = Referral.at(wallet, godUnchainedAddressBook.seasonOne.referralAddress);
     epicPack = EpicPack.at(wallet, godUnchainedAddressBook.seasonOne.epicPackAddress);
     rarePack = RarePack.at(wallet, godUnchainedAddressBook.seasonOne.rarePackAddress);
     shinyPack = ShinyPack.at(wallet, godUnchainedAddressBook.seasonOne.shinyPackAddress);

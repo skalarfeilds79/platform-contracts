@@ -1,6 +1,6 @@
 {
   "name": "@imtbl/gods-unchained",
-  "version": "2.0.38",
+  "version": "2.0.39",
   "description": "Solidity smart contracts for Gods Unchained.",
   "main": "dist/src/index.js",
   "typings": "dist/src/index.d.ts",

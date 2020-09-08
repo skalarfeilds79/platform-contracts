@@ -1,6 +1,6 @@
 import { DeploymentEnvironment, DeploymentParams, DeploymentStage, setFreezer, setPauser } from '@imtbl/deployment-utils';
 import { ethers, Wallet } from 'ethers';
-import { Beacon, CreditCardEscrow, Escrow, ETHUSDMockOracle, MakerOracle, PurchaseProcessor } from '../src/contracts';
+import { Beacon, CreditCardEscrow, Escrow, MakerOracle, ManualOracle, PurchaseProcessor } from '../src/contracts';
 import { PLATFORM_ESCROW_CAPACITY } from './constants';
 
 export const IM_PROCESSOR_LIMIT = 100000000;
@@ -125,8 +125,8 @@ export class CoreStage implements DeploymentStage {
   }
 
   async deployMockOracle() {
-    console.log('** Deploying Mock Oracle **');
-    const mockOracle = await ETHUSDMockOracle.awaitDeployment(this.wallet);
+    console.log('** Deploying Manual Oracle **');
+    const mockOracle = await ManualOracle.awaitDeployment(this.wallet);
     return mockOracle.address;
   }
 

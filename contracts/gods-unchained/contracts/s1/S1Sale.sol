@@ -26,11 +26,17 @@ contract S1Sale is Ownable {
     // Whether this contract can be used as a vendor
     mapping(address => bool) public isVendorApproved;
 
+    bool purchaseForAllLocked = true;
+
     function setVendorApproval(bool _approved, address[] calldata _vendors) external onlyOwner {
         require(_vendors.length > 0, "S1Sale: must provide some vendors");
         for (uint i = 0; i < _vendors.length; i++) {
             isVendorApproved[_vendors[i]] = _approved;
         }
+    }
+
+    function setPurchaseForAllLocked(bool _locked) external onlyOwner {
+        purchaseForAllLocked = _locked;
     }
 
     /** @dev Purchase assets from a number of products
@@ -76,6 +82,9 @@ contract S1Sale is Ownable {
         UserProductPurchaseRequest[] memory _requests,
         address payable _referrer
     ) public payable {
+        if (purchaseForAllLocked) {
+            require(isOwner(), "S1Sale: must be the owner");
+        }
         for (uint i = 0; i < _requests.length; i++) {
             UserProductPurchaseRequest memory p = _requests[i];
             require(isVendorApproved[address(p.vendor)], "S1Sale: unapproved vendor");

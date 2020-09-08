@@ -3,7 +3,7 @@ import { ethers } from 'ethers';
 import { BigNumber, keccak256 } from 'ethers/utils';
 import 'jest';
 import { Currency, getETHPayment, getSignedPayment, Order, PaymentParams } from '../../src';
-import { ETHUSDMockOracle, PurchaseProcessor, TestVendor } from '../../src/contracts';
+import { ManualOracle, PurchaseProcessor, TestVendor } from '../../src/contracts';
 
 const provider = new Ganache(Ganache.DefaultOptions);
 const blockchain = new Blockchain(provider);
@@ -33,14 +33,14 @@ describe('Vendor', () => {
   describe('#processPayment (priced in USD, pay in ETH)', () => {
     let pay: PurchaseProcessor;
     let vendor: TestVendor;
-    let oracle: ETHUSDMockOracle;
+    let oracle: ManualOracle;
 
     const sku = keccak256('0x00');
 
     beforeEach(async () => {
       pay = await PurchaseProcessor.deploy(user, treasury.address);
       vendor = await TestVendor.deploy(user, pay.address);
-      oracle = await ETHUSDMockOracle.deploy(user);
+      oracle = await ManualOracle.deploy(user);
     });
 
     async function setOracle(address?: string) {
@@ -162,7 +162,7 @@ describe('Vendor', () => {
   describe('#processPayment (priced in ETH, paid in USD)', () => {
     let pay: PurchaseProcessor;
     let vendor: TestVendor;
-    let oracle: ETHUSDMockOracle;
+    let oracle: ManualOracle;
     const sku = keccak256('0x00');
     let nonce = 0;
 
@@ -170,7 +170,7 @@ describe('Vendor', () => {
       nonce = 0;
       pay = await PurchaseProcessor.deploy(user, user.address);
       vendor = await TestVendor.deploy(user, pay.address);
-      oracle = await ETHUSDMockOracle.deploy(user);
+      oracle = await ManualOracle.deploy(user);
     });
 
     async function setOracle(address?: string) {

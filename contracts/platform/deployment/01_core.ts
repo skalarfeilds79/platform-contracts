@@ -1,6 +1,6 @@
 import { DeploymentEnvironment, DeploymentParams, DeploymentStage, setFreezer, setPauser } from '@imtbl/deployment-utils';
 import { ethers, Wallet } from 'ethers';
-import { Beacon, CreditCardEscrow, Escrow, ETHUSDMockOracle, MakerOracle, PurchaseProcessor } from '../src/contracts';
+import { Beacon, CreditCardEscrow, Escrow, MakerOracle, ManualOracle, PurchaseProcessor } from '../src/contracts';
 import { PLATFORM_ESCROW_CAPACITY } from './constants';
 
 export const IM_PROCESSOR_LIMIT = 100000000;
@@ -31,18 +31,11 @@ export class CoreStage implements DeploymentStage {
     const revenueWallet = await findInstance('PROCESSOR_REVENUE_WALLET');
 
     const medianizer = await findInstance('MEDIANIZER');
-    const ethUSDMock = await findInstance('IM_Oracle_ETHUSDMock');
+    const ethUSDMock = await findInstance('IM_Oracle_ETHUSDManual');
     const makerOracle = await findInstance('IM_Oracle_ETHUSDMaker');
 
-    let oracle = ethUSDMock;
-
-    if (medianizer.length > 0 && (makerOracle.length == 0 || !makerOracle)) {
-      oracle = await this.deployOracle(medianizer);
-      onDeployment('IM_Oracle_ETHUSDMaker', oracle, false);
-    } else if (ethUSDMock.length == 0 || !ethUSDMock) {
-      oracle = await this.deployMockOracle();
-      onDeployment('IM_Oracle_ETHUSDMock', oracle, false);
-    }
+    let oracle = await this.deployMockOracle();
+    onDeployment('IM_Oracle_ETHUSDManual', oracle, false);
 
     if (firstSigner.length == 0 || !firstSigner) {
       throw '*** Must set IM_PROCESSOR_FIRST_SIGNER in order to deploy ***';
@@ -132,8 +125,8 @@ export class CoreStage implements DeploymentStage {
   }
 
   async deployMockOracle() {
-    console.log('** Deploying Mock Oracle **');
-    const mockOracle = await ETHUSDMockOracle.awaitDeployment(this.wallet);
+    console.log('** Deploying Manual Oracle **');
+    const mockOracle = await ManualOracle.awaitDeployment(this.wallet);
     return mockOracle.address;
   }
 

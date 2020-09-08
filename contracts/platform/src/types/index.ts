@@ -1,5 +1,3 @@
-import { keccak256 } from 'ethers/utils';
-import { ethers, Wallet } from 'ethers';
 
 export enum Currency {
   ETH,
@@ -42,6 +40,6 @@ export declare type PlatformAddresses = {
   processorAddress?: string;
   escrowAddress?: string;
   creditCardAddress?: string;
-  ethUSDMakerOracleAddress?: string;
-  ethUSDMockOracleAddress?: string;
+  makerOracleAddress?: string;
+  manualOracleAddress?: string;
 };

@@ -1,4 +1,5 @@
-import { CreditCardEscrow, ETHUSDMockOracle, getPlatformAddresses } from '@imtbl/platform';
+
+import { CreditCardEscrow, getPlatformAddresses, ManualOracle } from '@imtbl/platform';
 import { ethers, Wallet } from 'ethers';
 import 'jest';
 import { GU_S1_CAP, GU_S1_EPIC_PACK_PRICE, GU_S1_EPIC_PACK_SKU, GU_S1_LEGENDARY_PACK_PRICE, GU_S1_LEGENDARY_PACK_SKU, GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_SKU, GU_S1_SHINY_PACK_PRICE, GU_S1_SHINY_PACK_SKU } from '../../deployment/constants';
@@ -16,6 +17,10 @@ import {
   S1Sale,
   ShinyPack
 } from '../../src/contracts';
+
+
+
+
 
 ethers.errors.setLogLevel('error');
 jest.setTimeout(60000);
@@ -51,7 +56,7 @@ describe('02_deployment_verification', () => {
   let rarePack: RarePack;
   let shinyPack: ShinyPack;
   let legendaryPack: LegendaryPack;
-  let oracle: ETHUSDMockOracle;
+  let oracle: ManualOracle;
 
   beforeAll(async () => {
     beacon = Beacon.at(wallet, platformAddressBook.beaconAddress);
@@ -64,7 +69,7 @@ describe('02_deployment_verification', () => {
     epicPack = EpicPack.at(wallet, godUnchainedAddressBook.seasonOne.epicPackAddress);
     rarePack = RarePack.at(wallet, godUnchainedAddressBook.seasonOne.rarePackAddress);
     shinyPack = ShinyPack.at(wallet, godUnchainedAddressBook.seasonOne.shinyPackAddress);
-    oracle = ETHUSDMockOracle.at(wallet, platformAddressBook.ethUSDMockOracleAddress);
+    oracle = ManualOracle.at(wallet, platformAddressBook.manualOracleAddress);
     creditCard = CreditCardEscrow.at(wallet, platformAddressBook.creditCardAddress);
     legendaryPack = LegendaryPack.at(
       wallet,

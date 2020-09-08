@@ -2,11 +2,10 @@ pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/math/SafeMath.sol";
+import "@openzeppelin/contracts/ownership/Ownable.sol";
+import "./IOracle.sol";
 
-import "../IOracle.sol";
-import "../../pay/PurchaseProcessor.sol";
-
-contract ETHUSDMockOracle is IOracle {
+contract ManualOracle is Ownable, IOracle {
 
     using SafeMath for uint256;
 
@@ -19,7 +18,7 @@ contract ETHUSDMockOracle is IOracle {
     function setPrice(
         uint256 value
     )
-        public
+        public onlyOwner
     {
         _price = value;
     }
@@ -35,12 +34,12 @@ contract ETHUSDMockOracle is IOracle {
     {
         require(
             from == 0 || from == 1,
-            "ETHUSDMockOracle: invalid from currency"
+            "ManualOracle: invalid from currency"
         );
 
         require(
             to == 0 || to == 1,
-            "ETHUSDMockOracle: invalid to currency"
+            "ManualOracle: invalid to currency"
         );
 
         // ETH = 0, USDCents = 1, ETH -> USD Cents

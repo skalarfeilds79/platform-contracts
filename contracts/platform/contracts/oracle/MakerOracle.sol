@@ -32,12 +32,12 @@ contract MakerOracle is IOracle {
     {
         require(
             from == 0 || from == 1,
-            "ETHUSDMockOracle: invalid from currency"
+            "ManualOracle: invalid from currency"
         );
 
         require(
             to == 0 || to == 1,
-            "ETHUSDMockOracle: invalid to currency"
+            "ManualOracle: invalid to currency"
         );
 
         // ETH = 0, USDCents = 1, ETH -> USD Cents

@@ -1,5 +1,6 @@
 
-import { Beacon, CreditCardEscrow, Escrow, ETHUSDMockOracle, PurchaseProcessor } from '@imtbl/platform';
+
+import { Beacon, CreditCardEscrow, Escrow, ManualOracle, PurchaseProcessor } from '@imtbl/platform';
 import { Wallet } from 'ethers';
 import {
     GU_S1_CAP, GU_S1_EPIC_PACK_PRICE, GU_S1_EPIC_PACK_SKU,
@@ -16,7 +17,7 @@ export interface StandardContracts {
     escrow: Escrow;
     cc: CreditCardEscrow;
     raffle: Raffle;
-    oracle: ETHUSDMockOracle;
+    oracle: ManualOracle;
     processor: PurchaseProcessor;
     cards: Cards;
     beacon: Beacon;
@@ -29,7 +30,7 @@ export async function deployStandards(owner: Wallet): Promise<StandardContracts>
     const beacon = await Beacon.deploy(owner);
     const processor = await PurchaseProcessor.deploy(owner, owner.address);
     const raffle = await Raffle.deploy(owner, GU_S1_RAFFLE_TOKEN_NAME, GU_S1_RAFFLE_TOKEN_SYMBOL);
-    const oracle = await ETHUSDMockOracle.deploy(owner);
+    const oracle = await ManualOracle.deploy(owner);
     const cards = await Cards.deploy(owner, 1250, 'Cards', 'CARD');
     await processor.setOracle(oracle.address);
     await processor.setSignerLimit(owner.address, 1000000000000000);

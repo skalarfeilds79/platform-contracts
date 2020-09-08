@@ -1,29 +1,46 @@
 
+import { Beacon, CreditCardEscrow, Escrow, ManualOracle, PurchaseProcessor } from '@imtbl/platform';
 import { Wallet } from 'ethers';
-
 import {
-    Referral,
-    EpicPack,
-    RarePack,
-    LegendaryPack,
-    ShinyPack,
-    Cards,
-    Raffle,
-    Chest,
-    S1Cap
-} from '../../../src/contracts';
-import { ethers } from 'ethers';
-import { PurchaseProcessor, CreditCardEscrow, Escrow, Beacon, ETHUSDMockOracle } from '@imtbl/platform';
-import { 
-    GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_SKU,
-    GU_S1_EPIC_PACK_PRICE, GU_S1_EPIC_PACK_SKU,
-    GU_S1_LEGENDARY_PACK_PRICE, GU_S1_LEGENDARY_PACK_SKU,
-    GU_S1_SHINY_PACK_PRICE, GU_S1_SHINY_PACK_SKU, GU_S1_RARE_CHEST_SKU, 
-    GU_S1_LEGENDARY_CHEST_SKU, GU_S1_LEGENDARY_CHEST_PRICE, 
-    GU_S1_LEGENDARY_CHEST_CAP, GU_S1_RARE_CHEST_CAP, GU_S1_RARE_CHEST_PRICE, 
-    GU_S1_CAP, GU_S1_LEGENDARY_CHEST_TOKEN_NAME, GU_S1_LEGENDARY_CHEST_TOKEN_SYMBOL, 
-    GU_S1_RARE_CHEST_TOKEN_NAME, GU_S1_RARE_CHEST_TOKEN_SYMBOL, GU_S1_RAFFLE_TOKEN_NAME, GU_S1_RAFFLE_TOKEN_SYMBOL
+    GU_S1_CAP, GU_S1_EPIC_PACK_PRICE, GU_S1_EPIC_PACK_SKU,
+
+
+
+    GU_S1_LEGENDARY_CHEST_CAP, GU_S1_LEGENDARY_CHEST_PRICE, GU_S1_LEGENDARY_CHEST_SKU,
+
+    GU_S1_LEGENDARY_CHEST_TOKEN_NAME, GU_S1_LEGENDARY_CHEST_TOKEN_SYMBOL, GU_S1_LEGENDARY_PACK_PRICE, GU_S1_LEGENDARY_PACK_SKU,
+
+
+
+
+    GU_S1_RAFFLE_TOKEN_NAME, GU_S1_RAFFLE_TOKEN_SYMBOL, GU_S1_RARE_CHEST_CAP, GU_S1_RARE_CHEST_PRICE, GU_S1_RARE_CHEST_SKU,
+
+
+
+    GU_S1_RARE_CHEST_TOKEN_NAME, GU_S1_RARE_CHEST_TOKEN_SYMBOL, GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_SKU,
+
+
+    GU_S1_SHINY_PACK_PRICE, GU_S1_SHINY_PACK_SKU
 } from '../../../deployment/constants';
+import {
+    Cards,
+
+    Chest, EpicPack,
+
+    LegendaryPack,
+
+
+    Raffle, RarePack, Referral,
+
+
+
+
+
+
+
+    S1Cap, ShinyPack
+} from '../../../src/contracts';
+
 
 const MAX_MINT = 5;
 
@@ -33,7 +50,7 @@ export interface StandardContracts {
     cc: CreditCardEscrow;
     referral: Referral;
     raffle: Raffle;
-    oracle: ETHUSDMockOracle;
+    oracle: ManualOracle;
     processor: PurchaseProcessor;
     cards: Cards;
     beacon: Beacon;
@@ -47,7 +64,7 @@ export async function deployStandards(owner: Wallet): Promise<StandardContracts>
     const referral = await Referral.deploy(owner, 90, 10);
     const processor = await PurchaseProcessor.deploy(owner, owner.address);
     const raffle = await Raffle.deploy(owner, GU_S1_RAFFLE_TOKEN_NAME, GU_S1_RAFFLE_TOKEN_SYMBOL);
-    const oracle = await ETHUSDMockOracle.deploy(owner);
+    const oracle = await ManualOracle.deploy(owner);
     const cards = await Cards.deploy(owner, 1250, 'Cards', 'CARD');
     await processor.setOracle(oracle.address);
     await processor.setSignerLimit(owner.address, 1000000000000000);

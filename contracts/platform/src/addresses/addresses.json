@@ -26,7 +26,8 @@
         "IM_Processor": "0x8859eDD4adDf0CD286400d96Cb222442E1C28923",
         "IM_Escrow": "0xd79Bd8d6E9Ef6FE3b710f1dD510dB7D4c226Ca61",
         "IM_Escrow_CreditCard": "0xC9110910e1a45636fa414938A39c342F21fB9bf2",
-        "IM_Beacon": "0x6CCb647107c38D1531182A128315eD7C24250982"
+        "IM_Beacon": "0x6CCb647107c38D1531182A128315eD7C24250982",
+        "IM_Oracle_ETHUSDMock": "0xB437C2ffC35dd372CC0A28b2f286bAE16Eb8108f"
       },
       "dependencies": {}
     }

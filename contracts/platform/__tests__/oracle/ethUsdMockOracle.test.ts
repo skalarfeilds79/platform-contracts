@@ -2,19 +2,19 @@ import { Ganache, generatedWallets } from '@imtbl/test-utils';
 import { ethers } from 'ethers';
 import { BigNumber } from 'ethers/utils';
 import 'jest';
-import { ETHUSDMockOracle } from '../../src/contracts/ETHUSDMockOracle';
+import { ManualOracle } from '../../src/contracts/ManualOracle';
 
 ethers.errors.setLogLevel('error');
 const provider = new Ganache(Ganache.DefaultOptions);
 
-describe('ETHUSDMockOracle', () => {
+describe('ManualOracle', () => {
   const [ownerWallet, userWallet] = generatedWallets(provider);
   const base = new BigNumber(10).pow(16);
 
-  let oracle: ETHUSDMockOracle;
+  let oracle: ManualOracle;
 
   beforeAll(async () => {
-    oracle = await ETHUSDMockOracle.deploy(ownerWallet);
+    oracle = await ManualOracle.deploy(ownerWallet);
   });
 
   describe('should be able to get the correct price at $1000', () => {

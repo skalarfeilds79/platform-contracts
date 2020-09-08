@@ -1,33 +1,8 @@
-import 'jest';
-
+import { CreditCardEscrow, getPlatformAddresses, ManualOracle } from '@imtbl/platform';
 import { ethers, Wallet } from 'ethers';
-import { Blockchain } from '@imtbl/test-utils';
+import 'jest';
+import { GU_S1_CAP, GU_S1_EPIC_PACK_PRICE, GU_S1_EPIC_PACK_SKU, GU_S1_LEGENDARY_PACK_PRICE, GU_S1_LEGENDARY_PACK_SKU, GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_SKU, GU_S1_SHINY_PACK_PRICE, GU_S1_SHINY_PACK_SKU } from '../../deployment/constants';
 import { getGodsUnchainedAddresses } from '../../src/addresses/index';
-import {
-  GU_S1_RARE_PACK_PRICE,
-  GU_S1_SHINY_PACK_PRICE,
-  GU_S1_LEGENDARY_PACK_PRICE,
-  GU_S1_EPIC_PACK_PRICE,
-} from '../../deployment/constants';
-
-import {
-  GU_S1_RARE_PACK_SKU,
-  GU_S1_SHINY_PACK_SKU,
-  GU_S1_LEGENDARY_PACK_SKU,
-  GU_S1_EPIC_PACK_SKU,
-  GU_S1_CAP,
-} from '../../deployment/constants';
-
-import {
-  Currency,
-  ETHUSDMockOracle,
-  getETHPayment,
-  getPlatformAddresses,
-  getSignedPayment,
-  Payment,
-  CreditCardEscrow,
-} from '@imtbl/platform';
-
 import {
   Beacon,
   Cards,
@@ -40,8 +15,12 @@ import {
   Referral,
   S1Cap,
   S1Sale,
-  ShinyPack,
+  ShinyPack
 } from '../../src/contracts';
+
+
+
+
 
 ethers.errors.setLogLevel('error');
 jest.setTimeout(60000);
@@ -78,7 +57,7 @@ describe('02_deployment_verification', () => {
   let rarePack: RarePack;
   let shinyPack: ShinyPack;
   let legendaryPack: LegendaryPack;
-  let oracle: ETHUSDMockOracle;
+  let oracle: ManualOracle;
 
   beforeAll(async () => {
     beacon = Beacon.at(wallet, platformAddressBook.beaconAddress);
@@ -92,7 +71,7 @@ describe('02_deployment_verification', () => {
     epicPack = EpicPack.at(wallet, godUnchainedAddressBook.seasonOne.epicPackAddress);
     rarePack = RarePack.at(wallet, godUnchainedAddressBook.seasonOne.rarePackAddress);
     shinyPack = ShinyPack.at(wallet, godUnchainedAddressBook.seasonOne.shinyPackAddress);
-    oracle = ETHUSDMockOracle.at(wallet, platformAddressBook.ethUSDMockOracleAddress);
+    oracle = ManualOracle.at(wallet, platformAddressBook.manualOracleAddress);
     creditCard = CreditCardEscrow.at(wallet, platformAddressBook.creditCardAddress);
     legendaryPack = LegendaryPack.at(
       wallet,

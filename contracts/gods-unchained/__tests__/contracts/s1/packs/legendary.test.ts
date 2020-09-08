@@ -1,10 +1,10 @@
-import { Currency, getSignedPayment, Beacon } from '@imtbl/platform';
+import { Currency, getSignedPayment } from '@imtbl/platform';
 import { Blockchain, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { parseLogs } from '@imtbl/utils';
 import { ethers } from 'ethers';
 import 'jest';
 import { GU_S1_LEGENDARY_CHEST_PRICE, GU_S1_LEGENDARY_CHEST_SKU, GU_S1_LEGENDARY_PACK_PRICE, GU_S1_LEGENDARY_PACK_SKU } from '../../../../deployment/constants';
-import { Cards, Chest, LegendaryPack } from '../../../../src/contracts';
+import { Chest, LegendaryPack } from '../../../../src/contracts';
 import { deployLegendaryChest, deployLegendaryPack, deployStandards, StandardContracts } from '../utils';
 import { epics, legendaries, rares } from './protos';
 
@@ -97,7 +97,7 @@ describe('Legendary Pack', () => {
       legendary = await deployLegendaryPack(owner, shared);
     });
 
-    async function purchase(quantity: number, escrowFor: number) {
+    async function purchase(quantity: number, escrowFor: number): Promise<number> {
       const order = {
         quantity,
         sku: GU_S1_LEGENDARY_PACK_SKU,
@@ -111,16 +111,16 @@ describe('Legendary Pack', () => {
       const payment = await getSignedPayment(
         owner, shared.processor.address, legendary.address, order, params
       );
-      await legendary.purchase(quantity, payment, ethers.constants.AddressZero);
+      const tx = await legendary.purchase(quantity, payment, ethers.constants.AddressZero);
+      const receipt = await tx.wait();
+      return receipt.blockNumber;
     }
 
-    async function mintTrackGas(id: number, description: string) {
-      const commitment = await legendary.commitments(id);
-      const beacon = Beacon.at(owner, await legendary.beacon());
-      await beacon.callback(commitment.commitBlock);
-      const prediction = await legendary.predictCards(id);
+    async function mintTrackGas(id: number, blockNumber: number, quantity: number, description: string) {
+      const block = await provider.getBlock(blockNumber);
+      const prediction = await legendary.predictCards(id, block.hash, quantity);
       const protos = prediction.protos;
-      const packs = (await legendary.commitments(id)).quantity;
+      const packs = quantity;
       expect(protos).toBeDefined();
       expect(protos.length).toBe(packs * 5);
       const rareOrBetter = protos.filter(p => {
@@ -133,18 +133,18 @@ describe('Legendary Pack', () => {
     }
 
     it('should create cards from 1 pack', async () => {
-      await purchase(1, 100);
-      await mintTrackGas(0, '1 pack escrow');
+      const block = await purchase(1, 100);
+      await mintTrackGas(0, block, 1, '1 pack escrow');
     });
 
     it('should create cards from 2 packs', async () => {
-      await purchase(2, 100);
-      await mintTrackGas(0, '2 pack escrow');
+      const block = await purchase(2, 100);
+      await mintTrackGas(0, block, 2, '2 pack escrow');
     });
 
     it('should create cards from 1 packs with no escrow', async () => {
-      await purchase(1, 0);
-      await mintTrackGas(0, '1 pack no escrow');
+      const block = await purchase(1, 0);
+      await mintTrackGas(0, block, 1, '1 pack no escrow');
     });
 
   });
@@ -183,8 +183,6 @@ describe('Legendary Pack', () => {
        );
       await chest.purchase(quantity, payment, ethers.constants.AddressZero);
       await chest.open(quantity);
-      const purchase = await legendary.commitments(0);
-      expect(purchase.quantity).toBe(quantity * 6);
     }
 
     it('should create a valid purchase from an opened chest', async () => {

@@ -1,4 +1,3 @@
-pragma solidity 0.5.11;
 
 import "@openzeppelin/contracts/math/SafeMath.sol";
 
@@ -11,18 +10,6 @@ contract Referral {
 
     using SafeMath for uint256;
 
-    uint8 vendorPercentage;
-    uint8 referrerPercentage;
-
-    constructor(uint8 _vendorPercentage, uint8 _referrerPercentage) public {
-        vendorPercentage = _vendorPercentage;
-        referrerPercentage = _referrerPercentage;
-        require(
-            vendorPercentage + referrerPercentage == 100,
-            "GU:S1:Referral: invalid constructor params"
-        );
-    }
-
     /**
      * @dev Get the split of cost between purchaser/referrer
      *
@@ -30,13 +17,13 @@ contract Referral {
      * @param _value The total value of the purchase
      * @param _referrer The address of the referring user
      */
-    function getSplit(
+    function _getSplit(
         address _user, uint256 _value, address _referrer
-    ) external view returns (
+    ) internal view returns (
         uint256 toVendor, uint256 toReferrer
     ) {
-        toVendor = _getVendorPercentage(_value, vendorPercentage);
-        toReferrer = _getReferrerPercentage(_value, referrerPercentage);
+        toVendor = _getVendorPercentage(_value, 90);
+        toReferrer = _getReferrerPercentage(_value, 10);
         require(
             toVendor.add(toReferrer) == _value,
             "Referral: wrong sum value"

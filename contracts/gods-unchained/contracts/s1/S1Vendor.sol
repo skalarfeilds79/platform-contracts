@@ -1,15 +1,14 @@
 pragma solidity 0.5.11;
 pragma experimental ABIEncoderV2;
 
-import "./referral/IReferral.sol";
-import "./S1Cap.sol";
-import "@imtbl/platform/contracts/escrow/releaser/CreditCardEscrow.sol";
 import "@imtbl/platform/contracts/pay/PurchaseProcessor.sol";
 import "@imtbl/platform/contracts/pay/vendor/IVendor.sol";
 import "@imtbl/platform/contracts/admin/Pausable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
+import "./S1Cap.sol";
+import "./referral/Referral.sol";
 
-contract S1Vendor is IVendor, Pausable {
+contract S1Vendor is IVendor, Pausable, Referral {
 
     using SafeMath for uint256;
 
@@ -20,32 +19,23 @@ contract S1Vendor is IVendor, Pausable {
         uint256 referralFeeETH
     );
 
-    // Referral contract
-    IReferral public referral;
     // Price of each product sold by this contract
     uint256 public price;
     // SKU of the product sold by this contract
     bytes32 public sku;
-    // Escrow contract
-    CreditCardEscrow public escrow;
     // Payment processor
     PurchaseProcessor public pay;
-    // Cap tracker
     S1Cap cap;
 
     constructor(
         S1Cap _cap,
-        IReferral _referral,
         bytes32 _sku,
         uint256 _price,
-        CreditCardEscrow _escrow,
         PurchaseProcessor _pay
     ) public {
         sku = _sku;
         price = _price;
-        escrow = _escrow;
         pay = _pay;
-        referral = _referral;
         cap = _cap;
     }
 
@@ -90,7 +80,7 @@ contract S1Vendor is IVendor, Pausable {
         uint256 toReferrer = 0;
 
         if (_referrer != address(0)) {
-            (, toReferrer) = referral.getSplit(_recipient, totalPrice, _referrer);
+            (, toReferrer) = _getSplit(_recipient, totalPrice, _referrer);
         }
 
         PurchaseProcessor.Order memory order = PurchaseProcessor.Order({

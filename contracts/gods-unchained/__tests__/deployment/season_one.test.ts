@@ -87,7 +87,7 @@ describe('02_season_one', () => {
     rarePack = RarePack.at(wallet, godUnchainedAddressBook.seasonOne.rarePackAddress);
     shinyPack = ShinyPack.at(wallet, godUnchainedAddressBook.seasonOne.shinyPackAddress);
 
-    oracle = ETHUSDMockOracle.at(wallet, platformAddressBook.ethUSDMockOracleAddress);
+    oracle = ETHUSDMockOracle.at(wallet, platformAddressBook.manualOracleAddress);
 
     legendaryPack = LegendaryPack.at(
       wallet,

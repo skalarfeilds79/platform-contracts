@@ -64,7 +64,7 @@ describe('02_deployment_verification', () => {
     epicPack = EpicPack.at(wallet, godUnchainedAddressBook.seasonOne.epicPackAddress);
     rarePack = RarePack.at(wallet, godUnchainedAddressBook.seasonOne.rarePackAddress);
     shinyPack = ShinyPack.at(wallet, godUnchainedAddressBook.seasonOne.shinyPackAddress);
-    oracle = ETHUSDMockOracle.at(wallet, platformAddressBook.ethUSDMockOracleAddress);
+    oracle = ETHUSDMockOracle.at(wallet, platformAddressBook.manualOracleAddress);
     creditCard = CreditCardEscrow.at(wallet, platformAddressBook.creditCardAddress);
     legendaryPack = LegendaryPack.at(
       wallet,

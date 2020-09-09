@@ -25,7 +25,7 @@ export class CoreStage implements DeploymentStage {
     transferOwnership: (address: string) => void,
   ) {
     // EXPERIMENT: Test to see if grabbing getTransactionCount will fix nonce issue
-    await this.wallet.getTransactionCount();
+    // await this.wallet.getTransactionCount();
 
     const firstSigner = await findInstance('IM_PROCESSOR_FIRST_SIGNER');
     const revenueWallet = await findInstance('PROCESSOR_REVENUE_WALLET');
@@ -93,6 +93,7 @@ export class CoreStage implements DeploymentStage {
   async deployProcessor(revenueWallet: string): Promise<string> {
     console.log('** Deploying PurchaseProcessor **');
     const processor = await PurchaseProcessor.awaitDeployment(this.wallet, revenueWallet);
+    console.log('deployed pp', processor.address);
     return processor.address;
   }
 

@@ -21,13 +21,15 @@
     },
     "production": {
       "addresses": {
-        "GU_Cards": "0x9c08ef752e864a92cc0eb145a7ac5b5d5e568729",
-        "GU_S1_Raffle": "0x20aD49c0dd3d39d1f98ab46f8A469fc29409Db99",
-        "GU_S1_Referral": "0x6074a74c5B62541Ed6D87d77D372938969583Cbe",
-        "GU_S1_Sale": "0x412884fEFe1e2481f7a5b7D96962Ea5b1416cF6A",
-        "GU_S1_Cap": "0x6541C7f8039A0A2bCC53a18dfAc7136130098c51",
-        "GU_S1_Rare_Pack": "0x07D69C30664355BEDc89C9DE2fC3ACB6f43A675c",
-        "GU_S1_Rare_Chest": "0x95b9e009973428A22b160a011731a5Aea767275B"
+        "GU_S1_Raffle": "0x606830d51FF935B4b0F8FFe965D419934c57b2F0",
+        "GU_S1_Sale": "0x9c7de4f0Bcb1f25cc780bbf025aaC30711c640eE",
+        "GU_S1_Cap": "0x7183c5d5c62A0dE81EDBD2E0e3eF4Df69ab25735",
+        "GU_S1_Rare_Pack": "0x9dADF9C3070C8eae25544e149E6B37a8E9e9984C",
+        "GU_S1_Rare_Chest": "0xb3bAEE5CC4192243C0Ad32e2519fBf61FfAD238C",
+        "GU_S1_Epic_Pack": "0x94c8514340A37111CBE9cb223F6FD176a51cEcF1",
+        "GU_S1_Shiny_Pack": "0x59fd609B5B4684b558d1338Bc8e66ec1f036E6B3",
+        "GU_S1_Legendary_Pack": "0x42ff82E8EfBD0CD8006E4c632b8F0C6454BBe2Cb",
+        "GU_S1_Legendary_Chest": "0xd3D39bC6680a3cD44D03F585401fcc1d4E574646"
       },
       "dependencies": {}
     },

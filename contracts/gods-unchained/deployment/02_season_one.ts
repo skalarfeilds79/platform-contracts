@@ -40,6 +40,10 @@ export class SeasonOneStage implements DeploymentStage {
 
     const s1sale = (await findInstance('GU_S1_Sale')) || (await this.deploySale());
     onDeployment('GU_S1_Sale', s1sale, false);
+    console.log('sale', s1sale);
+
+    const x = await S1Sale.at(this.wallet, s1sale).isVendorApproved(raffle);
+    console.log(x);
 
     const s1Cap = (await findInstance('GU_S1_Cap')) || (await this.deployCap());
     onDeployment('GU_S1_Cap', s1Cap, false);

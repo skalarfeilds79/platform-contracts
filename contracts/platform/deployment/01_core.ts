@@ -25,16 +25,12 @@ export class CoreStage implements DeploymentStage {
     transferOwnership: (address: string) => void,
   ) {
     // EXPERIMENT: Test to see if grabbing getTransactionCount will fix nonce issue
-    // await this.wallet.getTransactionCount();
+    await this.wallet.getTransactionCount();
 
     const firstSigner = await findInstance('IM_PROCESSOR_FIRST_SIGNER');
     const revenueWallet = await findInstance('PROCESSOR_REVENUE_WALLET');
 
-    const medianizer = await findInstance('MEDIANIZER');
-    const ethUSDMock = await findInstance('IM_Oracle_ETHUSDManual');
-    const makerOracle = await findInstance('IM_Oracle_ETHUSDMaker');
-
-    let oracle = await this.deployMockOracle();
+    let oracle = (await findInstance('IM_Oracle_ETHUSDManual')) || (await this.deployMockOracle());
     onDeployment('IM_Oracle_ETHUSDManual', oracle, false);
 
     if (firstSigner.length == 0 || !firstSigner) {
@@ -72,11 +68,11 @@ export class CoreStage implements DeploymentStage {
       ));
     onDeployment('IM_Escrow_CreditCard', creditCardEscrow, false);
 
-    await this.setPaymentProcessorSigner(processor, firstSigner);
+    // await this.setPaymentProcessorSigner(processor, firstSigner);
     await this.setPaymentProcessorOracle(processor, oracle);
 
-    console.log('*** Updating pausers and freezers ***');
-    console.log(this.wallet.address);
+    // console.log('*** Updating pausers and freezers ***');
+    // console.log(this.wallet.address);
 
     const pauser = await findInstance('IM_PAUSER');
     console.log('pauser', pauser);
@@ -85,6 +81,7 @@ export class CoreStage implements DeploymentStage {
     const freezer = await findInstance('IM_FREEZER');
     console.log('freezer', freezer);
     await setFreezer(this.wallet, freezer, escrow, creditCardEscrow);
+
   }
 
   async deployBeacon(): Promise<string> {
@@ -141,7 +138,7 @@ export class CoreStage implements DeploymentStage {
     const contract = PurchaseProcessor.at(this.wallet, processor);
     if ((await contract.signerLimits(signer)).total.toNumber() === 0) {
       console.log(`${signer} | $${IM_PROCESSOR_LIMIT / 100} LIMIT`);
-      await contract.setSignerLimit(signer, IM_PROCESSOR_LIMIT);
+      await contract.setSignerLimit(signer, 0);
     }
   }
 

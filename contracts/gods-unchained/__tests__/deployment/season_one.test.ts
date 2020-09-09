@@ -64,6 +64,7 @@ describe('02_season_one', () => {
   let epicPack: EpicPack;
   let rarePack: RarePack;
   let shinyPack: ShinyPack;
+  
   let legendaryPack: LegendaryPack;
   let oracle: ManualOracle;
 

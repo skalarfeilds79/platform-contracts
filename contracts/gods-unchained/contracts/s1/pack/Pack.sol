@@ -22,6 +22,10 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         bool grantsTickets;
     }
 
+    // All commitments recorded by this pack
+    mapping(uint256 => Commitment) public commitments;
+    // The randomness beacon used by this pack
+    Beacon public beacon;
     // The address of the chest linked to this pack
     address public chest;
     // The number of commitments
@@ -38,9 +42,13 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         returns (uint16);
 
     constructor(
-        S1Cap _cap, bytes32 _sku, uint256 _price, PurchaseProcessor _pay
+        Beacon _beacon,
+        S1Cap _cap,
+        bytes32 _sku,
+        uint256 _price,
+        PurchaseProcessor _pay
     ) public S1Vendor(_cap, _sku, _price, _pay) {
-        
+        beacon = _beacon;
     }
 
     /** @dev Set the chest address for this contract
@@ -87,16 +95,16 @@ contract Pack is IPack, S1Vendor, RarityProvider {
     }
 
     function predictCards(
-        uint256 _commitmentID,
-        uint256 _baseRandomness,
-        uint16 _quantity
+        uint256 _commitmentID
     ) external view returns (
         uint16[] memory protos,
         uint8[] memory qualities
     ) {
-        require(_quantity != 0, "must have packs");
-        uint256 randomness = uint256(keccak256(abi.encodePacked(_baseRandomness, address(this), _commitmentID)));
-        uint256 numCards = uint(_quantity).mul(5);
+        Commitment memory commitment = commitments[_commitmentID];
+        require(commitment.quantity != 0, "must have packs");
+        bytes32 base = beacon.randomness(commitment.commitBlock);
+        uint256 randomness = uint256(keccak256(abi.encodePacked(base, address(this), _commitmentID)));
+        uint256 numCards = uint(commitment.quantity).mul(5);
         protos = new uint16[](numCards);
         qualities = new uint8[](numCards);
         for (uint i = 0; i < numCards; i++) {
@@ -105,14 +113,14 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         return (protos, qualities);
     }
 
-    function predictTickets(
-        uint256 _commitmentID,
-        uint256 _baseRandomness,
-        uint16 _quantity
-    ) external view returns (uint16[] memory tickets) {
-        uint256 randomness = uint256(keccak256(abi.encodePacked(_baseRandomness, address(this), _commitmentID)));
-        tickets = new uint16[](_quantity);
-        for (uint i = 0; i < _quantity; i++) {
+    function predictTickets(uint256 _commitmentID) external view returns (uint16[] memory tickets) {
+        Commitment memory commitment = commitments[_commitmentID];
+        require(commitment.quantity != 0, "must have packs");
+        require(commitment.grantsTickets, "must grant tickets");
+        bytes32 base = beacon.randomness(commitment.commitBlock);
+        uint256 randomness = uint256(keccak256(abi.encodePacked(base, address(this), _commitmentID)));
+        tickets = new uint16[](commitment.quantity);
+        for (uint i = 0; i < commitment.quantity; i++) {
             tickets[i] = _getTicketsInPack(i, randomness);
         }
         return tickets;
@@ -134,18 +142,18 @@ contract Pack is IPack, S1Vendor, RarityProvider {
         bool _grantsTickets
     ) internal returns (uint256) {
         require(_quantity == uint16(_quantity), "must not overflow");
-        // uint256 commitBlock = beacon.commit(0);
+        uint256 commitBlock = beacon.commit(0);
         uint256 commitmentID = commitmentCount++;
         Commitment memory commitment = Commitment({
-            escrowFor: _escrowFor,
-            paymentID: _paymentID,
-            commitBlock: uint64(block.number),
+            commitBlock: uint64(commitBlock),
             quantity: uint16(_quantity),
             recipient: _recipient,
+            escrowFor: _escrowFor,
+            paymentID: _paymentID,
             grantsTickets: _grantsTickets
         });
 
-        // commitments[commitmentID] = commitment;
+        commitments[commitmentID] = commitment;
         emit CommitmentRecorded(commitmentID, commitment);
     }
 

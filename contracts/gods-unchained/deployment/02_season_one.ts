@@ -242,8 +242,8 @@ export class SeasonOneStage implements DeploymentStage {
       GU_S1_RARE_CHEST_TOKEN_SYMBOL,
       rarePack,
       GU_S1_RARE_CHEST_CAP,
-      cap,
       escrow,
+      cap,
       GU_S1_RARE_CHEST_SKU,
       GU_S1_RARE_CHEST_PRICE,
       processor
@@ -264,8 +264,8 @@ export class SeasonOneStage implements DeploymentStage {
       GU_S1_LEGENDARY_CHEST_TOKEN_SYMBOL,
       legendaryPack,
       GU_S1_LEGENDARY_CHEST_CAP,
-      cap,
       escrow,
+      cap,
       GU_S1_LEGENDARY_CHEST_SKU,
       GU_S1_LEGENDARY_CHEST_PRICE,
       processor

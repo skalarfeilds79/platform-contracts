@@ -1,7 +1,7 @@
 import { DeploymentParams, DeploymentStage } from '@imtbl/deployment-utils';
 import { asyncForEach } from '@imtbl/utils';
 import { ethers, Wallet } from 'ethers';
-import { Fusing } from '../src/contracts';
+import { Fusing, Cards } from '../src/contracts';
 import { CardsWrapper } from './../src/wrappers/cardsWrapper';
 
 
@@ -25,7 +25,7 @@ export class CoreStage implements DeploymentStage {
     const cards = (await findInstance('GU_Cards')) || (await this.deployCards(cardWrapper));
     onDeployment('GU_Cards', cards, false);
 
-    // cardWrapper.instance = Cards.at(this.wallet, cards);
+    cardWrapper.instance = Cards.at(this.wallet, cards);
 
     // const openMinter =
     //   (await findInstance('GU_OpenMinter')) || (await this.deployOpenMinter(cardWrapper, cards));

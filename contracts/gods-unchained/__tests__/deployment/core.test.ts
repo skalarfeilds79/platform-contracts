@@ -18,13 +18,9 @@ describe('01_core', () => {
   );
 
   let cards: Cards;
-  let openMinter: OpenMinter;
-  let fusing: Fusing;
 
   beforeAll(async () => {
     cards = Cards.at(wallet, addressBook.cardsAddress);
-    openMinter = OpenMinter.at(wallet, addressBook.openMinterAddress);
-    fusing = Fusing.at(wallet, addressBook.fusingAddress);
   });
 
   it('should have deployed cards', async () => {
@@ -32,13 +28,13 @@ describe('01_core', () => {
     expect(code.length).toBeGreaterThan(3);
   });
 
-  it('should have deployed open minter', async () => {
-    const code = await provider.getCode(openMinter.address);
-    expect(code.length).toBeGreaterThan(3);
-  });
+  // it('should have deployed open minter', async () => {
+  //   const code = await provider.getCode(openMinter.address);
+  //   expect(code.length).toBeGreaterThan(3);
+  // });
 
-  it('should have deployed fusing', async () => {
-    const code = await provider.getCode(fusing.address);
-    expect(code.length).toBeGreaterThan(3);
-  });
+  // it('should have deployed fusing', async () => {
+  //   const code = await provider.getCode(fusing.address);
+  //   expect(code.length).toBeGreaterThan(3);
+  // });
 });

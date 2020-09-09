@@ -2,13 +2,16 @@
   "environments": {
     "development": {
       "addresses": {
-        "GU_Cards": "0x786DB8abB27721811aA3F6C1c99dB7A04854a4cd",
-        "GU_S1_Raffle": "0xCbe4e2B3A3DE4E25265648d24357e0ba1cF65DAA",
-        "GU_S1_Sale": "0x997B07daEB6dA60f1fE3909755221D7F9242000C",
-        "GU_S1_Cap": "0x58f4Cae2b25D7EB4A7cd819408d8d3a959C0230c",
-        "GU_S1_Epic_Pack": "0x6B2590b071E0672D164e3267dA81a45ED1ca7eeb",
-        "GU_S1_Rare_Pack": "0x31eA5a7ecD8B188e850B6376730435Bf045e7894",
-        "GU_S1_Shiny_Pack": "0x5727Af2Da1762bE9CB32cFF233A71E2c6aF39279"
+        "GU_Cards": "0x99356167eDba8FBdC36959E3F5D0C43d1BA9c6DB",
+        "GU_S1_Raffle": "0x404C55a936f3006B13B020efAaf5771A600Ec04d",
+        "GU_S1_Sale": "0xfD946D47d3dB1e06126d16281Fb3E222A1bA8179",
+        "GU_S1_Cap": "0x96EccEa4E124322a6aA0a004da1b91d9a3024C73",
+        "GU_S1_Epic_Pack": "0xDDb2B738682AD218eD87CF6f3a466798644e5d8D",
+        "GU_S1_Rare_Pack": "0xd2aa8d362b1CaA68553642831b86Abb3D24B4579",
+        "GU_S1_Shiny_Pack": "0x434f1EB003B78c0EAbe034313F1aFf47920e0860",
+        "GU_S1_Legendary_Pack": "0x46c6A737C75cE3a58c6b2De14970E8841c72DcEF",
+        "GU_S1_Rare_Chest": "0x1a488d7B42C1Ec1539b78f772BF13eCCB723f5fa",
+        "GU_S1_Legendary_Chest": "0x965D352283a3C8A016b9BBbC9bf6306665d495E7"
       },
       "dependencies": {}
     },
@@ -18,12 +21,12 @@
         "GU_S1_Raffle": "0x606830d51FF935B4b0F8FFe965D419934c57b2F0",
         "GU_S1_Sale": "0x9c7de4f0Bcb1f25cc780bbf025aaC30711c640eE",
         "GU_S1_Cap": "0x7183c5d5c62A0dE81EDBD2E0e3eF4Df69ab25735",
-        "GU_S1_Rare_Pack": "0x9dADF9C3070C8eae25544e149E6B37a8E9e9984C",
-        "GU_S1_Rare_Chest": "0xb3bAEE5CC4192243C0Ad32e2519fBf61FfAD238C",
+        "GU_S1_Rare_Pack": "0x032a540efFD5644b8843748A51210dB2079097C0",
+        "GU_S1_Rare_Chest": "0x69C3AA99e387D03d132B9AFef6C3FAeB98b930b1",
         "GU_S1_Epic_Pack": "0x94c8514340A37111CBE9cb223F6FD176a51cEcF1",
         "GU_S1_Shiny_Pack": "0x59fd609B5B4684b558d1338Bc8e66ec1f036E6B3",
-        "GU_S1_Legendary_Pack": "0x42ff82E8EfBD0CD8006E4c632b8F0C6454BBe2Cb",
-        "GU_S1_Legendary_Chest": "0xd3D39bC6680a3cD44D03F585401fcc1d4E574646"
+        "GU_S1_Legendary_Pack": "0x41D40A3FBc9A9f0C84e74aDd14226990a52D7150",
+        "GU_S1_Legendary_Chest": "0x1183e505Ad80fb1b648eFe2ef44f8429AFa8Cea9"
       },
       "dependencies": {}
     },

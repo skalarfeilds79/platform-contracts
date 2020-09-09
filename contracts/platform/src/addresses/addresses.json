@@ -2,7 +2,6 @@
   "environments": {
     "staging": {
       "addresses": {
-        "IM_Oracle_ETHUSDMock": "0xDa3Ca5fB18920E33CeBd4Bc811A70DA74E84E435",
         "IM_Beacon": "0xa0ddE76121EcaD334c5931E31c4e368E80317D4e",
         "IM_Processor": "0xf9D67798823720cF3ebb9FBf5Cb16fBdc594D693",
         "IM_Escrow": "0x95C4920Aa0be40ec6eD084d331250329b109ECC0",
@@ -13,7 +12,6 @@
     },
     "development": {
       "addresses": {
-        "IM_Oracle_ETHUSDMock": "0x1dC4c1cEFEF38a777b15aA20260a54E584b16C48",
         "IM_Beacon": "0x1D7022f5B17d2F8B695918FB48fa1089C9f85401",
         "IM_Processor": "0x871DD7C2B4b25E1Aa18728e9D5f2Af4C4e431f5c",
         "IM_Escrow": "0x0B1ba0af832d7C05fD64161E0Db78E85978E8082",

@@ -63,6 +63,7 @@ export class SeasonOneStage implements DeploymentStage {
     const epicPack =
       (await findInstance('GU_S1_Epic_Pack')) ||
       (await this.deployEpicPack(
+        beacon,
         s1Cap,
         processor,
       ));
@@ -74,6 +75,7 @@ export class SeasonOneStage implements DeploymentStage {
     const rarePack =
       (await findInstance('GU_S1_Rare_Pack')) ||
       (await this.deployRarePack(
+        beacon,
         s1Cap,
         processor,
       ));
@@ -85,6 +87,7 @@ export class SeasonOneStage implements DeploymentStage {
     const shinyPack =
       (await findInstance('GU_S1_Shiny_Pack')) ||
       (await this.deployShinyPack(
+        beacon,
         s1Cap,
         processor,
       ));
@@ -96,6 +99,7 @@ export class SeasonOneStage implements DeploymentStage {
     const legendaryPack =
       (await findInstance('GU_S1_Legendary_Pack')) ||
       (await this.deployLegendaryPack(
+        beacon,
         s1Cap,
         processor,
       ));
@@ -163,12 +167,14 @@ export class SeasonOneStage implements DeploymentStage {
   }
 
   async deployEpicPack(
+    beacon: string,
     cap: string,
     processor: string,
   ): Promise<string> {
     console.log('** Deploying EpicPack **');
     const epic = await EpicPack.awaitDeployment(
       this.wallet,
+      beacon,
       cap,
       GU_S1_EPIC_PACK_SKU,
       GU_S1_EPIC_PACK_PRICE,
@@ -178,12 +184,14 @@ export class SeasonOneStage implements DeploymentStage {
   }
 
   async deployRarePack(
+    beacon: string,
     cap: string,
     processor: string,
   ): Promise<string> {
     console.log('** Deploying RarePack **');
     const rare = await RarePack.awaitDeployment(
       this.wallet,
+      beacon,
       cap,
       GU_S1_RARE_PACK_SKU,
       GU_S1_RARE_PACK_PRICE,
@@ -193,12 +201,14 @@ export class SeasonOneStage implements DeploymentStage {
   }
 
   async deployShinyPack(
+    beacon: string,
     cap: string,
     processor: string,
   ): Promise<string> {
     console.log('** Deploying ShinyPack **');
     const shiny = await ShinyPack.awaitDeployment(
       this.wallet,
+      beacon,
       cap,
       GU_S1_SHINY_PACK_SKU,
       GU_S1_SHINY_PACK_PRICE,
@@ -208,12 +218,14 @@ export class SeasonOneStage implements DeploymentStage {
   }
 
   async deployLegendaryPack(
+    beacon: string,
     cap: string,
     processor: string,
   ): Promise<string> {
     console.log('** Deploying LegendaryPack **');
     const legendary = await LegendaryPack.awaitDeployment(
       this.wallet,
+      beacon,
       cap,
       GU_S1_LEGENDARY_PACK_SKU,
       GU_S1_LEGENDARY_PACK_PRICE,

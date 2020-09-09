@@ -40,6 +40,10 @@ export class SeasonOneStage implements DeploymentStage {
 
     const s1sale = (await findInstance('GU_S1_Sale')) || (await this.deploySale());
     onDeployment('GU_S1_Sale', s1sale, false);
+    console.log('sale', s1sale);
+
+    const x = await S1Sale.at(this.wallet, s1sale).isVendorApproved(raffle);
+    console.log(x);
 
     const s1Cap = (await findInstance('GU_S1_Cap')) || (await this.deployCap());
     onDeployment('GU_S1_Cap', s1Cap, false);
@@ -238,8 +242,8 @@ export class SeasonOneStage implements DeploymentStage {
       GU_S1_RARE_CHEST_TOKEN_SYMBOL,
       rarePack,
       GU_S1_RARE_CHEST_CAP,
-      cap,
       escrow,
+      cap,
       GU_S1_RARE_CHEST_SKU,
       GU_S1_RARE_CHEST_PRICE,
       processor
@@ -260,8 +264,8 @@ export class SeasonOneStage implements DeploymentStage {
       GU_S1_LEGENDARY_CHEST_TOKEN_SYMBOL,
       legendaryPack,
       GU_S1_LEGENDARY_CHEST_CAP,
-      cap,
       escrow,
+      cap,
       GU_S1_LEGENDARY_CHEST_SKU,
       GU_S1_LEGENDARY_CHEST_PRICE,
       processor

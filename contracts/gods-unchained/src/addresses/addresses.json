@@ -2,7 +2,16 @@
   "environments": {
     "development": {
       "addresses": {
-        
+        "GU_Cards": "0x99356167eDba8FBdC36959E3F5D0C43d1BA9c6DB",
+        "GU_S1_Raffle": "0x404C55a936f3006B13B020efAaf5771A600Ec04d",
+        "GU_S1_Sale": "0xfD946D47d3dB1e06126d16281Fb3E222A1bA8179",
+        "GU_S1_Cap": "0x96EccEa4E124322a6aA0a004da1b91d9a3024C73",
+        "GU_S1_Epic_Pack": "0xDDb2B738682AD218eD87CF6f3a466798644e5d8D",
+        "GU_S1_Rare_Pack": "0xd2aa8d362b1CaA68553642831b86Abb3D24B4579",
+        "GU_S1_Shiny_Pack": "0x434f1EB003B78c0EAbe034313F1aFf47920e0860",
+        "GU_S1_Legendary_Pack": "0x46c6A737C75cE3a58c6b2De14970E8841c72DcEF",
+        "GU_S1_Rare_Chest": "0x1a488d7B42C1Ec1539b78f772BF13eCCB723f5fa",
+        "GU_S1_Legendary_Chest": "0x965D352283a3C8A016b9BBbC9bf6306665d495E7"
       },
       "dependencies": {}
     },

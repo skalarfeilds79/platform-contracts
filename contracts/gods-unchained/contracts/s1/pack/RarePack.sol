@@ -6,9 +6,19 @@ import "./Pack.sol";
 contract RarePack is Pack {
 
     constructor(
-        S1Cap _cap, bytes32 _sku, uint256 _price, PurchaseProcessor _pay
-    ) public Pack(_cap, _sku, _price, _pay) {}
-    
+        Beacon _beacon,
+        S1Cap _cap,
+        bytes32 _sku,
+        uint256 _price,
+        PurchaseProcessor _pay
+    ) public Pack(
+        _beacon,
+        _cap,
+        _sku,
+        _price,
+        _pay
+    ) {}
+
     function _getCardDetails(
         uint _index,
         uint _random

@@ -1,10 +1,10 @@
-import { Currency, getSignedPayment } from '@imtbl/platform';
+import { Currency, getSignedPayment, Beacon } from '@imtbl/platform';
 import { Blockchain, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { parseLogs } from '@imtbl/utils';
 import { ethers } from 'ethers';
 import 'jest';
 import { GU_S1_SHINY_PACK_PRICE, GU_S1_SHINY_PACK_SKU } from '../../../../deployment/constants';
-import { ShinyPack } from '../../../../src/contracts';
+import { Cards, ShinyPack } from '../../../../src/contracts';
 import { deployShinyPack, deployStandards, StandardContracts } from '../utils';
 import { epics, legendaries, rares } from './protos';
 
@@ -96,7 +96,7 @@ describe('Shiny Pack', () => {
       shiny = await deployShinyPack(owner, shared);
     });
 
-    async function purchase(quantity: number, escrowFor: number): Promise<number> {
+    async function purchase(quantity: number, escrowFor: number) {
       const order = {
         quantity,
         sku: GU_S1_SHINY_PACK_SKU,
@@ -114,16 +114,16 @@ describe('Shiny Pack', () => {
         order,
         params
       );
-      const tx = await shiny.purchase(quantity, payment, ethers.constants.AddressZero);
-      const receipt = await tx.wait();
-      return receipt.blockNumber;
+      await shiny.purchase(quantity, payment, ethers.constants.AddressZero);
     }
 
-    async function mintTrackGas(id: number, blockNumber: number, quantity: number, description: string) {
-      const block = await provider.getBlock(blockNumber);
-      const prediction = await shiny.predictCards(id, block.hash, quantity);
+    async function mintTrackGas(id: number, description: string) {
+      const commitment = await shiny.commitments(id);
+      const beacon = Beacon.at(owner, await shiny.beacon());
+      await beacon.callback(commitment.commitBlock);
+      const prediction = await shiny.predictCards(id);
       const protos = prediction.protos;
-      const packs = quantity;
+      const packs = commitment.quantity;
       expect(protos).toBeDefined();
       expect(protos.length).toBe(packs * 5);
       const rareOrBetter = protos.filter(p => {
@@ -138,18 +138,18 @@ describe('Shiny Pack', () => {
     }
 
     it('should create cards from 1 pack', async () => {
-      const block = await purchase(1, 100);
-      await mintTrackGas(0, block, 1, '1 pack escrow');
+      await purchase(1, 100);
+      await mintTrackGas(0, '1 pack escrow');
     });
 
     it('should create cards from 2 packs', async () => {
-      const block = await purchase(2, 100);
-      await mintTrackGas(0, block, 2, '2 pack escrow');
+      await purchase(2, 100);
+      await mintTrackGas(0, '2 pack escrow');
     });
 
     it('should create cards from 1 packs with no escrow', async () => {
-      const block = await purchase(1, 0);
-      await mintTrackGas(0, block, 1, '1 pack no escrow');
+      await purchase(1, 0);
+      await mintTrackGas(0, '1 pack no escrow');
     });
 
   });

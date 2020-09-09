@@ -1,10 +1,10 @@
-import { Currency, getSignedPayment } from '@imtbl/platform';
+import { Currency, getSignedPayment, Beacon } from '@imtbl/platform';
 import { Blockchain, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { parseLogs } from '@imtbl/utils';
 import { ethers } from 'ethers';
 import 'jest';
 import { GU_S1_RARE_CHEST_PRICE, GU_S1_RARE_CHEST_SKU, GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_SKU } from '../../../../deployment/constants';
-import { Chest, RarePack } from '../../../../src/contracts';
+import { Cards, Chest, RarePack } from '../../../../src/contracts';
 import { deployRareChest, deployRarePack, deployStandards, StandardContracts } from '../utils';
 import { epics, legendaries, rares } from './protos';
 
@@ -27,59 +27,19 @@ describe('Rare Pack', () => {
     await blockchain.revertAsync();
   });
 
-  // describe('deployment', () => {
+  describe('deployment', () => {
 
-  //   let shared: StandardContracts;
-  //   let rare: RarePack;
-  //   let sale: S1Sale;
+    let shared: StandardContracts;
 
-  //   beforeAll(async() => {
-  //     shared = await deployStandards(owner);
-  //   });
+    beforeAll(async() => {
+      shared = await deployStandards(owner);
+    });
 
-  //   it('should deploy rare pack', async () => {
-  //     rare = await deployRarePack(owner, shared);
-  //     sale = await S1Sale.deploy(owner);
-  //     await sale.setVendorApproval(true, [rare.address]);
-  //     const payment = {
-  //       currency: 0,
-  //       escrowFor: 0,
-  //       value: 0,
-  //       nonce: 0,
-  //       v: 0,
-  //       r: ethers.utils.keccak256('0x00'),
-  //       s: ethers.utils.keccak256('0x00'),
-  //     };
-  //     // initial tx to kick things off
-  //     await rare.purchase(1, payment, ethers.constants.AddressZero, { value: new BigNumber("100000000000000000")});
+    it('should deploy rare pack', async () => {
+      await deployRarePack(owner, shared);
+    });
 
-  //     const requests = [
-  //       {
-  //           quantity: 1,
-  //           vendor: rare.address,
-  //           payment: payment
-  //       }
-  //     ]
-
-  //     let tx = await sale.purchase(requests, ethers.constants.AddressZero, { value: new BigNumber("100000000000000000")});
-  //     let receipt = await tx.wait();
-  //     console.log('sale', receipt.gasUsed.toString());
-
-  //     tx = await sale.purchase(requests, "0x6b32a7add2673a3bc84bd7c5f3bccfb3e96fd611", { value: new BigNumber("100000000000000000")});
-  //     receipt = await tx.wait();
-  //     console.log('sale referral', receipt.gasUsed.toString());
-
-  //     tx = await rare.purchase(1, payment, ethers.constants.AddressZero, { value: new BigNumber("100000000000000000")});
-  //     receipt = await tx.wait();
-  //     console.log('no sale', receipt.gasUsed.toString());
-
-  //     tx = await rare.purchase(1, payment, "0x6b32a7add2673a3bc84bd7c5f3bccfb3e96fd611", { value: new BigNumber("100000000000000000")});
-  //     receipt = await tx.wait();
-  //     console.log('no sale referral', receipt.gasUsed.toString());
-
-  //   });
-
-  // });
+  });
 
   describe('purchase', () => {
 
@@ -138,7 +98,7 @@ describe('Rare Pack', () => {
       rare = await deployRarePack(owner, shared);
     });
 
-    async function purchase(quantity: number, escrowFor: number): Promise<number> {
+    async function purchase(quantity: number, escrowFor: number) {
       const order = {
         quantity,
         sku: GU_S1_RARE_PACK_SKU,
@@ -150,16 +110,16 @@ describe('Rare Pack', () => {
       };
       const params = { escrowFor, nonce: 0, value: GU_S1_RARE_PACK_PRICE * quantity };
       const payment = await getSignedPayment(owner, shared.processor.address, rare.address, order, params);
-      const tx = await rare.purchase(quantity, payment, ethers.constants.AddressZero);
-      const receipt = await tx.wait();
-      return receipt.blockNumber;
+      await rare.purchase(quantity, payment, ethers.constants.AddressZero);
     }
 
-    async function mintTrackGas(id: number, blockNumber: number, quantity: number, description: string) {
-      const block = await provider.getBlock(blockNumber);
-      const prediction = await rare.predictCards(id, block.hash, quantity);
+    async function mintTrackGas(id: number, description: string) {
+      const commitment = await rare.commitments(id);
+      const beacon = Beacon.at(owner, await rare.beacon());
+      await beacon.callback(commitment.commitBlock);
+      const prediction = await rare.predictCards(id);
       const protos = prediction.protos;
-      const packs = quantity;
+      const packs = (await rare.commitments(id)).quantity;
       expect(protos).toBeDefined();
       expect(protos.length).toBe(packs * 5);
       const rareOrBetter = protos.filter(p => {
@@ -170,20 +130,19 @@ describe('Rare Pack', () => {
     }
 
     it('should create cards from 1 pack', async () => {
-      const block = await purchase(1, 100);
-      await mintTrackGas(0, block, 1, '1 pack escrow');
+      await purchase(1, 100);
+      await mintTrackGas(0, '1 pack escrow');
     });
 
     it('should create cards from 2 packs', async () => {
-      const block = await purchase(2, 100);
-      await mintTrackGas(0, block, 2, '2 pack escrow');
+      await purchase(2, 100);
+      await mintTrackGas(0, '2 pack escrow');
     });
 
     it('should create cards from 1 packs with no escrow', async () => {
-      const block = await purchase(1, 0);
-      await mintTrackGas(0, block, 1, '1 pack no escrow');
+      await purchase(1, 0);
+      await mintTrackGas(0, '1 pack no escrow');
     });
-
 
 
   });
@@ -226,6 +185,8 @@ describe('Rare Pack', () => {
       );
       await chest.purchase(quantity, payment, ethers.constants.AddressZero);
       await chest.open(quantity);
+      const purchase = await rare.commitments(0);
+      expect(purchase.quantity).toBe(quantity * 6);
     }
 
     it('should create a valid purchase from an opened chest', async () => {

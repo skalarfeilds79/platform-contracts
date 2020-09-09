@@ -12,11 +12,7 @@
     },
     "development": {
       "addresses": {
-        "IM_Oracle_ETHUSDManual": "0x10A736A7b223f1FE1050264249d1aBb975741E75",
-        "IM_Beacon": "0xb125995F5a4766C451cD8C34C4F5CAC89b724571",
-        "IM_Processor": "0xc7124963Ab16C33E5bF421D4c0090116622B3074",
-        "IM_Escrow": "0xC6B0D3C45A6b5092808196cB00dF5C357d55E1d5",
-        "IM_Escrow_CreditCard": "0x7209185959D7227FB77274e1e88151D7C4c368D3"
+        
       },
       "dependencies": {}
     },

@@ -16,7 +16,8 @@
         "IM_Processor": "0x2C616207242676e03a752A98F872B3Ba47510Daf",	
         "IM_Escrow": "0xAF3c3B74BAaF53414b357f159EcBC24B847AAADA",	
         "IM_Escrow_CreditCard": "0x2FD7Bd1DEecE9bD539f0169ebddd54A342b3C39a",	
-        "IM_Beacon": "0x14C8B27E7331B0874fd87d21F862E46E11e3c4ED"	
+        "IM_Beacon": "0x14C8B27E7331B0874fd87d21F862E46E11e3c4ED",
+        "IM_Beacon_Utility": "0xb9ea2f65514e2d86d5d4726f8e1cb489e6dd829b"
       },
       "dependencies": {}
     },

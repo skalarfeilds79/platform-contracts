@@ -17,7 +17,7 @@
         "IM_Escrow": "0xAF3c3B74BAaF53414b357f159EcBC24B847AAADA",	
         "IM_Escrow_CreditCard": "0x2FD7Bd1DEecE9bD539f0169ebddd54A342b3C39a",	
         "IM_Beacon": "0x14C8B27E7331B0874fd87d21F862E46E11e3c4ED"	
-      },	      },
+      },
       "dependencies": {}
     },
     "staging": {	
@@ -29,5 +29,6 @@
         "IM_Oracle_ETHUSDManual": "0xb1E27C0D63ddc8FBDBbd378203B10fb0489A518e"	
       },	
       "dependencies": {}	
-    },
+    }
+  }
 }

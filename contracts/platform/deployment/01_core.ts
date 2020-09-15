@@ -1,6 +1,6 @@
 import { DeploymentEnvironment, DeploymentParams, DeploymentStage, setFreezer, setPauser } from '@imtbl/deployment-utils';
 import { ethers, Wallet } from 'ethers';
-import { Beacon, CreditCardEscrow, Escrow, MakerOracle, ManualOracle, PurchaseProcessor } from '../src/contracts';
+import { Beacon, CreditCardEscrow, Escrow, MakerOracle, ManualOracle, PurchaseProcessor, Utility } from '../src/contracts';
 import { PLATFORM_ESCROW_CAPACITY } from './constants';
 
 export const IM_PROCESSOR_LIMIT = 100000000;
@@ -50,6 +50,10 @@ export class CoreStage implements DeploymentStage {
     console.log('beacon', beacon);
     onDeployment('IM_Beacon', beacon, false);
 
+    const beaconUtility = (await findInstance('IM_BEACON_UTILITY')) || (await this.deployBeaconUtility(beacon));
+    console.log('beacon utility', beaconUtility);
+    onDeployment('IM_Beacon_Utility', beaconUtility, false);
+
     const processor =
       (await findInstance('IM_Processor')) || (await this.deployProcessor(revenueWallet));
     onDeployment('IM_Processor', processor, false);
@@ -87,6 +91,12 @@ export class CoreStage implements DeploymentStage {
   async deployBeacon(): Promise<string> {
     console.log('** Deploying Beacon **');
     const beacon = await Beacon.awaitDeployment(this.wallet);
+    return beacon.address;
+  }
+
+  async deployBeaconUtility(beaconAddress: string): Promise<string> {
+    console.log('** Deploying Beacon **');
+    const beacon = await Utility.awaitDeployment(this.wallet, beaconAddress);
     return beacon.address;
   }
 

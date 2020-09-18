@@ -73,14 +73,14 @@ contract OptimizedPack is S1Vendor, RarityProvider {
 
     function predictCards(
         uint256 _commitmentID,
-        bytes32 _seed,
+        bytes32 _commitmentBlockHash,
         uint16 _quantity
     ) external view returns (
         uint16[] memory protos,
         uint8[] memory qualities
     ) {
         require(_quantity > 0, "must have packs");
-        uint256 randomness = uint256(keccak256(abi.encodePacked(_seed, address(this), _commitmentID)));
+        uint256 randomness = uint256(keccak256(abi.encodePacked(_commitmentBlockHash, address(this), _commitmentID)));
         uint256 numCards = uint(_quantity).mul(5);
         protos = new uint16[](numCards);
         qualities = new uint8[](numCards);
@@ -92,11 +92,11 @@ contract OptimizedPack is S1Vendor, RarityProvider {
 
     function predictTickets(
         uint256 _commitmentID,
-        bytes32 _seed,
+        bytes32 _commitmentBlockHash,
         uint16 _quantity
     ) external view returns (uint16[] memory tickets) {
         require(_quantity > 0, "must grant tickets");
-        uint256 randomness = uint256(keccak256(abi.encodePacked(_seed, address(this), _commitmentID)));
+        uint256 randomness = uint256(keccak256(abi.encodePacked(_commitmentBlockHash, address(this), _commitmentID)));
         tickets = new uint16[](_quantity);
         for (uint i = 0; i < _quantity; i++) {
             tickets[i] = _getTicketsInPack(i, randomness);
@@ -107,10 +107,10 @@ contract OptimizedPack is S1Vendor, RarityProvider {
     function _createCommitment(
         uint256 _paymentID,
         address _recipient,
-        uint256 _quantity,
+        uint16 _quantity,
         uint256 _escrowFor,
         bool _grantsTickets
-    ) internal returns (uint256) {
+    ) internal {
         require(_quantity == uint16(_quantity), "must not overflow");
         uint256 commitmentID = commitmentCount++;
         Commitment memory commitment = Commitment({

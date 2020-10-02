@@ -107,7 +107,7 @@ contract OptimizedPack is S1Vendor, RarityProvider {
     function _createCommitment(
         uint256 _paymentID,
         address _recipient,
-        uint16 _quantity,
+        uint256 _quantity,
         uint256 _escrowFor,
         bool _grantsTickets
     ) internal {

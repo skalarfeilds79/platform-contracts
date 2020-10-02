@@ -3,7 +3,12 @@ import { Blockchain, Ganache, generatedWallets } from '@imtbl/test-utils';
 import { parseLogs } from '@imtbl/utils';
 import { ethers } from 'ethers';
 import 'jest';
-import { GU_S1_RARE_CHEST_PRICE, GU_S1_RARE_CHEST_SKU, GU_S1_RARE_PACK_PRICE, GU_S1_RARE_PACK_SKU } from '../../../../deployment/constants';
+import {
+  GU_S1_RARE_CHEST_PRICE,
+  GU_S1_RARE_CHEST_SKU,
+  GU_S1_RARE_PACK_PRICE,
+  GU_S1_RARE_PACK_SKU,
+} from '../../../../deployment/constants';
 import { Cards, Chest, RarePack } from '../../../../src/contracts';
 import { deployRareChest, deployRarePack, deployStandards, StandardContracts } from '../utils';
 import { epics, legendaries, rares } from './protos';
@@ -28,29 +33,26 @@ describe('Rare Pack', () => {
   });
 
   describe('deployment', () => {
-
     let shared: StandardContracts;
 
-    beforeAll(async() => {
+    beforeAll(async () => {
       shared = await deployStandards(owner);
     });
 
     it('should deploy rare pack', async () => {
       await deployRarePack(owner, shared);
     });
-
   });
 
   describe('purchase', () => {
-
     let shared: StandardContracts;
     let rare: RarePack;
 
-    beforeAll(async() => {
+    beforeAll(async () => {
       shared = await deployStandards(owner);
     });
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       rare = await deployRarePack(owner, shared);
     });
 
@@ -66,8 +68,12 @@ describe('Rare Pack', () => {
       };
       const params = { escrowFor: 0, nonce: 0, value: GU_S1_RARE_PACK_PRICE * quantity };
       const payment = await getSignedPayment(
-         owner, shared.processor.address, rare.address, order, params
-       );
+        owner,
+        shared.processor.address,
+        rare.address,
+        order,
+        params,
+      );
       const tx = await rare.purchase(quantity, payment, ethers.constants.AddressZero);
       const receipt = await tx.wait();
       const parsed = parseLogs(receipt.logs, RarePack.ABI);
@@ -82,19 +88,17 @@ describe('Rare Pack', () => {
     it('should purchase five packs with USD', async () => {
       await purchasePacks(5);
     });
-
   });
 
   describe('mint', () => {
-
     let shared: StandardContracts;
     let rare: RarePack;
 
-    beforeAll(async() => {
+    beforeAll(async () => {
       shared = await deployStandards(owner);
     });
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       rare = await deployRarePack(owner, shared);
     });
 
@@ -109,7 +113,13 @@ describe('Rare Pack', () => {
         currency: Currency.USDCents,
       };
       const params = { escrowFor, nonce: 0, value: GU_S1_RARE_PACK_PRICE * quantity };
-      const payment = await getSignedPayment(owner, shared.processor.address, rare.address, order, params);
+      const payment = await getSignedPayment(
+        owner,
+        shared.processor.address,
+        rare.address,
+        order,
+        params,
+      );
       await rare.purchase(quantity, payment, ethers.constants.AddressZero);
     }
 
@@ -122,7 +132,7 @@ describe('Rare Pack', () => {
       const packs = (await rare.commitments(id)).quantity;
       expect(protos).toBeDefined();
       expect(protos.length).toBe(packs * 5);
-      const rareOrBetter = protos.filter(p => {
+      const rareOrBetter = protos.filter((p) => {
         return rares.includes(p) || epics.includes(p) || legendaries.includes(p);
       }).length;
       // must be at least one rare card in every pack
@@ -143,21 +153,18 @@ describe('Rare Pack', () => {
       await purchase(1, 0);
       await mintTrackGas(0, '1 pack no escrow');
     });
-
-
   });
 
   describe('openChest', () => {
-
     let shared: StandardContracts;
     let rare: RarePack;
     let chest: Chest;
 
-    beforeAll(async() => {
+    beforeAll(async () => {
       shared = await deployStandards(owner);
     });
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       rare = await deployRarePack(owner, shared);
       chest = await deployRareChest(owner, rare, shared);
     });
@@ -173,7 +180,7 @@ describe('Rare Pack', () => {
         changeRecipient: owner.address,
         currency: Currency.USDCents,
         totalPrice: value,
-        alreadyPaid: 0
+        alreadyPaid: 0,
       };
       const params = { value, escrowFor: 0, nonce: 0 };
       const payment = await getSignedPayment(
@@ -196,6 +203,5 @@ describe('Rare Pack', () => {
     it('should create a valid purchase from 2 chests', async () => {
       await purchaseAndOpenChests(2);
     });
-
   });
 });

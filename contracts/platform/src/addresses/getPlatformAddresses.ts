@@ -18,7 +18,6 @@ export function getPlatformAddresses(
     processorAddress: env['addresses']['IM_Processor'],
     escrowAddress: env['addresses']['IM_Escrow'],
     creditCardAddress: env['addresses']['IM_Escrow_CreditCard'],
-    makerOracleAddress: env['addresses']['IM_Oracle_ETHUSDMaker'],
     manualOracleAddress: env['addresses']['IM_Oracle_ETHUSDManual'],
   };
 }

@@ -34,6 +34,16 @@ export const GU_S1_RARE_PACK_SKU = skuify('s1.pack.rare');
 export const GU_S1_SHINY_PACK_SKU = skuify('s1.pack.shiny');
 export const GU_S1_LEGENDARY_PACK_SKU = skuify('s1.pack.legendary');
 
+export const GU_S1_OPTIMIZED_RARE_PACK_PRICE = 249;
+export const GU_S1_OPTIMIZED_EPIC_PACK_PRICE = 699;
+export const GU_S1_OPTIMIZED_LEGENDARY_PACK_PRICE = 2499;
+export const GU_S1_OPTIMIZED_SHINY_PACK_PRICE = 14999;
+
+export const GU_S1_OPTIMIZED_EPIC_PACK_SKU = skuify('s1.optimized-pack.epic');
+export const GU_S1_OPTIMIZED_RARE_PACK_SKU = skuify('s1.optimized-pack.rare');
+export const GU_S1_OPTIMIZED_SHINY_PACK_SKU = skuify('s1.optimized-pack.shiny');
+export const GU_S1_OPTIMIZED_LEGENDARY_PACK_SKU = skuify('s1.optimized-pack.legendary');
+
 export const GU_S1_RARE_CHEST_SKU = skuify('s1.chest.rare');
 export const GU_S1_LEGENDARY_CHEST_SKU = skuify('s1.chest.legendary');
 

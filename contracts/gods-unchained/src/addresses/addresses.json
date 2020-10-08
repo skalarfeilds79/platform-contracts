@@ -50,10 +50,10 @@
         "GU_S1_Legendary_Pack": "0x497bf5139b964E468dF02E89d43306a729e28d98",
         "GU_S1_Rare_Chest": "0x16674cb17029967a573E1F84F38678B2e804e6aB",
         "GU_S1_Legendary_Chest": "0xc468bc4F20fC853fEfF1c2232A6A48170cb78083",
-        "GU_S1_Epic_Pack_Optimized": "0xC5a0bA9552d5b3A5bEb6e3fc353f5cD41c005b29",
-        "GU_S1_Rare_Pack_Optimized": "0x910465D78feeeb425e89Eb986b760392db488fA9",
-        "GU_S1_Shiny_Pack_Optimized": "0x40DB982c6e59dc0d9cD9917FF0f8B355F6355aBF",
-        "GU_S1_Legendary_Pack_Optimized": "0x8E98a4AAB3F2F789Abc7f49E6Ea52A8688a29A32"
+        "GU_S1_Epic_Pack_Optimized": "0xA13EF60ca1078fbdF0Ace88eA980E7c78aF2cB99",
+        "GU_S1_Rare_Pack_Optimized": "0xc322c370973138C6F6A1D47F9c9B7affF80Eda5D",
+        "GU_S1_Shiny_Pack_Optimized": "0xB3F4Ced8C0292b2783c92E1Bb4c6703643Bd0cb4",
+        "GU_S1_Legendary_Pack_Optimized": "0x4db66BFF172AE8D22aC539d41E5190AB0448236C"
       },
       "dependencies": {}
     }

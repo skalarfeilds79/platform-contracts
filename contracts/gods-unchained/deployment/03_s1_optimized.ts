@@ -13,14 +13,14 @@ import {
   S1Sale,
 } from '../src/contracts';
 import {
-  GU_S1_EPIC_PACK_PRICE,
-  GU_S1_EPIC_PACK_SKU,
-  GU_S1_LEGENDARY_PACK_PRICE,
-  GU_S1_LEGENDARY_PACK_SKU,
-  GU_S1_RARE_PACK_PRICE,
-  GU_S1_RARE_PACK_SKU,
-  GU_S1_SHINY_PACK_PRICE,
-  GU_S1_SHINY_PACK_SKU,
+  GU_S1_OPTIMIZED_EPIC_PACK_PRICE,
+  GU_S1_OPTIMIZED_EPIC_PACK_SKU,
+  GU_S1_OPTIMIZED_LEGENDARY_PACK_PRICE,
+  GU_S1_OPTIMIZED_LEGENDARY_PACK_SKU,
+  GU_S1_OPTIMIZED_RARE_PACK_PRICE,
+  GU_S1_OPTIMIZED_RARE_PACK_SKU,
+  GU_S1_OPTIMIZED_SHINY_PACK_PRICE,
+  GU_S1_OPTIMIZED_SHINY_PACK_SKU,
 } from './constants';
 
 export class OptimizedStage implements DeploymentStage {
@@ -61,7 +61,7 @@ export class OptimizedStage implements DeploymentStage {
 
     const processor = platform.processorAddress; // await findInstance('IM_Processor');
 
-    if (GU_S1_EPIC_PACK_SKU.length === 0) {
+    if (GU_S1_OPTIMIZED_EPIC_PACK_SKU.length === 0) {
       throw '*** No Epic Pack SKU set! Cannot deploy EpicPack. ***';
     }
     const epicPack =
@@ -69,7 +69,7 @@ export class OptimizedStage implements DeploymentStage {
       (await this.deployOptimizedEpicPack(s1Cap, processor));
     onDeployment('GU_S1_Epic_Pack_Optimized', epicPack, false);
 
-    if (GU_S1_RARE_PACK_SKU.length === 0) {
+    if (GU_S1_OPTIMIZED_RARE_PACK_SKU.length === 0) {
       throw '*** No Rare Pack SKU set! Cannot deploy RarePack. ***';
     }
     const rarePack =
@@ -77,7 +77,7 @@ export class OptimizedStage implements DeploymentStage {
       (await this.deployOptimizedRarePack(s1Cap, processor));
     onDeployment('GU_S1_Rare_Pack_Optimized', rarePack, false);
 
-    if (GU_S1_SHINY_PACK_SKU.length === 0) {
+    if (GU_S1_OPTIMIZED_SHINY_PACK_SKU.length === 0) {
       throw '*** No Shiny Pack SKU set! Cannot deploy ShinyPack. ***';
     }
     const shinyPack =
@@ -85,7 +85,7 @@ export class OptimizedStage implements DeploymentStage {
       (await this.deployOptimizedShinyPack(s1Cap, processor));
     onDeployment('GU_S1_Shiny_Pack_Optimized', shinyPack, false);
 
-    if (GU_S1_LEGENDARY_PACK_SKU.length === 0) {
+    if (GU_S1_OPTIMIZED_LEGENDARY_PACK_SKU.length === 0) {
       throw '*** No Shiny Pack SKU set! Cannot deploy ShinyPack. ***';
     }
     const legendaryPack =
@@ -95,10 +95,10 @@ export class OptimizedStage implements DeploymentStage {
 
     await this.setApprovedCapUpdaters(s1Cap, [rarePack, epicPack, legendaryPack, shinyPack]);
     await this.setApprovedProcessorSellers(processor, [
-      { address: epicPack, sku: GU_S1_EPIC_PACK_SKU },
-      { address: rarePack, sku: GU_S1_RARE_PACK_SKU },
-      { address: shinyPack, sku: GU_S1_SHINY_PACK_SKU },
-      { address: legendaryPack, sku: GU_S1_LEGENDARY_PACK_SKU },
+      { address: epicPack, sku: GU_S1_OPTIMIZED_EPIC_PACK_SKU },
+      { address: rarePack, sku: GU_S1_OPTIMIZED_RARE_PACK_SKU },
+      { address: shinyPack, sku: GU_S1_OPTIMIZED_SHINY_PACK_SKU },
+      { address: legendaryPack, sku: GU_S1_OPTIMIZED_LEGENDARY_PACK_SKU },
     ]);
 
     const sale = S1Sale.at(this.wallet, s1sale);
@@ -110,8 +110,8 @@ export class OptimizedStage implements DeploymentStage {
     const epic = await OptimizedEpicPack.awaitDeployment(
       this.wallet,
       cap,
-      GU_S1_EPIC_PACK_SKU,
-      GU_S1_EPIC_PACK_PRICE,
+      GU_S1_OPTIMIZED_EPIC_PACK_SKU,
+      GU_S1_OPTIMIZED_EPIC_PACK_PRICE,
       processor,
     );
     return epic.address;
@@ -122,8 +122,8 @@ export class OptimizedStage implements DeploymentStage {
     const rare = await OptimizedRarePack.awaitDeployment(
       this.wallet,
       cap,
-      GU_S1_RARE_PACK_SKU,
-      GU_S1_RARE_PACK_PRICE,
+      GU_S1_OPTIMIZED_RARE_PACK_SKU,
+      GU_S1_OPTIMIZED_RARE_PACK_PRICE,
       processor,
     );
     return rare.address;
@@ -134,8 +134,8 @@ export class OptimizedStage implements DeploymentStage {
     const shiny = await OptimizedShinyPack.awaitDeployment(
       this.wallet,
       cap,
-      GU_S1_SHINY_PACK_SKU,
-      GU_S1_SHINY_PACK_PRICE,
+      GU_S1_OPTIMIZED_SHINY_PACK_SKU,
+      GU_S1_OPTIMIZED_SHINY_PACK_PRICE,
       processor,
     );
     return shiny.address;
@@ -146,8 +146,8 @@ export class OptimizedStage implements DeploymentStage {
     const legendary = await OptimizedLegendaryPack.awaitDeployment(
       this.wallet,
       cap,
-      GU_S1_LEGENDARY_PACK_SKU,
-      GU_S1_LEGENDARY_PACK_PRICE,
+      GU_S1_OPTIMIZED_LEGENDARY_PACK_SKU,
+      GU_S1_OPTIMIZED_LEGENDARY_PACK_PRICE,
       processor,
     );
     return legendary.address;

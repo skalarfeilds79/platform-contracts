@@ -93,16 +93,25 @@ export class OptimizedStage implements DeploymentStage {
       (await this.deployOptimizedLegendaryPack(s1Cap, processor));
     onDeployment('GU_S1_Legendary_Pack_Optimized', legendaryPack, false);
 
-    await this.setApprovedCapUpdaters(s1Cap, [rarePack, epicPack, legendaryPack, shinyPack]);
-    await this.setApprovedProcessorSellers(processor, [
-      { address: epicPack, sku: GU_S1_OPTIMIZED_EPIC_PACK_SKU },
-      { address: rarePack, sku: GU_S1_OPTIMIZED_RARE_PACK_SKU },
-      { address: shinyPack, sku: GU_S1_OPTIMIZED_SHINY_PACK_SKU },
-      { address: legendaryPack, sku: GU_S1_OPTIMIZED_LEGENDARY_PACK_SKU },
-    ]);
+    // const e = S1Sale.at(this.wallet, s1sale);
+    // console.log(
+    //   await e.isVendorApproved(epicPack),
+    //   await e.isVendorApproved(rarePack),
+    //   await e.isVendorApproved(legendaryPack),
+    //   await e.isVendorApproved(shinyPack),
+    // );
+    // return;
 
-    const sale = S1Sale.at(this.wallet, s1sale);
-    await sale.setVendorApproval(true, [rarePack, epicPack, legendaryPack, shinyPack]);
+    await this.setApprovedCapUpdaters(s1Cap, [rarePack, epicPack, legendaryPack, shinyPack]);
+    // await this.setApprovedProcessorSellers(processor, [
+    //   { address: epicPack, sku: GU_S1_OPTIMIZED_EPIC_PACK_SKU },
+    //   { address: rarePack, sku: GU_S1_OPTIMIZED_RARE_PACK_SKU },
+    //   { address: shinyPack, sku: GU_S1_OPTIMIZED_SHINY_PACK_SKU },
+    //   { address: legendaryPack, sku: GU_S1_OPTIMIZED_LEGENDARY_PACK_SKU },
+    // ]);
+
+    // const sale = S1Sale.at(this.wallet, s1sale);
+    // await sale.setVendorApproval(true, [rarePack, epicPack, legendaryPack, shinyPack]);
   }
 
   async deployOptimizedEpicPack(cap: string, processor: string): Promise<string> {

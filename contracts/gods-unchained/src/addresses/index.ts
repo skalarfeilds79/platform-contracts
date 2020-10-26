@@ -13,6 +13,12 @@ export declare type SeasonOneAddresses = {
   legendaryPackAddress?: string;
   rareChestAddress?: string;
   legendaryChestAddress?: string;
+  optimized?: {
+    epicPackAddress?: string;
+    rarePackAddress?: string;
+    shinyPackAddress?: string;
+    legendaryPackAddress?: string;
+  };
 };
 
 export declare type GodsUnchainedAddresses = {
@@ -56,6 +62,12 @@ export function getGodsUnchainedAddresses(
       legendaryPackAddress: env['addresses']['GU_S1_Legendary_Pack'],
       rareChestAddress: env['addresses']['GU_S1_Rare_Chest'],
       legendaryChestAddress: env['addresses']['GU_S1_Legendary_Chest'],
+      optimized: {
+        epicPackAddress: env['addresses']['GU_S1_Optimized_Epic_Pack'],
+        rarePackAddress: env['addresses']['GU_S1_Optimized_Rare_Pack'],
+        shinyPackAddress: env['addresses']['GU_S1_Optimized_Shiny_Pack'],
+        legendaryPackAddress: env['addresses']['GU_S1_Optimized_Legendary_Pack'],
+      }
     },
   };
 }
@@ -65,7 +77,7 @@ export function getDependencies(
   environment: DeploymentEnvironment,
 ): DependencyAddresses {
 
-  const env = book['environments'][environment]
+  const env = book['environments'][environment];
   if (!env || !env['dependencies']) {
     throw Error(`Unknown environment: ${environment}`);
   }

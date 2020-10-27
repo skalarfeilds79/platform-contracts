@@ -63,10 +63,10 @@ export function getGodsUnchainedAddresses(
       rareChestAddress: env['addresses']['GU_S1_Rare_Chest'],
       legendaryChestAddress: env['addresses']['GU_S1_Legendary_Chest'],
       optimized: {
-        epicPackAddress: env['addresses']['GU_S1_Optimized_Epic_Pack'],
-        rarePackAddress: env['addresses']['GU_S1_Optimized_Rare_Pack'],
-        shinyPackAddress: env['addresses']['GU_S1_Optimized_Shiny_Pack'],
-        legendaryPackAddress: env['addresses']['GU_S1_Optimized_Legendary_Pack'],
+        epicPackAddress: env['addresses']['GU_S1_Epic_Pack_Optimized'],
+        rarePackAddress: env['addresses']['GU_S1_Rare_Pack_Optimized'],
+        shinyPackAddress: env['addresses']['GU_S1_Shiny_Pack_Optimized'],
+        legendaryPackAddress: env['addresses']['GU_S1_Legendary_Pack_Optimized'],
       }
     },
   };

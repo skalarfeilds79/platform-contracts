@@ -1,5 +1,4 @@
 pragma solidity ^0.7.3;
-pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
@@ -15,6 +14,11 @@ contract Card is ERC721, AccessControl {
         uint256 amount,
         uint256 tokenId
     );
+
+    modifier onlyAdmin() {
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "Caller is not an admin");
+        _;
+    }
 
     constructor()
         public
@@ -35,17 +39,13 @@ contract Card is ERC721, AccessControl {
         address to,
         uint256 amount,
         bytes memory mintingBlob
-    ) public {
-        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "Caller is not an admin");
-
+    ) public onlyAdmin {
         uint256 tokenId = Minting.deserializeMintingBlob(mintingBlob);
         super._mint(to, tokenId);
         emit CardMinted(to, amount, tokenId);
     }
 
-    function burn(uint256 tokenId) public {
-        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "Caller is not an admin");
-
+    function burn(uint256 tokenId) public onlyAdmin {
         super._burn(tokenId);
     }
 }

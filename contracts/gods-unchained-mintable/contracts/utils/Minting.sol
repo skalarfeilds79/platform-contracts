@@ -6,7 +6,7 @@ import "./String.sol";
 
 library Minting {
 
-    function deserializeMintingBlob(bytes memory mintingBlob) internal view returns (uint256) {
+    function deserializeMintingBlob(bytes memory mintingBlob) internal pure returns (uint256) {
         string[] memory idParams = String.split(string(mintingBlob), ":");
         require(idParams.length == 2, "Invalid blob");
         string memory tokenIdString = String.substring(idParams[0], 1, bytes(idParams[0]).length - 1);

@@ -13,12 +13,6 @@ function getEnv(val: string): string {
   throw `Missing env ${val}`;
 }
 
-const env = {
-  privateKey: getEnv('PRIVATE_KEY'),
-  ethUrl: getEnv('ETH_URL'),
-  etherscanKey: getEnv('ETHERSCAN_KEY'),
-}
-
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
 task("accounts", "Prints the list of accounts", async (args, hre) => {
@@ -37,13 +31,13 @@ const config: HardhatUserConfig = {
   networks: {
     hardhat: {
     },
-    env: {
-      url: `${env.ethUrl}`,
-      accounts: [env.privateKey]
+    ropsten: {
+      url: getEnv('ROPSTEN_ETH_URL'),
+      accounts: [getEnv('ROPSTEN_PRIVATE_KEY')]
     }
   },
   etherscan: {
-    apiKey: env.etherscanKey
+    apiKey: getEnv('ETHERSCAN_KEY')
   }
 };
 

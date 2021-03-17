@@ -21,7 +21,6 @@ contract Card is ERC721, AccessControl {
     }
 
     constructor()
-        public
         ERC721("Gods Unchained", "GU")
     {
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);

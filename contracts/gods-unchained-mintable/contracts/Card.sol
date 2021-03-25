@@ -4,7 +4,6 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "./utils/Minting.sol";
 import "./utils/String.sol";
-import "hardhat/console.sol";
 
 contract Card is ERC721, AccessControl {
     mapping(uint256 => uint16) cardProtos;

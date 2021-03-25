@@ -33,7 +33,15 @@ const config: HardhatUserConfig = {
     },
     ropsten: {
       url: getEnv('ROPSTEN_ETH_URL'),
-      accounts: [getEnv('ROPSTEN_PRIVATE_KEY')]
+      accounts: [getEnv('ROPSTEN_PRIVATE_KEY')],
+      gas: parseInt(getEnv('ROPSTEN_GAS_LIMIT')),
+      gasPrice: parseInt(getEnv('ROPSTEN_GAS_PRICE')),
+    },
+    mainnet: {
+      url: getEnv('MAINNET_ETH_URL'),
+      accounts: [getEnv('MAINNET_PRIVATE_KEY')],
+      gas: parseInt(getEnv('MAINNET_GAS_LIMIT')),
+      gasPrice: parseInt(getEnv('MAINNET_GAS_PRICE')),
     }
   },
   etherscan: {

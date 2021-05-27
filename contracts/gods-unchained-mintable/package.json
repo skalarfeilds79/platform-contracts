@@ -1,0 +1,31 @@
+{
+  "name": "gods-unchained-mintable",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "hardhat": "^2.1.1"
+  },
+  "scripts": {
+    "compile": "yarn hardhat compile",
+    "deploy": "yarn hardhat run scripts/deploy.ts",
+    "verify": "yarn hardhat verify",
+    "test": "TS_NODE_TRANSPILE_ONLY=1 yarn hardhat test"
+  },
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.0",
+    "@nomiclabs/hardhat-etherscan": "^2.1.1",
+    "@nomiclabs/hardhat-waffle": "^2.0.0",
+    "@openzeppelin/contracts": "^3.4.1",
+    "@types/chai": "^4.2.15",
+    "@types/dotenv": "^8.2.0",
+    "@types/mocha": "^8.2.1",
+    "@types/node": "^14.14.34",
+    "chai": "^4.3.4",
+    "dotenv": "^8.2.0",
+    "ethereum-waffle": "^3.0.0",
+    "ethers": "^5.0.0",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.3"
+  }
+}
